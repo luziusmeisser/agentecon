@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<project name="Agentecon Simulation" default="createjar">    
+  <property name="projectHome" location="." />
+  <target name="createjar">
+    <jar destfile="${projectHome}/jar/simulation.jar" basedir="${projectHome}/bin" />
+  </target>
+</project>
