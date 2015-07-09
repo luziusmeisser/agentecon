@@ -3,7 +3,6 @@ package com.agentecon.finance;
 import java.util.HashMap;
 
 import com.agentecon.good.IStock;
-import com.agentecon.good.Ticker;
 
 public class Portfolio {
 	

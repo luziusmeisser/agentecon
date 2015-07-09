@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.agentecon.good.IStock;
-import com.agentecon.good.Ticker;
 import com.agentecon.stats.Numbers;
 
 public class ShareRegister {
