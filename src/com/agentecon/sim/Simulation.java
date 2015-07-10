@@ -34,7 +34,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 50000;
+	public static final int ROUNDS = 5000;
 	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
 	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of "
 			+ SimConfig.GOODS_PERSISTENCE + ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
@@ -203,10 +203,10 @@ public class Simulation implements ISimulation {
 		
 		config.addEvent(new ConsumerEvent(0, 1, 5, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
 				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
-		config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
-				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
-		config.addEvent(new ConsumerEvent(0, 1, 5, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
-				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
+//		config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
+//				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
+//		config.addEvent(new ConsumerEvent(0, 1, 5, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
+//				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
 		
 		double p1 = 6.0;
 		double p2 = 4.0;
@@ -221,24 +221,24 @@ public class Simulation implements ISimulation {
 				}
 			}
 		});
-		config.addEvent(new FirmEvent(10, "Chalet", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.FONDUE, 10) }, new Stock[] {}),
-				new LogProdFun(SimConfig.FONDUE, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p3), new Weight(SimConfig.GERTIME, p2)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < getCardinality(); i++) {
-					sim.getFirms().add(new SensorFirm("Sensor Chalet", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
-				}
-			}
-		});
-		config.addEvent(new FirmEvent(10, "Biergarten", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.BEER, 10) }, new Stock[] {}),
-				new LogProdFun(SimConfig.BEER, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p2), new Weight(SimConfig.GERTIME, p3)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < getCardinality(); i++) {
-					sim.getFirms().add(new SensorFirm("Sensor Biergarten", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
-				}
-			}
-		});
+//		config.addEvent(new FirmEvent(10, "Chalet", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.FONDUE, 10) }, new Stock[] {}),
+//				new LogProdFun(SimConfig.FONDUE, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p3), new Weight(SimConfig.GERTIME, p2)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
+//			@Override
+//			public void execute(IWorld sim) {
+//				for (int i = 0; i < getCardinality(); i++) {
+//					sim.getFirms().add(new SensorFirm("Sensor Chalet", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+//				}
+//			}
+//		});
+//		config.addEvent(new FirmEvent(10, "Biergarten", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.BEER, 10) }, new Stock[] {}),
+//				new LogProdFun(SimConfig.BEER, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p2), new Weight(SimConfig.GERTIME, p3)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
+//			@Override
+//			public void execute(IWorld sim) {
+//				for (int i = 0; i < getCardinality(); i++) {
+//					sim.getFirms().add(new SensorFirm("Sensor Biergarten", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+//				}
+//			}
+//		});
 		config.addEvent(new UpdatePreferencesEvent(1200){
 
 			@Override
