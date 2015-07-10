@@ -35,7 +35,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 5001;
+	public static final int ROUNDS = 5000;
 	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
 	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of "
 			+ SimConfig.GOODS_PERSISTENCE + ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
@@ -195,11 +195,18 @@ public class Simulation implements ISimulation {
 		Weight w2 = new Weight(SimConfig.FONDUE, 2.0);
 		Weight w3 = new Weight(SimConfig.BEER, 5.0);
 		
-		config.addEvent(new SinConsumerEvent(0, 50, 250, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
+//		config.addEvent(new SinConsumerEvent(0, 50, 250, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
+//				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
+//		config.addEvent(new SinConsumerEvent(0, 50, 250, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
+//				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
+//		config.addEvent(new SinConsumerEvent(0, 50, 250, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
+//				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
+		
+		config.addEvent(new ConsumerEvent(0, 1, 5, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
 				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
-		config.addEvent(new SinConsumerEvent(0, 50, 250, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
+		config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
 				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
-		config.addEvent(new SinConsumerEvent(0, 50, 250, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
+		config.addEvent(new ConsumerEvent(0, 1, 5, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
 				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
 		
 		double p1 = 6.0;
