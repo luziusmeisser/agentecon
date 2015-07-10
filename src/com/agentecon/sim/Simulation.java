@@ -17,7 +17,6 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.events.SinConsumerEvent;
 import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
