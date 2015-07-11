@@ -24,8 +24,8 @@ public class SimConfig extends SimulationConfig {
 	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
 	public static final Good GERTIME = new Good("German man-hours", 0.0);
 	
-	public SimConfig(int rounds) {
-		super(rounds);
+	public SimConfig(int rounds, int seed) {
+		super(rounds, seed);
 	}
 	
 	public Queue<SimEvent> createEventQueue() {

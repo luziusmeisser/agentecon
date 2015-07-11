@@ -34,7 +34,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 5000;
+	public static final int ROUNDS = 20000;
 	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
 	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of " + SimConfig.GOODS_PERSISTENCE
 			+ ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
@@ -152,7 +152,7 @@ public class Simulation implements ISimulation {
 	}
 
 	private static SimulationConfig createTestConfig() {
-		SimulationConfig config = new SimConfig(ROUNDS);
+		SimulationConfig config = new SimConfig(ROUNDS, 27);
 		Weight w1 = new Weight(SimConfig.PIZZA, 3.0);
 		Weight w2 = new Weight(SimConfig.FONDUE, 2.0);
 		Weight w3 = new Weight(SimConfig.BEER, 5.0);
