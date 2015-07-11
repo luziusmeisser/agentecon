@@ -19,7 +19,8 @@ import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer {
 
-	public static final int MAX_AGE = 500000;
+	public static final boolean AGING = false;
+	public static final int MAX_AGE = 500;
 	public static final int RETIREMENT_AGE = MAX_AGE / 5 * 3;
 
 	private int age;
@@ -60,15 +61,17 @@ public class Consumer extends Agent implements IConsumer {
 			inv = inv.hide(soldGood);
 			trade(inv, market);
 		} else {
-			double retirementSavingsGoal = dailySpendings.getAverage() * (MAX_AGE - RETIREMENT_AGE);
-			double bynow = retirementSavingsGoal * (age + 10) / RETIREMENT_AGE;
-			double missing = bynow - cash;
-			if (missing > 0) {
-				// we lack savings, need to save more
-				inv = inv.hide(money.getGood(), missing / 10);
-			} else {
-				// we have excess savings, let's spend 5% of that
-				inv = inv.hide(money.getGood(), bynow + missing / 20);
+			if (AGING) {
+				double retirementSavingsGoal = dailySpendings.getAverage() * (MAX_AGE - RETIREMENT_AGE);
+				double bynow = retirementSavingsGoal * (age + 10) / RETIREMENT_AGE;
+				double missing = bynow - cash;
+				if (missing > 0) {
+					// we lack savings, need to save more
+					inv = inv.hide(money.getGood(), missing / 10);
+				} else {
+					// we have excess savings, let's spend 5% of that
+					inv = inv.hide(money.getGood(), bynow + missing / 20);
+				}
 			}
 			trade(inv, market);
 		}
@@ -143,13 +146,15 @@ public class Consumer extends Agent implements IConsumer {
 		return lifetimeUtility;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean age() {
 		this.age++;
-		return age > MAX_AGE;
+		return AGING && age > MAX_AGE;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isRetired() {
-		return age > RETIREMENT_AGE;
+		return AGING && age > RETIREMENT_AGE;
 	}
 
 	public Inventory notifyDied() {
