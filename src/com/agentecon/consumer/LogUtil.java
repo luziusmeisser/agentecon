@@ -10,7 +10,6 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
-import com.agentecon.good.Stock;
 import com.agentecon.market.IOffer;
 import com.agentecon.sim.SimConfig;
 
@@ -25,6 +24,12 @@ public class LogUtil implements IUtility {
 
 	public LogUtil(double pizzaPref, Good leisureType) {
 		this(new Weight(SimConfig.PIZZA, pizzaPref), new Weight(SimConfig.FONDUE, GOODS_PREF - pizzaPref), new Weight(leisureType, LEISURE_PREF));
+	}
+	
+	public LogUtil(Weight[] weights, Weight... moreWeights) {
+		this.weights = new Weight[weights.length + moreWeights.length];
+		System.arraycopy(weights, 0, this.weights, 0, weights.length);
+		System.arraycopy(moreWeights, 0, this.weights, weights.length, moreWeights.length);
 	}
 
 	public LogUtil(Weight... weights) {

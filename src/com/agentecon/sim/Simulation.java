@@ -52,7 +52,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(createTestConfig());
+		this(new ComparisonConfiguration(10, 100).createConfig(1, 1));
 	}
 
 	public Simulation(SimulationConfig config) {
@@ -91,7 +91,7 @@ public class Simulation implements ISimulation {
 			processEvents(day);
 			world.handoutEndowments();
 
-			Market market = new Market(SimConfig.TRADABLES, world.getRand());
+			Market market = new Market(world.getRand());
 			listeners.notifyMarketOpened(market);
 			for (Firm firm : world.getRandomFirms()) {
 				firm.offer(market);
@@ -151,43 +151,6 @@ public class Simulation implements ISimulation {
 		}
 	}
 
-	public static void main(String[] args) {
-		long t0 = System.nanoTime();
-		SimulationConfig config = createOneOneConfig();
-		Simulation world = new Simulation(config);
-		world.addListener(new FirmStatRecorder(world.getData()));
-		for (int i = 0; i < config.getRounds(); i += 100) {
-			System.out.println("Step " + i);
-			world.step(100);
-		}
-		long t1 = System.nanoTime();
-		long diff = (t1 - t0) / 1000000;
-		System.out.println("Took " + diff + "ms to run");
-	}
-
-	private static SimulationConfig createOneOneConfig() {
-		SimulationConfig config = new SimConfig(ROUNDS);
-		double pizzapref = 8.0;
-		double alpha = 6.0;
-		
-		config.addEvent(new ConsumerEvent(100, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
-				new LogUtil(new Weight(SimConfig.PIZZA, pizzapref), new Weight(SimConfig.FONDUE, pizzapref), new Weight(SimConfig.ITALTIME, 14))));
-		config.addEvent(new FirmEvent(10, "Pizzeria", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.PIZZA, 10) }, new Stock[] {}),
-				new LogProdFun(SimConfig.PIZZA, new Weight(SimConfig.SWISSTIME, 10 - alpha), new Weight(SimConfig.ITALTIME, alpha)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < getCardinality(); i++) {
-					sim.getFirms().add(new SensorFirm("Sensor Pizzeria", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
-				}
-			}
-		});
-		return config;
-	}
-
-	/**
-	 * Comment and uncomment firms and consumers and adapt weights to obtain the results of the table.
-	 * Ideally, run using SimulationRunner.
-	 */
 	private static SimulationConfig createTestConfig() {
 		SimulationConfig config = new SimConfig(ROUNDS);
 		Weight w1 = new Weight(SimConfig.PIZZA, 3.0);
@@ -201,7 +164,7 @@ public class Simulation implements ISimulation {
 //		config.addEvent(new SinConsumerEvent(0, 50, 250, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
 //				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
 		
-		config.addEvent(new ConsumerEvent(0, 1, 5, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
+		config.addEvent(new ConsumerEvent(100, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
 				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
 //		config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
 //				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));

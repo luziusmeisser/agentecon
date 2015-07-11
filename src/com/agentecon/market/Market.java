@@ -12,19 +12,23 @@ import com.agentecon.api.Price;
 import com.agentecon.good.Good;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.stats.IDataRecorder;
+import com.agentecon.util.InstantiatingHashMap;
 
 public class Market implements IPriceMakerMarket, IPriceTakerMarket, IMarket {
 
 	private MarketListeners listeners;
 	private HashMap<Good, AbstractMarket> markets;
 
-	public Market(Good[] tradedGoods, Random rand) {
-		this.markets = new HashMap<Good, AbstractMarket>();
+	public Market(Random rand) {
+		this.markets = new InstantiatingHashMap<Good, AbstractMarket>(){
+
+			@Override
+			protected AbstractMarket create(Good good) {
+				return new BestPriceMarket(good); // new RandomChoiceMarket(rand, good)
+			}
+			
+		};
 		this.listeners = new MarketListeners();
-		for (Good good : tradedGoods) {
-			markets.put(good, new BestPriceMarket(good));
-			// markets.put(good, new RandomChoiceMarket(rand, good));
-		}
 	}
 
 	@Override

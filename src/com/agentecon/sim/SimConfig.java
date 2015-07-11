@@ -22,11 +22,8 @@ public class SimConfig extends SimulationConfig {
 	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
 	public static final Good GERTIME = new Good("German man-hours", 0.0);
 	
-	public static final Good[] GOODS = new Good[]{MONEY, PIZZA, FONDUE, BEER, SWISSTIME, ITALTIME, GERTIME};
-	public static final Good[] TRADABLES = new Good[]{PIZZA, FONDUE, BEER, SWISSTIME, ITALTIME, GERTIME};
-
 	public SimConfig(int rounds) {
-		super(GOODS, rounds);
+		super(rounds);
 	}
 	
 	public Queue<SimEvent> createEventQueue() {
