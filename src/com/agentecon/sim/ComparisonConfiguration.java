@@ -24,7 +24,7 @@ public class ComparisonConfiguration {
 	}
 
 	public SimulationConfig createConfig(int consumerTypes, int firmTypes) {
-		SimulationConfig config = new SimConfig(Simulation.ROUNDS);
+		SimulationConfig config = new SimConfig(Simulation.ROUNDS, 25);
 
 		Good[] inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {

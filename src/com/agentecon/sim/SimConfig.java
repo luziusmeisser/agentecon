@@ -28,6 +28,10 @@ public class SimConfig extends SimulationConfig {
 		super(rounds, seed);
 	}
 	
+	public SimConfig(int rounds) {
+		super(rounds);
+	}
+	
 	public Queue<SimEvent> createEventQueue() {
 		PriorityBlockingQueue<SimEvent> queue = new PriorityBlockingQueue<>();
 		for (Event e: getEvents()){
