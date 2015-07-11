@@ -12,7 +12,7 @@ public class ConsumerEvent extends SimEvent {
 	private LogUtil utilFun;
 
 	public ConsumerEvent(int card, String name, Endowment end, LogUtil utility) {
-		this(0, 0, card, name, end, utility);
+		this(0, card, 0, name, end, utility);
 	}
 
 	public ConsumerEvent(int time, int card, int interval, String name, Endowment end, LogUtil utility) {

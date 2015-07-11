@@ -19,8 +19,8 @@ import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer {
 
-	public static final int MAX_AGE = 500;
-	public static final int RETIREMENT_AGE = 300;
+	public static final int MAX_AGE = 500000;
+	public static final int RETIREMENT_AGE = MAX_AGE / 5 * 3;
 
 	private int age;
 	private Good soldGood;
