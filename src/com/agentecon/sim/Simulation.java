@@ -36,8 +36,8 @@ public class Simulation implements ISimulation {
 
 	public static final int ROUNDS = 5000;
 	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
-	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of "
-			+ SimConfig.GOODS_PERSISTENCE + ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
+	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of " + SimConfig.GOODS_PERSISTENCE
+			+ ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
 
 	private SimConfig config;
 
@@ -101,13 +101,13 @@ public class Simulation implements ISimulation {
 				c.maximizeUtility(market);
 			}
 			// System.out.println("After close: " + market);
-			
+
 			double inheritance = 0.0;
 			Iterator<Consumer> iter = world.getAllConsumers().iterator();
-			while (iter.hasNext()){
+			while (iter.hasNext()) {
 				Consumer c = iter.next();
 				double util = c.consume();
-				if (c.age()){
+				if (c.age()) {
 					iter.remove();
 					Inventory inv = c.notifyDied();
 					inheritance += inv.getStock(SimConfig.MONEY).consume();
@@ -128,7 +128,7 @@ public class Simulation implements ISimulation {
 			listeners.notifyDayEnded(day);
 		}
 	}
-	
+
 	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
 		double perConsumer = total / allConsumers.size();
 		for (Consumer c : allConsumers) {
@@ -145,7 +145,7 @@ public class Simulation implements ISimulation {
 		while (!events.isEmpty() && events.peek().getDay() <= day) {
 			SimEvent event = events.poll();
 			event.execute(world);
-			if (event.reschedule()){
+			if (event.reschedule()) {
 				events.add(event);
 			}
 		}
@@ -156,27 +156,27 @@ public class Simulation implements ISimulation {
 		Weight w1 = new Weight(SimConfig.PIZZA, 3.0);
 		Weight w2 = new Weight(SimConfig.FONDUE, 2.0);
 		Weight w3 = new Weight(SimConfig.BEER, 5.0);
-		
-//		config.addEvent(new SinConsumerEvent(0, 50, 250, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
-//				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
-//		config.addEvent(new SinConsumerEvent(0, 50, 250, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
-//				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
-//		config.addEvent(new SinConsumerEvent(0, 50, 250, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
-//				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
-		
-		config.addEvent(new ConsumerEvent(100, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
-				new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
-//		config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
-//				new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
-//		config.addEvent(new ConsumerEvent(0, 1, 5, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
-//				new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
-		
+
+		// config.addEvent(new SinConsumerEvent(0, 50, 250, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)),
+		// new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
+		// config.addEvent(new SinConsumerEvent(0, 50, 250, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
+		// new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
+		// config.addEvent(new SinConsumerEvent(0, 50, 250, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
+		// new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
+
+		config.addEvent(new ConsumerEvent(100, "Italian", new Endowment(new Stock(SimConfig.ITALTIME, Endowment.HOURS_PER_DAY)), new LogUtil(w1, w2, w3, new Weight(SimConfig.ITALTIME, 14))));
+		// config.addEvent(new ConsumerEvent(0, 1, 5, "Swiss", new Endowment(new Stock(SimConfig.SWISSTIME, Endowment.HOURS_PER_DAY)),
+		// new LogUtil(w1, w2, w3, new Weight(SimConfig.SWISSTIME, 14))));
+		// config.addEvent(new ConsumerEvent(0, 1, 5, "German", new Endowment(new Stock(SimConfig.GERTIME, Endowment.HOURS_PER_DAY)),
+		// new LogUtil(w1, w2, w3, new Weight(SimConfig.GERTIME, 14))));
+
 		double p1 = 6.0;
 		double p2 = 4.0;
 		double p3 = 8.0;
-				
+
 		config.addEvent(new FirmEvent(10, "Pizzeria", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.PIZZA, 10) }, new Stock[] {}),
-				new LogProdFun(SimConfig.PIZZA, new Weight(SimConfig.ITALTIME, p3), new Weight(SimConfig.SWISSTIME, p1), new Weight(SimConfig.GERTIME, p2)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
+				new LogProdFun(SimConfig.PIZZA, new Weight(SimConfig.ITALTIME, p3), new Weight(SimConfig.SWISSTIME, p1), new Weight(SimConfig.GERTIME, p2)),
+				new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
 			@Override
 			public void execute(IWorld sim) {
 				for (int i = 0; i < getCardinality(); i++) {
@@ -184,32 +184,34 @@ public class Simulation implements ISimulation {
 				}
 			}
 		});
-//		config.addEvent(new FirmEvent(10, "Chalet", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.FONDUE, 10) }, new Stock[] {}),
-//				new LogProdFun(SimConfig.FONDUE, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p3), new Weight(SimConfig.GERTIME, p2)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < getCardinality(); i++) {
-//					sim.getFirms().add(new SensorFirm("Sensor Chalet", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
-//				}
-//			}
-//		});
-//		config.addEvent(new FirmEvent(10, "Biergarten", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.BEER, 10) }, new Stock[] {}),
-//				new LogProdFun(SimConfig.BEER, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p2), new Weight(SimConfig.GERTIME, p3)), new String[] { PriceFactory.EXPSEARCH, "0.05" }) {
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < getCardinality(); i++) {
-//					sim.getFirms().add(new SensorFirm("Sensor Biergarten", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
-//				}
-//			}
-//		});
-		config.addEvent(new UpdatePreferencesEvent(1200){
+		// config.addEvent(new FirmEvent(10, "Chalet", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.FONDUE, 10) }, new Stock[] {}),
+		// new LogProdFun(SimConfig.FONDUE, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p3), new Weight(SimConfig.GERTIME, p2)), new String[] { PriceFactory.EXPSEARCH, "0.05"
+		// }) {
+		// @Override
+		// public void execute(IWorld sim) {
+		// for (int i = 0; i < getCardinality(); i++) {
+		// sim.getFirms().add(new SensorFirm("Sensor Chalet", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+		// }
+		// }
+		// });
+		// config.addEvent(new FirmEvent(10, "Biergarten", new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(SimConfig.BEER, 10) }, new Stock[] {}),
+		// new LogProdFun(SimConfig.BEER, new Weight(SimConfig.ITALTIME, p1), new Weight(SimConfig.SWISSTIME, p2), new Weight(SimConfig.GERTIME, p3)), new String[] { PriceFactory.EXPSEARCH, "0.05" })
+		// {
+		// @Override
+		// public void execute(IWorld sim) {
+		// for (int i = 0; i < getCardinality(); i++) {
+		// sim.getFirms().add(new SensorFirm("Sensor Biergarten", end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+		// }
+		// }
+		// });
+		config.addEvent(new UpdatePreferencesEvent(1200) {
 
 			@Override
 			protected void update(Consumer c) {
 				c.getUtilityFunction().updateWeight(new Weight(SimConfig.PIZZA, 2.0));
 				c.getUtilityFunction().updateWeight(new Weight(SimConfig.FONDUE, 8.0));
 			}
-			
+
 		});
 		return config;
 	}
@@ -231,7 +233,9 @@ public class Simulation implements ISimulation {
 
 	@Override
 	public void addListener(ISimulationListener listener) {
-		listeners.add(listener);
+		if (listener != null) {
+			listeners.add(listener);
+		}
 	}
 
 	@Override

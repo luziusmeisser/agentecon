@@ -12,6 +12,8 @@ import com.agentecon.good.Good;
 
 public class SimConfig extends SimulationConfig {
 	
+	public static final boolean AGING = false;
+	
 	public static final double GOODS_PERSISTENCE = 1.0;
 	
 	public static final Good MONEY = new Good("Taler");
@@ -32,6 +34,11 @@ public class SimConfig extends SimulationConfig {
 			queue.add((SimEvent) e);
 		}
 		return queue;
+	}
+	
+	@Override
+	public boolean hasAging(){
+		return AGING;
 	}
 
 }

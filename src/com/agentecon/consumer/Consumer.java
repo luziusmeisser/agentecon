@@ -14,12 +14,13 @@ import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
+import com.agentecon.sim.SimConfig;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer {
 
-	public static final boolean AGING = false;
+	public static final boolean AGING = SimConfig.AGING;
 	public static final int MAX_AGE = 500;
 	public static final int RETIREMENT_AGE = MAX_AGE / 5 * 3;
 
