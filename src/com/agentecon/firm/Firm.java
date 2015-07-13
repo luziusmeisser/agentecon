@@ -128,18 +128,18 @@ public class Firm extends Agent implements IFirm {
 		return output.getGood();
 	}
 
-	public double payDividends() {
+	public double payDividends(int day) {
 		IStock wallet = getMoney();
 		double cash = wallet.getAmount();
 		double cogs = getCostOfMaximumProfits(getTotalInputWeight());
 		
 		double profits = calcProfits();
 		double dividend = Math.max(0, profits);
-		if (cash - dividend < 3*cogs){
-			dividend = Math.max(0, cash - 3*cogs);
-		} else if (dividend < cash - 800){
-			dividend = cash - 800;
-		}
+//		if (cash - dividend < 3*cogs){
+//			dividend = Math.max(0, cash - 3*cogs);
+//		} else if (dividend < cash - 800){
+//			dividend = cash - 800;
+//		}
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 		

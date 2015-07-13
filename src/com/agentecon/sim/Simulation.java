@@ -121,7 +121,7 @@ public class Simulation implements ISimulation {
 			double dividends = 0.0;
 			for (Firm firm : world.getAllFirms()) {
 				firm.produce();
-				dividends += firm.payDividends();
+				dividends += firm.payDividends(day);
 			}
 			distributeDividends(dividends, world.getAllConsumers());
 			market.reportStats(recorder);
