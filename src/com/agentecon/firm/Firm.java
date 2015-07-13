@@ -76,8 +76,8 @@ public class Firm extends Agent implements IFirm {
 
 	private double getTotalInputWeight() {
 		double tot = 0.0;
-		for (InputFactor in : inputs) {
-			if (in.isObtainable()) {
+		for (InputFactor in: inputs){
+			if (in.isObtainable()){
 				tot += prod.getWeight(in.getGood());
 			}
 		}
@@ -85,7 +85,7 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
-		if (getMoney().getAmount() > 100) {
+		if (getMoney().getAmount() > 100){
 			f.createOffers(market, getMoney(), 1);
 		}
 	}
@@ -130,11 +130,11 @@ public class Firm extends Agent implements IFirm {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcConstDividend(wallet);
+		double dividend = calcCogsDividend(wallet);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
-
-		// register.payDividend(wallet, dividend);
+		
+//		register.payDividend(wallet, dividend);
 		wallet.remove(dividend);
 		return dividend;
 	}
@@ -146,19 +146,19 @@ public class Firm extends Agent implements IFirm {
 	private double calcConstDividend(IStock wallet) {
 		return Math.max(0, wallet.getAmount() - 800);
 	}
-
+	
 	private double calcCogsDividend(IStock wallet) {
 		double cash = wallet.getAmount();
 		double cogs = getCostOfMaximumProfits(getTotalInputWeight());
-
+		
 		double profits = calcProfits();
 		double dividend = Math.max(0, profits);
-		if (cash - 3 * cogs < dividend) {
+		if (cash - 3*cogs < dividend){
 			// limits dividend
-			dividend = Math.max(0, cash - 3 * cogs);
-			// } else if (dividend < cash - 800){
-			// // increases dividend
-			// dividend = cash - 800;
+			dividend = Math.max(0, cash - 3*cogs);
+//		} else if (dividend < cash - 800){
+//			// increases dividend
+//			dividend = cash - 800;
 		}
 		return dividend;
 	}
