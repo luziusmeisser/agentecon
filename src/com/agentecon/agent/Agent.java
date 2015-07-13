@@ -36,6 +36,10 @@ public abstract class Agent implements IAgent {
 		return inv;
 	}
 	
+	public int getAgentId(){
+		return number;
+	}
+	
 	public Inventory dispose(){
 		Inventory old = this.inv;
 		this.inv = new Inventory();
