@@ -2,7 +2,6 @@ package com.agentecon.firm;
 
 import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
-import com.agentecon.good.Stock;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;

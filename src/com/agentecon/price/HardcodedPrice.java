@@ -2,6 +2,7 @@
 
 package com.agentecon.price;
 
+import com.agentecon.stats.Numbers;
 
 public class HardcodedPrice implements IPrice {
 	
@@ -23,6 +24,10 @@ public class HardcodedPrice implements IPrice {
 	@Override
 	public boolean isProbablyUnobtainable() {
 		return false;
+	}
+	
+	public String toString(){
+		return Numbers.toString(price) + "$";
 	}
 
 }

@@ -34,6 +34,7 @@ public class ComparisonConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i);
 		}
+		PriceFactory.NORMALIZED_GOOD = outputs[0];
 		Weight[] defaultPrefs = createPrefs(outputs);
 		for (int i = 0; i < consumerTypes; i++) {
 			String name = "Consumer " + i;

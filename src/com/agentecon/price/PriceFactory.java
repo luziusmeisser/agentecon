@@ -9,12 +9,15 @@ import com.agentecon.good.Good;
 
 public class PriceFactory implements IPriceFactory {
 
+	public static Good NORMALIZED_GOOD = null;
+
+	public static final String CONSTANT = "CONSTANT";
 	public static final String CONSTANTFACTOR = "CONSTANTFACTOR";
 	public static final String RANDOMIZED = "RANDOMIZED";
 	public static final String EXPSEARCH = "EXPSEARCH";
 	public static final String SENSOR = "SENSOR";
 
-	public static final String[] TYPES = new String[] { CONSTANTFACTOR, RANDOMIZED, EXPSEARCH, SENSOR };
+	public static final String[] TYPES = new String[] { CONSTANT, CONSTANTFACTOR, RANDOMIZED, EXPSEARCH, SENSOR };
 
 	private String type;
 	private Random rand;
@@ -27,15 +30,21 @@ public class PriceFactory implements IPriceFactory {
 	}
 
 	public IPrice createPrice(Good good) {
-		switch (type) {
-		default:
-		case CONSTANTFACTOR:
-			return new ConstantFactorPrice(factor);
-		case RANDOMIZED:
-			return new RandomizedFactorPrice(rand, factor);
-		case SENSOR:
-		case EXPSEARCH:
-			return new ExpSearchPrice(factor);
+		if (NORMALIZED_GOOD != null && good.equals(NORMALIZED_GOOD)) {
+			return new HardcodedPrice(10.0);
+		} else {
+			switch (type) {
+			default:
+			case CONSTANT:
+				return new HardcodedPrice(factor);
+			case CONSTANTFACTOR:
+				return new ConstantFactorPrice(factor);
+			case RANDOMIZED:
+				return new RandomizedFactorPrice(rand, factor);
+			case SENSOR:
+			case EXPSEARCH:
+				return new ExpSearchPrice(factor);
+			}
 		}
 	}
 

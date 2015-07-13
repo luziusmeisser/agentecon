@@ -64,6 +64,9 @@ public class Firm extends Agent implements IFirm {
 					double amount = offerPerWeight * prod.getWeight(f.getGood()) - f.getPrice();
 					if (amount > 0) {
 						f.createOffers(market, getMoney(), amount);
+					} else {
+						// so we find out about the true price even if we are not interested
+						createSymbolicOffer(market, f);
 					}
 				} else {
 					// in case it becomes available
