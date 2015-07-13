@@ -135,11 +135,13 @@ public class Firm extends Agent implements IFirm {
 		
 		double profits = calcProfits();
 		double dividend = Math.max(0, profits);
-//		if (cash - dividend < 3*cogs){
-//			dividend = Math.max(0, cash - 3*cogs);
+		if (cash - 3*cogs < dividend){
+			// limits dividend
+			dividend = Math.max(0, cash - 3*cogs);
 //		} else if (dividend < cash - 800){
+//			// increases dividend
 //			dividend = cash - 800;
-//		}
+		}
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 		
