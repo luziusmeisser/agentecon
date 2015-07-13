@@ -34,7 +34,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 100000;
+	public static final int ROUNDS = 10000;
 	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
 	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of " + SimConfig.GOODS_PERSISTENCE
 			+ ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
@@ -81,10 +81,11 @@ public class Simulation implements ISimulation {
 	public boolean isFinished() {
 		return day >= config.getRounds();
 	}
-
+	
 	public void step(int days) {
 		int target = this.day + days;
 		for (; day < target; day++) {
+			double util = 0.0;
 			world.notifyDayStarted(day);
 			listeners.notifyDayStarted(day);
 			recorder.notifyDayStarted(day);
@@ -106,7 +107,7 @@ public class Simulation implements ISimulation {
 			Iterator<Consumer> iter = world.getAllConsumers().iterator();
 			while (iter.hasNext()) {
 				Consumer c = iter.next();
-				double util = c.consume();
+				util += c.consume();
 				if (c.age()) {
 					iter.remove();
 					Inventory inv = c.notifyDied();
@@ -125,10 +126,10 @@ public class Simulation implements ISimulation {
 			}
 			distributeDividends(dividends, world.getAllConsumers());
 			market.reportStats(recorder);
-			listeners.notifyDayEnded(day);
+			listeners.notifyDayEnded(day, util);
 		}
 	}
-
+	
 	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
 		double perConsumer = total / allConsumers.size();
 		for (Consumer c : allConsumers) {
