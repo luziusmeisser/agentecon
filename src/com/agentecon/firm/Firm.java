@@ -144,7 +144,7 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	private double calcConstDividend(IStock wallet) {
-		return 200;
+		return Math.min(200, wallet.getAmount());
 	}
 	
 	private double calcCogsDividend(IStock wallet) {
