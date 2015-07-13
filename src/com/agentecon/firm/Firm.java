@@ -152,7 +152,7 @@ public class Firm extends Agent implements IFirm {
 	
 	private double calcCogsDividend(IStock wallet) {
 		double cash = wallet.getAmount();
-		double cogs = getCostOfMaximumProfits(getTotalInputWeight());
+		double cogs = calcCogs();
 		
 		double profits = calcProfits();
 		double dividend = Math.max(0, profits);
@@ -167,11 +167,15 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public double calcProfits() {
-		double profits = output.getVolume();
+		return output.getVolume() - calcCogs();
+	}
+
+	private double calcCogs() {
+		double cogs = 0.0;
 		for (InputFactor input : inputs) {
-			profits -= input.getVolume();
+			cogs += input.getVolume();
 		}
-		return profits;
+		return cogs;
 	}
 
 	@Override
