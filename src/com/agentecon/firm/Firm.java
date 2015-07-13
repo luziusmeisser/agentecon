@@ -130,7 +130,7 @@ public class Firm extends Agent implements IFirm {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcRelativeDividend(wallet);
+		double dividend = calcConstDividend(wallet);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 		
@@ -143,6 +143,10 @@ public class Firm extends Agent implements IFirm {
 		return wallet.getAmount() * DIVIDEND_RATE;
 	}
 
+	private double calcConstDividend(IStock wallet) {
+		return 200;
+	}
+	
 	private double calcCogsDividend(IStock wallet) {
 		double cash = wallet.getAmount();
 		double cogs = getCostOfMaximumProfits(getTotalInputWeight());
