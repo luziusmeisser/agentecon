@@ -14,17 +14,17 @@ import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
 
 public class ComparisonConfiguration {
-	
+
 	private int firmsPerType;
 	private int consumersPerType;
-	
-	public ComparisonConfiguration(int firmsPerType, int consumersPerType){
+
+	public ComparisonConfiguration(int firmsPerType, int consumersPerType) {
 		this.firmsPerType = firmsPerType;
 		this.consumersPerType = consumersPerType;
 	}
 
 	public SimulationConfig createConfig(int consumerTypes, int firmTypes) {
-		SimulationConfig config = new SimConfig(Simulation.ROUNDS, 33);
+		SimulationConfig config = new SimConfig(Simulation.ROUNDS, 235);
 
 		Good[] inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
@@ -34,7 +34,7 @@ public class ComparisonConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i);
 		}
-		PriceFactory.NORMALIZED_GOOD = outputs[0];
+		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 		Weight[] defaultPrefs = createPrefs(outputs);
 		for (int i = 0; i < consumerTypes; i++) {
 			String name = "Consumer " + i;
@@ -44,12 +44,22 @@ public class ComparisonConfiguration {
 		}
 		Weight[] inputWeights = createInputWeights(inputs);
 		for (int i = 0; i < firmTypes; i++) {
-			Weight[] prodWeights = rotate(inputWeights, i);
+			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 		}
 		return config;
+	}
+
+	private Weight[] limit(Weight[] rotate, int limit) {
+		if (rotate.length > limit) {
+			Weight[] inputs = new Weight[limit];
+			System.arraycopy(rotate, 0, inputs, 0, limit);
+			return inputs;
+		} else {
+			return rotate;
+		}
 	}
 
 	private static Weight[] rotate(Weight[] productionWeights, int i) {

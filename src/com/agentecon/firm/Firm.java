@@ -133,7 +133,7 @@ public class Firm extends Agent implements IFirm {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcCogsDividend(wallet);
+		double dividend = calcConstDividend(wallet);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 		

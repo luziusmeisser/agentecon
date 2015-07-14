@@ -34,10 +34,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 5000;
-	public static final String NAME = "Experimenting with birth cycles - synchronous 250 / 500 cycle and better point dropping";
-	public static final String DESCRIPTION = "A simple production economy with log-utility and log-production functions. Stock persistence of " + SimConfig.GOODS_PERSISTENCE
-			+ ". Consumers live for 500 days, out of which they work the first 300. They save in order to maximize their life-time utility, i.e. with the goal of sustaining their consumption levels after retirement.";
+	public static final int ROUNDS = 10000;
 
 	private SimConfig config;
 
@@ -48,6 +45,7 @@ public class Simulation implements ISimulation {
 	private DataRecorder recorder;
 
 	static {
+		// Disabled because too slow on app engine
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
@@ -241,12 +239,12 @@ public class Simulation implements ISimulation {
 
 	@Override
 	public String getName() {
-		return NAME;
+		return "Name";
 	}
 
 	@Override
 	public String getDescription() {
-		return DESCRIPTION;
+		return "Description";
 	}
 
 }
