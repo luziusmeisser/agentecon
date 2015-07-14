@@ -95,7 +95,7 @@ public class ComparisonConfiguration {
 		} else if (ws.length == 2) {
 			ws[0] = new Weight(outputs[0], 8.0);
 			ws[1] = new Weight(outputs[1], 2.0);
-		} else if (ws.length == 2) {
+		} else if (ws.length == 3) {
 			ws[0] = new Weight(outputs[0], 3.0);
 			ws[1] = new Weight(outputs[1], 2.0);
 			ws[2] = new Weight(outputs[2], 5.0);
