@@ -50,7 +50,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new ComparisonConfiguration(10, 100).createConfig(1, 1));
+		this(new ComparisonConfiguration(10, 100).createConfig(2, 1));
 	}
 
 	public Simulation(SimulationConfig config) {
