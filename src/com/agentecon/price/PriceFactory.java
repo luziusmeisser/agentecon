@@ -43,7 +43,7 @@ public class PriceFactory implements IPriceFactory {
 				return new RandomizedFactorPrice(rand, factor);
 			case SENSOR:
 			case EXPSEARCH:
-				return new ExpSearchPrice(factor);
+				return new ExpSearchPrice(factor, rand);
 			}
 		}
 	}
