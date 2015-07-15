@@ -45,6 +45,7 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	
 	public void setListener(IMarketListener listener){
 		this.listener = listener == null ? NULL_LISTENER : listener;
+		this.listener.notifyOffered(getGood(), getAmount(), getPrice());
 	}
 	
 	public void transfer(IStock sourceWallet, double moneyFlow, IStock target, double goodsFlow){
