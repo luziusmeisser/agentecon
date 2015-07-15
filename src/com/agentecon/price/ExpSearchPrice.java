@@ -16,7 +16,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 
 	public ExpSearchPrice(double initialFactor, Random rand) {
 		this.factor = initialFactor;
-		this.adaptionSpeed = 1.1; // rand.nextDouble() + 1.01;
+		this.adaptionSpeed = rand.nextDouble() + 1.5;
 		this.sameDirectionInARow = 0;
 	}
 
