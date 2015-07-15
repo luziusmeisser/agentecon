@@ -23,8 +23,8 @@ public class ComparisonConfiguration {
 		this.consumersPerType = consumersPerType;
 	}
 
-	public SimulationConfig createConfig(int consumerTypes, int firmTypes) {
-		SimulationConfig config = new SimConfig(Simulation.ROUNDS, 235);
+	public SimulationConfig createConfig(int consumerTypes, int firmTypes, int seed) {
+		SimulationConfig config = new SimConfig(Simulation.ROUNDS, seed);
 
 		Good[] inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
