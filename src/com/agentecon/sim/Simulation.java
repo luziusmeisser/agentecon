@@ -34,8 +34,6 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 10000;
-
 	private SimConfig config;
 
 	private int day;
@@ -50,7 +48,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new ComparisonConfiguration(10, 100).createConfig(5, 5, 237));
+		this(new TaxShockConfiguration(10, 100).createConfig(1, 1, 237));
 	}
 
 	public Simulation(SimulationConfig config) {
@@ -151,7 +149,7 @@ public class Simulation implements ISimulation {
 	}
 
 	private static SimulationConfig createTestConfig() {
-		SimulationConfig config = new SimConfig(ROUNDS, 27);
+		SimulationConfig config = new SimConfig(10000, 27);
 		Weight w1 = new Weight(SimConfig.PIZZA, 3.0);
 		Weight w2 = new Weight(SimConfig.FONDUE, 2.0);
 		Weight w3 = new Weight(SimConfig.BEER, 5.0);

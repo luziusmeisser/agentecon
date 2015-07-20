@@ -8,23 +8,24 @@ import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
 
-public class ComparisonConfiguration {
+public class TaxShockConfiguration {
 
 	private int firmsPerType;
 	private int consumersPerType;
 
-	public ComparisonConfiguration(int firmsPerType, int consumersPerType) {
+	public TaxShockConfiguration(int firmsPerType, int consumersPerType) {
 		this.firmsPerType = firmsPerType;
 		this.consumersPerType = consumersPerType;
 	}
 
 	public SimulationConfig createConfig(int consumerTypes, int firmTypes, int seed) {
-		SimulationConfig config = new SimConfig(10000, seed);
+		SimulationConfig config = new SimConfig(1000, seed);
 
 		Good[] inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
@@ -34,7 +35,6 @@ public class ComparisonConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i);
 		}
-		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 		Weight[] defaultPrefs = createPrefs(outputs);
 		for (int i = 0; i < consumerTypes; i++) {
 			String name = "Consumer " + i;
@@ -49,6 +49,9 @@ public class ComparisonConfiguration {
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 		}
+		
+		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
+		
 		return config;
 	}
 

@@ -10,11 +10,11 @@ public class SinConsumerEvent extends ConsumerEvent {
 	private int cycle;
 	private double births;
 
-	public SinConsumerEvent(int start, int birthsPerCycle, int interval, String name, Endowment end, LogUtil utility) {
+	public SinConsumerEvent(int start, int initialPopulation, int birthsPerCycle, int interval, String name, Endowment end, LogUtil utility) {
 		super(start, birthsPerCycle, 1, name, end, utility);
 		this.start = start;
 		this.cycle = interval;
-		this.births = 1.0;
+		this.births = initialPopulation;
 	}
 	
 	@Override

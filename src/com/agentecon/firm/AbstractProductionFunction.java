@@ -2,15 +2,13 @@ package com.agentecon.firm;
 
 import com.agentecon.consumer.Weight;
 import com.agentecon.good.Good;
-import com.agentecon.good.IStock;
-import com.agentecon.good.Inventory;
 
-public class LogProdFun implements IProductionFunction {
+public abstract class AbstractProductionFunction implements IProductionFunction {
 
-	private Good output;
-	private Weight[] inputs;
+	protected Good output;
+	protected Weight[] inputs;
 
-	public LogProdFun(Good output, Weight... weights) {
+	public AbstractProductionFunction(Good output, Weight... weights) {
 		assert output != null;
 		this.output = output;
 		this.inputs = weights;
@@ -39,16 +37,5 @@ public class LogProdFun implements IProductionFunction {
 		}
 		return 0;
 	}
-
-	@Override
-	public double produce(Inventory inventory) {
-		double production = 1.0;
-		for (Weight input : inputs) {
-			IStock in = inventory.getStock(input.good);
-			production += input.weight * Math.log(1 + in.consume());
-		}
-		inventory.getStock(getOutput()).add(production);
-		return production;
-	}
-
+	
 }

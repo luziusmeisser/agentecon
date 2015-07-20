@@ -18,7 +18,7 @@ public class LogUtilTest {
 	
 	@Test
 	public void testLogUtil(){
-		LogUtil util = new LogUtil(8.0, SimConfig.SWISSTIME);
+		LogUtil util = new LogUtil(new Weight(SimConfig.PIZZA, 8.0), new Weight(SimConfig.FONDUE, 2.0), new Weight(SimConfig.SWISSTIME, 14.0));
 		assert util.getUtility(Collections.<IStock>emptyList()) == 0.0;
 		Stock s1 = new Stock(SimConfig.SWISSTIME, 10);
 		Stock s2 = new Stock(SimConfig.PIZZA, 10);

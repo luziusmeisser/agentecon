@@ -21,11 +21,11 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 
 	@Test
 	public void test() {
-		SinConsumerEvent e = new SinConsumerEvent(50, 100, 150, "test", new Endowment(new Stock(SimConfig.BEER, 1)), new LogUtil());
+		SinConsumerEvent e = new SinConsumerEvent(50, 7, 100, 150, "test", new Endowment(new Stock(SimConfig.BEER, 1)), new LogUtil());
 		for (day = 50; day<200; day++){
 			e.execute(this);
 		}
-		assert consumers == 100;
+		assert consumers == 107;
 	}
 
 	@Override

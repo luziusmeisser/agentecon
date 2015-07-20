@@ -183,4 +183,12 @@ public class Firm extends Agent implements IFirm {
 		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
 	}
 
+	public IProductionFunction getProductionFunction() {
+		return prod;
+	}
+
+	public void setProductionFunction(IProductionFunction prodFun) {
+		this.prod = prodFun;
+	}
+
 }

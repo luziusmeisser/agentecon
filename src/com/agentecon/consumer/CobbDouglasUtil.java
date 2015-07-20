@@ -1,5 +1,3 @@
-// Created by Luzius on May 6, 2014
-
 package com.agentecon.consumer;
 
 import java.util.Collection;
@@ -11,29 +9,31 @@ import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
 import com.agentecon.sim.SimConfig;
 
-public class LogUtil extends AbstractWeightedUtil implements IUtility {
+public class CobbDouglasUtil extends AbstractWeightedUtil {
 
-	private static final double ADJUSTMENT = 1.0; // to avoid negative utility
-
-	public LogUtil(Weight[] weights, Weight... moreWeights) {
-		super(weights, moreWeights);
-	}
-
-	public LogUtil(Weight... weights) {
+	public CobbDouglasUtil(Weight... weights) {
 		super(weights);
+		normalizeWeights(1.0);
 	}
 
-	public double getUtility(Collection<IStock> goods) {
-		double u = 0.0;
-		for (IStock s : goods) {
+	@Override
+	public double getUtility(Collection<IStock> quantities) {
+		int found = 0;
+		double util = 1.0;
+		for (IStock s : quantities) {
 			double weight = getWeight(s.getGood());
-			if (weight > 0.0) {
-				u += Math.log(s.getAmount() + ADJUSTMENT) * weight;
+			if (weight != 0.0){
+				found++;
+				util *= Math.pow(s.getAmount(), weight); 
 			}
 		}
-		return u;
+		if (found < getWeightCount()) {
+			return 0;
+		} else {
+			return util;
+		}
 	}
-	
+
 	public double[] getOptimalAllocation(Inventory inv, Collection<IOffer> prices) {
 		return getOptimalAllocation(inv, prices, new HashSet<Good>());
 	}
@@ -47,7 +47,7 @@ public class LogUtil extends AbstractWeightedUtil implements IUtility {
 		// quantities of other goods with log utility.
 		for (IOffer offer : prices) {
 			if (!ignorelist.contains(offer.getGood())) {
-				endowment += (inv.getStock(offer.getGood()).getAmount() + ADJUSTMENT) * offer.getPrice().getPrice();
+				endowment += inv.getStock(offer.getGood()).getAmount() * offer.getPrice().getPrice();
 				totweight += getWeight(offer.getGood());
 			}
 		}
@@ -59,10 +59,9 @@ public class LogUtil extends AbstractWeightedUtil implements IUtility {
 			if (ignorelist.contains(good)) {
 				targetAmounts[pos++] = present;
 			} else {
-				double target = getWeight(good) * endowment / totweight / offer.getPrice().getPrice() - ADJUSTMENT;
+				double target = getWeight(good) * endowment / totweight / offer.getPrice().getPrice();
 				if ((target > present && offer.isBid()) || (target < present && !offer.isBid())) {
 					// We want more of something that is not for sale or we want less of something there are no bids for
-					// Should happen rarely
 					ignorelist.add(good);
 					return getOptimalAllocation(inv, prices, ignorelist);
 				}
