@@ -12,17 +12,17 @@ public class SimulationTest {
 		}
 	}
 	
-	@Test
-	public void testRepeat() {
-		TaxShockConfiguration config = new TaxShockConfiguration(10, 100, 1, 1, 237);
-		while(config.shouldTryAgain()){
-			Simulation sim = new Simulation(config.createNextConfig());
-			while (!sim.isFinished()) {
-				sim.forward(100);
-			}
-			System.out.println(config.getTradersProfit());
-		}
-	}
+//	@Test
+//	public void testRepeat() {
+//		TaxShockConfiguration config = new TaxShockConfiguration(10, 100, 1, 1, 237);
+//		while(config.shouldTryAgain()){
+//			Simulation sim = new Simulation(config.createNextConfig());
+//			while (!sim.isFinished()) {
+//				sim.forward(100);
+//			}
+//			System.out.println(config.getTradersProfit());
+//		}
+//	}
 	
 
 }
