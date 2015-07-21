@@ -1,11 +1,13 @@
 package com.agentecon.sim;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
+import com.agentecon.events.ArbitrageurEvent;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.TaxEvent;
@@ -18,13 +20,22 @@ public class TaxShockConfiguration {
 
 	private int firmsPerType;
 	private int consumersPerType;
+	private int firmTypes;
+	private int consumerTypes;
+	private int seed;
 
-	public TaxShockConfiguration(int firmsPerType, int consumersPerType) {
+	private ArrayList<ArbitrageurEvent> events;
+
+	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
 		this.firmsPerType = firmsPerType;
 		this.consumersPerType = consumersPerType;
+		this.consumerTypes = consumerTypes;
+		this.firmTypes = firmTypes;
+		this.seed = seed;
+		this.events = new ArrayList<>();
 	}
 
-	public SimulationConfig createConfig(int consumerTypes, int firmTypes, int seed) {
+	public SimulationConfig createNextConfig() {
 		SimulationConfig config = new SimConfig(1000, seed);
 
 		Good[] inputs = new Good[consumerTypes];
@@ -49,9 +60,23 @@ public class TaxShockConfiguration {
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 		}
-		
+		ArrayList<ArbitrageurEvent> newList = new ArrayList<>();
+		if (events.isEmpty()) {
+			for (Good g : outputs) {
+				newList.add(new ArbitrageurEvent(g));
+			}
+		} else {
+			for (ArbitrageurEvent ae: events){
+				newList.add(ae.getNextGeneration());
+			}
+		}
+		for (ArbitrageurEvent ae: newList){
+			config.addEvent(ae);
+		}
+		events = newList;
+				
 		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
-		
+
 		return config;
 	}
 

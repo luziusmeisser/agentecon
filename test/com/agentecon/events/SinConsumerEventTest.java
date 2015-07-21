@@ -12,6 +12,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.world.IConsumers;
 import com.agentecon.world.IFirms;
+import com.agentecon.world.ITraders;
 import com.agentecon.world.IWorld;
 
 public class SinConsumerEventTest implements IWorld, IConsumers {
@@ -65,6 +66,11 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 
 	@Override
 	public Consumer getRandomConsumer() {
+		return null;
+	}
+
+	@Override
+	public ITraders getTraders() {
 		return null;
 	}
 

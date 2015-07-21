@@ -9,8 +9,11 @@ public interface IWorld {
 
 	public IFirms getFirms();
 
+	public ITraders getTraders();
+	
 	public Random getRand();
 
 	public int getDay();
+
 
 }

@@ -28,6 +28,7 @@ import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.stats.DataRecorder;
+import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
@@ -48,7 +49,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(10, 100).createConfig(1, 1, 237));
+		this(new TaxShockConfiguration(10, 100, 1, 1, 237).createNextConfig());
 	}
 
 	public Simulation(SimulationConfig config) {
@@ -90,6 +91,9 @@ public class Simulation implements ISimulation {
 
 			Market market = new Market(world.getRand());
 			listeners.notifyMarketOpened(market);
+			for (Arbitrageur trader: world.getAllTraders()){
+				trader.offer(market, day);
+			}
 			for (Firm firm : world.getRandomFirms()) {
 				firm.offer(market);
 			}
@@ -122,6 +126,9 @@ public class Simulation implements ISimulation {
 			}
 			distributeDividends(dividends, world.getAllConsumers());
 			market.reportStats(recorder);
+			for (Arbitrageur trader: world.getAllTraders()){
+				trader.notifyDayEnded(day);
+			}
 			listeners.notifyDayEnded(day, util);
 		}
 	}

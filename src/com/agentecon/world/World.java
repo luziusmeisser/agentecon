@@ -8,8 +8,9 @@ import java.util.Random;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
+import com.agentecon.trader.Arbitrageur;
 
-public class World implements IWorld, IConsumers, IFirms {
+public class World implements IWorld, IConsumers, IFirms, ITraders {
 
 	private int day;
 	private Random rand;
@@ -17,12 +18,14 @@ public class World implements IWorld, IConsumers, IFirms {
 	private ArrayList<Firm> firms;
 	private ArrayList<Consumer> consumers;
 	private ISimulationListener listeners;
+	private ArrayList<Arbitrageur> traders;
 	
 	public World(long randomSeed, ISimulationListener listeners){
 		this.rand = new Random(randomSeed);
 		this.randomBaseSeed = randomSeed;
-		this.consumers = new ArrayList<Consumer>();
-		this.firms = new ArrayList<Firm>();
+		this.consumers = new ArrayList<>();
+		this.firms = new ArrayList<>();
+		this.traders = new ArrayList<>();
 		this.listeners = listeners;
 	}
 	
@@ -116,6 +119,29 @@ public class World implements IWorld, IConsumers, IFirms {
 	@Override
 	public Consumer getRandomConsumer() {
 		return consumers.get(rand.nextInt(consumers.size()));
+	}
+
+	public Collection<Arbitrageur> getAllTraders() {
+		return getRandomTraders(-1);
+	}
+	
+	public Collection<Arbitrageur> getRandomTraders(int cardinality) {
+		Collections.shuffle(traders, getRand());
+		if (cardinality < 0 || cardinality >= traders.size()){
+			return traders;
+		} else {
+			return traders.subList(0, cardinality);
+		}
+	}
+
+	@Override
+	public ITraders getTraders() {
+		return this;
+	}
+
+	@Override
+	public void addTrader(Arbitrageur t) {
+		traders.add(t);
 	}
 
 }
