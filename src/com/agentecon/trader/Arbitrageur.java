@@ -39,8 +39,8 @@ public class Arbitrageur extends Agent implements IMarketListener {
 			IStock money = getMoney();
 			IStock stock = getStock(good);
 			
-			double bid = low.findNextPeak(0) * 1.02;
-			double ask = high.findNextPeak(0) / 1.02;
+			double bid = low.findNextPeak(day) * 1.02;
+			double ask = high.findNextPeak(day) / 1.02;
 			double diff = ask - bid;
 			if (diff > 0){
 				market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
