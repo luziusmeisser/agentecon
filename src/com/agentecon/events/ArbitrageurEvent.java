@@ -39,4 +39,8 @@ public class ArbitrageurEvent extends SimEvent {
 		return agent.getMoney().getAmount() - CAPITAL;
 	}
 
+	public Arbitrageur getAgent() {
+		return agent;
+	}
+
 }

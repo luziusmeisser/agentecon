@@ -28,7 +28,6 @@ import com.agentecon.market.Market;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.stats.DataRecorder;
 import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
@@ -44,7 +43,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	private Queue<SimEvent> events;
 	private SimulationListeners listeners;
 	private World world;
-	private DataRecorder recorder;
 
 	static {
 		// Disabled because too slow on app engine
@@ -63,7 +61,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	public Simulation(SimulationConfig config) {
 		this.config = (SimConfig) config;
 		this.events = this.config.createEventQueue();
-		this.recorder = new DataRecorder(1);
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
 		this.day = 0;
@@ -77,9 +74,10 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			return null;
 		}
 	}
-
-	public DataRecorder getData() {
-		return recorder;
+	
+	@Override
+	public String getComment() {
+		return "Trader has " + metaConfig.getInv();
 	}
 
 	@Override
@@ -102,7 +100,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			double util = 0.0;
 			world.notifyDayStarted(day);
 			listeners.notifyDayStarted(day);
-			recorder.notifyDayStarted(day);
 			processEvents(day);
 			world.handoutEndowments();
 
@@ -142,7 +139,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 				dividends += firm.payDividends(day);
 			}
 			distributeDividends(dividends, world.getAllConsumers());
-			market.reportStats(recorder);
 			for (Arbitrageur trader : world.getAllTraders()) {
 				trader.notifyDayEnded(day);
 			}

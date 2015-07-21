@@ -6,18 +6,14 @@ import java.util.Collection;
 
 import com.agentecon.api.Price;
 import com.agentecon.good.Good;
-import com.agentecon.stats.IDataRecorder;
 import com.agentecon.stats.Numbers;
-import com.agentecon.stats.ProductStats;
 
 public abstract class AbstractMarket {
 
 	private Good good;
-	private ProductStats stats;
 
 	public AbstractMarket(Good good) {
 		this.good = good;
-		this.stats = new ProductStats(good);
 	}
 
 	public Good getGood() {
@@ -47,7 +43,6 @@ public abstract class AbstractMarket {
 	private <T extends AbstractOffer> void insert(Collection<T> offers, T offer) {
 		assert offer.getGood().equals(good);
 		if (!offer.isUsed()) {
-			offer.setStats(stats);
 			offers.add(offer);
 		}
 	}
@@ -64,10 +59,6 @@ public abstract class AbstractMarket {
 		} else {
 			return new Price(bid.getGood(), (bid.getPrice().getPrice() + ask.getPrice().getPrice()) / 2);
 		}
-	}
-
-	public void reportStats(IDataRecorder rec) {
-		stats.report(rec);
 	}
 
 	private String getStats(Collection<? extends AbstractOffer> offers, boolean ask) {

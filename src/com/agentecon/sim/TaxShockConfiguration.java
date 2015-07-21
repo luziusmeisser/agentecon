@@ -99,6 +99,10 @@ public class TaxShockConfiguration {
 		}
 		return tot;
 	}
+	
+	public String getInv(){
+		return events.iterator().next().getAgent().getInventory().toString();
+	}
 
 	private Weight[] limit(Weight[] rotate, int limit) {
 		if (rotate.length > limit) {
