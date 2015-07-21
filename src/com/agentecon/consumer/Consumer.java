@@ -140,7 +140,12 @@ public class Consumer extends Agent implements IConsumer {
 		double u = utility.consume(getInventory().getAll());
 		assert!Double.isNaN(u);
 		assert u >= 0.0;
-		lifetimeUtility += u;
+		int day = getAge(); // TEMP
+		if (day >= 200 && day < 400) {
+			lifetimeUtility += u;
+		} else if (day >= 700 && day < 900) {
+			lifetimeUtility += u;
+		}
 		return u;
 	}
 

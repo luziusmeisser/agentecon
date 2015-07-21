@@ -24,22 +24,25 @@ public class SavingConsumer extends Consumer {
 	private SavingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
 		super(type, end, utility);
 		this.stock = new Stock(good);
-		this.savings = savingsPerDay;
-		assert savingsPerDay >= 0.0;
+		this.savings = Math.max(0, savingsPerDay);
 	}
 	
 	@Override
 	protected void trade(Inventory inv, IPriceTakerMarket market) {
-		super.trade(inv.hide(stock.getGood(), savings), market);
+		if (getAge() >= CHANGE){
+			IStock here = getStock(stock.getGood());
+			double amount = Math.min(savings, stock.getAmount());
+			here.transfer(stock, amount);
+			super.trade(inv, market);
+		} else {
+			super.trade(inv.hide(stock.getGood(), savings), market);
+		}
 	}
 	
 	@Override
 	public double consume() {
 		IStock inv = getStock(stock.getGood());
-		if (getAge() >= CHANGE){
-			double amount = Math.min(savings, stock.getAmount());
-			inv.transfer(stock, amount);
-		} else {
+		if (getAge() < CHANGE){
 			double amount = Math.min(savings, inv.getAmount());
 			stock.transfer(inv, amount);
 			firstHalfConsumption += inv.getAmount();
