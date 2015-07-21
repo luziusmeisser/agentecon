@@ -18,7 +18,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 	public ExpSearchPrice(Random rand, double initialFactor) {
 		this.factor = initialFactor;
 		this.sameDirectionInARow = 0;
-		this.speed = 1.01 + rand.nextDouble();
+		this.speed = 1.01 + rand.nextDouble() / 3;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 		}
 		return factor;
 	}
-	
+
 	public String toString() {
 		return super.toString(); // + " at factor " + factor;
 	}
