@@ -18,7 +18,7 @@ public class Arbitrageur extends Agent implements IMarketListener {
 	private Average today;
 	private PeakHistory prevLow, prevHigh;
 	private PeakHistory low, high;
-
+	
 	public Arbitrageur(Endowment end, Good good) {
 		super("Arbitrage Trader", end);
 		this.good = good;
@@ -38,23 +38,34 @@ public class Arbitrageur extends Agent implements IMarketListener {
 		if (prevHigh != null && prevLow != null) {
 			IStock money = getMoney();
 			IStock stock = getStock(good);
-			double max = prevHigh.findNextPeak(day);
-			double min = prevLow.findNextPeak(day);
-			double diff = max - min;
-			assert diff >= 0.0;
-			if (!money.isEmpty() && diff >= 4 * Numbers.EPSILON) {
-				double bid = min + diff / 4;
+			
+			double bid = low.findNextPeak(0) * 1.02;
+			double ask = high.findNextPeak(0) / 1.02;
+			double diff = ask - bid;
+			if (diff > 0){
 				market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
 			}
 			if (!stock.isEmpty()) {
-				double ask;
-				if (diff <= Numbers.EPSILON){
-					ask = max * 0.98;
-				} else {
-					ask = max - diff / 4;
-				}
 				market.offer(new Ask(money, stock, new Price(good, ask), stock.getAmount()));
 			}
+			
+//			double max = prevHigh.findNextPeak(day);
+//			double min = prevLow.findNextPeak(day);
+//			double diff = max - min;
+//			assert diff >= 0.0;
+//			if (!money.isEmpty() && diff >= 4 * Numbers.EPSILON) {
+//				double bid = min + diff / 4;
+//				market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
+//			}
+//			if (!stock.isEmpty()) {
+//				double ask;
+//				if (diff <= Numbers.EPSILON){
+//					ask = max * 0.98;
+//				} else {
+//					ask = max - diff / 4;
+//				}
+//				market.offer(new Ask(money, stock, new Price(good, ask), stock.getAmount()));
+//			}
 		}
 	}
 
