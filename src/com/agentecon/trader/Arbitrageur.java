@@ -40,14 +40,15 @@ public class Arbitrageur extends Agent implements IMarketListener {
 			double max = prevHigh.findNextPeak(day);
 			double min = prevLow.findNextPeak(day);
 			double diff = max - min;
-			assert diff > 0;
-			if (!money.isEmpty()) {
-				double bid = min + diff / 4;
-				market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
-			}
-			if (!stock.isEmpty()) {
-				double ask = max - diff / 4;
-				market.offer(new Ask(money, stock, new Price(good, ask), stock.getAmount()));
+			if (diff > 0) {
+				if (!money.isEmpty()) {
+					double bid = min + diff / 4;
+					market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
+				}
+				if (!stock.isEmpty()) {
+					double ask = max - diff / 4;
+					market.offer(new Ask(money, stock, new Price(good, ask), stock.getAmount()));
+				}
 			}
 		}
 	}
@@ -58,7 +59,9 @@ public class Arbitrageur extends Agent implements IMarketListener {
 
 	@Override
 	public void notifySold(Good good, double quantity, Price price) {
-		today.add(quantity, price.getPrice());
+		if (good.equals(this.good)) {
+			today.add(quantity, price.getPrice());
+		}
 	}
 
 	public void notifyDayEnded(int day) {

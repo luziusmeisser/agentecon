@@ -22,31 +22,32 @@ public class RandomChoiceMarket extends AbstractMarket {
 	}
 
 	@Override
-	public IOffer getBid() {
+	public Bid getBid() {
 		return getBest(bids);
 	}
 
 	@Override
-	public IOffer getAsk() {
+	public Ask getAsk() {
 		return getBest(asks);
 	}
 
-	private IOffer getBest(ArrayList<? extends AbstractOffer> offers) {
+	@SuppressWarnings("unchecked")
+	private <T extends AbstractOffer> T getBest(ArrayList<T> offers) {
 		IOffer o1 = getRandom(offers);
 		if (o1 == null) {
 			return null;
 		} else {
-			IOffer o2 = getRandom(offers);
-			IOffer o3 = getRandom(offers);
-			return o1.getBetterOne(o2).getBetterOne(o3);
+			T o2 = getRandom(offers);
+			T o3 = getRandom(offers);
+			return (T) o1.getBetterOne(o2).getBetterOne(o3);
 		}
 	}
 
-	private IOffer getRandom(ArrayList<? extends AbstractOffer> offers) {
+	private <T extends AbstractOffer> T getRandom(ArrayList<T> offers) {
 		int size = offers.size();
 		while (size > 0){
 			int pos = rand.nextInt(size);
-			IOffer offer = offers.get(pos);
+			T offer = offers.get(pos);
 			if (offer.isUsed()){
 				offers.remove(pos);
 				size--;

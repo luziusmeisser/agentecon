@@ -50,9 +50,12 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	
 	public void transfer(IStock sourceWallet, double moneyFlow, IStock target, double goodsFlow){
 		wallet.transfer(sourceWallet, moneyFlow);
-		volume += Math.abs(moneyFlow);
 		stock.transfer(target, goodsFlow);
-		
+		doStats(moneyFlow, goodsFlow);
+	}
+
+	protected void doStats(double moneyFlow, double goodsFlow) {
+		volume += Math.abs(moneyFlow);
 		double absQuant = Math.abs(goodsFlow);
 		this.quantity -= absQuant;
 		

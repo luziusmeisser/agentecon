@@ -35,16 +35,16 @@ public class BestPriceMarket extends AbstractMarket {
 	}
 
 	@Override
-	public IOffer getBid() {
+	public Bid getBid() {
 		return getBest(bids);
 	}
 
 	@Override
-	public IOffer getAsk() {
+	public Ask getAsk() {
 		return getBest(asks);
 	}
 
-	private <T extends AbstractOffer> IOffer getBest(PriorityQueue<T> bids) {
+	private <T extends AbstractOffer> T getBest(PriorityQueue<T> bids) {
 		if (REQUEUE_TO_END) {
 			T offer = bids.poll();
 			while (offer != null && offer.isUsed()) {

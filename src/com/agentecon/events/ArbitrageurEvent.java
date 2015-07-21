@@ -8,6 +8,8 @@ import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
 
 public class ArbitrageurEvent extends SimEvent {
+	
+	private static final double CAPITAL = 1000;
 
 	private Arbitrageur agent;
 
@@ -21,7 +23,7 @@ public class ArbitrageurEvent extends SimEvent {
 	}
 
 	private static Endowment createEndowment() {
-		return new Endowment(new Stock[]{new Stock(SimConfig.MONEY, 10000)}, new Stock[]{});
+		return new Endowment(new Stock[]{new Stock(SimConfig.MONEY, CAPITAL)}, new Stock[]{});
 	}
 	
 	@Override
@@ -31,6 +33,10 @@ public class ArbitrageurEvent extends SimEvent {
 	
 	public ArbitrageurEvent getNextGeneration(){
 		return new ArbitrageurEvent(agent.createNextGeneration(createEndowment()));
+	}
+
+	public double getProfits() {
+		return agent.getMoney().getAmount() - CAPITAL;
 	}
 
 }

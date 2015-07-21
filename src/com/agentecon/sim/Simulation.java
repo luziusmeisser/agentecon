@@ -9,6 +9,7 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
+import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
@@ -33,7 +34,9 @@ import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation {
+public class Simulation implements ISimulation, IIteratedSimulation {
+
+	private TaxShockConfiguration metaConfig;
 
 	private SimConfig config;
 
@@ -49,7 +52,12 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(10, 100, 1, 1, 237).createNextConfig());
+		this(new TaxShockConfiguration(10, 100, 1, 1, 237));
+	}
+
+	public Simulation(TaxShockConfiguration metaConfig) {
+		this(metaConfig.createNextConfig());
+		this.metaConfig = metaConfig;
 	}
 
 	public Simulation(SimulationConfig config) {
@@ -59,6 +67,15 @@ public class Simulation implements ISimulation {
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
 		this.day = 0;
+	}
+
+	@Override
+	public ISimulation getNext() {
+		if (metaConfig.shouldTryAgain()) {
+			return new Simulation(metaConfig);
+		} else {
+			return null;
+		}
 	}
 
 	public DataRecorder getData() {
@@ -78,7 +95,7 @@ public class Simulation implements ISimulation {
 	public boolean isFinished() {
 		return day >= config.getRounds();
 	}
-	
+
 	public void step(int days) {
 		int target = this.day + days;
 		for (; day < target; day++) {
@@ -91,7 +108,7 @@ public class Simulation implements ISimulation {
 
 			Market market = new Market(world.getRand());
 			listeners.notifyMarketOpened(market);
-			for (Arbitrageur trader: world.getAllTraders()){
+			for (Arbitrageur trader : world.getAllTraders()) {
 				trader.offer(market, day);
 			}
 			for (Firm firm : world.getRandomFirms()) {
@@ -126,13 +143,13 @@ public class Simulation implements ISimulation {
 			}
 			distributeDividends(dividends, world.getAllConsumers());
 			market.reportStats(recorder);
-			for (Arbitrageur trader: world.getAllTraders()){
+			for (Arbitrageur trader : world.getAllTraders()) {
 				trader.notifyDayEnded(day);
 			}
 			listeners.notifyDayEnded(day, util);
 		}
 	}
-	
+
 	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
 		double perConsumer = total / allConsumers.size();
 		for (Consumer c : allConsumers) {

@@ -15,6 +15,7 @@ import com.agentecon.firm.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.stats.Numbers;
 
 public class TaxShockConfiguration {
 
@@ -23,6 +24,9 @@ public class TaxShockConfiguration {
 	private int firmTypes;
 	private int consumerTypes;
 	private int seed;
+	private double prevProfits;
+	
+	private Good[] inputs, outputs;
 
 	private ArrayList<ArbitrageurEvent> events;
 
@@ -32,20 +36,22 @@ public class TaxShockConfiguration {
 		this.consumerTypes = consumerTypes;
 		this.firmTypes = firmTypes;
 		this.seed = seed;
+		this.prevProfits = -1.0;
 		this.events = new ArrayList<>();
+		
+		this.inputs = new Good[consumerTypes];
+		for (int i = 0; i < consumerTypes; i++) {
+			inputs[i] = new Good("input " + i);
+		}
+		this.outputs = new Good[firmTypes];
+		for (int i = 0; i < firmTypes; i++) {
+			outputs[i] = new Good("output " + i);
+		}
 	}
 
 	public SimulationConfig createNextConfig() {
 		SimulationConfig config = new SimConfig(1000, seed);
 
-		Good[] inputs = new Good[consumerTypes];
-		for (int i = 0; i < consumerTypes; i++) {
-			inputs[i] = new Good("input " + i);
-		}
-		Good[] outputs = new Good[firmTypes];
-		for (int i = 0; i < firmTypes; i++) {
-			outputs[i] = new Good("output " + i);
-		}
 		Weight[] defaultPrefs = createPrefs(outputs);
 		for (int i = 0; i < consumerTypes; i++) {
 			String name = "Consumer " + i;
@@ -62,10 +68,12 @@ public class TaxShockConfiguration {
 		}
 		ArrayList<ArbitrageurEvent> newList = new ArrayList<>();
 		if (events.isEmpty()) {
+			prevProfits = -1.0;
 			for (Good g : outputs) {
 				newList.add(new ArbitrageurEvent(g));
 			}
 		} else {
+			prevProfits = getTradersProfit();
 			for (ArbitrageurEvent ae: events){
 				newList.add(ae.getNextGeneration());
 			}
@@ -78,6 +86,18 @@ public class TaxShockConfiguration {
 		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
 
 		return config;
+	}
+	
+	public boolean shouldTryAgain(){
+		return !Numbers.equals(getTradersProfit(), prevProfits);
+	}
+	
+	public double getTradersProfit(){
+		double tot = 0.0;
+		for (ArbitrageurEvent ae: events){
+			tot += ae.getProfits();
+		}
+		return tot;
 	}
 
 	private Weight[] limit(Weight[] rotate, int limit) {

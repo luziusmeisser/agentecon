@@ -51,11 +51,11 @@ public class Market implements IPriceMakerMarket, IPriceTakerMarket, IMarket {
 		get(offer.getGood()).offer(offer);
 	}
 
-	public IOffer getBid(Good good) {
+	public Bid getBid(Good good) {
 		return get(good).getBid();
 	}
 
-	public IOffer getAsk(Good good) {
+	public Ask getAsk(Good good) {
 		return get(good).getAsk();
 	}
 

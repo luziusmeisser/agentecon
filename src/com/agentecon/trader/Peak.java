@@ -25,5 +25,9 @@ public class Peak {
 	public boolean isBelow(Peak next) {
 		return price < next.price;
 	}
+	
+	public String toString(){
+		return day + ": " + price;
+	}
 
 }

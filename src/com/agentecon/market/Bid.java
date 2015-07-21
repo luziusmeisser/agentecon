@@ -38,5 +38,15 @@ public class Bid extends AbstractOffer {
 	public IOffer getBetterOne(IOffer other) {
 		return getPrice().isAbove(other.getPrice()) ? this : other;
 	}
+	
+	public void match(Ask ask) {
+		if (!ask.getPrice().isAbove(getPrice())){
+			double m1 = wallet.getAmount();
+			double amount = ask.accept(wallet, stock, getAmount());
+			assert amount >= 0;
+			double income = wallet.getAmount() - m1;
+			doStats(income, amount);
+		}
+	}
 
 }

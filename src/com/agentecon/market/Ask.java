@@ -40,4 +40,13 @@ public class Ask extends AbstractOffer {
 		return getPrice().isAbove(other.getPrice()) ? other : this;
 	}
 
+	public void match(Bid bid) {
+		if (!getPrice().isAbove(bid.getPrice())){
+			double m1 = wallet.getAmount();
+			double amount = bid.accept(wallet, stock, getAmount());
+			double income = wallet.getAmount() - m1;
+			doStats(income, amount);
+		}
+	}
+
 }

@@ -11,7 +11,7 @@ import com.agentecon.stats.Numbers;
 import com.agentecon.stats.ProductStats;
 
 public abstract class AbstractMarket {
-	
+
 	private Good good;
 	private ProductStats stats;
 
@@ -20,25 +20,33 @@ public abstract class AbstractMarket {
 		this.stats = new ProductStats(good);
 	}
 
-	public Good getGood(){
+	public Good getGood() {
 		return good;
 	}
 
-	public abstract IOffer getBid();
+	public abstract Bid getBid();
 
-	public abstract IOffer getAsk();
-	
-	public void offer(Bid offer) {
-		insert(getBids(), offer);
+	public abstract Ask getAsk();
+
+	public void offer(Bid bid) {
+		Ask ask = getAsk();
+		if (ask != null) {
+			bid.match(ask);
+		}
+		insert(getBids(), bid);
 	}
 
-	public void offer(Ask offer) {
-		insert(getAsks(), offer);
+	public void offer(Ask ask) {
+		Bid bid = getBid();
+		if (bid != null) {
+			ask.match(bid);
+		}
+		insert(getAsks(), ask);
 	}
-	
-	private <T extends AbstractOffer> void insert(Collection<T> offers, T offer){
+
+	private <T extends AbstractOffer> void insert(Collection<T> offers, T offer) {
 		assert offer.getGood().equals(good);
-		if (!offer.isUsed()){
+		if (!offer.isUsed()) {
 			offer.setStats(stats);
 			offers.add(offer);
 		}
@@ -47,17 +55,17 @@ public abstract class AbstractMarket {
 	public Price getPrice() {
 		IOffer bid = getBid();
 		IOffer ask = getAsk();
-		if (bid == null && ask == null){
+		if (bid == null && ask == null) {
 			return null;
-		} else if (bid == null){
+		} else if (bid == null) {
 			return ask.getPrice();
-		} else if (ask == null){
+		} else if (ask == null) {
 			return bid.getPrice();
 		} else {
 			return new Price(bid.getGood(), (bid.getPrice().getPrice() + ask.getPrice().getPrice()) / 2);
 		}
 	}
-	
+
 	public void reportStats(IDataRecorder rec) {
 		stats.report(rec);
 	}
@@ -65,27 +73,27 @@ public abstract class AbstractMarket {
 	private String getStats(Collection<? extends AbstractOffer> offers, boolean ask) {
 		double amount = 0.0;
 		double extremum = 0.0;
-		for (AbstractOffer a: offers){
+		for (AbstractOffer a : offers) {
 			amount += a.getAmount();
 			extremum = ask ? Math.min(extremum, a.getAmount()) : Math.max(extremum, a.getAmount());
 		}
 		return Numbers.toString(amount) + " " + new Price(good, extremum) + (ask ? " offered" : " sought") + " in " + offers.size() + " offers";
 	}
-	
+
 	protected abstract Collection<Ask> getAsks();
-	
+
 	protected abstract Collection<Bid> getBids();
-	
+
 	@Override
 	public String toString() {
 		// Not thread-safe! Can pose problems in debugging or multi-threaded logging
 		boolean hasbids = getBid() != null;
 		boolean hasasks = getAsk() != null;
-		if (hasbids && hasasks){
+		if (hasbids && hasasks) {
 			return getGood() + " for " + getStats(getAsks(), true) + " to " + getStats(getBids(), false);
-		} else if (hasbids){
+		} else if (hasbids) {
 			return getStats(getBids(), false);
-		} else if (hasasks){
+		} else if (hasasks) {
 			return getStats(getAsks(), true);
 		} else {
 			return "No " + getGood() + " left in the market";

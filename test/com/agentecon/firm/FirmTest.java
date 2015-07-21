@@ -91,6 +91,7 @@ public class FirmTest {
 				assert Math.abs(offer.getAmount() - 32.63754535204813) < 0.0001 : "Firm does not seek optimal input amount";
 				offer.accept(new Stock(SimConfig.MONEY), new Stock(offer.getGood(), offer.getAmount()), offer.getAmount());
 			}
+
 		});
 		double production = firm.produce();
 		assert Math.abs(production - 36.1564) < 0.001;

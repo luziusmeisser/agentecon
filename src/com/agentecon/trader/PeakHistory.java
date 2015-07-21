@@ -38,5 +38,9 @@ public class PeakHistory {
 		}
 		return 0.0;
 	}
+	
+	public String toString(){
+		return peaks.toString();
+	}
 
 }
