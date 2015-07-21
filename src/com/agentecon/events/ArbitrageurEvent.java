@@ -9,7 +9,7 @@ import com.agentecon.world.IWorld;
 
 public class ArbitrageurEvent extends SimEvent {
 	
-	private static final double CAPITAL = 1000;
+	private static final double CAPITAL = 10;
 
 	private Arbitrageur agent;
 
