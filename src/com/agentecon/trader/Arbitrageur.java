@@ -9,7 +9,6 @@ import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
 import com.agentecon.market.Market;
 import com.agentecon.metric.IMarketListener;
-import com.agentecon.stats.Numbers;
 import com.agentecon.util.Average;
 
 public class Arbitrageur extends Agent implements IMarketListener {
@@ -39,8 +38,8 @@ public class Arbitrageur extends Agent implements IMarketListener {
 			IStock money = getMoney();
 			IStock stock = getStock(good);
 			
-			double bid = prevLow.findNextPeak(day) * 1.02;
-			double ask = prevHigh.findNextPeak(day) / 1.02;
+			double bid = prevLow.findNextPeak(0) * 1.02;
+			double ask = prevHigh.findNextPeak(0) / 1.02;
 			double diff = ask - bid;
 			if (diff > 0){
 				market.offer(new Bid(money, stock, new Price(good, bid), money.getAmount() / bid));
