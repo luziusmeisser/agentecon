@@ -11,6 +11,7 @@ import com.agentecon.finance.Portfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
+import com.agentecon.good.Stock;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
@@ -78,7 +79,7 @@ public class Consumer extends Agent implements IConsumer {
 		}
 	}
 
-	private void trade(Inventory inv, IPriceTakerMarket market) {
+	protected void trade(Inventory inv, IPriceTakerMarket market) {
 		boolean trading = true;
 		double spendings = 0.0;
 		while (trading) {
@@ -141,10 +142,6 @@ public class Consumer extends Agent implements IConsumer {
 		assert u >= 0.0;
 		lifetimeUtility += u;
 		return u;
-	}
-
-	public double getLifeTimeUtility() {
-		return lifetimeUtility;
 	}
 
 	@SuppressWarnings("unused")

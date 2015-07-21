@@ -7,7 +7,7 @@ import com.agentecon.sim.SimConfig;
 import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
 
-public class ArbitrageurEvent extends SimEvent {
+public class ArbitrageurEvent extends EvolvingEvent {
 	
 	private static final double CAPITAL = 10;
 
@@ -31,16 +31,17 @@ public class ArbitrageurEvent extends SimEvent {
 		sim.getTraders().addTrader(agent);
 	}
 	
-	public ArbitrageurEvent getNextGeneration(){
-		return new ArbitrageurEvent(agent.createNextGeneration(createEndowment()));
-	}
-
-	public double getProfits() {
+	public double getScore() {
 		return agent.getMoney().getAmount() - CAPITAL;
 	}
 
 	public Arbitrageur getAgent() {
 		return agent;
+	}
+
+	@Override
+	public EvolvingEvent createNextGeneration() {
+		return new ArbitrageurEvent(agent.createNextGeneration(createEndowment()));
 	}
 
 }

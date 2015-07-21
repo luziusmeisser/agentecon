@@ -7,9 +7,9 @@ import com.agentecon.world.IWorld;
 
 public class ConsumerEvent extends SimEvent {
 
-	private String type;
-	private Endowment end;
-	private LogUtil utilFun;
+	protected String type;
+	protected Endowment end;
+	protected LogUtil utilFun;
 
 	public ConsumerEvent(int card, String name, Endowment end, LogUtil utility) {
 		this(0, card, 0, name, end, utility);

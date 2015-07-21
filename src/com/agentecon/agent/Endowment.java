@@ -2,7 +2,6 @@ package com.agentecon.agent;
 
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
-import com.agentecon.good.Stock;
 
 public class Endowment {
 

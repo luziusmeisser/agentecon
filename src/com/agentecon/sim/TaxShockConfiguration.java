@@ -7,9 +7,9 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
-import com.agentecon.events.ArbitrageurEvent;
-import com.agentecon.events.ConsumerEvent;
+import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.SavingConsumerEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.good.Good;
@@ -24,11 +24,11 @@ public class TaxShockConfiguration {
 	private int firmTypes;
 	private int consumerTypes;
 	private int seed;
-	private double prevProfits;
 	
 	private Good[] inputs, outputs;
 
-	private ArrayList<ArbitrageurEvent> events;
+	private double prevScore;
+	private ArrayList<EvolvingEvent> evolvingEvents;
 
 	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
 		this.firmsPerType = firmsPerType;
@@ -36,8 +36,8 @@ public class TaxShockConfiguration {
 		this.consumerTypes = consumerTypes;
 		this.firmTypes = firmTypes;
 		this.seed = seed;
-		this.prevProfits = -1.0;
-		this.events = new ArrayList<>();
+		this.prevScore = 0.0;
+		this.evolvingEvents = new ArrayList<>();
 		
 		this.inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
@@ -52,13 +52,6 @@ public class TaxShockConfiguration {
 	public SimulationConfig createNextConfig() {
 		SimulationConfig config = new SimConfig(1000, seed);
 
-		Weight[] defaultPrefs = createPrefs(outputs);
-		for (int i = 0; i < consumerTypes; i++) {
-			String name = "Consumer " + i;
-			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
-			LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 14));
-			config.addEvent(new ConsumerEvent(consumersPerType, name, end, util));
-		}
 		Weight[] inputWeights = createInputWeights(inputs);
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
@@ -66,22 +59,22 @@ public class TaxShockConfiguration {
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 		}
-		ArrayList<ArbitrageurEvent> newList = new ArrayList<>();
-		if (events.isEmpty()) {
-			prevProfits = -1.0;
-			for (Good g : outputs) {
-				newList.add(new ArbitrageurEvent(g));
+		ArrayList<EvolvingEvent> newList = new ArrayList<>();
+		if (evolvingEvents.isEmpty()) {
+			Weight[] defaultPrefs = createPrefs(outputs);
+			for (int i = 0; i < consumerTypes; i++) {
+				String name = "Consumer " + i;
+				Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
+				LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 14));
+				config.addEvent(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0]));
 			}
 		} else {
-			prevProfits = getTradersProfit();
-			for (ArbitrageurEvent ae: events){
-				newList.add(ae.getNextGeneration());
+			prevScore = getScore();
+			for (EvolvingEvent ae: evolvingEvents){
+				newList.add(ae.createNextGeneration());
 			}
 		}
-		for (ArbitrageurEvent ae: newList){
-			config.addEvent(ae);
-		}
-		events = newList;
+		evolvingEvents = newList;
 				
 		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
 
@@ -89,21 +82,17 @@ public class TaxShockConfiguration {
 	}
 	
 	public boolean shouldTryAgain(){
-		return !Numbers.equals(getTradersProfit(), prevProfits);
+		return !Numbers.equals(getScore(), prevScore);
 	}
 	
-	public double getTradersProfit(){
+	public double getScore(){
 		double tot = 0.0;
-		for (ArbitrageurEvent ae: events){
-			tot += ae.getProfits();
+		for (EvolvingEvent ae: evolvingEvents){
+			tot += ae.getScore();
 		}
 		return tot;
 	}
 	
-	public String getInv(){
-		return events.iterator().next().getAgent().getInventory().toString();
-	}
-
 	private Weight[] limit(Weight[] rotate, int limit) {
 		if (rotate.length > limit) {
 			Weight[] inputs = new Weight[limit];

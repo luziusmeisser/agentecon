@@ -77,7 +77,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	
 	@Override
 	public String getComment() {
-		return "Trader has " + metaConfig.getInv();
+		return metaConfig == null ? null : "Current score is " + metaConfig.getScore();
 	}
 
 	@Override
