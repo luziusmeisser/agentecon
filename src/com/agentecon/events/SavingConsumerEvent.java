@@ -22,8 +22,9 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		}
 	}
 
-	public SavingConsumerEvent(ArrayList<SavingConsumer> next) {
+	public SavingConsumerEvent(ArrayList<SavingConsumer> next, Endowment end) {
 		super(0, next.size());
+		this.end = end;
 		this.consumers = next;
 	}
 
@@ -37,9 +38,9 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	public EvolvingEvent createNextGeneration() {
 		ArrayList<SavingConsumer> next = new ArrayList<>();
 		for (SavingConsumer sc : consumers) {
-			consumers.add(sc.getNextGeneration(end));
+			next.add(sc.getNextGeneration(end));
 		}
-		return new SavingConsumerEvent(next);
+		return new SavingConsumerEvent(next, end);
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class TaxShockConfiguration {
 		this.consumerTypes = consumerTypes;
 		this.firmTypes = firmTypes;
 		this.seed = seed;
-		this.prevScore = 0.0;
+		this.prevScore = -1.0;
 		this.evolvingEvents = new ArrayList<>();
 		
 		this.inputs = new Good[consumerTypes];
@@ -66,7 +66,7 @@ public class TaxShockConfiguration {
 				String name = "Consumer " + i;
 				Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
 				LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 14));
-				config.addEvent(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0]));
+				newList.add(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0]));
 			}
 		} else {
 			prevScore = getScore();
@@ -75,7 +75,10 @@ public class TaxShockConfiguration {
 			}
 		}
 		evolvingEvents = newList;
-				
+		for (EvolvingEvent ee: newList){
+			config.addEvent(ee);
+		}
+		
 		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
 
 		return config;

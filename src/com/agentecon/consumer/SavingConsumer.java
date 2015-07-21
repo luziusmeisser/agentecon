@@ -25,6 +25,7 @@ public class SavingConsumer extends Consumer {
 		super(type, end, utility);
 		this.stock = new Stock(good);
 		this.savings = savingsPerDay;
+		assert savingsPerDay >= 0.0;
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class SavingConsumer extends Consumer {
 	
 	public SavingConsumer getNextGeneration(Endowment end){
 		double savingsPerDay = firstHalfConsumption / CHANGE - totalConsumption / (CHANGE + CHANGE);
-		return new SavingConsumer(getType(), end, getUtilityFunction(), stock.getGood(), savingsPerDay);
+		return new SavingConsumer(getType(), end, getUtilityFunction(), stock.getGood(), savingsPerDay + savings);
 	}
 
 }
