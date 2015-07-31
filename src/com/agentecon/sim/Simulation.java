@@ -51,7 +51,12 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new VolumeTraderConfiguration(233, 23.56));
+		this(new SavingConsumerConfiguration(233){
+			@Override
+			public double getInitialSavings(){
+				return 0.2356;
+			}
+		});
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {

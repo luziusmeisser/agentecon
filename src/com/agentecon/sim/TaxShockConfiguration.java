@@ -103,7 +103,7 @@ public class TaxShockConfiguration {
 	}
 	
 	public boolean shouldTryAgain(){
-		return iteration < 30 && evolvingEvents.size() > 0;
+		return iteration < 3 && evolvingEvents.size() > 0;
 	}
 	
 	public double getScore(){

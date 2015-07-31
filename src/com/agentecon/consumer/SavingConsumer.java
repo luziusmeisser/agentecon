@@ -17,11 +17,7 @@ public class SavingConsumer extends Consumer {
 	private double firstHalfConsumption = 0.0;
 	private double totalConsumption = 0.0;
 	
-	public SavingConsumer(String type, Endowment end, IUtility utility, Good good) {
-		this(type, end, utility, good, 0.0);
-	}
-	
-	private SavingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
+	public SavingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
 		super(type, end, utility);
 		this.stock = new Stock(good);
 		this.savings = Math.max(0, savingsPerDay);
