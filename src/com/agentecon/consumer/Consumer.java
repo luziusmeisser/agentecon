@@ -11,7 +11,6 @@ import com.agentecon.finance.Portfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
-import com.agentecon.good.Stock;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
@@ -31,12 +30,19 @@ public class Consumer extends Agent implements IConsumer {
 	private double lifetimeUtility;
 	private Portfolio savings;
 	private MovingAverage dailySpendings;
+	
+	private ConsumerListeners listeners;
 
 	public Consumer(String type, Endowment end, IUtility utility) {
 		super(type, end);
 		this.soldGood = end.getDaily()[0].getGood();
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
+		this.listeners = new ConsumerListeners();
+	}
+	
+	public void addListener(IConsumerListener listener){
+		this.listeners.add(listener);
 	}
 
 	public IUtility getUtilityFunction() {
