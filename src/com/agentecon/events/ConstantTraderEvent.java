@@ -20,7 +20,7 @@ public class ConstantTraderEvent extends EvolvingEvent {
 	}
 
 	private static Endowment createEndowment(Good money) {
-		return new Endowment(new Stock[] { new Stock(money, 1000000) }, new Stock[] {});
+		return new Endowment(new Stock[] { new Stock(money, 100000000) }, new Stock[] {});
 	}
 
 	@Override
