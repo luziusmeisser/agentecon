@@ -4,9 +4,9 @@ import com.agentecon.events.ConstantTraderEvent;
 
 public class VolumeTraderConfiguration extends TaxShockConfiguration {
 	
-	public VolumeTraderConfiguration(int seed) {
+	public VolumeTraderConfiguration(int seed, double amount) {
 		super(seed);
-		evolvingEvents.add(new ConstantTraderEvent(SimConfig.MONEY, 0.0, outputs[0]));
+		evolvingEvents.add(new ConstantTraderEvent(SimConfig.MONEY, amount, outputs[0]));
 	}
 	
 }

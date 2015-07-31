@@ -28,12 +28,13 @@ import com.agentecon.market.Market;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.trader.VolumeTrader;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.Trader;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation, IIteratedSimulation {
+public class Simulation implements ISimulation {
 
 	private TaxShockConfiguration metaConfig;
 
@@ -50,7 +51,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new VolumeTraderConfiguration(233));
+		this(new SavingFirmConfiguration(233, 2.356));
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {
@@ -112,7 +113,8 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			for (Trader trader : world.getAllTraders()) {
 				trader.offer(market, day);
 			}
-			for (Firm firm : world.getRandomFirms()) {
+			Collection<Firm> firms = world.getRandomFirms();
+			for (Firm firm : firms) {
 				firm.offer(market);
 			}
 			// System.out.println("Before open: " + market);
@@ -122,7 +124,8 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			// System.out.println("After close: " + market);
 
 			double inheritance = 0.0;
-			Iterator<Consumer> iter = world.getAllConsumers().iterator();
+			Collection<Consumer> cons = world.getAllConsumers();
+			Iterator<Consumer> iter = cons.iterator();
 			while (iter.hasNext()) {
 				Consumer c = iter.next();
 				util += c.consume();
@@ -137,16 +140,21 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 				// ensure no money lost due to rounding
 				world.getRandomConsumer().getMoney().add(inheritance);
 			}
+			
+			for (Trader trader : world.getAllTraders()) {
+				if (trader instanceof VolumeTrader){
+					((VolumeTrader)trader).refillWallet(firms);
+				}
+				trader.notifyDayEnded(day);
+			}
+			
 			double dividends = 0.0;
-			for (Firm firm : world.getAllFirms()) {
-				firm.produce();
+			for (Firm firm : firms) {
+				firm.produce(day);
 				dividends += firm.payDividends(day);
 			}
 			distributeDividends(dividends, world.getAllConsumers());
-			for (Trader trader : world.getAllTraders()) {
-				trader.notifyDayEnded(day);
-			}
-			listeners.notifyDayEnded(day, util);
+			listeners.notifyDayEnded(day, util / cons.size());
 		}
 	}
 

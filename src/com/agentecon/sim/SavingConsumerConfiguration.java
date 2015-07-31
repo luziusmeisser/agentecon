@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
-import com.agentecon.events.ConstantTraderEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.SavingConsumerEvent;
 import com.agentecon.events.SimEvent;
@@ -15,8 +14,6 @@ public class SavingConsumerConfiguration extends TaxShockConfiguration {
 
 	public SavingConsumerConfiguration(int seed) {
 		super(seed);
-		
-		constantEvents.add(new ConstantTraderEvent(SimConfig.MONEY, 0.23, outputs[0]));
 	}
 
 	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] defaultPrefs) {

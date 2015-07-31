@@ -115,7 +115,7 @@ public class Firm extends Agent implements IFirm {
 		return getMoney().getAmount() / 4;
 	}
 
-	public double produce() {
+	public double produce(int day) {
 		IStock[] inputAmounts = new IStock[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
 			inputs[i].adaptPrice();

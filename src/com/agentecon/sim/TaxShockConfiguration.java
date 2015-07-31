@@ -19,8 +19,8 @@ import com.agentecon.price.PriceFactory;
 
 public class TaxShockConfiguration {
 
-	private static final int ROUNDS = 1000;
-	private static final int TAX_EVENT = ROUNDS / 2;
+	public static final int ROUNDS = 1000;
+	public static final int TAX_EVENT = ROUNDS / 2;
 	
 	private int iteration = 0;
 	protected int firmsPerType;
@@ -56,12 +56,12 @@ public class TaxShockConfiguration {
 			outputs[i] = new Good("output " + i);
 		}
 		
-		Weight[] inputWeights = createInputWeights(inputs);
+		Weight[] inputWeights = createInputWeights(inputs, 1.0);
 		addFirms(constantEvents, evolvingEvents, inputWeights);
 		Weight[] defaultPrefs = createPrefs(outputs);
 		addConsumers(constantEvents, evolvingEvents, defaultPrefs);
 		
-		constantEvents.add(new TaxEvent(TAX_EVENT, 0.20));
+		constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
 	}
 
 	public SimulationConfig createNextConfig() {
@@ -114,7 +114,7 @@ public class TaxShockConfiguration {
 		return tot;
 	}
 	
-	private Weight[] limit(Weight[] rotate, int limit) {
+	protected Weight[] limit(Weight[] rotate, int limit) {
 		if (rotate.length > limit) {
 			Weight[] inputs = new Weight[limit];
 			System.arraycopy(rotate, 0, inputs, 0, limit);
@@ -124,7 +124,7 @@ public class TaxShockConfiguration {
 		}
 	}
 
-	private static Weight[] rotate(Weight[] productionWeights, int i) {
+	protected static Weight[] rotate(Weight[] productionWeights, int i) {
 		int len = productionWeights.length;
 		i = i % len;
 		Weight[] rotated = new Weight[len];
@@ -133,24 +133,24 @@ public class TaxShockConfiguration {
 		return rotated;
 	}
 
-	private static Weight[] createInputWeights(Good[] inputs) {
+	protected Weight[] createInputWeights(Good[] inputs, double multiplier) {
 		Weight[] ws = new Weight[inputs.length];
 		if (ws.length <= 3) {
-			double[] defaults = new double[] { 6.0, 4.0, 8.0 };
+			double[] defaults = new double[] { 6.0 * multiplier, 4.0 * multiplier, 8.0 * multiplier };
 			for (int i = 0; i < ws.length; i++) {
 				ws[i] = new Weight(inputs[i], defaults[i]);
 			}
 		} else {
 			Random rand = new Random(23);
 			for (int i = 0; i < ws.length; i++) {
-				double weight = rand.nextDouble() * 9 + 1;
+				double weight = (rand.nextDouble() * 9 + 1) * multiplier;
 				ws[i] = new Weight(inputs[i], weight);
 			}
 		}
 		return ws;
 	}
 
-	private static Weight[] createPrefs(Good[] outputs) {
+	private Weight[] createPrefs(Good[] outputs) {
 		Weight[] ws = new Weight[outputs.length];
 		if (ws.length == 1) {
 			ws[0] = new Weight(outputs[0], 8.0);

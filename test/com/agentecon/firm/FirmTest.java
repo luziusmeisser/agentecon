@@ -47,14 +47,14 @@ public class FirmTest {
 			firm.offer(market);
 			System.out.println(tc.getPriceSquareError(market));
 			tc.buyAndSell(market);
-			firm.produce();
+			firm.produce(i);
 		}
 		for (int i = 0; i < 100; i++) {
 			Market market = new Market(rand);
 			firm.offer(market);
 			System.out.println(tc.getPriceSquareError(market));
 			tc.buyAndSell(market);
-			firm.produce();
+			firm.produce(i);
 		}
 		Market market = new Market(rand);
 		firm.offer(market);
@@ -93,7 +93,7 @@ public class FirmTest {
 			}
 
 		});
-		double production = firm.produce();
+		double production = firm.produce(0);
 		assert Math.abs(production - 36.1564) < 0.001;
 		double profits = firm.calcProfits();
 		assert Math.abs(profits - 264.537) < 0.001;

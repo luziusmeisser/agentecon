@@ -28,13 +28,19 @@ public class FirmEvent extends SimEvent {
 
 	@Override
 	public void execute(IWorld sim) {
+		PriceFactory pf = new PriceFactory(sim.getRand(), priceParams);
 		for (int i = 0; i < getCardinality(); i++) {
 			if (priceParams[0].equals(PriceFactory.SENSOR)) {
-				sim.getFirms().add(new SensorFirm(type, end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+				SensorFirm firm = createFirm(type, end, prodFun, pf);
+				sim.getFirms().add(firm);
 			} else {
-				sim.getFirms().add(new Firm(type, end, prodFun, new PriceFactory(sim.getRand(), priceParams)));
+				sim.getFirms().add(new Firm(type, end, prodFun, pf));
 			}
 		}
+	}
+
+	protected SensorFirm createFirm(String type2, Endowment end2, LogProdFun prodFun2, PriceFactory pf) {
+		return new SensorFirm(type, end, prodFun, pf);
 	}
 
 }
