@@ -43,5 +43,9 @@ public class ArbitrageurEvent extends EvolvingEvent {
 	public EvolvingEvent createNextGeneration() {
 		return new ArbitrageurEvent(agent.createNextGeneration(createEndowment()));
 	}
+	
+	public String toString(){
+		return "Arbitrageur with " + agent.getInventory();
+	}
 
 }

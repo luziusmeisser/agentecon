@@ -30,7 +30,7 @@ public class Consumer extends Agent implements IConsumer {
 	private double lifetimeUtility;
 	private Portfolio savings;
 	private MovingAverage dailySpendings;
-	
+
 	private ConsumerListeners listeners;
 
 	public Consumer(String type, Endowment end, IUtility utility) {
@@ -40,8 +40,8 @@ public class Consumer extends Agent implements IConsumer {
 		this.dailySpendings = new MovingAverage(0.95);
 		this.listeners = new ConsumerListeners();
 	}
-	
-	public void addListener(IConsumerListener listener){
+
+	public void addListener(IConsumerListener listener) {
 		this.listeners.add(listener);
 	}
 
@@ -146,12 +146,7 @@ public class Consumer extends Agent implements IConsumer {
 		double u = utility.consume(getInventory().getAll());
 		assert!Double.isNaN(u);
 		assert u >= 0.0;
-		int day = getAge(); // TEMP
-		if (day >= 200 && day < 400) {
-			lifetimeUtility += u;
-		} else if (day >= 700 && day < 900) {
-			lifetimeUtility += u;
-		}
+		lifetimeUtility += u;
 		return u;
 	}
 

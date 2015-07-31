@@ -55,5 +55,9 @@ public class SavingConsumer extends Consumer {
 		double savingsPerDay = firstHalfConsumption / CHANGE - totalConsumption / (CHANGE + CHANGE);
 		return new SavingConsumer(getType(), end, getUtilityFunction(), stock.getGood(), savingsPerDay + savings);
 	}
+	
+	public double getDailySavings(){
+		return savings;
+	}
 
 }

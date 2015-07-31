@@ -7,6 +7,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
+import com.agentecon.events.ArbitrageurEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SavingConsumerEvent;
@@ -19,6 +20,7 @@ import com.agentecon.stats.Numbers;
 
 public class TaxShockConfiguration {
 
+	private int iteration = 0;
 	private int firmsPerType;
 	private int consumersPerType;
 	private int firmTypes;
@@ -51,7 +53,6 @@ public class TaxShockConfiguration {
 
 	public SimulationConfig createNextConfig() {
 		SimulationConfig config = new SimConfig(1000, seed);
-
 		Weight[] inputWeights = createInputWeights(inputs);
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
@@ -70,9 +71,13 @@ public class TaxShockConfiguration {
 			}
 		} else {
 			prevScore = getScore();
-			for (EvolvingEvent ae: evolvingEvents){
-				newList.add(ae.createNextGeneration());
+			for (EvolvingEvent ee: evolvingEvents){
+				newList.add(ee.createNextGeneration());
+				System.out.println(ee.toString());
 			}
+		}
+		if (iteration == 5){
+			newList.add(new ArbitrageurEvent(outputs[0]));
 		}
 		evolvingEvents = newList;
 		for (EvolvingEvent ee: newList){
@@ -80,12 +85,13 @@ public class TaxShockConfiguration {
 		}
 		
 		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
+		iteration++;
 
 		return config;
 	}
 	
 	public boolean shouldTryAgain(){
-		return !Numbers.equals(getScore(), prevScore);
+		return !Numbers.equals(getScore(), prevScore) && iteration < 30;
 	}
 	
 	public double getScore(){

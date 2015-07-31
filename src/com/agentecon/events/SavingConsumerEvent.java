@@ -6,6 +6,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.SavingConsumer;
 import com.agentecon.good.Good;
+import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
 
 public class SavingConsumerEvent extends EvolvingEvent {
@@ -42,14 +43,26 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		}
 		return new SavingConsumerEvent(next, end);
 	}
-
+	
+	public double getDailySavings(){
+		Average avg = new Average();
+		for (SavingConsumer sc: consumers){
+			avg.add(1.0, sc.getDailySavings());
+		}
+		return avg.getAverage();
+	}
+	
 	@Override
 	public double getScore() {
-		double tot = 0.0;
+		Average avg = new Average();
 		for (SavingConsumer sc: consumers){
-			tot += sc.getTotalExperiencedUtility();
+			avg.add(1.0, sc.getTotalExperiencedUtility());
 		}
-		return tot;
+		return avg.getAverage();
+	}
+	
+	public String toString(){
+		return "Consumers with daily savings of " + getDailySavings();
 	}
 
 }
