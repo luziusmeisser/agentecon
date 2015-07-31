@@ -50,7 +50,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(10, 100, 1, 1, 232));
+		this(new TaxShockConfiguration(10, 100, 1, 1, 233));
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {
