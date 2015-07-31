@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
-import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
@@ -28,12 +27,12 @@ import com.agentecon.market.Market;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
+import com.agentecon.world.Trader;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation, IIteratedSimulation {
+public class Simulation implements ISimulation {
 
 	private TaxShockConfiguration metaConfig;
 
@@ -50,7 +49,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(10, 100, 1, 1, 233));
+		this(new VolumeTraderConfiguration(233));
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {
@@ -66,7 +65,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.day = 0;
 	}
 
-	@Override
 	public ISimulation getNext() {
 		if (metaConfig.shouldTryAgain()) {
 			return new Simulation(metaConfig);
@@ -74,10 +72,15 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			return null;
 		}
 	}
-	
-	@Override
+
 	public String getComment() {
 		return metaConfig == null ? null : "Current score is " + metaConfig.getScore();
+	}
+
+	public void run() {
+		if (!isFinished()) {
+			step(config.getRounds());
+		}
 	}
 
 	@Override
@@ -105,7 +108,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 
 			Market market = new Market(world.getRand());
 			listeners.notifyMarketOpened(market);
-			for (Arbitrageur trader : world.getAllTraders()) {
+			for (Trader trader : world.getAllTraders()) {
 				trader.offer(market, day);
 			}
 			for (Firm firm : world.getRandomFirms()) {
@@ -139,7 +142,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 				dividends += firm.payDividends(day);
 			}
 			distributeDividends(dividends, world.getAllConsumers());
-			for (Arbitrageur trader : world.getAllTraders()) {
+			for (Trader trader : world.getAllTraders()) {
 				trader.notifyDayEnded(day);
 			}
 			listeners.notifyDayEnded(day, util);

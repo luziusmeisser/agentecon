@@ -2,8 +2,6 @@
 
 package com.agentecon.price;
 
-import java.util.Random;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,7 @@ public class ExpSearchTest {
 
 	@Test
 	public void test() {
-		ExpSearchPrice price = new ExpSearchPrice(new Random(), 0.05);
+		ExpSearchPrice price = new ExpSearchPrice(0.05);
 		double target = 100;
 		int steps = 0;
 		while (Math.abs(price.getPrice() - target) > ExpSearchPrice.MIN_ADAPTION_FACTOR * target){

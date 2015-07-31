@@ -1,6 +1,5 @@
 package com.agentecon.trader;
 
-import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.Price;
 import com.agentecon.good.Good;
@@ -10,8 +9,9 @@ import com.agentecon.market.Bid;
 import com.agentecon.market.Market;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.util.Average;
+import com.agentecon.world.Trader;
 
-public class Arbitrageur extends Agent implements IMarketListener {
+public class Arbitrageur extends Trader implements IMarketListener {
 
 	private Good good;
 	private Average today;

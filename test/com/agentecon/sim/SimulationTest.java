@@ -2,9 +2,14 @@ package com.agentecon.sim;
 
 import org.junit.Test;
 
-import sun.applet.Main;
+import com.agentecon.metric.SimulationListenerAdapter;
 
-public class SimulationTest {
+public class SimulationTest extends SimulationListenerAdapter {
+	
+	
+	public SimulationTest(){
+		
+	}
 
 	@Test
 	public void test() {
@@ -15,13 +20,18 @@ public class SimulationTest {
 	}
 	
 	public static void main(String[] args) {
-		TaxShockConfiguration config = new TaxShockConfiguration(10, 100, 1, 1, 232);
-		while(config.shouldTryAgain()){
-			Simulation sim = new Simulation(config.createNextConfig());
-			while (!sim.isFinished()) {
-				sim.forward(100);
-			}
-		}
+		new SimulationTest().runAll();
+	}
+
+	private void runAll() {
+		run(new Simulation(new TaxShockConfiguration(13)));
+		run(new Simulation(new SavingConsumerConfiguration(13)));
+		run(new Simulation(new VolumeTraderConfiguration(13)));		
+	}
+
+	private void run(Simulation simulation) {
+		simulation.addListener(this);
+		simulation.run();
 	}
 
 }

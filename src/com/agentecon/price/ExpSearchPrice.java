@@ -1,7 +1,5 @@
 package com.agentecon.price;
 
-import java.util.Random;
-
 import com.agentecon.stats.Numbers;
 
 public class ExpSearchPrice extends AdaptablePrice {
@@ -15,10 +13,10 @@ public class ExpSearchPrice extends AdaptablePrice {
 	private boolean direction;
 	private int sameDirectionInARow;
 
-	public ExpSearchPrice(Random rand, double initialFactor) {
+	public ExpSearchPrice(double initialFactor) {
 		this.factor = initialFactor;
 		this.sameDirectionInARow = 0;
-		this.speed = 1.1 + rand.nextDouble() / 5;
+		this.speed = 1.1;
 	}
 
 	@Override

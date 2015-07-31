@@ -7,30 +7,36 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
-import com.agentecon.events.ArbitrageurEvent;
+import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.events.SavingConsumerEvent;
+import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.stats.Numbers;
 
 public class TaxShockConfiguration {
 
+	private static final int ROUNDS = 1000;
+	private static final int TAX_EVENT = ROUNDS / 2;
+	
 	private int iteration = 0;
-	private int firmsPerType;
-	private int consumersPerType;
-	private int firmTypes;
-	private int consumerTypes;
+	protected int firmsPerType;
+	protected int consumersPerType;
+	protected int firmTypes;
+	protected int consumerTypes;
 	private int seed;
 	
-	private Good[] inputs, outputs;
+	protected Good[] inputs, outputs;
 
-	private double prevScore;
-	private ArrayList<EvolvingEvent> evolvingEvents;
+	protected ArrayList<SimEvent> constantEvents;
+	protected ArrayList<EvolvingEvent> evolvingEvents;
+	
+	public TaxShockConfiguration(int seed) {
+		this(10, 100, 1, 1, seed);
+	}
 
 	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
 		this.firmsPerType = firmsPerType;
@@ -38,8 +44,8 @@ public class TaxShockConfiguration {
 		this.consumerTypes = consumerTypes;
 		this.firmTypes = firmTypes;
 		this.seed = seed;
-		this.prevScore = -1.0;
 		this.evolvingEvents = new ArrayList<>();
+		this.constantEvents = new ArrayList<>();
 		
 		this.inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
@@ -49,49 +55,55 @@ public class TaxShockConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i);
 		}
+		
+		Weight[] inputWeights = createInputWeights(inputs);
+		addFirms(constantEvents, evolvingEvents, inputWeights);
+		Weight[] defaultPrefs = createPrefs(outputs);
+		addConsumers(constantEvents, evolvingEvents, defaultPrefs);
+		
+		constantEvents.add(new TaxEvent(TAX_EVENT, 0.20));
 	}
 
 	public SimulationConfig createNextConfig() {
-		SimulationConfig config = new SimConfig(1000, seed);
-		Weight[] inputWeights = createInputWeights(inputs);
-		for (int i = 0; i < firmTypes; i++) {
-			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
-			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
-			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
-		}
-		ArrayList<EvolvingEvent> newList = new ArrayList<>();
-		if (evolvingEvents.isEmpty()) {
-			Weight[] defaultPrefs = createPrefs(outputs);
-			for (int i = 0; i < consumerTypes; i++) {
-				String name = "Consumer " + i;
-				Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
-				LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 14));
-				newList.add(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0]));
-			}
-		} else {
-			prevScore = getScore();
+		if (iteration > 0){
+			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
 				newList.add(ee.createNextGeneration());
 				System.out.println(ee.toString());
 			}
+			evolvingEvents = newList;
 		}
-		if (iteration == 5){
-			newList.add(new ArbitrageurEvent(outputs[0]));
+		SimulationConfig config = new SimConfig(1000, seed);
+		for (SimEvent event: constantEvents){
+			config.addEvent(event);
 		}
-		evolvingEvents = newList;
-		for (EvolvingEvent ee: newList){
-			config.addEvent(ee);
+		for (SimEvent event: evolvingEvents){
+			config.addEvent(event);
 		}
-		
-		config.addEvent(new TaxEvent(config.getRounds() / 2, 0.20));
 		iteration++;
-
 		return config;
+	}
+
+	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] defaultPrefs) {
+		for (int i = 0; i < consumerTypes; i++) {
+			String name = "Consumer " + i;
+			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
+			LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 14));
+			config.add(new ConsumerEvent(consumersPerType, name, end, util));
+		}
+	}
+
+	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] inputWeights) {
+		for (int i = 0; i < firmTypes; i++) {
+			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
+			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
+			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
+			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
+		}
 	}
 	
 	public boolean shouldTryAgain(){
-		return !Numbers.equals(getScore(), prevScore) && iteration < 30;
+		return iteration < 30 && evolvingEvents.size() > 0;
 	}
 	
 	public double getScore(){
