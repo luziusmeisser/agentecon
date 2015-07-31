@@ -1,14 +1,12 @@
 package com.agentecon.trader;
 
-import java.util.Collection;
-
 import com.agentecon.agent.Endowment;
-import com.agentecon.firm.Firm;
 import com.agentecon.firm.SensorInputFactor;
 import com.agentecon.firm.SensorOutputFactor;
 import com.agentecon.good.Good;
 import com.agentecon.market.Market;
 import com.agentecon.price.ExpSearchPrice;
+import com.agentecon.sim.TaxShockConfiguration;
 import com.agentecon.world.Trader;
 
 public class VolumeTrader extends Trader {
@@ -35,7 +33,9 @@ public class VolumeTrader extends Trader {
 				double bid = amount * input.getPrice();
 				input.createOffers(market, getMoney(), bid);
 			} else {
-				output.createOffer(market, getMoney(), amount);
+				int daysLeft = TaxShockConfiguration.ROUNDS - day;
+				double goodsLeft = output.getStock().getAmount();
+				output.createOffer(market, getMoney(), goodsLeft / daysLeft);
 			}
 		}
 	}
@@ -44,11 +44,11 @@ public class VolumeTrader extends Trader {
 		return day < flipDate;
 	}
 	
-	public void refillWallet(Collection<Firm> firms){
-		double excess = getMoney().getAmount() - walletTargetAmount;
-		for (Firm f: firms){
-			f.getMoney().transfer(getMoney(), excess / firms.size());
-		}
+	public double refillWallet(double dividends){
+		double missing = walletTargetAmount - getMoney().getAmount();
+		double transfer = Math.min(dividends, missing);
+		getMoney().add(transfer);
+		return dividends - transfer;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class VolumeTrader extends Trader {
 	}
 
 	public String toString() {
-		return super.toString();
+		return "Volume trader buying " + amount + " per day";
 	}
 
 }

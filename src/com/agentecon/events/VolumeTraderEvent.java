@@ -6,13 +6,13 @@ import com.agentecon.good.Stock;
 import com.agentecon.trader.VolumeTrader;
 import com.agentecon.world.IWorld;
 
-public class ConstantTraderEvent extends EvolvingEvent {
+public class VolumeTraderEvent extends EvolvingEvent {
 
 	private Good good;
 	private double quantity;
 	private VolumeTrader agent;
 
-	public ConstantTraderEvent(Good money, double quantity, Good good) {
+	public VolumeTraderEvent(Good money, double quantity, Good good) {
 		super(0, -1);
 		this.good = good;
 		this.quantity = quantity;
@@ -34,7 +34,7 @@ public class ConstantTraderEvent extends EvolvingEvent {
 
 	@Override
 	public EvolvingEvent createNextGeneration() {
-		return new ConstantTraderEvent(agent.getMoney().getGood(), quantity + 0.2, good);
+		return new VolumeTraderEvent(agent.getMoney().getGood(), quantity + 2, good);
 	}
 
 	@Override

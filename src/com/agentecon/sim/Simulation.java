@@ -51,7 +51,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new SavingFirmConfiguration(233, 2.356));
+		this(new VolumeTraderConfiguration(233, 23.56));
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {
@@ -141,18 +141,20 @@ public class Simulation implements ISimulation {
 				world.getRandomConsumer().getMoney().add(inheritance);
 			}
 			
-			for (Trader trader : world.getAllTraders()) {
-				if (trader instanceof VolumeTrader){
-					((VolumeTrader)trader).refillWallet(firms);
-				}
-				trader.notifyDayEnded(day);
-			}
-			
 			double dividends = 0.0;
 			for (Firm firm : firms) {
 				firm.produce(day);
 				dividends += firm.payDividends(day);
 			}
+			
+			for (Trader trader : world.getAllTraders()) {
+				if (trader instanceof VolumeTrader){
+					dividends = ((VolumeTrader)trader).refillWallet(dividends);
+				}
+				trader.notifyDayEnded(day);
+			}
+			
+			
 			distributeDividends(dividends, world.getAllConsumers());
 			listeners.notifyDayEnded(day, util / cons.size());
 		}
