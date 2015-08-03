@@ -22,6 +22,11 @@ public class SensorInputFactor extends InputFactor {
 	public double getVolume() {
 		return super.getVolume() + (prevRealBid == null ? 0.0 : prevRealBid.getTransactionVolume());
 	}
+	
+	@Override
+	public double getQuantity() {
+		return super.getQuantity() + (prevRealBid == null ? 0.0 : prevRealBid.getTransactionVolume() / prevRealBid.getPrice().getPrice());
+	}
 
 	@Override
 	public void createOffers(IPriceMakerMarket market, IStock money, double moneySpentOnBid) {

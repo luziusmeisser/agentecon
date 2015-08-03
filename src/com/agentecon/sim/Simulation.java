@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
-import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
@@ -51,12 +50,13 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new SavingConsumerConfiguration(233){
-			@Override
-			public double getInitialSavings(){
-				return 0.2356;
-			}
-		});
+		this(new VolumeTraderConfiguration(133, 40.4));
+//		this(new SavingConsumerConfiguration(233){
+//			@Override
+//			public double getInitialSavings(){
+//				return 0.2356;
+//			}
+//		});
 	}
 
 	public Simulation(TaxShockConfiguration metaConfig) {
@@ -81,7 +81,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public String getComment() {
-		return metaConfig == null ? null : "Current score is " + metaConfig.getScore();
+		return metaConfig == null ? null : metaConfig.getComment();
 	}
 
 	public void run() {

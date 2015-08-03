@@ -28,6 +28,10 @@ public class InputFactor extends Factor {
 	public double getVolume() {
 		return prevBid == null ? 0.0 : prevBid.getTransactionVolume();
 	}
+	
+	public double getQuantity() {
+		return prevBid == null ? 0.0 : prevBid.getTransactionVolume() / prevBid.getPrice().getPrice();
+	}
 
 	public boolean isObtainable() {
 		return !price.isProbablyUnobtainable();

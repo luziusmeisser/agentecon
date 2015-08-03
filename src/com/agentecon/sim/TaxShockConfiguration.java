@@ -69,7 +69,6 @@ public class TaxShockConfiguration {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
 				newList.add(ee.createNextGeneration());
-				System.out.println(ee.toString());
 			}
 			evolvingEvents = newList;
 		}
@@ -83,7 +82,18 @@ public class TaxShockConfiguration {
 		iteration++;
 		return config;
 	}
-
+	
+	public String getComment() {
+		String c = "";
+		for (EvolvingEvent ee: evolvingEvents){
+			if (c.length() > 0){
+				c += "\n";
+			}
+			c += ee.toString();
+		}
+		return c;
+	}
+	
 	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] defaultPrefs) {
 		for (int i = 0; i < consumerTypes; i++) {
 			String name = "Consumer " + i;
@@ -103,7 +113,7 @@ public class TaxShockConfiguration {
 	}
 	
 	public boolean shouldTryAgain(){
-		return iteration < 3 && evolvingEvents.size() > 0;
+		return iteration < 90 && evolvingEvents.size() > 0;
 	}
 	
 	public double getScore(){
