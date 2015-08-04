@@ -18,7 +18,7 @@ public class SensorOutputFactor extends OutputFactor {
 		super(stock, price);
 		this.accuracy = 0.1;
 	}
-	
+
 	@Override
 	public double getVolume() {
 		return super.getVolume() + (prevRealAsk == null ? 0.0 : prevRealAsk.getTransactionVolume());
@@ -35,10 +35,12 @@ public class SensorOutputFactor extends OutputFactor {
 	@Override
 	public void adaptPrice() {
 		super.adaptPrice();
-		if (prevRealAsk.isUsed()) {
-			accuracy /= 1.005;
-		} else {
-			accuracy = Math.min(0.5, accuracy * 2);
+		if (prevRealAsk != null) {
+			if (prevRealAsk.isUsed()) {
+				accuracy /= 1.005;
+			} else {
+				accuracy = Math.min(0.5, accuracy * 2);
+			}
 		}
 	}
 

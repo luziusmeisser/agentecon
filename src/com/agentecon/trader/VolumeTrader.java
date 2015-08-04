@@ -33,14 +33,27 @@ public class VolumeTrader extends Trader {
 
 	public void offer(Market market, int day) {
 		if (amount > 0.0) {
-			if (isBuying(day)) {
-				double bid = Math.min(walletTargetAmount, amount * input.getPrice());
+			double reserves = calculateRecommendedReserves(day);
+			double present = input.getStock().getAmount();
+			assert present == output.getStock().getAmount();
+			if (present < reserves){
+				double bid = Math.min(getMoney().getAmount(), (reserves - present) * input.getPrice());
 				input.createOffers(market, getMoney(), bid);
 			} else {
-				int daysLeft = TaxShockConfiguration.ROUNDS - day;
-				double goodsLeft = output.getStock().getAmount();
-				output.createOffer(market, getMoney(), goodsLeft / daysLeft);
+				double sell = present - reserves;
+				if (day == TaxShockConfiguration.ROUNDS - 1){
+					assert sell == present; 
+				}
+				output.createOffer(market, getMoney(), sell);
 			}
+		}
+	}
+	
+	private double calculateRecommendedReserves(int day) {
+		if (day < TaxShockConfiguration.TAX_EVENT) {
+			return (day + 1) * amount;
+		} else {
+			return (TaxShockConfiguration.ROUNDS - (day + 1)) * amount;
 		}
 	}
 

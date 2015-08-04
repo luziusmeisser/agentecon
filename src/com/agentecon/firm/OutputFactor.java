@@ -7,7 +7,7 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;
 
 public class OutputFactor extends Factor {
-	
+
 	private Ask prevAsk = null;
 
 	public OutputFactor(IStock stock, IPrice price) {
@@ -20,7 +20,9 @@ public class OutputFactor extends Factor {
 	}
 
 	public void adaptPrice() {
-		super.adaptPrice(prevAsk.isUsed());
+		if (prevAsk != null) {
+			super.adaptPrice(prevAsk.isUsed());
+		}
 	}
 
 	public double getVolume() {
