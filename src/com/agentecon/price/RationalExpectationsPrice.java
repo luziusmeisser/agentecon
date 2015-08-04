@@ -3,6 +3,8 @@ package com.agentecon.price;
 import java.util.ArrayList;
 
 import com.agentecon.good.Good;
+import com.agentecon.stats.Numbers;
+import com.agentecon.util.Average;
 
 public class RationalExpectationsPrice implements IPrice {
 	
@@ -13,11 +15,16 @@ public class RationalExpectationsPrice implements IPrice {
 	
 	public RationalExpectationsPrice(IPriceFactory factory, Good good){
 		this.priceHistory = new ArrayList<>();
+		this.priceHistory.add(factory.createPrice(good));
 		this.factory = factory;
 		this.good = good;
 		this.pos = 0;
 	}
 
+	public void reset(){
+		this.pos = 0;
+	}
+	
 	@Override
 	public double getPrice() {
 		return getCurrent().getPrice();
@@ -26,12 +33,12 @@ public class RationalExpectationsPrice implements IPrice {
 	@Override
 	public void adapt(boolean increasePrice) {
 		getCurrent().adapt(increasePrice);
-		pos++;
+//		pos++;
 	}
 
 	private IPrice getCurrent() {
 		while (pos >= priceHistory.size()){
-			priceHistory.add(factory.createPrice(good));
+			priceHistory.add(priceHistory.get(priceHistory.size() - 1).clone());
 		}
 		return priceHistory.get(pos);
 	}
@@ -39,6 +46,23 @@ public class RationalExpectationsPrice implements IPrice {
 	@Override
 	public boolean isProbablyUnobtainable() {
 		return getCurrent().isProbablyUnobtainable();
+	}
+
+	public double getAverage() {
+		Average avg = new Average();
+		for (IPrice p: priceHistory){
+			avg.add(p.getPrice());
+		}
+		return avg.getAverage();
+	}
+	
+	public IPrice clone(){
+		throw new RuntimeException(new CloneNotSupportedException());
+	}
+	
+	@Override
+	public String toString() {
+		return getCurrent().toString();
 	}
 
 }

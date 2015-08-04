@@ -26,6 +26,12 @@ public class HardcodedPrice implements IPrice {
 		return false;
 	}
 	
+	@Override
+	public HardcodedPrice clone(){
+		return this;
+	}
+	
+	@Override
 	public String toString(){
 		return Numbers.toString(price) + "$";
 	}

@@ -31,6 +31,15 @@ public abstract class AdaptablePrice implements IPrice {
 
 	protected abstract double getFactor(boolean increase);
 
+	@Override
+	public AdaptablePrice clone(){
+		try {
+			return (AdaptablePrice) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new java.lang.RuntimeException(e);
+		}
+	}
+	
 	public double getPrice() {
 		return price;
 	}

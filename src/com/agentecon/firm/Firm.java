@@ -21,8 +21,8 @@ public class Firm extends Agent implements IFirm {
 	public static double DIVIDEND_RATE = 0.2;
 
 	private ShareRegister register;
-	private InputFactor[] inputs;
-	private OutputFactor output;
+	protected InputFactor[] inputs;
+	protected OutputFactor output;
 	private IProductionFunction prod;
 
 	private FirmListeners monitor;

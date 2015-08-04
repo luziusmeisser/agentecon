@@ -9,7 +9,7 @@ public class ConstantFactorPrice extends AdaptablePrice {
 		super();
 		this.factor = factor;
 	}
-
+	
 	@Override
 	protected double getFactor(boolean increase) {
 		return factor;

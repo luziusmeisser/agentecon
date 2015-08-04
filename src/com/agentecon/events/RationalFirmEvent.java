@@ -8,6 +8,7 @@ import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.RationalExpectationsFirm;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
 
 public class RationalFirmEvent extends EvolvingEvent {
@@ -39,16 +40,13 @@ public class RationalFirmEvent extends EvolvingEvent {
 		return new RationalFirmEvent(getCardinality(), end, newFirms);
 	}
 
-	double temp = 6.0; // TEMP
-	
 	@Override
 	public double getScore() {
-//		double profits = 0.0;
-//		for (Firm firm : firms) {
-//			profits += firm.get
-//		}
-//		return profits;
-		return temp++;
+		Average avg = new Average();
+		for (RationalExpectationsFirm firm : firms) {
+			avg.add(firm.getOutputPrice());
+		}
+		return avg.getAverage();
 	}
 
 	@Override
@@ -56,6 +54,10 @@ public class RationalFirmEvent extends EvolvingEvent {
 		for (Firm firm : firms) {
 			sim.getFirms().add(firm);
 		}
+	}
+	
+	public String toString(){
+		return "Firms with average price " + getScore();
 	}
 
 }

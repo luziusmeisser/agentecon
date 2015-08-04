@@ -27,4 +27,14 @@ public class RationalPriceFactory implements IPriceFactory {
 		return prices.get(good);
 	}
 
+	public void reset() {
+		for (RationalExpectationsPrice p: prices.values()){
+			p.reset();
+		}
+	}
+
+	public double getAveragePrice(Good good) {
+		return prices.get(good).getAverage();
+	}
+
 }
