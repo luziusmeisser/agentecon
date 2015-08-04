@@ -10,8 +10,14 @@ public class Bid extends AbstractOffer {
 	
 	public Bid(IStock wallet, IStock stock, Price price, double quantity){
 		super(wallet, stock, price, quantity);
-		assert wallet.getAmount() - quantity * price.getPrice() >= -Numbers.EPSILON;
+		assert wallet.getAmount() - getAmount() * getPrice().getPrice() >= -Numbers.EPSILON;
 		assert quantity > 0;
+	}
+	
+	@Override
+	public double getAmount(){
+		// in case money got removed from wallet elsewhere
+		return Math.min(super.getAmount(), wallet.getAmount() / getPrice().getPrice());
 	}
 	
 	@Override

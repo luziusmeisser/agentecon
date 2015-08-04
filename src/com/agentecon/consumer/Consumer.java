@@ -25,7 +25,7 @@ public class Consumer extends Agent implements IConsumer {
 	public static final int RETIREMENT_AGE = MAX_AGE / 5 * 3;
 
 	private int age;
-	private Good soldGood;
+	protected Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
 	private Portfolio savings;

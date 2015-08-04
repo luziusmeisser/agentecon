@@ -34,7 +34,7 @@ public class VolumeTraderEvent extends EvolvingEvent {
 
 	@Override
 	public EvolvingEvent createNextGeneration() {
-		return new VolumeTraderEvent(agent.getMoney().getGood(), quantity + 1, good);
+		return new VolumeTraderEvent(agent.getMoney().getGood(), quantity + 0.1, good);
 	}
 
 	@Override

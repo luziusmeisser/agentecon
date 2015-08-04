@@ -106,14 +106,14 @@ public class TaxShockConfiguration {
 	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] inputWeights) {
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
-			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
+			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 0) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 		}
 	}
 	
 	public boolean shouldTryAgain(){
-		return iteration < 90 && evolvingEvents.size() > 0;
+		return iteration < 50 && evolvingEvents.size() > 0;
 	}
 	
 	public double getScore(){

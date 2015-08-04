@@ -50,7 +50,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new VolumeTraderConfiguration(133, 23.56));
+		this(new VolumeTraderConfiguration(133, 18.55));
 //		this(new SavingConsumerConfiguration(233){
 //			@Override
 //			public double getInitialSavings(){

@@ -14,12 +14,12 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	private Endowment end;
 	private ArrayList<SavingConsumer> consumers;
 
-	public SavingConsumerEvent(int card, String name, Endowment end, LogUtil utility, Good goodToSave, double savings) {
+	public SavingConsumerEvent(int card, String name, Endowment end, LogUtil utility, Good goodToSave) {
 		super(0, card);
 		this.end = end;
 		this.consumers = new ArrayList<>();
 		for (int i = 0; i < card; i++) {
-			consumers.add(new SavingConsumer(name, end, utility, goodToSave, savings));
+			consumers.add(new SavingConsumer(name, end, utility, goodToSave));
 		}
 	}
 
@@ -52,6 +52,22 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		return avg.getAverage();
 	}
 	
+	public double getDailyConsumption(){
+		Average avg = new Average();
+		for (SavingConsumer sc: consumers){
+			avg.add(1.0, sc.getSmoothConsumption());
+		}
+		return avg.getAverage();
+	}
+	
+	private double getDailyLeisure() {
+		Average avg = new Average();
+		for (SavingConsumer sc: consumers){
+			avg.add(1.0, sc.getAverageLeisure());
+		}
+		return avg.getAverage();
+	}
+	
 	@Override
 	public double getScore() {
 		Average avg = new Average();
@@ -62,7 +78,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	}
 	
 	public String toString(){
-		return "Consumers with daily savings of " + getDailySavings();
+		return "Consumers with daily savings of " + getDailySavings() + " and daily consumption of " + getDailyConsumption() + " output and " + getDailyLeisure() + " leisure";
 	}
 
 }

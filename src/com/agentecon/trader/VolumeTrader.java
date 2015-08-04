@@ -34,7 +34,7 @@ public class VolumeTrader extends Trader {
 	public void offer(Market market, int day) {
 		if (amount > 0.0) {
 			if (isBuying(day)) {
-				double bid = amount * input.getPrice();
+				double bid = Math.min(walletTargetAmount, amount * input.getPrice());
 				input.createOffers(market, getMoney(), bid);
 			} else {
 				int daysLeft = TaxShockConfiguration.ROUNDS - day;
