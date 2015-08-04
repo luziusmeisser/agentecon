@@ -14,12 +14,12 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	private Endowment end;
 	private ArrayList<SavingConsumer> consumers;
 
-	public SavingConsumerEvent(int card, String name, Endowment end, LogUtil utility, Good goodToSave) {
+	public SavingConsumerEvent(int card, String name, Endowment end, LogUtil utility, Good goodToSave, double savingsRate) {
 		super(0, card);
 		this.end = end;
 		this.consumers = new ArrayList<>();
 		for (int i = 0; i < card; i++) {
-			consumers.add(new SavingConsumer(name, end, utility, goodToSave));
+			consumers.add(new SavingConsumer(name, end, utility, goodToSave, savingsRate));
 		}
 	}
 

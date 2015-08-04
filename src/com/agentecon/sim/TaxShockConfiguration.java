@@ -55,17 +55,17 @@ public class TaxShockConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i);
 		}
-		
-		Weight[] inputWeights = createInputWeights(inputs, 1.0);
-		addFirms(constantEvents, evolvingEvents, inputWeights);
-		Weight[] defaultPrefs = createPrefs(outputs);
-		addConsumers(constantEvents, evolvingEvents, defaultPrefs);
-		
-		constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
 	}
 
 	public SimulationConfig createNextConfig() {
-		if (iteration > 0){
+		if (iteration == 0){
+			Weight[] inputWeights = createInputWeights(inputs, 1.0);
+			addFirms(constantEvents, evolvingEvents, inputWeights);
+			Weight[] defaultPrefs = createPrefs(outputs);
+			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
+			
+			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
+		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
 				newList.add(ee.createNextGeneration());

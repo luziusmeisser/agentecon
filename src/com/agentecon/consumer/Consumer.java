@@ -141,9 +141,13 @@ public class Consumer extends Agent implements IConsumer {
 		}
 		dailySpendings.add(spendings);
 	}
+	
+	public final double consume() {
+		return doConsume(getInventory());
+	}
 
-	public double consume() {
-		double u = utility.consume(getInventory().getAll());
+	protected double doConsume(Inventory inv) {
+		double u = utility.consume(inv.getAll());
 		assert!Double.isNaN(u);
 		assert u >= 0.0;
 		lifetimeUtility += u;
