@@ -11,7 +11,6 @@ import com.agentecon.finance.ShareRegister;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
-import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
