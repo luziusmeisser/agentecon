@@ -14,7 +14,7 @@ public class SimConfig extends SimulationConfig {
 	
 	public static final boolean AGING = false;
 	
-	public static final double GOODS_PERSISTENCE = 1.0;
+	public static final double GOODS_PERSISTENCE = 0.9;
 	
 	public static final Good MONEY = new Good("Taler");
 	public static final Good PIZZA = new Good("Pizza", GOODS_PERSISTENCE);

@@ -49,11 +49,11 @@ public class TaxShockConfiguration {
 		
 		this.inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
-			inputs[i] = new Good("input " + i);
+			inputs[i] = new Good("input " + i, 0.0);
 		}
 		this.outputs = new Good[firmTypes];
 		for (int i = 0; i < firmTypes; i++) {
-			outputs[i] = new Good("output " + i);
+			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
 	}
 
