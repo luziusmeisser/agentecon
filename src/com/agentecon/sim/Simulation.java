@@ -10,6 +10,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.ISimulation;
+import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.LogUtil;
@@ -265,6 +266,11 @@ public class Simulation implements ISimulation {
 	@Override
 	public Collection<? extends IFirm> getFirms() {
 		return world.getAllFirms();
+	}
+	
+	@Override
+	public Collection<? extends ITrader> getTraders() {
+		return world.getAllTraders();
 	}
 
 	@Override
