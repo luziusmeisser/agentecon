@@ -108,7 +108,7 @@ public class TaxShockConfiguration {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 0) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
-			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.RANDOMIZED, "0.01" }));
+			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.EXPSEARCH, "0.01" }));
 //			newList.add(new RationalFirmEvent(firmsPerType, "Firm " + i, end, fun, PriceFactory.SENSOR, "0.05"));
 		}
 	}
