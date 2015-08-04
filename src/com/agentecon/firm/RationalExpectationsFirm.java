@@ -3,6 +3,7 @@
 package com.agentecon.firm;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.good.IStock;
 import com.agentecon.price.IPriceFactory;
 
 public class RationalExpectationsFirm extends Firm {
@@ -21,6 +22,14 @@ public class RationalExpectationsFirm extends Firm {
 	public RationalExpectationsFirm createNextGeneration(Endowment end){
 //		fac.reset();
 		return new RationalExpectationsFirm(getType(), end, getProductionFunction(), fac);
+	}
+	
+	protected OutputFactor createOutputFactor(IPriceFactory prices, IStock outStock) {
+		return new SensorOutputFactor(outStock, prices.createPrice(outStock.getGood()));
+	}
+
+	protected InputFactor createInputFactor(IPriceFactory prices, IStock stock) {
+		return new SensorInputFactor(stock, prices.createPrice(stock.getGood()));
 	}
 
 	public double getOutputPrice() {
