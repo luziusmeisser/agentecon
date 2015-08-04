@@ -33,7 +33,7 @@ public class RationalExpectationsPrice implements IPrice {
 	@Override
 	public void adapt(boolean increasePrice) {
 		getCurrent().adapt(increasePrice);
-//		pos++;
+		pos++;
 	}
 
 	private IPrice getCurrent() {
