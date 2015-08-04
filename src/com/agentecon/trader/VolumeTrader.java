@@ -97,7 +97,7 @@ public class VolumeTrader extends Trader {
 	}
 
 	public String toString() {
-		return amount + "\t" + income + "\t" + cost + "\t" + input.getPrice() + "\t" + output.getPrice();
+		return amount + "\t" + income + "\t" + cost + "\t" + input.getPrice() + "\t" + output.getPrice(); 
 //		return "Volume trader buying " + amount + " per day, having made " + getProfits()/cost*100 + "% or " + getProfits() + "$, or " + getWorth() + ", or " + getTotalWorth();
 	}
 
