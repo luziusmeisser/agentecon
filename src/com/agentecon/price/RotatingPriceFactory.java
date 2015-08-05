@@ -22,10 +22,12 @@ public class RotatingPriceFactory extends SimulationListenerAdapter implements I
 	public RotatingPriceFactory(Random rand) {
 		this.factor = 0.05;
 		this.rotatingPrices = new InstantiatingHashMap<Good, Rotation>() {
+			
+			private int inc = 1;
 
 			@Override
 			protected Rotation create(Good key) {
-				return new Rotation();
+				return new Rotation(inc++);
 			}
 		};
 	}

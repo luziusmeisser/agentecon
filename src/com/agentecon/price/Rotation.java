@@ -6,9 +6,11 @@ public class Rotation {
 
 	private int day;
 	private ArrayList<IPrice> actualPrices;
+	private int inc;
 
-	public Rotation() {
+	public Rotation(int inc) {
 		this.day = 0;
+		this.inc = inc;
 		this.actualPrices = new ArrayList<>();
 	}
 
@@ -23,7 +25,7 @@ public class Rotation {
 	}
 	
 	public void rotate(){
-		this.day++;
+		this.day+=inc;
 	}
 
 }
