@@ -19,7 +19,7 @@ public class Endowment {
 		this.daily = daily;
 	}
 
-	public Inventory getInitialEndowment() {
+	public Inventory getInitialInventory() {
 		return new Inventory(clone(initial));
 	}
 	

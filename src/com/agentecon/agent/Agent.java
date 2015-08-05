@@ -17,7 +17,7 @@ public abstract class Agent implements IAgent {
 
 	public Agent(String type, Endowment end) {
 		this.type = type;
-		this.inv = end.getInitialEndowment();
+		this.inv = end.getInitialInventory();
 		this.end = end;
 		this.number = current++;
 		

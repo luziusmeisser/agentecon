@@ -7,6 +7,8 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.SensorFirm;
+import com.agentecon.good.IStock;
+import com.agentecon.good.Inventory;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
@@ -14,6 +16,7 @@ import com.agentecon.world.IWorld;
 public class EvolvingFirmEvent extends EvolvingEvent {
 
 	private Endowment end;
+	private FirstDayProduction prod;
 	private LogProdFun prodFun;
 	private ArrayList<Firm> firms;
 
@@ -25,6 +28,14 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 		for (int i = 0; i < getCardinality(); i++) {
 			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, priceParams[0], priceParams[1])));
 		}
+		initListener();
+	}
+
+	private void initListener() {
+		this.prod = new FirstDayProduction(firms.size());
+		for (Firm firm : firms) {
+			firm.addFirmMonitor(prod);
+		}
 	}
 
 	private EvolvingFirmEvent(int cardinality, Endowment end, LogProdFun prodFun, ArrayList<Firm> firms) {
@@ -32,15 +43,30 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 		this.end = end;
 		this.prodFun = prodFun;
 		this.firms = firms;
+		initListener();
+
 	}
 
 	@Override
 	public EvolvingEvent createNextGeneration() {
 		ArrayList<Firm> newFirms = new ArrayList<>();
+		adaptEndowment();
 		for (Firm firm : firms) {
 			newFirms.add(firm.createNextGeneration(end, prodFun));
 		}
 		return new EvolvingFirmEvent(getCardinality(), end, prodFun, newFirms);
+	}
+
+	private void adaptEndowment() {
+		Inventory inv = end.getInitialInventory();
+		IStock stock = inv.getStock(prod.getGood());
+		double diff = prod.getAmount() - stock.getAmount();
+		if (diff > 0) {
+			stock.add(diff);
+		} else {
+			stock.remove(diff);
+		}
+		end = new Endowment(inv.getAll().toArray(new IStock[]{}), end.getDaily());
 	}
 
 	@Override

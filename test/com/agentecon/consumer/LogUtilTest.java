@@ -44,7 +44,7 @@ public class LogUtilTest {
 		assert Numbers.equals(utility, 58.39317473172329);
 		
 		Endowment end = ConsumerTest.createEndowment();
-		Inventory inv = end.getInitialEndowment();
+		Inventory inv = end.getInitialInventory();
 		inv.receive(end.getDaily());
 		double[] alloc = utilFun.getOptimalAllocation(inv, Arrays.asList(ConsumerTest.createAsk(), ConsumerTest.createBid()));
 		assert Numbers.equals(alloc[0], 3.61564375); 
