@@ -16,8 +16,10 @@ public class PriceFactory implements IPriceFactory {
 	public static final String RANDOMIZED = "RANDOMIZED";
 	public static final String EXPSEARCH = "EXPSEARCH";
 	public static final String SENSOR = "SENSOR";
+	public static final String RATIONAL = "RATIONAL";
 
-	public static final String[] TYPES = new String[] { CONSTANT, CONSTANTFACTOR, RANDOMIZED, EXPSEARCH, SENSOR };
+	public static final String[] TYPES = new String[] { CONSTANT, CONSTANTFACTOR, RANDOMIZED, EXPSEARCH, SENSOR, RATIONAL };
+
 
 	private String type;
 	private Random rand;
@@ -44,6 +46,8 @@ public class PriceFactory implements IPriceFactory {
 			case SENSOR:
 			case EXPSEARCH:
 				return new ExpSearchPrice(factor);
+			case RATIONAL:
+				return new RationalExpectationsPrice(factor);
 			}
 		}
 	}

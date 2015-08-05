@@ -14,20 +14,23 @@ import com.agentecon.world.IWorld;
 public class RationalFirmEvent extends EvolvingEvent {
 
 	private Endowment end;
+	private LogProdFun prodFun;
 	private ArrayList<RationalExpectationsFirm> firms;
 
 	public RationalFirmEvent(int firmsPerType, String type, Endowment end, LogProdFun fun, String sensor, String string2) {
 		super(0, firmsPerType);
 		this.end = end;
+		this.prodFun = fun;
 		this.firms = new ArrayList<>();
 		for (int i = 0; i < getCardinality(); i++) {
-			firms.add(new RationalExpectationsFirm(type, end, fun, new PriceFactory(new Random(), sensor, string2))); // TEMP Random
+			firms.add(new RationalExpectationsFirm(type, end, fun, new PriceFactory(new Random(3), sensor, string2))); // TEMP Random
 		}
 	}
 
-	private RationalFirmEvent(int cardinality, Endowment end, ArrayList<RationalExpectationsFirm> newFirms) {
+	private RationalFirmEvent(int cardinality, Endowment end, LogProdFun prodFun, ArrayList<RationalExpectationsFirm> newFirms) {
 		super(0, cardinality);
 		this.end = end;
+		this.prodFun = prodFun;
 		this.firms = newFirms;
 	}
 
@@ -35,9 +38,9 @@ public class RationalFirmEvent extends EvolvingEvent {
 	public EvolvingEvent createNextGeneration() {
 		ArrayList<RationalExpectationsFirm> newFirms = new ArrayList<>();
 		for (RationalExpectationsFirm firm : firms) {
-			newFirms.add(firm.createNextGeneration(end));
+			newFirms.add(firm.createNextGeneration(end, prodFun));
 		}
-		return new RationalFirmEvent(getCardinality(), end, newFirms);
+		return new RationalFirmEvent(getCardinality(), end, prodFun, newFirms);
 	}
 
 	@Override
@@ -55,8 +58,8 @@ public class RationalFirmEvent extends EvolvingEvent {
 			sim.getFirms().add(firm);
 		}
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return "Firms with average price " + getScore();
 	}
 

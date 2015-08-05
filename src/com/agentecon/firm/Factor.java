@@ -11,6 +11,7 @@ public class Factor {
 
 	public Factor(IStock stock, IPrice price) {
 		assert stock != null;
+		assert price != null;
 		this.stock = stock;
 		this.price = price;
 	}

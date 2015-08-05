@@ -19,7 +19,7 @@ public abstract class AdaptablePrice implements IPrice {
 		this.price = initial;
 	}
 
-	public final void adapt(boolean increase) {
+	public void adapt(boolean increase) {
 		double ftemp = getFactor(increase);
 		double factor = (1.0 + ftemp);
 		if (increase) {
@@ -28,18 +28,13 @@ public abstract class AdaptablePrice implements IPrice {
 			price = Math.max(MIN, price / factor);
 		}
 	}
+	
+	public void adapt(double towards, double weight){
+		this.price = price * (1-weight) + towards * weight;
+	}
 
 	protected abstract double getFactor(boolean increase);
 
-	@Override
-	public AdaptablePrice clone(){
-		try {
-			return (AdaptablePrice) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new java.lang.RuntimeException(e);
-		}
-	}
-	
 	public double getPrice() {
 		return price;
 	}

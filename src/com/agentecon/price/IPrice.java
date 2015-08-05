@@ -2,7 +2,7 @@
 
 package com.agentecon.price;
 
-public interface IPrice extends Cloneable {
+public interface IPrice {
 
 	public double getPrice();
 
@@ -12,7 +12,5 @@ public interface IPrice extends Cloneable {
 	 * The price has reached its upper plausible limit. Probably there is none of that good in the market at all.
 	 */
 	public boolean isProbablyUnobtainable();
-
-	public IPrice clone();
 
 }
