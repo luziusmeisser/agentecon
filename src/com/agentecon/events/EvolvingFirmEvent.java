@@ -64,7 +64,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 		if (diff > 0) {
 			stock.add(diff);
 		} else {
-			stock.remove(diff);
+			stock.remove(-diff);
 		}
 		end = new Endowment(inv.getAll().toArray(new IStock[]{}), end.getDaily());
 	}

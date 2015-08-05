@@ -110,7 +110,7 @@ public class TaxShockConfiguration {
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 0) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 //			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.01" }));
-			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.RATIONAL, "0.05"));
+			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.HISTORICHINT, "0.05"));
 		}
 	}
 	

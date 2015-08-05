@@ -20,6 +20,7 @@ public class FirstDayProduction implements IFirmListener {
 	public void notifyProduced(String producer, IStock[] inputs, IStock output) {
 		if (count > 0) {
 			assert this.output == null || this.output.equals(output.getGood());
+			assert output.getAmount() < 100;
 			this.output = output.getGood();
 			this.avg.add(output.getAmount());
 			count--;
