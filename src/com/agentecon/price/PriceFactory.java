@@ -42,7 +42,9 @@ public class PriceFactory implements IPriceFactory {
 		if (NORMALIZED_GOOD != null && good.equals(NORMALIZED_GOOD)) {
 			return new HardcodedPrice(10.0);
 		} else if (evolvablePrices.containsKey(good)){
-			return (IPrice) evolvablePrices.get(good).createNextGeneration();
+			IEvolvable ev = evolvablePrices.get(good).createNextGeneration();
+			evolvablePrices.put(good, ev);
+			return (IPrice) ev;
 		} else {
 			IPrice price = createPrice();
 			if (price instanceof IEvolvable){
