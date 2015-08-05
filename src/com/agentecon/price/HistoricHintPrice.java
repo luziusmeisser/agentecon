@@ -6,8 +6,6 @@ import com.agentecon.util.Average;
 
 public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 
-	private static final int FORESIGHT = 10;
-
 	private int pos;
 	private int anticipation;
 	private double initialFactor;
@@ -57,7 +55,7 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 	}
 
 	public HistoricHintPrice createNextGeneration() {
-		return new HistoricHintPrice(initialFactor, history.get(FORESIGHT), anticipation*4/5, history);
+		return new HistoricHintPrice(initialFactor, getHint(0), anticipation*4/5, history);
 	}
 
 	public double getAverage() {
