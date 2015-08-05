@@ -57,7 +57,7 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 	}
 
 	public HistoricHintPrice createNextGeneration() {
-		return new HistoricHintPrice(initialFactor, history.get(FORESIGHT), anticipation--, history);
+		return new HistoricHintPrice(initialFactor, history.get(FORESIGHT), anticipation*4/5, history);
 	}
 
 	public double getAverage() {
