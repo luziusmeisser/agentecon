@@ -31,16 +31,13 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 
 	@Override
 	public void adapt(boolean increase) {
+		super.adapt(increase);
 		if (prevIter != null) {
 			double hint = getHint(prevIter, pos);
 			boolean hintIncreases = hint > getPrice();
 			if (hintIncreases == increase) {
-				super.adapt(hint, 0.5);
-			} else {
-				super.adapt(increase);
+				super.adapt(hint, 0.1);
 			}
-		} else {
-			super.adapt(increase);
 		}
 		history.add(getPrice());
 		pos++;
