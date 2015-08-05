@@ -33,18 +33,18 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 	public void adapt(boolean increase) {
 		super.adapt(increase);
 		if (prevIter != null) {
-			double hint = getHint(pos);
+			double hint = getHint(prevIter, pos);
 			super.adapt(hint, 0.3);
 		}
 		history.add(getPrice());
 		pos++;
 	}
 
-	private double getHint(int current) {
-		int end = Math.min(current + anticipation, prevIter.size());
+	private double getHint(ArrayList<Double> source, int current) {
+		int end = Math.min(current + anticipation, source.size());
 		double tot = 0.0;
 		for (int i=current; i<end; i++){
-			tot += prevIter.get(i);
+			tot += source.get(i);
 		}
 		return tot / (end - current);
 	}
@@ -55,7 +55,7 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 	}
 
 	public HistoricHintPrice createNextGeneration() {
-		return new HistoricHintPrice(initialFactor, getHint(0), anticipation*4/5, history);
+		return new HistoricHintPrice(initialFactor, getHint(history, 0), anticipation*4/5, history);
 	}
 
 	public double getAverage() {
