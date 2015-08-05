@@ -36,7 +36,7 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 		super.adapt(increase);
 		if (prevIter != null) {
 			double hint = getHint(pos);
-			super.adapt(hint, 0.1);
+			super.adapt(hint, 0.3);
 		}
 		history.add(getPrice());
 		pos++;
