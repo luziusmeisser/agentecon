@@ -27,9 +27,12 @@ public class Firm extends Agent implements IFirm {
 
 	private FirmListeners monitor;
 
+	private IPriceFactory prices;
+
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
 		this.prod = prod;
+		this.prices = prices;
 		this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
@@ -189,6 +192,14 @@ public class Firm extends Agent implements IFirm {
 
 	public void setProductionFunction(IProductionFunction prodFun) {
 		this.prod = prodFun;
+	}
+
+	public double getOutputPrice() {
+		return output.getPrice();
+	}
+	
+	public Firm createNextGeneration(Endowment end, IProductionFunction prod){
+		return new Firm(getType(), end, prod, prices);
 	}
 
 }

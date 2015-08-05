@@ -9,7 +9,7 @@ import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
-import com.agentecon.events.RationalFirmEvent;
+import com.agentecon.events.EvolvingFirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.LogProdFun;
@@ -104,12 +104,13 @@ public class TaxShockConfiguration {
 	}
 
 	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] inputWeights) {
+		Random rand = new Random(seed);
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 0) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
 //			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.01" }));
-			newList.add(new RationalFirmEvent(firmsPerType, "Firm " + i, end, fun, PriceFactory.RATIONAL, "0.05"));
+			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.HISTORICHINT, "0.05"));
 		}
 	}
 	

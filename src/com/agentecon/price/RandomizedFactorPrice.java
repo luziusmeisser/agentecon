@@ -1,8 +1,6 @@
-package com.agentecon.firm;
+package com.agentecon.price;
 
 import java.util.Random;
-
-import com.agentecon.price.AdaptablePrice;
 
 public class RandomizedFactorPrice extends AdaptablePrice {
 	

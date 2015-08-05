@@ -1,53 +1,56 @@
 package com.agentecon.price;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-import com.agentecon.util.Average;
+import com.agentecon.good.Good;
 
-public class RationalExpectationsPrice extends ExpSearchPrice {
-	
-	private static final int FORESIGHT = 10;
+public class RationalExpectationsPrice implements IPrice, IEvolvable {
 	
 	private int pos;
-	private double initialFactor;
-	private ArrayList<Double> prevIter;
-	private ArrayList<Double> history;
+	private ArrayList<IPrice> priceHistory;
 	
-	public RationalExpectationsPrice(double initialFactor){
-		super(initialFactor);
-		this.initialFactor = initialFactor;
-		this.history = new ArrayList<>();
-		this.pos = 0;
+	public RationalExpectationsPrice(IPrice initial){
+		this(new ArrayList<>(Collections.singleton(initial)));
 	}
 	
-	public RationalExpectationsPrice(double initialFactor, double initialPrice, ArrayList<Double> history){
-		super(initialFactor, initialPrice);
-		this.initialFactor = initialFactor;
-		this.prevIter = history;
-		this.history = new ArrayList<>();
+	private RationalExpectationsPrice(ArrayList<IPrice> history){
+		this.priceHistory = history;
 		this.pos = 0;
 	}
 
 	@Override
-	public void adapt(boolean increase) {
-		super.adapt(increase);
-		if (prevIter != null){
-			int future = pos + FORESIGHT;
-			if (future < prevIter.size()){
-				double futureP = prevIter.get(future);
-				super.adapt(futureP, 0.1);
-			}
-		}
-		history.add(getPrice());
-		pos++;
-	}
-	
-	public RationalExpectationsPrice createNextGeneration(){
-		return new RationalExpectationsPrice(initialFactor, history.get(FORESIGHT), history);
+	public double getPrice() {
+		return getCurrent().getPrice();
 	}
 
-	public double getAverage() {
-		return new Average(history).getAverage();
+	@Override
+	public void adapt(boolean increasePrice) {
+		getCurrent().adapt(increasePrice);
+		pos++;
+	}
+
+	private IPrice getCurrent() {
+		while (pos >= priceHistory.size()){
+			IPrice latest = priceHistory.get(priceHistory.size() - 1);
+			priceHistory.add(latest.clone());
+		}
+		return priceHistory.get(pos);
+	}
+	
+	@Override
+	public IPrice clone() {
+		throw new java.lang.RuntimeException(new CloneNotSupportedException());
+	}
+
+	@Override
+	public boolean isProbablyUnobtainable() {
+		return getCurrent().isProbablyUnobtainable();
+	}
+
+	@Override
+	public RationalExpectationsPrice createNextGeneration() {
+		return new RationalExpectationsPrice(priceHistory);
 	}
 
 }

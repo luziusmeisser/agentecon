@@ -44,6 +44,15 @@ public abstract class AdaptablePrice implements IPrice {
 	}
 	
 	@Override
+	public IPrice clone(){
+		try {
+			return (IPrice) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new java.lang.RuntimeException(e);
+		}
+	}
+	
+	@Override
 	public String toString() {
 		return Numbers.toString(price) + "$";
 	}

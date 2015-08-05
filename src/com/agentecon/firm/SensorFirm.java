@@ -30,7 +30,7 @@ public class SensorFirm extends Firm {
 		if (price instanceof HardcodedPrice) {
 			return new OutputFactor(stock, price);
 		} else {
-			return new SensorOutputFactor(stock, prices.createPrice(stock.getGood()));
+			return new SensorOutputFactor(stock, price);
 		}
 	}
 
