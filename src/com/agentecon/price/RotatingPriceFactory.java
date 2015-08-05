@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.Random;
 
 import com.agentecon.good.Good;
+import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.util.InstantiatingHashMap;
 
 /**
  * Creates prices according to settings. A separate instance is required for each firm. PriceFactory must be carried over through generations for evolving firms and "createPrice" only called once per
  * generation for each good.
  */
-public class RotatingPriceFactory implements IPriceFactory {
+public class RotatingPriceFactory extends SimulationListenerAdapter implements IPriceFactory {
 
 	private double factor;
 
@@ -31,6 +32,13 @@ public class RotatingPriceFactory implements IPriceFactory {
 
 	public IPrice createPrice(Good good) {
 		return rotatingPrices.get(good).addPrice(new ExpSearchPrice(factor));
+	}
+	
+	@Override
+	public void notifyDayEnded(int day, double utility) {
+		for (Rotation r: rotatingPrices.values()){
+			r.rotate();
+		}
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.Random;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
+import com.agentecon.metric.SimulationListeners;
 
 public class World implements IWorld, IConsumers, IFirms, ITraders {
 
@@ -16,10 +17,10 @@ public class World implements IWorld, IConsumers, IFirms, ITraders {
 	private long randomBaseSeed;
 	private ArrayList<Firm> firms;
 	private ArrayList<Consumer> consumers;
-	private ISimulationListener listeners;
+	private SimulationListeners listeners;
 	private ArrayList<Trader> traders;
 	
-	public World(long randomSeed, ISimulationListener listeners){
+	public World(long randomSeed, SimulationListeners listeners){
 		this.rand = new Random(randomSeed);
 		this.randomBaseSeed = randomSeed;
 		this.consumers = new ArrayList<>();
@@ -141,6 +142,11 @@ public class World implements IWorld, IConsumers, IFirms, ITraders {
 	@Override
 	public void addTrader(Trader t) {
 		traders.add(t);
+	}
+
+	@Override
+	public void addListener(ISimulationListener listener) {
+		listeners.add(listener);
 	}
 
 }

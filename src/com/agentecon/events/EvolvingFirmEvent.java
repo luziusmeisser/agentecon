@@ -19,13 +19,14 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 	private FirstDayProduction prod;
 	private LogProdFun prodFun;
 	private ArrayList<Firm> firms;
+	private RotatingPriceFactory rotPrices;
 
 	public EvolvingFirmEvent(int firmsPerType, String type, Endowment end, LogProdFun fun, Random rand, String... priceParams) {
 		super(0, firmsPerType);
 		this.end = end;
 		this.prodFun = fun;
 		this.firms = new ArrayList<>();
-		RotatingPriceFactory rotPrices = new RotatingPriceFactory(rand);
+		this.rotPrices = new RotatingPriceFactory(rand);
 		for (int i = 0; i < getCardinality(); i++) {
 			firms.add(new SensorFirm(type, end, fun, rotPrices));
 //			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, priceParams[0], priceParams[1])));
@@ -82,6 +83,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 
 	@Override
 	public void execute(IWorld sim) {
+		sim.addListener(rotPrices);
 		for (Firm firm : firms) {
 			sim.getFirms().add(firm);
 		}

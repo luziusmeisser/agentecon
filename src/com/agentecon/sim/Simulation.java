@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
-import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
