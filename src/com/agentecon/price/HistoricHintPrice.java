@@ -21,7 +21,7 @@ public class HistoricHintPrice extends ExpSearchPrice implements IEvolvable {
 	}
 
 	public HistoricHintPrice(double initialFactor, double initialPrice, ArrayList<Double> history) {
-		super(initialFactor);
+		super(initialFactor, initialPrice);
 		this.initialFactor = initialFactor;
 		this.prevIter = history;
 		this.history = new ArrayList<>();
