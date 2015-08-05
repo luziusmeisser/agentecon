@@ -7,8 +7,8 @@ import com.agentecon.good.Inventory;
 
 public class LogProdFun implements IProductionFunction {
 
-	private Good output;
-	private Weight[] inputs;
+	private final Good output;
+	private final Weight[] inputs;
 
 	public LogProdFun(Good output, Weight... weights) {
 		assert output != null;

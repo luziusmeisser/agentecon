@@ -33,5 +33,10 @@ public class SensorFirm extends Firm {
 			return new SensorOutputFactor(stock, price);
 		}
 	}
+	
+	@Override
+	public SensorFirm createNextGeneration(Endowment end, IProductionFunction prod){
+		return new SensorFirm(getType(), end, prod, prices);
+	}
 
 }

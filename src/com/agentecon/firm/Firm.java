@@ -27,7 +27,7 @@ public class Firm extends Agent implements IFirm {
 
 	private FirmListeners monitor;
 
-	private IPriceFactory prices;
+	protected IPriceFactory prices;
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
