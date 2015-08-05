@@ -35,7 +35,7 @@ import com.agentecon.world.Trader;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation, IIteratedSimulation {
+public class Simulation implements ISimulation {
 
 	private TaxShockConfiguration metaConfig;
 

@@ -9,7 +9,7 @@ import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.SensorFirm;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
-import com.agentecon.price.PriceFactory;
+import com.agentecon.price.RotatingPriceFactory;
 import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
 
@@ -25,8 +25,10 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 		this.end = end;
 		this.prodFun = fun;
 		this.firms = new ArrayList<>();
+		RotatingPriceFactory rotPrices = new RotatingPriceFactory(rand);
 		for (int i = 0; i < getCardinality(); i++) {
-			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, priceParams[0], priceParams[1])));
+			firms.add(new SensorFirm(type, end, fun, rotPrices));
+//			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, priceParams[0], priceParams[1])));
 		}
 		initListener();
 	}

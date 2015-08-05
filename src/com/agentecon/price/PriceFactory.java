@@ -46,7 +46,7 @@ public class PriceFactory implements IPriceFactory {
 			evolvablePrices.put(good, ev);
 			return (IPrice) ev;
 		} else {
-			IPrice price = createPrice();
+			IPrice price = instantiatePrice(good);
 			if (price instanceof IEvolvable){
 				evolvablePrices.put(good, (IEvolvable) price);
 			}
@@ -54,7 +54,7 @@ public class PriceFactory implements IPriceFactory {
 		}
 	}
 
-	private IPrice createPrice() {
+	private IPrice instantiatePrice(Good good) {
 		switch (type) {
 		default:
 		case CONSTANT:
