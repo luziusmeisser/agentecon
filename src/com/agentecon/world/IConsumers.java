@@ -2,6 +2,7 @@ package com.agentecon.world;
 
 import java.util.Collection;
 
+import com.agentecon.api.IConsumer;
 import com.agentecon.consumer.Consumer;
 
 public interface IConsumers {
@@ -17,5 +18,7 @@ public interface IConsumers {
 	 * @return
 	 */
 	public Collection<Consumer> getRandomConsumers(int cardinality);
+
+	public Collection<? extends IConsumer> getAllConsumers();
 
 }

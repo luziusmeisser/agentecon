@@ -19,6 +19,10 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 		@Override
 		public void notifySold(Good good, double quantity, Price price) {
 		}
+
+		@Override
+		public void notifyTradesCancelled() {
+		}
 	};
 	
 	private double volume;

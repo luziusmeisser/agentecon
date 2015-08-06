@@ -28,21 +28,21 @@ public class Consumer extends Agent implements IConsumer {
 	protected Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
-	private Portfolio savings;
+	// private Portfolio savings; clone?
 	private MovingAverage dailySpendings;
 
-	private ConsumerListeners listeners;
+	// private ConsumerListeners listeners; clone?
 
 	public Consumer(String type, Endowment end, IUtility utility) {
 		super(type, end);
 		this.soldGood = end.getDaily()[0].getGood();
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
-		this.listeners = new ConsumerListeners();
+		// this.listeners = new ConsumerListeners();
 	}
 
 	public void addListener(IConsumerListener listener) {
-		this.listeners.add(listener);
+		// this.listeners.add(listener);
 	}
 
 	public IUtility getUtilityFunction() {
@@ -141,7 +141,7 @@ public class Consumer extends Agent implements IConsumer {
 		}
 		dailySpendings.add(spendings);
 	}
-	
+
 	public final double consume() {
 		return doConsume(getInventory());
 	}
@@ -170,8 +170,10 @@ public class Consumer extends Agent implements IConsumer {
 	}
 
 	@Override
-	public String toString() {
-		return super.toString();
+	public Consumer clone() {
+		Consumer klon = (Consumer) super.clone();
+		klon.dailySpendings = dailySpendings.clone();
+		return klon;
 	}
 
 	@Override
@@ -182,6 +184,11 @@ public class Consumer extends Agent implements IConsumer {
 	@Override
 	public int getAge() {
 		return age;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 
 }

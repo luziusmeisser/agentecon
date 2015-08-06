@@ -38,5 +38,11 @@ public class SensorFirm extends Firm {
 	public SensorFirm createNextGeneration(Endowment end, IProductionFunction prod){
 		return new SensorFirm(getType(), end, prod, prices);
 	}
+	
+	@Override
+	public SensorFirm clone() {
+		SensorFirm klon = (SensorFirm) super.clone();
+		return klon;
+	}
 
 }

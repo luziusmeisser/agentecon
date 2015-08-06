@@ -7,6 +7,7 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
+import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.ShareRegister;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
@@ -20,7 +21,7 @@ public class Firm extends Agent implements IFirm {
 
 	public static double DIVIDEND_RATE = 0.2;
 
-	private ShareRegister register;
+//	private ShareRegister register; clone?
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
 	private IProductionFunction prod;
@@ -33,7 +34,7 @@ public class Firm extends Agent implements IFirm {
 		super(type, end);
 		this.prod = prod;
 		this.prices = prices;
-		this.register = new ShareRegister(getName(), getMoney());
+//		this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
 		this.inputs = new InputFactor[inputs.length];
@@ -79,6 +80,12 @@ public class Firm extends Agent implements IFirm {
 		}
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
 	}
+	
+	@Override
+	public Firm clone() {
+		Firm klon = (Firm) super.clone();
+		return klon;
+	}
 
 	private double getTotalInputWeight() {
 		double tot = 0.0;
@@ -116,15 +123,28 @@ public class Firm extends Agent implements IFirm {
 	private double calcSpendableWealth() {
 		return getMoney().getAmount() / 4;
 	}
+	
+	public void adaptPrices() {
+		for (int i = 0; i < inputs.length; i++) {
+			inputs[i].adaptPrice();
+		}
+		output.adaptPrice();
+	}
+	
+	public boolean arePricesStable() {
+		boolean stable = true;
+		for (int i = 0; i < inputs.length; i++) {
+			stable &= inputs[i].isStable();
+		}
+		return stable && output.isStable();
+	}
 
 	public double produce(int day) {
 		IStock[] inputAmounts = new IStock[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
-			inputs[i].adaptPrice();
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
-		output.adaptPrice();
-
+		
 		double produced = prod.produce(getInventory());
 		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
 		return produced;
@@ -136,7 +156,7 @@ public class Firm extends Agent implements IFirm {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcConstDividend(wallet);
+		double dividend = calcCogsDividend(wallet);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 

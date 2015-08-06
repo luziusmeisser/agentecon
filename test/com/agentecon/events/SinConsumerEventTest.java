@@ -6,9 +6,11 @@ import java.util.Random;
 import org.junit.Test;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IConsumer;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.good.Stock;
+import com.agentecon.metric.ISimulationListener;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.world.IConsumers;
 import com.agentecon.world.IFirms;
@@ -71,6 +73,15 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 
 	@Override
 	public ITraders getTraders() {
+		return null;
+	}
+
+	@Override
+	public void addListener(ISimulationListener listener) {
+	}
+
+	@Override
+	public Collection<? extends IConsumer> getAllConsumers() {
 		return null;
 	}
 

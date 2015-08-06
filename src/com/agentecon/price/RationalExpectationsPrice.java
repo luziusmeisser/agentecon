@@ -53,4 +53,9 @@ public class RationalExpectationsPrice implements IPrice, IEvolvable {
 		return new RationalExpectationsPrice(priceHistory);
 	}
 
+	@Override
+	public boolean isStable() {
+		return true;
+	}
+
 }

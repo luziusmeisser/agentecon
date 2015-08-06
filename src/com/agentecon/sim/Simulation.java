@@ -3,7 +3,6 @@
 package com.agentecon.sim;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Queue;
 
 import com.agentecon.agent.Endowment;
@@ -19,18 +18,13 @@ import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.UpdatePreferencesEvent;
-import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.SensorFirm;
-import com.agentecon.good.Inventory;
 import com.agentecon.good.Stock;
-import com.agentecon.market.Market;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.trader.VolumeTrader;
 import com.agentecon.world.IWorld;
-import com.agentecon.world.Trader;
 import com.agentecon.world.World;
 
 // The world
@@ -105,73 +99,13 @@ public class Simulation implements ISimulation {
 	public void step(int days) {
 		int target = this.day + days;
 		for (; day < target; day++) {
-			double util = 0.0;
-			world.notifyDayStarted(day);
-			listeners.notifyDayStarted(day);
-			processEvents(day);
-			world.handoutEndowments();
-
-			Market market = new Market(world.getRand());
-			listeners.notifyMarketOpened(market);
-			for (Trader trader : world.getAllTraders()) {
-				trader.offer(market, day);
-			}
-			Collection<Firm> firms = world.getRandomFirms();
-			for (Firm firm : firms) {
-				firm.offer(market);
-			}
-			// System.out.println("Before open: " + market);
-			for (Consumer c : world.getRandomConsumers()) {
-				c.maximizeUtility(market);
-			}
-			// System.out.println("After close: " + market);
-
-			double inheritance = 0.0;
-			Collection<Consumer> cons = world.getAllConsumers();
-			Iterator<Consumer> iter = cons.iterator();
-			while (iter.hasNext()) {
-				Consumer c = iter.next();
-				util += c.consume();
-				if (c.age()) {
-					iter.remove();
-					Inventory inv = c.notifyDied();
-					inheritance += inv.getStock(SimConfig.MONEY).consume();
-					world.notifyConsumerDied(c);
-				}
-			}
-			if (inheritance != 0.0) {
-				// ensure no money lost due to rounding
-				world.getRandomConsumer().getMoney().add(inheritance);
-			}
+			processEvents(day); // must happen before daily endowments
+			world.prepareDay(day);
 			
-			double dividends = 0.0;
-			for (Firm firm : firms) {
-				firm.produce(day);
-				dividends += firm.payDividends(day);
-			}
+			RepeatedMarket market = new RepeatedMarket(world, listeners);
+			market.iterate(day, 5);
 			
-			for (Trader trader : world.getAllTraders()) {
-				if (trader instanceof VolumeTrader){
-					dividends = ((VolumeTrader)trader).refillWallet(dividends);
-				}
-				trader.notifyDayEnded(day);
-			}
-			
-			
-			distributeDividends(dividends, world.getAllConsumers());
-			listeners.notifyDayEnded(day, util / cons.size());
-		}
-	}
-
-	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
-		double perConsumer = total / allConsumers.size();
-		for (Consumer c : allConsumers) {
-			c.collectDividend(perConsumer);
-			total -= perConsumer;
-		}
-		if (total != 0.0) {
-			// ensure no money lost due to rounding
-			allConsumers.iterator().next().collectDividend(total);
+			world.finishDay(day);
 		}
 	}
 
@@ -257,17 +191,17 @@ public class Simulation implements ISimulation {
 
 	@Override
 	public Collection<? extends IConsumer> getConsumers() {
-		return world.getAllConsumers();
+		return world.getConsumers().getAllConsumers();
 	}
 
 	@Override
 	public Collection<? extends IFirm> getFirms() {
-		return world.getAllFirms();
+		return world.getFirms().getAllFirms();
 	}
 	
 	@Override
 	public Collection<? extends ITrader> getTraders() {
-		return world.getAllTraders();
+		return world.getTraders().getAllTraders();
 	}
 
 	@Override

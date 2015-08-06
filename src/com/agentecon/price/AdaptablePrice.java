@@ -10,13 +10,18 @@ public abstract class AdaptablePrice implements IPrice {
 	public static final double MAX = 1000000;
 
 	private double price;
-
+	
 	public AdaptablePrice() {
 		this(10.0);
 	}
 
 	public AdaptablePrice(double initial) {
 		this.price = initial;
+	}
+	
+	@Override
+	public boolean isStable() {
+		return true; // TEMP
 	}
 
 	public void adapt(boolean increase) {

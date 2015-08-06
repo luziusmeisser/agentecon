@@ -26,8 +26,8 @@ public class Endowment {
 	public IStock[] getDaily(){
 		return clone(daily);
 	}
-
-	private IStock[] clone(IStock[] daily) {
+	
+	public static IStock[] clone(IStock[] daily) {
 		IStock[] copy = new IStock[daily.length];
 		for (int i=0; i<copy.length; i++){
 			copy[i] = daily[i].duplicate();

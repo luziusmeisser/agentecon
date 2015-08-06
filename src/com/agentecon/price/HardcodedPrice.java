@@ -36,4 +36,9 @@ public class HardcodedPrice implements IPrice {
 		return Numbers.toString(price) + "$";
 	}
 
+	@Override
+	public boolean isStable() {
+		return true;
+	}
+
 }

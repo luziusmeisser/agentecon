@@ -12,7 +12,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 	private double factor;
 	private boolean direction;
 	private int sameDirectionInARow;
-	
+
 	public ExpSearchPrice(double initialFactor, double initialPrice) {
 		super(initialPrice);
 		this.factor = initialFactor;
@@ -27,12 +27,16 @@ public class ExpSearchPrice extends AdaptablePrice {
 	}
 
 	@Override
+	public boolean isStable() {
+		return (sameDirectionInARow == 0 && factor < 10 * MIN_ADAPTION_FACTOR) || isProbablyUnobtainable();
+	}
+
+	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
 			sameDirectionInARow++;
-			if (sameDirectionInARow >= 2) {
+			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
 				factor = Math.min(MAX_ADAPTION_FACTOR, factor * speed);
-				sameDirectionInARow = 0;
 			}
 		} else {
 			sameDirectionInARow = 0;
@@ -42,6 +46,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 		return factor;
 	}
 
+	@Override
 	public String toString() {
 		return super.toString(); // + " at factor " + factor;
 	}

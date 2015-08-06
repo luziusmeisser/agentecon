@@ -23,7 +23,11 @@ public class Factor {
 	public final IStock getStock() {
 		return stock;
 	}
-
+	
+	public boolean isStable(){
+		return price.isStable();
+	}
+	
 	public double getPrice() {
 		return price.getPrice();
 	}

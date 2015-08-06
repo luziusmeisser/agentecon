@@ -89,4 +89,8 @@ public class Arbitrageur extends Trader implements IMarketListener {
 		return new Arbitrageur(end, good, low, high);
 	}
 
+	@Override
+	public void notifyTradesCancelled() {
+	}
+
 }

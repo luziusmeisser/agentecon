@@ -54,6 +54,7 @@ public class FirmTest {
 			firm.offer(market);
 			System.out.println(tc.getPriceSquareError(market));
 			tc.buyAndSell(market);
+			firm.adaptPrices();
 			firm.produce(i);
 		}
 		Market market = new Market(rand);

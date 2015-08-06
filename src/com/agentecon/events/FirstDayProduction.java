@@ -12,7 +12,7 @@ public class FirstDayProduction implements IFirmListener {
 	private Good output;
 
 	public FirstDayProduction(int firms) {
-		this.count = firms * 50;
+		this.count = firms * 10;
 		this.avg = new Average();
 	}
 

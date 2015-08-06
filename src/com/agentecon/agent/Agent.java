@@ -6,7 +6,7 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
 import com.agentecon.sim.SimConfig;
 
-public abstract class Agent implements IAgent {
+public abstract class Agent implements IAgent, Cloneable {
 
 	private static int current = 1;
 	
@@ -57,6 +57,17 @@ public abstract class Agent implements IAgent {
 	public final void collectDailyEndowment() {
 		inv.deprecate();
 		inv.receive(end.getDaily());
+	}
+	
+	@Override
+	public Agent clone(){
+		try {
+			Agent klon = (Agent) super.clone();
+			klon.inv = inv.duplicate();
+			return klon;
+		} catch (CloneNotSupportedException e) {
+			throw new java.lang.RuntimeException(e);
+		}
 	}
 
 	public String toString() {

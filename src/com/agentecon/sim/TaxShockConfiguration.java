@@ -9,7 +9,7 @@ import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
-import com.agentecon.events.EvolvingFirmEvent;
+import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.LogProdFun;
@@ -35,7 +35,7 @@ public class TaxShockConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 	
 	public TaxShockConfiguration(int seed) {
-		this(10, 100, 1, 1, seed);
+		this(1, 10, 1, 1, seed);
 	}
 
 	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
@@ -55,6 +55,7 @@ public class TaxShockConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
+		PriceFactory.NORMALIZED_GOOD = inputs[0];
 	}
 
 	public SimulationConfig createNextConfig() {
@@ -107,10 +108,10 @@ public class TaxShockConfiguration {
 		Random rand = new Random(seed);
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
-			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 0) }, new Stock[] {});
+			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
-//			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.01" }));
-			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.HISTORICHINT, "0.05"));
+			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
+//			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
 	}
 	

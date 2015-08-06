@@ -15,4 +15,6 @@ public interface IPrice extends Cloneable {
 	
 	public IPrice clone();
 
+	public boolean isStable();
+
 }

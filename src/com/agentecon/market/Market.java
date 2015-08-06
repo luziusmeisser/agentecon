@@ -137,4 +137,8 @@ public class Market implements IPriceMakerMarket, IPriceTakerMarket, IMarket {
 		return offers;
 	}
 
+	public void notifyCancelled() {
+		listeners.notifyTradesCancelled();
+	}
+
 }
