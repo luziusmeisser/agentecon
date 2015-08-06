@@ -8,6 +8,7 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
+import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
@@ -28,7 +29,7 @@ import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation {
+public class Simulation implements ISimulation, IIteratedSimulation {
 
 	private TaxShockConfiguration metaConfig;
 
@@ -45,7 +46,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(13));
+		this(new WobbleConfiguration(17));
 //		this(new VolumeTraderConfiguration(133, 18.55));
 //		this(new VolumeTraderConfiguration(133, 20.0));
 //		this(new SavingConsumerConfiguration(133, 0.20));
@@ -103,7 +104,7 @@ public class Simulation implements ISimulation {
 			world.prepareDay(day);
 			
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
-			market.iterate(day, 3);
+			market.iterate(day, config.getIntradayWobbles());
 			
 			world.finishDay(day);
 		}

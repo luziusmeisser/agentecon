@@ -23,13 +23,20 @@ public class SimConfig extends SimulationConfig {
 	public static final Good SWISSTIME = new Good("Swiss man-hours", 0.0);
 	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
 	public static final Good GERTIME = new Good("German man-hours", 0.0);
+
+	private int wobbles;
+	
+	public SimConfig(int rounds) {
+		super(rounds);
+	}
 	
 	public SimConfig(int rounds, int seed) {
 		super(rounds, seed);
 	}
 	
-	public SimConfig(int rounds) {
-		super(rounds);
+	public SimConfig(int rounds, int seed, int wobbles) {
+		super(rounds, seed);
+		this.wobbles = wobbles;
 	}
 	
 	public Queue<SimEvent> createEventQueue() {
@@ -38,6 +45,10 @@ public class SimConfig extends SimulationConfig {
 			queue.add((SimEvent) e);
 		}
 		return queue;
+	}
+	
+	public int getIntradayWobbles() {
+		return wobbles;
 	}
 	
 	@Override

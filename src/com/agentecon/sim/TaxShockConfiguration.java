@@ -73,7 +73,7 @@ public class TaxShockConfiguration {
 			}
 			evolvingEvents = newList;
 		}
-		SimulationConfig config = new SimConfig(1000, seed);
+		SimulationConfig config = createConfig(seed);
 		for (SimEvent event: constantEvents){
 			config.addEvent(event);
 		}
@@ -82,6 +82,10 @@ public class TaxShockConfiguration {
 		}
 		iteration++;
 		return config;
+	}
+
+	protected SimConfig createConfig(int seed) {
+		return new SimConfig(1000, seed);
 	}
 	
 	public String getComment() {
