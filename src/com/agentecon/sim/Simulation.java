@@ -46,7 +46,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new WobbleConfiguration(17));
+		this(new TaxShockConfiguration(17));
 //		this(new VolumeTraderConfiguration(133, 18.55));
 //		this(new VolumeTraderConfiguration(133, 20.0));
 //		this(new SavingConsumerConfiguration(133, 0.20));

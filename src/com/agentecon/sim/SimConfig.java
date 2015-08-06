@@ -13,6 +13,7 @@ import com.agentecon.good.Good;
 public class SimConfig extends SimulationConfig {
 	
 	public static final boolean AGING = false;
+	private static final int DEFAULT_WOBBLES = 50;
 	
 	public static final double GOODS_PERSISTENCE = 1.0;
 	
@@ -24,14 +25,16 @@ public class SimConfig extends SimulationConfig {
 	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
 	public static final Good GERTIME = new Good("German man-hours", 0.0);
 
+
 	private int wobbles;
 	
 	public SimConfig(int rounds) {
 		super(rounds);
+		this.wobbles = DEFAULT_WOBBLES;
 	}
 	
 	public SimConfig(int rounds, int seed) {
-		super(rounds, seed);
+		this(rounds, seed, DEFAULT_WOBBLES);
 	}
 	
 	public SimConfig(int rounds, int seed, int wobbles) {
