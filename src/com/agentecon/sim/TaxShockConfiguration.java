@@ -35,7 +35,7 @@ public class TaxShockConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 	
 	public TaxShockConfiguration(int seed) {
-		this(10, 100, 1, 1, seed);
+		this(2, 20, 1, 1, seed);
 	}
 
 	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {

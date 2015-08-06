@@ -55,28 +55,33 @@ public class RepeatedMarket {
 				c.maximizeUtility(market);
 			}
 			for (Firm firm: firms) {
-				firm.adaptPrices();
+				firm.adaptOutputPrice();
 			}
-//			if (trade[0] && shouldRetry(firms)){
-//				market.notifyCancelled();
-//				world.abortTransaction();
-//			} else {
+			for (Firm firm: firms) {
+				firm.adaptInputPrices();
+			}
+			if (trade[0] && shouldRetry(firms) && iterations-- > 0){
+				market.notifyCancelled();
+				world.abortTransaction();
+			} else {
+				
 				world.commitTransaction();
 				break;
-//			}
+			}
 		}
 	}
 
 	private boolean shouldRetry(Collection<Firm> firms) {
-		int stable = 0;
-		Firm f = firms.iterator().next();
-		System.out.println(f.getOutputPrice());
-		for (Firm firm: firms){
-			if (firm.arePricesStable()){
-				stable++;
-			}
-		}
-		return stable < firms.size();
+//		int stable = 0;
+//		Firm f = firms.iterator().next();
+//		System.out.println(f.getOutputPrice());
+//		for (Firm firm: firms){
+//			if (firm.arePricesStable()){
+//				stable++;
+//			}
+//		}
+//		return stable < firms.size();
+		return true;
 	}
 
 }

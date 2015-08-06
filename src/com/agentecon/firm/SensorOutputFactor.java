@@ -15,8 +15,12 @@ public class SensorOutputFactor extends OutputFactor {
 	private double accuracy;
 
 	public SensorOutputFactor(IStock stock, IPrice price) {
+		this(stock, price, 0.1);
+	}
+
+	public SensorOutputFactor(IStock stock, IPrice price, double accuracy) {
 		super(stock, price);
-		this.accuracy = 0.1;
+		this.accuracy = accuracy;
 	}
 
 	@Override
@@ -41,6 +45,7 @@ public class SensorOutputFactor extends OutputFactor {
 			} else {
 				accuracy = Math.min(0.5, accuracy * 2);
 			}
+//			prevRealAsk = null;
 		}
 	}
 
@@ -53,6 +58,11 @@ public class SensorOutputFactor extends OutputFactor {
 		double sensor = super.getPrice();
 		double most = getSafePrice();
 		return accuracy * sensor + (1 - accuracy) * most;
+	}
+	
+	public OutputFactor duplicate(IStock stock) {
+//		assert prevRealAsk == null;
+		return new SensorOutputFactor(stock, price, accuracy);
 	}
 
 }

@@ -21,7 +21,7 @@ public class Firm extends Agent implements IFirm {
 
 	public static double DIVIDEND_RATE = 0.2;
 
-//	private ShareRegister register; clone?
+	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
 	private IProductionFunction prod;
@@ -34,7 +34,7 @@ public class Firm extends Agent implements IFirm {
 		super(type, end);
 		this.prod = prod;
 		this.prices = prices;
-//		this.register = new ShareRegister(getName(), getMoney());
+		// this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
 		this.inputs = new InputFactor[inputs.length];
@@ -80,10 +80,15 @@ public class Firm extends Agent implements IFirm {
 		}
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
 	}
-	
+
 	@Override
 	public Firm clone() {
 		Firm klon = (Firm) super.clone();
+		klon.output = output.duplicate(klon.getStock(output.getGood()));
+		klon.inputs = new InputFactor[inputs.length];
+		for (int i=0; i<inputs.length; i++){
+			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
+		}
 		return klon;
 	}
 
@@ -125,12 +130,20 @@ public class Firm extends Agent implements IFirm {
 	}
 	
 	public void adaptPrices() {
+		adaptInputPrices();
+		adaptOutputPrice();
+	}
+
+	public void adaptInputPrices() {
 		for (int i = 0; i < inputs.length; i++) {
 			inputs[i].adaptPrice();
 		}
+	}
+
+	public void adaptOutputPrice() {
 		output.adaptPrice();
 	}
-	
+
 	public boolean arePricesStable() {
 		boolean stable = true;
 		for (int i = 0; i < inputs.length; i++) {
@@ -144,7 +157,7 @@ public class Firm extends Agent implements IFirm {
 		for (int i = 0; i < inputs.length; i++) {
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
-		
+
 		double produced = prod.produce(getInventory());
 		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
 		return produced;
@@ -217,8 +230,8 @@ public class Firm extends Agent implements IFirm {
 	public double getOutputPrice() {
 		return output.getPrice();
 	}
-	
-	public Firm createNextGeneration(Endowment end, IProductionFunction prod){
+
+	public Firm createNextGeneration(Endowment end, IProductionFunction prod) {
 		return new Firm(getType(), end, prod, prices);
 	}
 

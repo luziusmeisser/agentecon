@@ -15,7 +15,10 @@ public class InputFactor extends Factor {
 	}
 
 	public void adaptPrice() {
-		super.adaptPrice(!prevBid.isUsed());
+		if (prevBid != null) {
+			super.adaptPrice(!prevBid.isUsed());
+//			prevBid = null;
+		}
 	}
 
 	public void createOffers(IPriceMakerMarket market, IStock money, double amount) {
@@ -35,6 +38,11 @@ public class InputFactor extends Factor {
 
 	public boolean isObtainable() {
 		return !price.isProbablyUnobtainable();
+	}
+	
+	public InputFactor duplicate(IStock stock){
+		assert prevBid == null;
+		return new InputFactor(stock, price);
 	}
 
 }

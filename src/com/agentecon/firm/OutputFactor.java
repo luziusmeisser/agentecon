@@ -22,11 +22,17 @@ public class OutputFactor extends Factor {
 	public void adaptPrice() {
 		if (prevAsk != null) {
 			super.adaptPrice(prevAsk.isUsed());
+//			prevAsk = null;
 		}
 	}
 
 	public double getVolume() {
 		return prevAsk == null ? 0.0 : prevAsk.getTransactionVolume();
+	}
+
+	public OutputFactor duplicate(IStock stock) {
+		assert prevAsk == null;
+		return new OutputFactor(stock, price);
 	}
 
 }

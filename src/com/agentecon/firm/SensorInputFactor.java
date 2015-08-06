@@ -14,15 +14,19 @@ public class SensorInputFactor extends InputFactor {
 	private double accuracy;
 
 	public SensorInputFactor(IStock stock, IPrice price) {
-		super(stock, price);
-		this.accuracy = 0.1;
+		this(stock, price, 0.1);
 	}
-	
+
+	public SensorInputFactor(IStock stock, IPrice price, double accuracy) {
+		super(stock, price);
+		this.accuracy = accuracy;
+	}
+
 	@Override
 	public double getVolume() {
 		return super.getVolume() + (prevRealBid == null ? 0.0 : prevRealBid.getTransactionVolume());
 	}
-	
+
 	@Override
 	public double getQuantity() {
 		return super.getQuantity() + (prevRealBid == null ? 0.0 : prevRealBid.getTransactionVolume() / prevRealBid.getPrice().getPrice());
@@ -43,15 +47,23 @@ public class SensorInputFactor extends InputFactor {
 	@Override
 	public void adaptPrice() {
 		super.adaptPrice();
-		if (prevRealBid.isUsed()) {
-			accuracy /= 1.005;
-		} else {
-			accuracy = Math.min(0.5, accuracy * 2);
+		if (prevRealBid != null) {
+			if (prevRealBid.isUsed()) {
+				accuracy /= 1.005;
+			} else {
+				accuracy = Math.min(0.5, accuracy * 2);
+			}
+//			prevRealBid = null;
 		}
 	}
-	
-	private double getSafePrice(){
+
+	private double getSafePrice() {
 		return super.getPrice() * (1 + accuracy);
+	}
+
+	public InputFactor duplicate(IStock stock) {
+//		assert prevRealBid == null;
+		return new SensorInputFactor(stock, price, accuracy);
 	}
 
 	@Override

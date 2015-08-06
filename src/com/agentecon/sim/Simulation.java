@@ -103,7 +103,7 @@ public class Simulation implements ISimulation {
 			world.prepareDay(day);
 			
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
-			market.iterate(day, 5);
+			market.iterate(day, 3);
 			
 			world.finishDay(day);
 		}

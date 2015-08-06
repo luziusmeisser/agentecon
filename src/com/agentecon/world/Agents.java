@@ -30,7 +30,8 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		}
 		this.firms = new ArrayList<>();
 		for (Firm firm: firms){
-			this.firms.add(firm.clone());
+			Firm klon = firm.clone();
+			this.firms.add(klon);
 		}
 		this.traders = new ArrayList<>();
 		for (Trader t: trad){
