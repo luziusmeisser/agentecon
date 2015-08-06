@@ -57,13 +57,13 @@ public class RepeatedMarket {
 			for (Firm firm: firms) {
 				firm.adaptPrices();
 			}
-			if (trade[0] && shouldRetry(firms)){
-				market.notifyCancelled();
-				world.abortTransaction();
-			} else {
+//			if (trade[0] && shouldRetry(firms)){
+//				market.notifyCancelled();
+//				world.abortTransaction();
+//			} else {
 				world.commitTransaction();
 				break;
-			}
+//			}
 		}
 	}
 

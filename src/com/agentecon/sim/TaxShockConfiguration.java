@@ -35,7 +35,7 @@ public class TaxShockConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 	
 	public TaxShockConfiguration(int seed) {
-		this(1, 10, 1, 1, seed);
+		this(10, 100, 1, 1, seed);
 	}
 
 	public TaxShockConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
@@ -55,7 +55,7 @@ public class TaxShockConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
-		PriceFactory.NORMALIZED_GOOD = inputs[0];
+//		PriceFactory.NORMALIZED_GOOD = inputs[0];
 	}
 
 	public SimulationConfig createNextConfig() {
