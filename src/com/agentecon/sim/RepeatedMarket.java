@@ -60,14 +60,18 @@ public class RepeatedMarket {
 		}
 	}
 
-	class MarketObserver implements IMarketListener {
+	static class MarketObserver implements IMarketListener {
+		
+		static int count = 0;
 		
 		private int iters;
+		private double sensitivity;
 		private HashMap<Good, Average> current;
 		private HashMap<Good, Average> prev;
 
 		public MarketObserver(int maxIters) {
 			this.iters = maxIters;
+			this.sensitivity = 0.0001;
 			next();
 		}
 
@@ -111,8 +115,9 @@ public class RepeatedMarket {
 					change.add(diff);
 				}
 				next();
-				System.out.println(change.getAverage() + ", iters left: " + iters);
-				return change.getAverage() > 0.001;
+				sensitivity *= 1.3;
+				System.out.println(count++);
+				return change.getAverage() > sensitivity;
 			}
 		}
 		
