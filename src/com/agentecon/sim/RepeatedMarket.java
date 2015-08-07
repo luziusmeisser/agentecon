@@ -115,8 +115,8 @@ public class RepeatedMarket {
 					change.add(diff);
 				}
 				next();
-				sensitivity *= 1.3;
-				System.out.println(count++);
+//				sensitivity *= 1.3;
+//				System.out.println(count++);
 				return change.getAverage() > sensitivity;
 			}
 		}
