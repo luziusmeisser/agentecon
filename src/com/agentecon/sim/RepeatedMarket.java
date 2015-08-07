@@ -107,11 +107,12 @@ public class RepeatedMarket {
 				for (Map.Entry<Good, Average> e: current.entrySet()){
 					double p1 = e.getValue().getAverage();
 					double p2 = prev.get(e.getKey()).getAverage();
-					double diff = p1 > p2 ? p1 / p2 : p2 / p1;
+					double diff = Math.abs(p1 - p2) / p1;
 					change.add(diff);
 				}
 				next();
-				return change.getAverage() > 1.01;
+				System.out.println(change.getAverage() + ", iters left: " + iters);
+				return change.getAverage() > 0.001;
 			}
 		}
 		
