@@ -23,7 +23,7 @@ public class RepeatedMarket {
 
 	public RepeatedMarket(World world, SimulationListeners listeners) {
 		this.world = world;
-		this.listeners = listeners;
+		this.listeners = listeners; 
 	}
 
 	public void iterate(int day, int iterations) {
