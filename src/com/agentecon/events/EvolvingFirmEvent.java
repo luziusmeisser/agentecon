@@ -5,8 +5,8 @@ import java.util.Random;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.LogProdFun;
-import com.agentecon.firm.SensorFirm;
+import com.agentecon.firm.production.LogProdFun;
+import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
 import com.agentecon.price.PriceFactory;

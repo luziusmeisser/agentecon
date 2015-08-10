@@ -1,4 +1,4 @@
-package com.agentecon.firm;
+package com.agentecon.firm.production;
 
 import com.agentecon.consumer.Weight;
 import com.agentecon.good.Good;

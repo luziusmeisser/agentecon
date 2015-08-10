@@ -2,8 +2,8 @@ package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.LogProdFun;
-import com.agentecon.firm.SensorFirm;
+import com.agentecon.firm.production.IProductionFunction;
+import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.world.IWorld;
 
@@ -11,14 +11,14 @@ public class FirmEvent extends SimEvent {
 
 	private String type;
 	protected Endowment end;
-	protected LogProdFun prodFun;
+	protected IProductionFunction prodFun;
 	protected String[] priceParams;
 
-	public FirmEvent(int card, String type, Endowment end, LogProdFun prodFun, String[] priceParams) {
+	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, String[] priceParams) {
 		this(0, card, type, end, prodFun, priceParams);
 	}
 
-	public FirmEvent(int step, int card, String type, Endowment end, LogProdFun prodFun, String[] priceParams) {
+	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, String[] priceParams) {
 		super(step, card);
 		this.end = end;
 		this.type = type;
@@ -39,7 +39,7 @@ public class FirmEvent extends SimEvent {
 		}
 	}
 
-	protected SensorFirm createFirm(String type2, Endowment end2, LogProdFun prodFun2, PriceFactory pf) {
+	protected SensorFirm createFirm(String type2, Endowment end2, IProductionFunction prodFun2, PriceFactory pf) {
 		return new SensorFirm(type, end, prodFun, pf);
 	}
 

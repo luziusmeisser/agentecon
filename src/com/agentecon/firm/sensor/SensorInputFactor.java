@@ -1,8 +1,9 @@
 // Created on Jun 1, 2015 by Luzius Meisser
 
-package com.agentecon.firm;
+package com.agentecon.firm.sensor;
 
 import com.agentecon.api.Price;
+import com.agentecon.firm.InputFactor;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;

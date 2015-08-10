@@ -1,8 +1,8 @@
 package com.agentecon.trader;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.firm.SensorInputFactor;
-import com.agentecon.firm.SensorOutputFactor;
+import com.agentecon.firm.sensor.SensorInputFactor;
+import com.agentecon.firm.sensor.SensorOutputFactor;
 import com.agentecon.good.Good;
 import com.agentecon.market.Market;
 import com.agentecon.price.ExpSearchPrice;

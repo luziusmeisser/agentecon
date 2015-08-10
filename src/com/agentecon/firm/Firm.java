@@ -9,6 +9,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.ShareRegister;
+import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;

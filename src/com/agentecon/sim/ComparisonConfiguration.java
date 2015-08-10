@@ -8,7 +8,7 @@ import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.firm.LogProdFun;
+import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;

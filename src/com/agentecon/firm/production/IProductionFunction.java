@@ -1,4 +1,4 @@
-package com.agentecon.firm;
+package com.agentecon.firm.production;
 
 import com.agentecon.good.Good;
 import com.agentecon.good.Inventory;

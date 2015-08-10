@@ -1,8 +1,12 @@
 // Created on Jun 1, 2015 by Luzius Meisser
 
-package com.agentecon.firm;
+package com.agentecon.firm.sensor;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.firm.Firm;
+import com.agentecon.firm.InputFactor;
+import com.agentecon.firm.OutputFactor;
+import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
 import com.agentecon.price.HardcodedPrice;
 import com.agentecon.price.IPrice;

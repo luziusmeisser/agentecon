@@ -1,7 +1,7 @@
 package com.agentecon.events;
 
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.ProductionTax;
+import com.agentecon.firm.production.ProductionTax;
 import com.agentecon.world.IWorld;
 
 public class TaxEvent extends SimEvent {

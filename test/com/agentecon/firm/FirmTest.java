@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.Price;
 import com.agentecon.consumer.Weight;
+import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.market.Ask;
