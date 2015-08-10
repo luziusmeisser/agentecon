@@ -9,8 +9,10 @@ public interface IProductionFunction {
 
 	public Good getOutput();
 
-	public double getWeight(Good input);
-
 	public double produce(Inventory inventory);
-
+	
+	public double getCostOfMaximumProfit(IPriceProvider prices);
+	
+	public double getExpenses(Good good, double price, double totalSpendings);
+	
 }

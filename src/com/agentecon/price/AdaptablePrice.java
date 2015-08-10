@@ -19,11 +19,6 @@ public abstract class AdaptablePrice implements IPrice {
 		this.price = initial;
 	}
 	
-	@Override
-	public boolean isStable() {
-		return true; // TEMP
-	}
-
 	public void adapt(boolean increase) {
 		double ftemp = getFactor(increase);
 		double factor = (1.0 + ftemp);

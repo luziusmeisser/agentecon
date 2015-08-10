@@ -13,6 +13,14 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 		this.output = output;
 		this.inputs = weights;
 	}
+	
+	public double getTotalWeight() {
+		double tot = 0.0;
+		for (Weight w : inputs) {
+			tot += w.weight;
+		}
+		return tot;
+	}
 
 	@Override
 	public Good[] getInput() {
@@ -28,8 +36,7 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 		return output;
 	}
 
-	@Override
-	public double getWeight(Good input) {
+	protected double getWeight(Good input) {
 		for (int i = 0; i < inputs.length; i++) {
 			if (inputs[i].good.equals(input)) {
 				return inputs[i].weight;

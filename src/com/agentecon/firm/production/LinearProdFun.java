@@ -22,10 +22,20 @@ public class LinearProdFun extends AbstractProductionFunction {
 		inventory.getStock(getOutput()).add(production);
 		return production;
 	}
-	
-	public boolean shouldProduce(IPrice inputPrice, IPrice outputPrice){
+
+	public boolean shouldProduce(IPrice inputPrice, IPrice outputPrice) {
 		double weight = inputs[0].weight;
 		return weight * outputPrice.getPrice() > inputPrice.getPrice();
+	}
+
+	@Override
+	public double getCostOfMaximumProfit(IPriceProvider prices) {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public double getExpenses(Good good, double price, double totalSpendings) {
+		return Double.MAX_VALUE;
 	}
 
 }

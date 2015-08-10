@@ -27,11 +27,6 @@ public class ExpSearchPrice extends AdaptablePrice {
 	}
 
 	@Override
-	public boolean isStable() {
-		return (sameDirectionInARow == 0 && factor < 10 * MIN_ADAPTION_FACTOR) || isProbablyUnobtainable();
-	}
-
-	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
 			sameDirectionInARow++;

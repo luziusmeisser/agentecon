@@ -24,10 +24,6 @@ public class Factor {
 		return stock;
 	}
 	
-	public boolean isStable(){
-		return price.isStable();
-	}
-	
 	public double getPrice() {
 		return price.getPrice();
 	}

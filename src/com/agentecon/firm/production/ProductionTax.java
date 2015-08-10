@@ -26,11 +26,6 @@ public class ProductionTax implements IProductionFunction {
 	}
 
 	@Override
-	public double getWeight(Good input) {
-		return wrapped.getWeight(input);
-	}
-
-	@Override
 	public double produce(Inventory inventory) {
 		IStock output = inventory.getStock(getOutput());
 		double before = output.getAmount();
@@ -39,6 +34,16 @@ public class ProductionTax implements IProductionFunction {
 		double tax = production * taxRate;
 		output.remove(tax);
 		return production - tax;
+	}
+
+	@Override
+	public double getCostOfMaximumProfit(IPriceProvider prices) {
+		return wrapped.getCostOfMaximumProfit(prices);
+	}
+
+	@Override
+	public double getExpenses(Good good, double price, double totalSpendings) {
+		return wrapped.getExpenses(good, price, totalSpendings);
 	}
 
 }

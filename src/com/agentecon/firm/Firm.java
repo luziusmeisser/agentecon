@@ -7,8 +7,7 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.consumer.Consumer;
-import com.agentecon.finance.ShareRegister;
+import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
@@ -17,8 +16,10 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
+import com.agentecon.stats.Numbers;
+import com.agentecon.util.Average;
 
-public class Firm extends Agent implements IFirm {
+public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public static double DIVIDEND_RATE = 0.2;
 
@@ -60,13 +61,11 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totWeight = getTotalInputWeight();
-		double totSalaries = Math.min(getCostOfMaximumProfits(totWeight) + sumInputPrices(), calcSpendableWealth());
-		double offerPerWeight = totSalaries / totWeight;
+		double totSalaries = Math.min(prod.getCostOfMaximumProfit(this), calcSpendableWealth());
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
-					double amount = offerPerWeight * prod.getWeight(f.getGood()) - f.getPrice();
+					double amount = prod.getExpenses(f.getGood(), f.getPrice(), totSalaries);
 					if (amount > 0) {
 						f.createOffers(market, getMoney(), amount);
 					} else {
@@ -87,20 +86,10 @@ public class Firm extends Agent implements IFirm {
 		Firm klon = (Firm) super.clone();
 		klon.output = output.duplicate(klon.getStock(output.getGood()));
 		klon.inputs = new InputFactor[inputs.length];
-		for (int i=0; i<inputs.length; i++){
+		for (int i = 0; i < inputs.length; i++) {
 			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
 		}
 		return klon;
-	}
-
-	private double getTotalInputWeight() {
-		double tot = 0.0;
-		for (InputFactor in : inputs) {
-			if (in.isObtainable()) {
-				tot += prod.getWeight(in.getGood());
-			}
-		}
-		return tot;
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
@@ -109,27 +98,10 @@ public class Firm extends Agent implements IFirm {
 		}
 	}
 
-	public double getCostOfMaximumProfits(double totweight) {
-		double outprice = output.getPrice();
-		double inputPriceSum = sumInputPrices();
-		double adjustmentDueToFirstFreeInputUnit = inputPriceSum;
-		return outprice * totweight - adjustmentDueToFirstFreeInputUnit;
-	}
-
-	protected double sumInputPrices() {
-		double inputPriceSum = 0.0;
-		for (InputFactor input : inputs) {
-			if (input.isObtainable()) {
-				inputPriceSum += input.getPrice();
-			}
-		}
-		return inputPriceSum;
-	}
-
 	private double calcSpendableWealth() {
 		return getMoney().getAmount() / 4;
 	}
-	
+
 	public void adaptPrices() {
 		adaptInputPrices();
 		adaptOutputPrice();
@@ -143,14 +115,6 @@ public class Firm extends Agent implements IFirm {
 
 	public void adaptOutputPrice() {
 		output.adaptPrice();
-	}
-
-	public boolean arePricesStable() {
-		boolean stable = true;
-		for (int i = 0; i < inputs.length; i++) {
-			stable &= inputs[i].isStable();
-		}
-		return stable && output.isStable();
 	}
 
 	public double produce(int day) {
@@ -215,11 +179,6 @@ public class Firm extends Agent implements IFirm {
 		return cogs;
 	}
 
-	@Override
-	public String toString() {
-		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
-	}
-
 	public IProductionFunction getProductionFunction() {
 		return prod;
 	}
@@ -234,6 +193,25 @@ public class Firm extends Agent implements IFirm {
 
 	public Firm createNextGeneration(Endowment end, IProductionFunction prod) {
 		return new Firm(getType(), end, prod, prices);
+	}
+
+	@Override
+	public double getPrice(Good output) {
+		if (output.equals(this.output.getGood())){
+			return this.output.getPrice();
+		} else {
+			for (InputFactor in: inputs){
+				if (in.getGood().equals(output)){
+					return in.isObtainable() ? in.getPrice() : Double.POSITIVE_INFINITY;
+				}
+			}
+		}
+		return Double.POSITIVE_INFINITY;
+	}
+	
+	@Override
+	public String toString() {
+		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
 	}
 
 }
