@@ -39,13 +39,10 @@ public class ProdFunTest {
 		Inventory inv = new Inventory(new Stock(SimConfig.SWISSTIME, 10), new Stock(SimConfig.ITALTIME, 10));
 		double prod = f1.produce(inv);
 		
-		Inventory inv2 = new Inventory(new Stock(SimConfig.SWISSTIME, 20), new Stock(SimConfig.ITALTIME, 20));
+		Inventory inv2 = new Inventory(new Stock(SimConfig.SWISSTIME, 50), new Stock(SimConfig.ITALTIME, 50));
 		double prod2 = f1.produce(inv2);
-		System.out.println(prod2);
-		assert Numbers.equals(prod2, prod * Math.pow(2.0, f1.getReturnsToScale()));
+		System.out.println(inv2.getStock(SimConfig.FONDUE));
+		assert Numbers.equals(prod2, prod * Math.pow(5.0, f1.getReturnsToScale()));
 	}
-
-	
-	
 	
 }

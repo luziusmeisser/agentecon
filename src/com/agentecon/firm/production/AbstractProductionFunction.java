@@ -5,21 +5,27 @@ import com.agentecon.good.Good;
 
 public abstract class AbstractProductionFunction implements IProductionFunction {
 
-	protected Good output;
-	protected Weight[] inputs;
+	private double totInputs;
+	protected final Good output;
+	protected final Weight[] inputs;
 
 	public AbstractProductionFunction(Good output, Weight... weights) {
 		assert output != null;
 		this.output = output;
 		this.inputs = weights;
+		this.totInputs = calcTotWeights();
 	}
 	
-	public double getTotalWeight() {
+	private double calcTotWeights() {
 		double tot = 0.0;
 		for (Weight w : inputs) {
 			tot += w.weight;
 		}
 		return tot;
+	}
+
+	public double getTotalWeight() {
+		return totInputs;
 	}
 
 	@Override

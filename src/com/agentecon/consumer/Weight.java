@@ -6,8 +6,8 @@ import com.agentecon.good.Good;
 
 public class Weight {
 	
-	public Good good;
-	public double weight;
+	public final Good good;
+	public final double weight;
 
 	public Weight(Good good, double weight) {
 		this.good = good;

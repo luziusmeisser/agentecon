@@ -26,6 +26,7 @@ import com.agentecon.price.IPrice;
 import com.agentecon.price.IPriceFactory;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.sim.SimConfig;
+import com.agentecon.stats.Numbers;
 
 public class FirmTest {
 
@@ -106,7 +107,7 @@ public class FirmTest {
 	
 	@Test
 	public void testOptimalProductionCobbDouglas1(){
-		final double hourPrice1 = 3.0;
+		final double hourPrice1 = 2.0;
 		final double fonduePrice = 10.0;
 		this.end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000) }, new Stock[] {});
 		double alpha = 0.5;
@@ -140,10 +141,10 @@ public class FirmTest {
 		});
 		double production = firm.produce(0);
 		System.out.println("Produced " + production);
-		double x1 = 4;
+		double x1 = 6.25;
 		double production2 = prodFun.produce(new Inventory(new Stock(SimConfig.SWISSTIME, x1)));
 		System.out.println(production2);
-		
+		assert Numbers.equals(production, production2);
 	}
 	
 	@Test
@@ -190,7 +191,7 @@ public class FirmTest {
 		double x2 = hourPrice1 / hourPrice2 * beta / alpha * x1;
 		double production2 = prodFun.produce(new Inventory(new Stock(SimConfig.SWISSTIME, x1), new Stock(SimConfig.ITALTIME, x2)));
 		System.out.println(production2);
+		assert Numbers.equals(production, production2);
 	}
-
-
+	
 }

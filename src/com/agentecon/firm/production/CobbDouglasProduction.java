@@ -46,7 +46,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 		} else {
 			double outprice = prices.getPrice(output);
 			double prod = getCBHelperProduct(prices);
-			double factor = Math.pow(outprice * prod, 1 - totWeight);
+			double factor = Math.pow(outprice * prod, 1 / (1 - totWeight));
 			return totWeight * factor;
 		}
 	}

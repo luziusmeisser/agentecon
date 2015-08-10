@@ -14,6 +14,7 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
+import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
@@ -114,6 +115,7 @@ public class TaxShockConfiguration {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(0.9);
+//			IProductionFunction fun = new LogProdFun(outputs[i], prodWeights);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 //			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
