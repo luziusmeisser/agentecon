@@ -13,7 +13,7 @@ import com.agentecon.good.Good;
 public class SimConfig extends SimulationConfig {
 	
 	public static final boolean AGING = false;
-	private static final int DEFAULT_WOBBLES = 100;
+	private static final int DEFAULT_WOBBLES = 0;
 	
 	public static final double GOODS_PERSISTENCE = 1.0;
 	
