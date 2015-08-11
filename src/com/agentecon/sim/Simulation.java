@@ -30,7 +30,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	private TaxShockConfiguration metaConfig;
+	private IConfiguration metaConfig;
 
 	private SimConfig config;
 
@@ -45,13 +45,13 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new TaxShockConfiguration(17));
+		this(new CobbDougConfiguration(17));
 //		this(new VolumeTraderConfiguration(133, 18.55));
 //		this(new VolumeTraderConfiguration(133, 20.0));
 //		this(new SavingConsumerConfiguration(133, 0.20));
 	}
 
-	public Simulation(TaxShockConfiguration metaConfig) {
+	public Simulation(IConfiguration metaConfig) {
 		this(metaConfig.createNextConfig());
 		this.metaConfig = metaConfig;
 	}

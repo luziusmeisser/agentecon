@@ -3,7 +3,7 @@ package com.agentecon.sim;
 import com.agentecon.events.VolumeTraderEvent;
 import com.agentecon.trader.VolumeTrader;
 
-public class VolumeTraderConfiguration extends TaxShockConfiguration {
+public class VolumeTraderConfiguration extends TaxShockConfiguration implements IConfiguration {
 	
 	private VolumeTraderEvent event;
 	

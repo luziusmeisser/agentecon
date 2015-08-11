@@ -1,5 +1,7 @@
 package com.agentecon.firm.production;
 
+import java.util.Arrays;
+
 import com.agentecon.consumer.Weight;
 import com.agentecon.good.Good;
 
@@ -49,6 +51,11 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 			}
 		}
 		return 0;
+	}
+	
+	@Override
+	public String toString(){
+		return getClass().getSimpleName() + " with weights " + Arrays.toString(inputs);
 	}
 	
 }
