@@ -1,6 +1,7 @@
 package com.agentecon.events;
 
 import com.agentecon.consumer.Consumer;
+import com.agentecon.good.IStock;
 import com.agentecon.world.IWorld;
 
 public class MoneyPrintEvent extends SimEvent {
@@ -14,8 +15,16 @@ public class MoneyPrintEvent extends SimEvent {
 
 	@Override
 	public void execute(IWorld sim) {
-		for (Consumer c: sim.getConsumers().getRandomConsumers(getCardinality())){
-			c.getMoney().add(amount);
+		for (Consumer c : sim.getConsumers().getRandomConsumers(getCardinality())) {
+			IStock money = c.getMoney();
+			if (amount > 0) {
+				money.add(amount);
+			} else if (money.getAmount() >= -amount){
+				money.remove(amount);
+			} else {
+				System.out.println("Can only steal " + money.getAmount() + " from " + c);
+				money.consume();
+			}
 		}
 	}
 

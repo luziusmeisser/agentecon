@@ -67,6 +67,10 @@ public class CobbDougConfiguration implements IConfiguration {
 
 			// constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
 			constantEvents.add(new MoneyPrintEvent(1000, 1, 63));
+			
+			constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
+			
+			constantEvents.add(new MoneyPrintEvent(3000, 10, -12.3));
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee : evolvingEvents) {
