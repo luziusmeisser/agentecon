@@ -8,7 +8,6 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
-import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
@@ -104,7 +103,7 @@ public class Simulation implements ISimulation {
 			world.prepareDay(day);
 			
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
-			market.iterate(day, config.getIntradayWobbles());
+			market.iterate(day, config.getIntradayIterations());
 			
 			world.finishDay(day);
 		}
@@ -114,6 +113,7 @@ public class Simulation implements ISimulation {
 		while (!events.isEmpty() && events.peek().getDay() <= day) {
 			SimEvent event = events.poll();
 			event.execute(world);
+			listeners.notifyEvent(event);
 			if (event.reschedule()) {
 				events.add(event);
 			}

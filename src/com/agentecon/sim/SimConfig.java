@@ -50,7 +50,7 @@ public class SimConfig extends SimulationConfig {
 		return queue;
 	}
 	
-	public int getIntradayWobbles() {
+	public int getIntradayIterations() {
 		return wobbles;
 	}
 	
