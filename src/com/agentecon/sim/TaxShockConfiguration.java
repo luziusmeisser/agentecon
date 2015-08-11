@@ -67,7 +67,7 @@ public class TaxShockConfiguration {
 			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
 			
 //			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
-//			constantEvents.add(new MoneyPrintEvent(200, 1, 500));
+			constantEvents.add(new MoneyPrintEvent(1000, 1, 100));
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
@@ -87,7 +87,7 @@ public class TaxShockConfiguration {
 	}
 
 	protected SimConfig createConfig(int seed) {
-		return new SimConfig(1000, seed);
+		return new SimConfig(ROUNDS, seed);
 	}
 	
 	public String getComment() {
