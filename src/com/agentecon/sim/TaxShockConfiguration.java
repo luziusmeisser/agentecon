@@ -10,6 +10,7 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.MoneyPrintEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
@@ -68,6 +69,7 @@ public class TaxShockConfiguration {
 			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
 			
 			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
+			constantEvents.add(new MoneyPrintEvent(200, 3, 500));
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
