@@ -67,7 +67,7 @@ public class TaxShockConfiguration {
 			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
 			
 //			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
-			constantEvents.add(new MoneyPrintEvent(1000, 1, 50));
+			constantEvents.add(new MoneyPrintEvent(1000, 1, 75));
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
