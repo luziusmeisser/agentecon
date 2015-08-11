@@ -12,17 +12,15 @@ import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.MoneyPrintEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.events.TaxEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
-import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceFactory;
 
 public class TaxShockConfiguration {
 
-	public static final int ROUNDS = 1000;
+	public static final int ROUNDS = 10000;
 	public static final int TAX_EVENT = ROUNDS / 2;
 	
 	private int iteration = 0;
@@ -68,8 +66,8 @@ public class TaxShockConfiguration {
 			Weight[] defaultPrefs = createPrefs(outputs);
 			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
 			
-			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
-			constantEvents.add(new MoneyPrintEvent(200, 3, 500));
+//			constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
+			constantEvents.add(new MoneyPrintEvent(200, 1, 500));
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee: evolvingEvents){
