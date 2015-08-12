@@ -94,7 +94,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	}
 
 	protected SimConfig createConfig(int seed) {
-		return new SimConfig(ROUNDS, seed);
+		return new SimConfig(ROUNDS, seed, 100);
 	}
 
 	public String getComment() {
