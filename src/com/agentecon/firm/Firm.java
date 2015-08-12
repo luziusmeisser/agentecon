@@ -143,7 +143,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		wallet.remove(dividend);
 		return dividend;
 	}
-
+ 
 	private double calcRelativeDividend(IStock wallet) {
 		return wallet.getAmount() * DIVIDEND_RATE;
 	}
