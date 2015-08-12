@@ -21,6 +21,7 @@ import com.agentecon.util.Average;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
+	public static double MAX_SPENDING_FRACTION = 0.25;
 	public static double DIVIDEND_RATE = 0.2;
 
 	// private ShareRegister register; clone?
@@ -99,7 +100,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private double calcSpendableWealth() {
-		return getMoney().getAmount() / 4;
+		return getMoney().getAmount() * MAX_SPENDING_FRACTION;
 	}
 
 	public void adaptPrices() {
@@ -153,18 +154,16 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcCogsDividend(IStock wallet) {
 		double cash = wallet.getAmount();
-		double cogs = calcCogs();
-
+		
+		double targetSpendings = prod.getCostOfMaximumProfit(this);
+		double desiredCash = targetSpendings / MAX_SPENDING_FRACTION;
 		double profits = calcProfits();
-		double dividend = Math.max(0, profits);
-		if (cash - 3 * cogs < dividend) {
-			// limits dividend
-			dividend = Math.max(0, cash - 3 * cogs);
-			// } else if (dividend < cash - 800){
-			// // increases dividend
-			// dividend = cash - 800;
+		double maxCashPayout = cash - desiredCash;
+		if (profits > maxCashPayout){
+			return Math.max(0, maxCashPayout);
+		} else {
+			return Math.max(0, profits);
 		}
-		return dividend;
 	}
 
 	public double calcProfits() {
