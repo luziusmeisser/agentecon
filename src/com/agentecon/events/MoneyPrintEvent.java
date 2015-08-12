@@ -20,7 +20,7 @@ public class MoneyPrintEvent extends SimEvent {
 			if (amount > 0) {
 				money.add(amount);
 			} else if (money.getAmount() >= -amount){
-				money.remove(amount);
+				money.remove(-amount);
 			} else {
 				System.out.println("Can only steal " + money.getAmount() + " from " + c);
 				money.consume();
