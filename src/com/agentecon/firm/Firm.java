@@ -162,7 +162,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		if (profits > maxCashPayout){
 			return Math.max(0, maxCashPayout);
 		} else {
-			double weightedMean = (profits*9 + maxCashPayout)/10;
+			double weightedMean = (profits*63 + maxCashPayout)/64;
 			return Math.max(0, weightedMean);
 		}
 	}
