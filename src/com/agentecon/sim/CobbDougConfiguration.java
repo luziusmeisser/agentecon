@@ -70,7 +70,7 @@ public class CobbDougConfiguration implements IConfiguration {
 //
 //			constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
 			for (int i=1000; i<ROUNDS; i+=500){
-				constantEvents.add(new MoneyPrintEvent(i, 100, -10));
+				constantEvents.add(new MoneyPrintEvent(i, 100, 10));
 			}
 //			for (int i=5000; i<10000; i+=250){
 //				constantEvents.add(new MoneyPrintEvent(i, 100, 10));
