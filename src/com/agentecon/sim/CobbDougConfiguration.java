@@ -20,7 +20,7 @@ import com.agentecon.price.PriceFactory;
 
 public class CobbDougConfiguration implements IConfiguration {
 
-	public static final int ROUNDS = 10000;
+	public static final int ROUNDS = 2000;
 
 	private int iteration = 0;
 	protected int firmsPerType;
@@ -69,12 +69,12 @@ public class CobbDougConfiguration implements IConfiguration {
 //			constantEvents.add(new MoneyPrintEvent(1000, 1, 63));
 //
 //			constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
-			for (int i=1000; i<5000; i+=250){
+			for (int i=1000; i<ROUNDS; i+=500){
 				constantEvents.add(new MoneyPrintEvent(i, 100, -10));
 			}
-			for (int i=5000; i<10000; i+=250){
-				constantEvents.add(new MoneyPrintEvent(i, 100, 10));
-			}
+//			for (int i=5000; i<10000; i+=250){
+//				constantEvents.add(new MoneyPrintEvent(i, 100, 10));
+//			}
 		} else {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee : evolvingEvents) {
