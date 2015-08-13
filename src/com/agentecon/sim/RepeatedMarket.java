@@ -30,18 +30,23 @@ public class RepeatedMarket {
 		MarketObserver observer = new MarketObserver(iterations);
 		while (true) {
 			world.startTransaction();
+			
+			Collection<Firm> firms = world.getFirms().getRandomFirms();
+			Collection<Consumer> cons = world.getConsumers().getRandomConsumers();
+			
+			distributeDividends(day, firms, cons);
+			
 			Market market = new Market(world.getRand());
 			market.addMarketListener(observer);
 			listeners.notifyMarketOpened(market);
 			for (Trader trader : world.getTraders().getAllTraders()) {
 				trader.offer(market, day);
 			}
-			Collection<Firm> firms = world.getFirms().getRandomFirms();
 			for (Firm firm : firms) {
 				firm.offer(market);
 			}
 			// System.out.println("Before open: " + market);
-			for (Consumer c : world.getConsumers().getRandomConsumers()) {
+			for (Consumer c : cons) {
 				c.maximizeUtility(market);
 			}
 			for (Firm firm: firms) {
@@ -57,6 +62,28 @@ public class RepeatedMarket {
 				world.commitTransaction();
 				break;
 			}
+		}
+	}
+
+	private void distributeDividends(int day, Collection<Firm> firms, Collection<Consumer> cons) {
+		double dividends = 0.0;
+		for (Firm firm : firms) {
+			dividends += firm.payDividends(day);
+		}
+//		for (Trader trader : agents.getAllTraders()) {
+//			if (trader instanceof VolumeTrader){
+//				dividends = ((VolumeTrader)trader).refillWallet(dividends);
+//			}
+//			trader.notifyDayEnded(day);
+//		}
+		double perConsumer = dividends / cons.size();
+		for (Consumer c : cons) {
+			c.collectDividend(perConsumer);
+			dividends -= perConsumer;
+		}
+		if (dividends != 0.0) {
+			// ensure no money lost due to rounding
+			cons.iterator().next().collectDividend(dividends);
 		}
 	}
 

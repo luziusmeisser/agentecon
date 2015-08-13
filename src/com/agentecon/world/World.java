@@ -10,7 +10,6 @@ import com.agentecon.good.Inventory;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.SimConfig;
-import com.agentecon.trader.VolumeTrader;
 
 public class World implements IWorld {
 
@@ -46,7 +45,7 @@ public class World implements IWorld {
 	}
 
 	@Override
-	public IFirms getFirms() {
+	public Agents getFirms() {
 		return agents;
 	}
 	
@@ -70,7 +69,7 @@ public class World implements IWorld {
 	}
 
 	@Override
-	public ITraders getTraders() {
+	public Agents getTraders() {
 		return agents;
 	}
 
@@ -94,36 +93,13 @@ public class World implements IWorld {
 				notifyConsumerDied(c);
 			}
 		}
-		
-		double dividends = inheritance;
-		for (Firm firm : agents.getAllFirms()) {
-			firm.produce(day);
-			dividends += firm.payDividends(day);
+		if (inheritance > 0){
+			consumers.iterator().next().collectDividend(inheritance);
 		}
 		
-		for (Trader trader : agents.getAllTraders()) {
-			if (trader instanceof VolumeTrader){
-				dividends = ((VolumeTrader)trader).refillWallet(dividends);
-			}
-			trader.notifyDayEnded(day);
-		}
-		
-		distributeDividends(dividends, consumers);
 		listeners.notifyDayEnded(day, util / consumers.size());
 	}
 	
-	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
-		double perConsumer = total / allConsumers.size();
-		for (Consumer c : allConsumers) {
-			c.collectDividend(perConsumer);
-			total -= perConsumer;
-		}
-		if (total != 0.0) {
-			// ensure no money lost due to rounding
-			allConsumers.iterator().next().collectDividend(total);
-		}
-	}
-
 	public void startTransaction() {
 		this.backup = agents.duplicate();
 	}

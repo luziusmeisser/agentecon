@@ -16,8 +16,6 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
-import com.agentecon.stats.Numbers;
-import com.agentecon.util.Average;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 

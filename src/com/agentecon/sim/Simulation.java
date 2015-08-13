@@ -18,6 +18,7 @@ import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.UpdatePreferencesEvent;
+import com.agentecon.firm.Firm;
 import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.good.Stock;
@@ -104,6 +105,10 @@ public class Simulation implements ISimulation {
 			
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
 			market.iterate(day, config.getIntradayIterations());
+			
+			for (Firm firm : world.getFirms().getAllFirms()) {
+				firm.produce(day);
+			}
 			
 			world.finishDay(day);
 		}
