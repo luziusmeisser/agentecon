@@ -21,7 +21,7 @@ import com.agentecon.util.MovingAverage;
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public static double MAX_SPENDING_FRACTION = 0.5;
-	public static double DIVIDEND_RATE = 0.25;
+	public static double DIVIDEND_RATE = 0.2;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
@@ -63,7 +63,12 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totSalaries = Math.min(prod.getCostOfMaximumProfit(this), calcSpendableWealth());
+		double budget = calcSpendableWealth();
+		double totSalaries = prod.getCostOfMaximumProfit(this);
+		if (totSalaries > budget){
+			System.out.println("Limiting desired spending of " + totSalaries + " to " + budget);
+			totSalaries = budget;
+		}
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
