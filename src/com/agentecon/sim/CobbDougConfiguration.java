@@ -21,7 +21,7 @@ import com.agentecon.price.PriceFactory;
 public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 5000;
-	public static final int ITERATIONS = 0;
+	public static final int ITERATIONS = 5;
 
 	private int iteration = 0;
 	protected int firmsPerType;
@@ -36,7 +36,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 
 	public CobbDougConfiguration(int seed) {
-		this(10, 10, 1, 1, seed);
+		this(10, 100, 1, 1, seed);
 	}
 
 	public CobbDougConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
