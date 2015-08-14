@@ -31,7 +31,6 @@ public class OutputFactor extends Factor {
 	}
 
 	public OutputFactor duplicate(IStock stock) {
-		assert prevAsk == null;
 		return new OutputFactor(stock, price);
 	}
 
