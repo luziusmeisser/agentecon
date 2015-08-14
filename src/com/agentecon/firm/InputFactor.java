@@ -41,7 +41,6 @@ public class InputFactor extends Factor {
 	}
 	
 	public InputFactor duplicate(IStock stock){
-		assert prevBid == null;
 		return new InputFactor(stock, price);
 	}
 
