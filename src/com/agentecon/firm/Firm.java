@@ -16,6 +16,7 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
+import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
@@ -26,6 +27,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
 	private IProductionFunction prod;
+	private MovingAverage avgCogs;
 
 	private FirmListeners monitor;
 
@@ -34,6 +36,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
 		this.prod = prod;
+		this.avgCogs = new MovingAverage();
 		this.prices = prices;
 		// this.register = new ShareRegister(getName(), getMoney());
 
@@ -85,6 +88,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		Firm klon = (Firm) super.clone();
 		klon.output = output.duplicate(klon.getStock(output.getGood()));
 		klon.inputs = new InputFactor[inputs.length];
+		klon.avgCogs = avgCogs.clone();
 		for (int i = 0; i < inputs.length; i++) {
 			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
 		}
@@ -117,11 +121,11 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public double produce(int day) {
+		avgCogs.add(calcCogs());
 		IStock[] inputAmounts = new IStock[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
-
 		double produced = prod.produce(getInventory());
 		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
 		return produced;
@@ -153,12 +157,12 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	private double calcCogsDividend(IStock wallet) {
 		double cash = wallet.getAmount();
 		
-		double targetSpendings = prod.getCostOfMaximumProfit(this);
+		double targetSpendings = avgCogs.getAverage(); //prod.getCostOfMaximumProfit(this);
 		double desiredCash = targetSpendings / MAX_SPENDING_FRACTION;
 		double profits = calcProfits();
 		
 		double maxCashPayout = cash - desiredCash;
-		return Math.max(0, profits);
+		return Math.max(0, maxCashPayout);
 //		if (profits > maxCashPayout){
 //			return Math.max(0, maxCashPayout);
 //		} else {
