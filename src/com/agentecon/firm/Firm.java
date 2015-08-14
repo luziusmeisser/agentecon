@@ -155,7 +155,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private double calcCogsDividend(IStock wallet) {
-		double cash = wallet.getAmount();
+		double cash = wallet.getAmount() / 2;
 		
 		double targetSpendings = prod.getCostOfMaximumProfit(this);
 //		double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
