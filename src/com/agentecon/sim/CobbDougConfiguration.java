@@ -56,7 +56,7 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
-		PriceFactory.NORMALIZED_GOOD = inputs[0];
+		PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public SimulationConfig createNextConfig() {
