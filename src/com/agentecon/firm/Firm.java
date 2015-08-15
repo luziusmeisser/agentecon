@@ -62,7 +62,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	public void offer(IPriceMakerMarket market) {
 		double budget = calcSpendableWealth();
 		double totSalaries = prod.getCostOfMaximumProfit(this);
-		if (totSalaries > budget){
+		if (totSalaries > budget) {
 			System.out.println("Limiting desired spending of " + totSalaries + " to " + budget);
 			totSalaries = budget;
 		}
@@ -137,7 +137,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcCogsDividend(wallet);
+		double dividend = calcCogsDividend(wallet, day);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
@@ -145,7 +145,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		wallet.remove(dividend);
 		return dividend;
 	}
- 
+
 	private double calcRelativeDividend(IStock wallet) {
 		return wallet.getAmount() * DIVIDEND_RATE;
 	}
@@ -154,21 +154,25 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return Math.max(0, wallet.getAmount() - 750);
 	}
 
-	private double calcCogsDividend(IStock wallet) {
+	private double calcCogsDividend(IStock wallet, int day) {
 		double cash = wallet.getAmount();
-		
+
 		double targetSpendings = prod.getCostOfMaximumProfit(this);
-//		double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
-//		double profits = calcProfits();
-		
-		double maxCashPayout = (cash - targetSpendings)/2;
-		return Math.max(0, targetSpendings);
-//		if (profits > maxCashPayout){
-//			return Math.max(0, maxCashPayout);
-//		} else {
-//			double weightedMean = (profits*99 + maxCashPayout)/100;
-//			return Math.max(0, weightedMean);
-//		}
+		// double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
+		// double profits = calcProfits();
+
+		if (day < 500) {
+			double maxCashPayout = (cash - targetSpendings) / 2;
+			return Math.max(0, maxCashPayout);
+		} else {
+			return Math.min(cash / 4 * 3, targetSpendings);
+		}
+		// if (profits > maxCashPayout){
+		// return Math.max(0, maxCashPayout);
+		// } else {
+		// double weightedMean = (profits*99 + maxCashPayout)/100;
+		// return Math.max(0, weightedMean);
+		// }
 	}
 
 	public double calcProfits() {
@@ -201,18 +205,18 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	@Override
 	public double getPrice(Good output) {
-		if (output.equals(this.output.getGood())){
+		if (output.equals(this.output.getGood())) {
 			return this.output.getPrice();
 		} else {
-			for (InputFactor in: inputs){
-				if (in.getGood().equals(output)){
+			for (InputFactor in : inputs) {
+				if (in.getGood().equals(output)) {
 					return in.isObtainable() ? in.getPrice() : Double.POSITIVE_INFINITY;
 				}
 			}
 		}
 		return Double.POSITIVE_INFINITY;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);

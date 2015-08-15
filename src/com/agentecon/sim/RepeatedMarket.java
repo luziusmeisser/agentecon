@@ -30,12 +30,9 @@ public class RepeatedMarket {
 		MarketObserver observer = new MarketObserver(iterations);
 		while (true) {
 			world.startTransaction();
-			
 			Collection<Firm> firms = world.getFirms().getRandomFirms();
 			Collection<Consumer> cons = world.getConsumers().getRandomConsumers();
-			
 			distributeDividends(day, firms, cons);
-			
 			Market market = new Market(world.getRand());
 			market.addMarketListener(observer);
 			listeners.notifyMarketOpened(market);
@@ -45,7 +42,6 @@ public class RepeatedMarket {
 			for (Firm firm : firms) {
 				firm.offer(market);
 			}
-			// System.out.println("Before open: " + market);
 			for (Consumer c : cons) {
 				c.maximizeUtility(market);
 			}

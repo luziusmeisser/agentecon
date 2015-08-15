@@ -102,14 +102,11 @@ public class Simulation implements ISimulation {
 		for (; day < target; day++) {
 			processEvents(day); // must happen before daily endowments
 			world.prepareDay(day);
-			
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
 			market.iterate(day, config.getIntradayIterations());
-			
 			for (Firm firm : world.getFirms().getAllFirms()) {
 				firm.produce(day);
 			}
-			
 			world.finishDay(day);
 		}
 	}
