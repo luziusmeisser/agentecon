@@ -20,7 +20,7 @@ import com.agentecon.price.IPriceFactory;
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public static double MAX_SPENDING_FRACTION = 0.5;
-	public static double DIVIDEND_RATE = 0.2;
+	public static double DIVIDEND_RATE = 0.33;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
@@ -137,7 +137,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcCogsDividend(wallet);
+		double dividend = calcRelativeDividend(wallet);
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
