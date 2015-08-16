@@ -165,7 +165,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			double maxCashPayout = (cash - targetSpendings) / 2;
 			return Math.max(0, maxCashPayout);
 		} else {
-			return Math.min(cash / 4 * 3, targetSpendings);
+			double maxCashPayout = (cash + targetSpendings) / 4;
+			return Math.max(0, maxCashPayout);
 		}
 		// if (profits > maxCashPayout){
 		// return Math.max(0, maxCashPayout);
