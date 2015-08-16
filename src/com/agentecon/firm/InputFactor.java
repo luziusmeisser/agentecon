@@ -17,7 +17,6 @@ public class InputFactor extends Factor {
 	public void adaptPrice() {
 		if (prevBid != null) {
 			super.adaptPrice(!prevBid.isUsed());
-//			prevBid = null;
 		}
 	}
 
