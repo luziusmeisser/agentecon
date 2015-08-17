@@ -137,7 +137,13 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = calcCogsDividend(wallet, day);
+		double dividend = Math.max(0, calcCogsDividend(wallet, day));
+		while (dividend > wallet.getAmount() - 100){
+			dividend -= 100;
+		}
+		if (dividend < 0){
+			dividend = 0;
+		}
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
@@ -161,19 +167,31 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		// double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
 		// double profits = calcProfits();
 
-		if (day < 500) {
-			double maxCashPayout = (1000 - targetSpendings) / 2;
-			return Math.min(Math.max(0, maxCashPayout), cash / 5 * 4);
+		if (day < 1000) {
+			return cash / 4;
+		} else if (day < 1000) {
+			return 250;
+		} else if (day < 2000) {
+			return cash / 4;
+		} else if (day < 3000) {
+			return 500 - targetSpendings;
+		} else if (day < 4000) {
+			return cash / 2 - targetSpendings;
+		} else if (day < 5000) {
+			return 500 - targetSpendings / 2;
+		} else if (day < 6000) {
+			return cash / 2 - targetSpendings / 2;
+		} else if (day < 7000) {
+			return 500 + targetSpendings;
+		} else if (day < 8000) {
+			return cash / 2 + targetSpendings;
+		} else if (day < 9000) {
+			return 500 + targetSpendings / 2;
+		} else if (day < 10000) {
+			return cash / 2 + targetSpendings / 2;
 		} else {
-			double maxCashPayout = (1000 + targetSpendings) / 4;
-			return Math.min(Math.max(0, maxCashPayout), cash / 5 * 4);
+			return cash / 4;
 		}
-		// if (profits > maxCashPayout){
-		// return Math.max(0, maxCashPayout);
-		// } else {
-		// double weightedMean = (profits*99 + maxCashPayout)/100;
-		// return Math.max(0, weightedMean);
-		// }
 	}
 
 	public double calcProfits() {
