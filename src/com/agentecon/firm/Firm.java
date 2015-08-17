@@ -168,27 +168,23 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		// double profits = calcProfits();
 
 		if (day < 1000) {
-			return cash / 4;
+			return cash / 4; // good
 		} else if (day < 2000) {
-			return 250;
+			return 250;		// bad
 		} else if (day < 3000) {
-			return cash / 4;
+			return cash / 4; // good
 		} else if (day < 4000) {
-			return 500 - targetSpendings;
+			return 500 - targetSpendings; // bad
 		} else if (day < 5000) {
-			return cash / 2 - targetSpendings;
+			return cash / 2 - targetSpendings; // good
 		} else if (day < 6000) {
-			return 500 - targetSpendings / 2;
+			return 500 - targetSpendings / 2;  // bad
 		} else if (day < 7000) {
-			return cash / 2 - targetSpendings / 2;
+			return cash / 2 - targetSpendings / 2; // good
 		} else if (day < 8000) {
-			return 500 + targetSpendings;
+			return cash / 4 - targetSpendings / 4; // good
 		} else if (day < 9000) {
-			return cash / 2 + targetSpendings;
-		} else if (day < 10000) {
-			return 500 + targetSpendings / 2;
-		} else if (day < 11000) {
-			return cash / 2 + targetSpendings / 2;
+			return cash / 4 + targetSpendings / 4;
 		} else {
 			return cash / 4;
 		}
