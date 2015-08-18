@@ -138,10 +138,10 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
 		double dividend = Math.max(0, calcCogsDividend(wallet, day));
-		while (dividend > wallet.getAmount() - 100){
+		while (dividend > wallet.getAmount() - 100) {
 			dividend -= 100;
 		}
-		if (dividend < 0){
+		if (dividend < 0) {
 			dividend = 0;
 		}
 		assert dividend >= 0;
@@ -165,20 +165,20 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 		double targetSpendings = prod.getCostOfMaximumProfit(this);
 		// double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
-		// double profits = calcProfits();
+		double profits = calcProfits();
 
 		if (day < 1000) {
 			return cash / 4; // good
 		} else if (day < 2000) {
-			return 250;		// bad
+			return 250; // bad
 		} else if (day < 3000) {
 			return cash / 4; // good
 		} else if (day < 4000) {
-			return 500 - targetSpendings; // bad
+			return 500 - profits;
 		} else if (day < 5000) {
-			return cash / 2 - targetSpendings; // good
+			return cash / 2 - profits;
 		} else if (day < 6000) {
-			return 500 - targetSpendings / 2;  // bad
+			return 500 - targetSpendings / 2; // bad
 		} else if (day < 7000) {
 			return cash / 2 - targetSpendings / 2; // good
 		} else if (day < 8000) {
