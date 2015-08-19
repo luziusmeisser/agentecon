@@ -1,7 +1,6 @@
 package com.agentecon.sim;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
@@ -171,38 +170,16 @@ public class CobbDougConfiguration implements IConfiguration {
 
 	protected Weight[] createInputWeights(Good[] inputs) {
 		Weight[] ws = new Weight[inputs.length];
-		if (ws.length <= 3) {
-			double[] defaults = new double[] { 0.5 / 0.9, 0.4, 0.5 };
-			for (int i = 0; i < ws.length; i++) {
-				ws[i] = new Weight(inputs[i], defaults[i]);
-			}
-		} else {
-			Random rand = new Random(23);
-			for (int i = 0; i < ws.length; i++) {
-				double weight = rand.nextDouble() + 0.2;
-				ws[i] = new Weight(inputs[i], weight);
-			}
+		for (int i = 0; i < ws.length; i++) {
+			ws[i] = new Weight(inputs[i], i == 0 ? 2.0 : 1.0);
 		}
 		return ws;
 	}
 
 	private Weight[] createPrefs(Good[] outputs) {
 		Weight[] ws = new Weight[outputs.length];
-		if (ws.length == 1) {
-			ws[0] = new Weight(outputs[0], 5.0);
-		} else if (ws.length == 2) {
-			ws[0] = new Weight(outputs[0], 8.0);
-			ws[1] = new Weight(outputs[1], 2.0);
-		} else if (ws.length == 3) {
-			ws[0] = new Weight(outputs[0], 3.0);
-			ws[1] = new Weight(outputs[1], 2.0);
-			ws[2] = new Weight(outputs[2], 5.0);
-		} else {
-			Random rand = new Random(17);
-			for (int i = 0; i < ws.length; i++) {
-				double weight = rand.nextDouble() * 9 + 1;
-				ws[i] = new Weight(outputs[i], weight);
-			}
+		for (int i = 0; i < outputs.length; i++) {
+			ws[i] = new Weight(outputs[i], 10.0 / outputs.length);
 		}
 		return ws;
 	}
