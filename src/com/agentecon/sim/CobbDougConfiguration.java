@@ -21,7 +21,7 @@ import com.agentecon.price.PriceFactory;
 public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 12000;
-	public static final int ITERATIONS = 10;
+	public static final int ITERATIONS = 0;
 
 	private int iteration = 0;
 	protected int firmsPerType;
@@ -122,14 +122,14 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(0.5);
+			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(iteration * 0.1 + 0.5);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
 	}
 
 	public boolean shouldTryAgain() {
-		return iteration < 50 && evolvingEvents.size() > 0;
+		return iteration < 10;
 	}
 
 	public double getScore() {
