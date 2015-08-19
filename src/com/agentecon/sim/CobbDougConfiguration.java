@@ -25,8 +25,6 @@ public class CobbDougConfiguration implements IConfiguration {
 	private int iteration = 0;
 	protected int firmsPerType;
 	protected int consumersPerType;
-	protected int firmTypes;
-	protected int consumerTypes;
 	private int seed;
 
 	protected Good[] inputs, outputs;
@@ -41,12 +39,14 @@ public class CobbDougConfiguration implements IConfiguration {
 	public CobbDougConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
 		this.firmsPerType = firmsPerType;
 		this.consumersPerType = consumersPerType;
-		this.consumerTypes = consumerTypes;
-		this.firmTypes = firmTypes;
 		this.seed = seed;
 		this.evolvingEvents = new ArrayList<>();
 		this.constantEvents = new ArrayList<>();
+		this.createGoods(consumerTypes, firmTypes);
+		// PriceFactory.NORMALIZED_GOOD = outputs[0];
+	}
 
+	protected void createGoods(int consumerTypes, int firmTypes) {
 		this.inputs = new Good[consumerTypes];
 		for (int i = 0; i < consumerTypes; i++) {
 			inputs[i] = new Good("input " + i, 0.0);
@@ -55,10 +55,12 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
-		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public SimulationConfig createNextConfig() {
+		if (iteration > 0) {
+			createGoods(inputs.length + 1, outputs.length + 1);
+		}
 		{
 			constantEvents.clear();
 			ArrayList<EvolvingEvent> evolvingEvents = iteration == 0 ? this.evolvingEvents : new ArrayList<EvolvingEvent>();
@@ -73,7 +75,7 @@ public class CobbDougConfiguration implements IConfiguration {
 		//
 		// constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
 		// for (int i=1000; i<ROUNDS; i+=2000){
-//		constantEvents.add(new MoneyPrintEvent(2000, 1, 1000));
+		// constantEvents.add(new MoneyPrintEvent(2000, 1, 1000));
 		// }
 		// for (int i=5000; i<10000; i+=250){
 		// constantEvents.add(new MoneyPrintEvent(i, 100, 10));
@@ -99,10 +101,7 @@ public class CobbDougConfiguration implements IConfiguration {
 			config.addEvent(event);
 		}
 		iteration++;
-		firmTypes++;
-		consumerTypes++;
 		return config;
-
 	}
 
 	protected SimConfig createConfig(int seed) {
@@ -121,7 +120,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	}
 
 	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] defaultPrefs) {
-		for (int i = 0; i < consumerTypes; i++) {
+		for (int i = 0; i < inputs.length; i++) {
 			String name = "Consumer " + i;
 			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
 			LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 10));
@@ -130,7 +129,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	}
 
 	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] inputWeights) {
-		for (int i = 0; i < firmTypes; i++) {
+		for (int i = 0; i < outputs.length; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(1.1);
