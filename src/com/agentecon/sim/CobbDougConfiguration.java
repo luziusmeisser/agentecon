@@ -132,14 +132,14 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < outputs.length; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(0.9);
+			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(0.5);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
 	}
 
 	public boolean shouldTryAgain() {
-		return iteration < 10;
+		return iteration < 5;
 	}
 
 	public double getScore() {
