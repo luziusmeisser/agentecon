@@ -149,40 +149,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return wallet.getAmount() * DIVIDEND_RATE;
 	}
 
-	private double calcConstDividend(IStock wallet) {
-		return Math.max(0, wallet.getAmount() - 750);
-	}
-
-	private double calcCogsDividend(IStock wallet, int day) {
-		double cash = wallet.getAmount();
-
-		double targetSpendings = prod.getCostOfMaximumProfit(this);
-		// double desiredCash = Math.max(100, targetSpendings / MAX_SPENDING_FRACTION);
-		double profits = calcProfits();
-
-		if (day < 1000) {
-			return cash / 4; // good
-		} else if (day < 2000) {
-			return 250; // bad
-		} else if (day < 3000) {
-			return cash / 4; // good
-		} else if (day < 4000) {
-			return 500 - targetSpendings; // bad
-		} else if (day < 5000) {
-			return cash / 2 - targetSpendings; // good
-		} else if (day < 6000) {
-			return 500 - targetSpendings / 2; // bad
-		} else if (day < 7000) {
-			return cash / 2 - targetSpendings / 2; // good
-		} else if (day < 8000) {
-			return cash / 4 - targetSpendings / 4; // good
-		} else if (day < 9000) {
-			return cash / 4 + targetSpendings / 4;
-		} else {
-			return cash / 4;
-		}
-	}
-
 	public double calcProfits() {
 		return output.getVolume() - calcCogs();
 	}
@@ -225,6 +191,20 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return Double.POSITIVE_INFINITY;
 	}
 
+	@Override
+	public Good[] getInputs() {
+		Good[] goods = new Good[inputs.length];
+		for (int i=0; i<inputs.length; i++){
+			goods[i] = inputs[i].getGood();
+		}
+		return goods;
+	}
+
+	@Override
+	public Good getOutput() {
+		return output.getGood();
+	}
+	
 	@Override
 	public String toString() {
 		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
