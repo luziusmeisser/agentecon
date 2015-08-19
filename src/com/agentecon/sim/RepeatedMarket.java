@@ -54,8 +54,10 @@ public class RepeatedMarket {
 			if (observer.shouldTryAgain()){
 				market.notifyCancelled();
 				world.abortTransaction();
+				listeners.notifyMarketClosed(market, false);
 			} else {
 				world.commitTransaction();
+				listeners.notifyMarketClosed(market, true);
 				break;
 			}
 		}
