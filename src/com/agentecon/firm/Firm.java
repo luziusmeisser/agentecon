@@ -20,7 +20,7 @@ import com.agentecon.price.IPriceFactory;
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public static double MAX_SPENDING_FRACTION = 0.5;
-	public static double DIVIDEND_RATE = 0.33;
+	public static double DIVIDEND_RATE = 0.10;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
