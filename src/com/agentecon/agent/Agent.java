@@ -60,6 +60,16 @@ public abstract class Agent implements IAgent, Cloneable {
 	}
 	
 	@Override
+	public int hashCode(){
+		return number;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		return ((Agent)o).number == number;
+	}
+	
+	@Override
 	public Agent clone(){
 		try {
 			Agent klon = (Agent) super.clone();
