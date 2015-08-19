@@ -63,7 +63,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		double budget = calcSpendableWealth();
 		double totSalaries = prod.getCostOfMaximumProfit(this);
 		if (totSalaries > budget) {
-			System.out.println("Limiting desired spending of " + totSalaries + " to " + budget);
 			totSalaries = budget;
 		}
 		if (!getMoney().isEmpty()) {

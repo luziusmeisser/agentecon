@@ -20,7 +20,7 @@ import com.agentecon.price.PriceFactory;
 
 public class CobbDougConfiguration implements IConfiguration {
 
-	public static final int ROUNDS = 12000;
+	public static final int ROUNDS = 5000;
 	public static final int ITERATIONS = 0;
 
 	private int iteration = 0;
@@ -56,27 +56,30 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
 		}
-//		PriceFactory.NORMALIZED_GOOD = outputs[0];
+		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public SimulationConfig createNextConfig() {
-		if (iteration == 0) {
+		{
+			constantEvents.clear();
+			ArrayList<EvolvingEvent> evolvingEvents = iteration == 0 ? this.evolvingEvents : new ArrayList<EvolvingEvent>();
 			Weight[] inputWeights = createInputWeights(inputs);
 			addFirms(constantEvents, evolvingEvents, inputWeights);
 			Weight[] defaultPrefs = createPrefs(outputs);
 			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
+		}
 
-			// constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
-			// constantEvents.add(new MoneyPrintEvent(1000, 1, 63));
-			//
-			// constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
-			// for (int i=1000; i<ROUNDS; i+=2000){
-			constantEvents.add(new MoneyPrintEvent(2000, 1, 1000));
-			// }
-			// for (int i=5000; i<10000; i+=250){
-			// constantEvents.add(new MoneyPrintEvent(i, 100, 10));
-			// }
-		} else {
+		// constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
+		// constantEvents.add(new MoneyPrintEvent(1000, 1, 63));
+		//
+		// constantEvents.add(new MoneyPrintEvent(2000, 3, 20));
+		// for (int i=1000; i<ROUNDS; i+=2000){
+//		constantEvents.add(new MoneyPrintEvent(2000, 1, 1000));
+		// }
+		// for (int i=5000; i<10000; i+=250){
+		// constantEvents.add(new MoneyPrintEvent(i, 100, 10));
+		// }
+		if (iteration > 0) {
 			ArrayList<EvolvingEvent> newList = new ArrayList<>();
 			for (EvolvingEvent ee : evolvingEvents) {
 				newList.add(ee.createNextGeneration());
@@ -84,14 +87,21 @@ public class CobbDougConfiguration implements IConfiguration {
 			evolvingEvents = newList;
 		}
 		SimulationConfig config = createConfig(seed);
-		for (SimEvent event : constantEvents) {
+		for (SimEvent event : constantEvents)
+
+		{
 			config.addEvent(event);
 		}
-		for (SimEvent event : evolvingEvents) {
+		for (
+
+		SimEvent event : evolvingEvents)
+
+		{
 			config.addEvent(event);
 		}
 		iteration++;
 		return config;
+
 	}
 
 	protected SimConfig createConfig(int seed) {
