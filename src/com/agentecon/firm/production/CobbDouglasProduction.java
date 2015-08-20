@@ -7,8 +7,15 @@ import com.agentecon.good.Inventory;
 
 public class CobbDouglasProduction extends AbstractProductionFunction {
 
+	private double constantFactor;
+
 	public CobbDouglasProduction(Good output, Weight... weights) {
+		this(output, 10, weights);
+	}
+
+	public CobbDouglasProduction(Good output, double constantFactor, Weight... weights) {
 		super(output, weights);
+		this.constantFactor = constantFactor;
 	}
 
 	public CobbDouglasProduction scale(double returnsToScale) {
@@ -18,7 +25,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 		for (int i = 0; i < newWeights.length; i++) {
 			newWeights[i] = new Weight(inputs[i].good, inputs[i].weight * factor);
 		}
-		return new CobbDouglasProduction(getOutput(), newWeights);
+		return new CobbDouglasProduction(getOutput(), constantFactor, newWeights);
 	}
 
 	public double getReturnsToScale() {
@@ -32,7 +39,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 			IStock in = inventory.getStock(input.good);
 			production *= Math.pow(in.consume(), input.weight);
 		}
-		production = Math.max(production, 1.0);
+		production = constantFactor * Math.max(production, 1.0);
 		inventory.getStock(getOutput()).add(production);
 		return production;
 	}
@@ -44,7 +51,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 			// increasing returns to scale
 			return Double.MAX_VALUE;
 		} else {
-			double outprice = prices.getPrice(output);
+			double outprice = prices.getPrice(output) * constantFactor;
 			double prod = getCBHelperProduct(prices);
 			double factor = Math.pow(outprice * prod, 1 / (1 - totWeight));
 			return totWeight * factor;
@@ -55,7 +62,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 		double tot = 1.0;
 		for (Weight in : inputs) {
 			double price = prices.getPrice(in.good);
-			if (Double.isInfinite(price)){
+			if (Double.isInfinite(price)) {
 				// skip, not obtainable
 			} else {
 				tot *= Math.pow(in.weight / price, in.weight);
