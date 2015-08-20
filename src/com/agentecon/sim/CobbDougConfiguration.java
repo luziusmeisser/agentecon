@@ -16,7 +16,7 @@ import com.agentecon.price.PriceFactory;
 public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 5000;
-	public static final int ITERATIONS = 10;
+	public static final int ITERATIONS = 50;
 
 	private int iteration = 0;
 	protected int firmsPerType;
