@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
-import com.agentecon.consumer.LogUtil;
-import com.agentecon.consumer.Weight;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
@@ -63,10 +60,8 @@ public class CobbDougConfiguration implements IConfiguration {
 		{
 			constantEvents.clear();
 			ArrayList<EvolvingEvent> evolvingEvents = iteration == 0 ? this.evolvingEvents : new ArrayList<EvolvingEvent>();
-			Weight[] inputWeights = createInputWeights(inputs);
-			addFirms(constantEvents, evolvingEvents, inputWeights);
-			Weight[] defaultPrefs = createPrefs(outputs);
-			addConsumers(constantEvents, evolvingEvents, defaultPrefs);
+			addFirms(constantEvents, evolvingEvents, new ProductionWeights(inputs, outputs));
+			addConsumers(constantEvents, evolvingEvents, new ConsumptionWeights(inputs, outputs));
 		}
 
 		// constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
@@ -118,20 +113,18 @@ public class CobbDougConfiguration implements IConfiguration {
 		return c;
 	}
 
-	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] defaultPrefs) {
+	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ConsumptionWeights defaultPrefs) {
 		for (int i = 0; i < inputs.length; i++) {
 			String name = "Consumer " + i;
 			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
-			LogUtil util = new LogUtil(defaultPrefs, new Weight(inputs[i], 10));
-			config.add(new ConsumerEvent(consumersPerType, name, end, util));
+			config.add(new ConsumerEvent(consumersPerType, name, end, defaultPrefs.getFactory(i)));
 		}
 	}
 
-	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, Weight[] inputWeights) {
+	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ProductionWeights prod) {
 		for (int i = 0; i < outputs.length; i++) {
-			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights).scale(0.8);
+			IProductionFunction fun = prod.createUtilFun(i, 0.8);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
@@ -147,41 +140,6 @@ public class CobbDougConfiguration implements IConfiguration {
 			tot += ae.getScore();
 		}
 		return tot;
-	}
-
-	protected Weight[] limit(Weight[] rotate, int limit) {
-		if (rotate.length > limit) {
-			Weight[] inputs = new Weight[limit];
-			System.arraycopy(rotate, 0, inputs, 0, limit);
-			return inputs;
-		} else {
-			return rotate;
-		}
-	}
-
-	protected static Weight[] rotate(Weight[] productionWeights, int i) {
-		int len = productionWeights.length;
-		i = i % len;
-		Weight[] rotated = new Weight[len];
-		System.arraycopy(productionWeights, 0, rotated, len - i, i);
-		System.arraycopy(productionWeights, i, rotated, 0, len - i);
-		return rotated;
-	}
-
-	protected Weight[] createInputWeights(Good[] inputs) {
-		Weight[] ws = new Weight[inputs.length];
-		for (int i = 0; i < ws.length; i++) {
-			ws[i] = new Weight(inputs[i], i == 0 ? 2.0 : 1.0);
-		}
-		return ws;
-	}
-
-	private Weight[] createPrefs(Good[] outputs) {
-		Weight[] ws = new Weight[outputs.length];
-		for (int i = 0; i < outputs.length; i++) {
-			ws[i] = new Weight(outputs[i], 10.0 / outputs.length);
-		}
-		return ws;
 	}
 
 }

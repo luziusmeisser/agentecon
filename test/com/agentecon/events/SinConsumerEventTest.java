@@ -8,9 +8,11 @@ import org.junit.Test;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.consumer.Consumer;
+import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
+import com.agentecon.sim.IUtilityFactory;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.world.IConsumers;
 import com.agentecon.world.IFirms;
@@ -24,7 +26,13 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 
 	@Test
 	public void test() {
-		SinConsumerEvent e = new SinConsumerEvent(50, 7, 100, 150, "test", new Endowment(new Stock(SimConfig.BEER, 1)), new LogUtil());
+		SinConsumerEvent e = new SinConsumerEvent(50, 7, 100, 150, "test", new Endowment(new Stock(SimConfig.BEER, 1)), new IUtilityFactory() {
+			
+			@Override
+			public IUtility create(int number) {
+				return new LogUtil();
+			}
+		});
 		for (day = 50; day<200; day++){
 			e.execute(this);
 		}

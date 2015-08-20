@@ -1,7 +1,7 @@
 package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.consumer.LogUtil;
+import com.agentecon.sim.IUtilityFactory;
 import com.agentecon.world.IWorld;
 
 public class SinConsumerEvent extends ConsumerEvent {
@@ -10,7 +10,7 @@ public class SinConsumerEvent extends ConsumerEvent {
 	private int cycle;
 	private double births;
 
-	public SinConsumerEvent(int start, int initialPopulation, int birthsPerCycle, int interval, String name, Endowment end, LogUtil utility) {
+	public SinConsumerEvent(int start, int initialPopulation, int birthsPerCycle, int interval, String name, Endowment end, IUtilityFactory utility) {
 		super(start, birthsPerCycle, 1, name, end, utility);
 		this.start = start;
 		this.cycle = interval;
