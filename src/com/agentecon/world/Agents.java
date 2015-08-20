@@ -25,16 +25,16 @@ public class Agents implements IConsumers, IFirms, ITraders {
 
 	public Agents(ISimulationListener listeners, long seed, ArrayList<Firm> firms, ArrayList<Consumer> cons, ArrayList<Trader> trad) {
 		this.consumers = new ArrayList<>();
-		for (Consumer con: cons){
+		for (Consumer con : cons) {
 			this.consumers.add(con.clone());
 		}
 		this.firms = new ArrayList<>();
-		for (Firm firm: firms){
+		for (Firm firm : firms) {
 			Firm klon = firm.clone();
 			this.firms.add(klon);
 		}
 		this.traders = new ArrayList<>();
-		for (Trader t: trad){
+		for (Trader t : trad) {
 			traders.add(t);
 		}
 		this.listeners = listeners;
@@ -125,14 +125,13 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	}
 
 	public Agents duplicate() {
-		getRand();
-//		assert rand == null; TEMP
+		assert rand == null;
 		return new Agents(listeners, seed, firms, consumers, traders);
 	}
-	
+
 	@Override
 	public String toString() {
-		return consumers.size() + " consumers, " + firms.size() + " firms, " + traders.size() + " traders"; 
+		return consumers.size() + " consumers, " + firms.size() + " firms, " + traders.size() + " traders";
 	}
 
 }
