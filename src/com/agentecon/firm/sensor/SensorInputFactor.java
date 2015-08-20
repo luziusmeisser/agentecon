@@ -10,7 +10,7 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;
 
 public class SensorInputFactor extends InputFactor {
-
+	
 	private Bid prevRealBid;
 	private double accuracy;
 
@@ -50,7 +50,7 @@ public class SensorInputFactor extends InputFactor {
 		super.adaptPrice();
 		if (prevRealBid != null) {
 			if (prevRealBid.isUsed()) {
-				accuracy /= 1.005;
+				accuracy = Math.max(0.01, accuracy / 1.005);
 			} else {
 				accuracy = Math.min(0.5, accuracy * 2);
 			}

@@ -42,11 +42,11 @@ public class SensorOutputFactor extends OutputFactor {
 		super.adaptPrice();
 		if (prevRealAsk != null) {
 			if (prevRealAsk.isUsed()) {
-				accuracy /= 1.005;
+				accuracy = Math.max(0.01, accuracy / 1.005);
 			} else {
 				accuracy = Math.min(0.5, accuracy * 2);
 			}
-//			prevRealAsk = null;
+			// prevRealAsk = null;
 		}
 	}
 
@@ -60,9 +60,9 @@ public class SensorOutputFactor extends OutputFactor {
 		double most = getSafePrice();
 		return accuracy * sensor + (1 - accuracy) * most;
 	}
-	
+
 	public OutputFactor duplicate(IStock stock) {
-//		assert prevRealAsk == null;
+		// assert prevRealAsk == null;
 		return new SensorOutputFactor(stock, price, accuracy);
 	}
 
