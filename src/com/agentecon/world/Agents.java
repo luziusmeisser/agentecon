@@ -125,7 +125,8 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	}
 
 	public Agents duplicate() {
-		assert rand == null;
+		getRand();
+//		assert rand == null; TEMP
 		return new Agents(listeners, seed, firms, consumers, traders);
 	}
 	
