@@ -28,10 +28,14 @@ public class SensorOutputFactor extends OutputFactor {
 	public double getVolume() {
 		return super.getVolume() + (prevRealAsk == null ? 0.0 : prevRealAsk.getTransactionVolume());
 	}
+	
+	private double getSensorOfferSize(){
+		return accuracy / 5;
+	}
 
 	@Override
 	public void createOffer(IPriceMakerMarket market, IStock money, double amount) {
-		double sensorSize = accuracy * amount;
+		double sensorSize = getSensorOfferSize() * amount;
 		super.createOffer(market, money, sensorSize);
 		prevRealAsk = new Ask(money, getStock(), new Price(getGood(), getSafePrice()), amount - sensorSize);
 		market.offer(prevRealAsk);
@@ -56,9 +60,10 @@ public class SensorOutputFactor extends OutputFactor {
 
 	@Override
 	public double getPrice() {
+		double offerSize = getSensorOfferSize();
 		double sensor = super.getPrice();
 		double most = getSafePrice();
-		return accuracy * sensor + (1 - accuracy) * most;
+		return offerSize * sensor + (1 - offerSize) * most;
 	}
 
 	public OutputFactor duplicate(IStock stock) {
