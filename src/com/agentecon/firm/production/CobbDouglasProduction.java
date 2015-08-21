@@ -7,10 +7,12 @@ import com.agentecon.good.Inventory;
 
 public class CobbDouglasProduction extends AbstractProductionFunction {
 
+	public static final double PRODUCTIVITY = 10;
+	
 	private double constantFactor;
 
 	public CobbDouglasProduction(Good output, Weight... weights) {
-		this(output, 10, weights);
+		this(output, PRODUCTIVITY, weights);
 	}
 
 	public CobbDouglasProduction(Good output, double constantFactor, Weight... weights) {

@@ -9,8 +9,8 @@ public class ConsumptionWeights {
 
 	private static final int CONSUMPTION_GOODS = 3;
 	
-	private static final double TIME_WEIGHT = 12.0;
-	private static final double[] WEIGHTS = new double[]{4.0, 2.0, 7.0};
+	public static final double TIME_WEIGHT = 12.0;
+	public static final double[] WEIGHTS = new double[]{4.0, 2.0, 7.0};
 	
 	private Good[] inputs;
 	private Good[] outputs;
@@ -21,6 +21,8 @@ public class ConsumptionWeights {
 	}
 	
 	public LogUtil createUtilFun(int type, int number){
+		number = 0; // TEMP
+		type = 0; // TEMP
 		int count = Math.min(CONSUMPTION_GOODS, outputs.length);
 		Weight[] prefs = new Weight[count + 1];
 		for (int i=0; i<count; i++){

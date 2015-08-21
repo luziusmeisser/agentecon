@@ -16,7 +16,10 @@ import com.agentecon.price.PriceFactory;
 public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 5000;
-	public static final int ITERATIONS = 5;
+	public static final int ITERATIONS = 0;
+	
+	public static final int CONSUMERS_PER_TYPE = 30;
+	public static final int FIRMS_PER_TYPE = 3;
 
 	private int iteration = 0;
 	protected int firmsPerType;
@@ -29,7 +32,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 
 	public CobbDougConfiguration(int seed) {
-		this(3, 30, 3, 3, seed);
+		this(FIRMS_PER_TYPE, CONSUMERS_PER_TYPE, 2, 2, seed);
 	}
 
 	public CobbDougConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {
@@ -124,7 +127,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ProductionWeights prod) {
 		for (int i = 0; i < outputs.length; i++) {
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = prod.createUtilFun(i, 0.8);
+			IProductionFunction fun = prod.createProdFun(i, 0.8);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, new String[] { PriceFactory.SENSOR, "0.05" }));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
