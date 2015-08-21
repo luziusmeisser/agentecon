@@ -16,10 +16,12 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
+import com.agentecon.util.Average;
+import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
-	public static double MAX_SPENDING_FRACTION = 0.5;
+	public static double MAX_SPENDING_FRACTION = 0.2;
 	public static double DIVIDEND_RATE = 0.10;
 
 	// private ShareRegister register; clone?
@@ -61,10 +63,10 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public void offer(IPriceMakerMarket market) {
 		double budget = calcSpendableWealth();
-		double totSalaries = prod.getCostOfMaximumProfit(this);
-		if (totSalaries > budget) {
-			totSalaries = budget;
-		}
+		// double totSalaries = prod.getCostOfMaximumProfit(this);
+		// if (totSalaries > budget) {
+		double totSalaries = budget;
+		// }
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
@@ -136,13 +138,21 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.max(0, calcRelativeDividend(wallet));
+		double dividend = Math.max(0, calcProfitBasedDividend(wallet));
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
 		// register.payDividend(wallet, dividend);
 		wallet.remove(dividend);
 		return dividend;
+	}
+
+	private MovingAverage avgProfit = new MovingAverage(0.6);
+	
+	private double calcProfitBasedDividend(IStock wallet) {
+		double profits = calcProfits();
+		avgProfit.add(profits);
+		return avgProfit.getAverage();
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
@@ -194,7 +204,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	@Override
 	public Good[] getInputs() {
 		Good[] goods = new Good[inputs.length];
-		for (int i=0; i<inputs.length; i++){
+		for (int i = 0; i < inputs.length; i++) {
 			goods[i] = inputs[i].getGood();
 		}
 		return goods;
@@ -204,7 +214,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	public Good getOutput() {
 		return output.getGood();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
