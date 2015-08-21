@@ -20,8 +20,9 @@ import com.agentecon.util.Average;
 import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
+	
+	private static final boolean FRACTIONAL_SPENDING = true;
 
-	public static double MAX_SPENDING_FRACTION = 0.2;
 	public static double DIVIDEND_RATE = 0.10;
 
 	// private ShareRegister register; clone?
@@ -62,11 +63,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double budget = calcSpendableWealth();
-		// double totSalaries = prod.getCostOfMaximumProfit(this);
-		// if (totSalaries > budget) {
-		double totSalaries = budget;
-		// }
+		double totSalaries = getTotSalaries();
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
@@ -86,6 +83,16 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
 	}
 
+	protected double getTotSalaries() {
+		if (FRACTIONAL_SPENDING){
+			return getMoney().getAmount() * 0.2;
+		} else {
+			double budget = getMoney().getAmount() * 0.5;
+			double totSalaries = prod.getCostOfMaximumProfit(this);
+			return Math.min(budget, totSalaries);
+		}
+	}
+
 	@Override
 	public Firm clone() {
 		Firm klon = (Firm) super.clone();
@@ -101,10 +108,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		if (getMoney().getAmount() > 100) {
 			f.createOffers(market, getMoney(), 1);
 		}
-	}
-
-	private double calcSpendableWealth() {
-		return getMoney().getAmount() * MAX_SPENDING_FRACTION;
 	}
 
 	public void adaptPrices() {
@@ -138,7 +141,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.max(0, calcProfitBasedDividend(wallet));
+		double dividend = Math.max(0, FRACTIONAL_SPENDING ? calcProfitBasedDividend() : calcRelativeDividend(wallet));
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
@@ -149,7 +152,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private MovingAverage avgProfit = new MovingAverage(0.6);
 	
-	private double calcProfitBasedDividend(IStock wallet) {
+	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
 		avgProfit.add(profits);
 		return avgProfit.getAverage();
