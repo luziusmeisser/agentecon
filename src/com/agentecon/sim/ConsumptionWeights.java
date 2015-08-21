@@ -22,7 +22,6 @@ public class ConsumptionWeights {
 	
 	public LogUtil createUtilFun(int type, int number){
 		number = 0; // TEMP
-		type = 0; // TEMP
 		int count = Math.min(CONSUMPTION_GOODS, outputs.length);
 		Weight[] prefs = new Weight[count + 1];
 		for (int i=0; i<count; i++){
