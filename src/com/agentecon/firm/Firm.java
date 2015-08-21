@@ -22,7 +22,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	
 	private static final boolean FRACTIONAL_SPENDING = false;
 
-	public static double DIVIDEND_RATE = 0.10;
+	public static double DIVIDEND_RATE = 0.05;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
