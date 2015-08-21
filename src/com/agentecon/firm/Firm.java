@@ -20,7 +20,7 @@ import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 	
-	private static final boolean FRACTIONAL_SPENDING = false;
+	private static final boolean FRACTIONAL_SPENDING = true;
 
 	public static double DIVIDEND_RATE = 0.1;
 
