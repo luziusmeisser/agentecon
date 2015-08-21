@@ -19,8 +19,8 @@ public class ProductionWeights {
 	}
 	
 	public IProductionFunction createProdFun(int type, double retToScale){
-		Weight[] prefs = new Weight[INPUTS];
-		for (int i=0; i<INPUTS; i++){
+		Weight[] prefs = new Weight[Math.min(inputs.length, INPUTS)];
+		for (int i=0; i<prefs.length; i++){
 			Good good = inputs[(i + type) % inputs.length];
 			prefs[i] = new Weight(good, WEIGHTS[i]);
 		}
