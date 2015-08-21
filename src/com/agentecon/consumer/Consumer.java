@@ -7,7 +7,6 @@ import java.util.Collection;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
-import com.agentecon.finance.Portfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;

@@ -16,12 +16,11 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
-import com.agentecon.util.Average;
 import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 	
-	private static final boolean FRACTIONAL_SPENDING = true;
+	private static final boolean FRACTIONAL_SPENDING = false;
 
 	public static double DIVIDEND_RATE = 0.10;
 
