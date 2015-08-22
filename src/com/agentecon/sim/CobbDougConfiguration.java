@@ -18,8 +18,8 @@ public class CobbDougConfiguration implements IConfiguration {
 	public static final int ROUNDS = 5000;
 	public static final int ITERATIONS = 0;
 	
-	public static final int CONSUMERS_PER_TYPE = 30;
-	public static final int FIRMS_PER_TYPE = 3;
+	public static final int CONSUMERS_PER_TYPE = 100;
+	public static final int FIRMS_PER_TYPE = 10;
 
 	private int iteration = 0;
 	protected int firmsPerType;
