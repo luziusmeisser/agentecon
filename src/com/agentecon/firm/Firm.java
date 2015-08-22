@@ -164,12 +164,12 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcProfitBasedDividend() {
 		double profits = Math.max(0.0, calcProfits());
-		double maxAdjustment = profits * 0.2;
+		double maxAdjustment = profits * 0.01;
 		if (Math.abs(excessMoney) > maxAdjustment){
 			if (excessMoney > 0){
-				return profits * 1.2;
+				return profits * 1.01;
 			} else {
-				return profits / 1.2;
+				return profits / 1.01;
 			}
 		} else {
 			return profits + excessMoney;
