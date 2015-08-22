@@ -4,7 +4,6 @@ import com.agentecon.stats.Numbers;
 
 public class ExpSearchPrice extends AdaptablePrice {
 
-	public static final double ADAPTION_SPEED = 1.1;
 	public static final double MAX_ADAPTION_FACTOR = 0.5;
 	public static final double MIN_ADAPTION_FACTOR = Numbers.EPSILON * 1000;
 
@@ -12,6 +11,11 @@ public class ExpSearchPrice extends AdaptablePrice {
 	private double factor;
 	private boolean direction;
 	private int sameDirectionInARow;
+	
+	public ExpSearchPrice(double initialFactor, double initialPrice, double speed) {
+		this(initialFactor, initialPrice);
+		this.speed = speed;
+	}
 
 	public ExpSearchPrice(double initialFactor, double initialPrice) {
 		super(initialPrice);

@@ -147,7 +147,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
-	private ExpSearchPrice dividend = new ExpSearchPrice(1.05);
+	private ExpSearchPrice dividend = new ExpSearchPrice(1.05, 5.0, 1.01);
 
 	private double calcProfitBasedDividend() {
 		dividend.adapt(excessMoney > 0);
