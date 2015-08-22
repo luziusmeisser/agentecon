@@ -55,7 +55,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 	
 	protected boolean isFractionalSpending(){
-		return getAgentId() % 2 == 0;
+		return true;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
@@ -83,9 +83,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
 	}
 
-	static double totActual;
-	static double totDesired;
-	
 	private double excessMoney = 0.0;
 
 	protected double getTotSalaries() {
@@ -98,22 +95,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			double budget = getMoney().getAmount() * 0.5;
 			double totSalaries = prod.getCostOfMaximumProfit(this);
 			double actual = Math.min(budget, totSalaries);
-			totActual += actual;
-			totDesired += totSalaries;
-//			System.out.println(actual + " vs desired " + totSalaries + ", avg " + (totActual/totDesired));
 			return actual;
 		}
-	}
-
-	@Override
-	public Firm clone() {
-		Firm klon = (Firm) super.clone();
-		klon.output = output.duplicate(klon.getStock(output.getGood()));
-		klon.inputs = new InputFactor[inputs.length];
-		for (int i = 0; i < inputs.length; i++) {
-			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
-		}
-		return klon;
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
@@ -164,7 +147,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcProfitBasedDividend() {
 		double profits = Math.max(0.0, calcProfits());
-		double maxAdjustment = profits * 0.01;
+		double factor = ((getAgentId() % 10) + 1.0)/100.0;
+		double maxAdjustment = profits * factor;
 		if (Math.abs(excessMoney) > maxAdjustment){
 			if (excessMoney > 0){
 				return profits + maxAdjustment;
@@ -234,6 +218,17 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	@Override
 	public Good getOutput() {
 		return output.getGood();
+	}
+	
+	@Override
+	public Firm clone() {
+		Firm klon = (Firm) super.clone();
+		klon.output = output.duplicate(klon.getStock(output.getGood()));
+		klon.inputs = new InputFactor[inputs.length];
+		for (int i = 0; i < inputs.length; i++) {
+			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
+		}
+		return klon;
 	}
 
 	@Override
