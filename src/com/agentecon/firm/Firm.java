@@ -3,6 +3,7 @@
 package com.agentecon.firm;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
@@ -15,7 +16,6 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
-import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPriceFactory;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
@@ -146,28 +146,22 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		wallet.remove(dividend);
 		return dividend;
 	}
-
-	private ExpSearchPrice dividend = new ExpSearchPrice(1.05, 5.0, 1.01){
-		protected double getMaxFactor(){
-			return 1.1;
-		}
-	};
+	
+	private static final Random rand = new Random();
 
 	private double calcProfitBasedDividend() {
-		dividend.adapt(excessMoney > 0);
-		return Math.min(getMoney().getAmount()/2, dividend.getPrice());
-//		double profits = Math.max(0.0, calcProfits());
-//		double factor = ((getAgentId() % 10) + 1.0) / 100.0;
-//		double maxAdjustment = profits * factor;
-//		if (Math.abs(excessMoney) > maxAdjustment) {
-//			if (excessMoney > 0) {
-//				return profits + maxAdjustment;
-//			} else {
-//				return profits - maxAdjustment;
-//			}
-//		} else {
-//			return profits + excessMoney;
-//		}
+		double profits = Math.max(0.0, calcProfits());
+		double factor = rand.nextDouble()/50 + 0.001;
+		double maxAdjustment = profits * factor;
+		if (Math.abs(excessMoney) > maxAdjustment) {
+			if (excessMoney > 0) {
+				return profits + maxAdjustment;
+			} else {
+				return profits - maxAdjustment;
+			}
+		} else {
+			return profits + excessMoney;
+		}
 	}
 
 	private double calcRelativeDividend(IStock wallet) {

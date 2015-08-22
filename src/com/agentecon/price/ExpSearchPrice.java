@@ -11,11 +11,6 @@ public class ExpSearchPrice extends AdaptablePrice {
 	private double factor;
 	private boolean direction;
 	private int sameDirectionInARow;
-	
-	public ExpSearchPrice(double initialFactor, double initialPrice, double speed) {
-		this(initialFactor, initialPrice);
-		this.speed = speed;
-	}
 
 	public ExpSearchPrice(double initialFactor, double initialPrice) {
 		super(initialPrice);
@@ -29,22 +24,18 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
-	
-	protected double getMaxFactor(){
-		return MAX_ADAPTION_FACTOR;
-	}
 
 	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
 			sameDirectionInARow++;
 			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
-				factor = Math.min(getMaxFactor(), factor * speed);
+				factor = Math.min(MAX_ADAPTION_FACTOR, factor * speed);
 			}
 		} else {
 			sameDirectionInARow = 0;
 			direction = increase;
-			factor = Math.max(getMaxFactor(), factor / speed);
+			factor = Math.max(MIN_ADAPTION_FACTOR, factor / speed);
 		}
 		return factor;
 	}
