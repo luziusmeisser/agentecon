@@ -15,6 +15,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
+import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPriceFactory;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
@@ -53,8 +54,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected InputFactor createInputFactor(IPriceFactory prices, IStock stock) {
 		return new InputFactor(stock, prices.createPrice(stock.getGood()));
 	}
-	
-	protected boolean isFractionalSpending(){
+
+	protected boolean isFractionalSpending() {
 		return true;
 	}
 
@@ -145,19 +146,23 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
+	private ExpSearchPrice dividend = new ExpSearchPrice(1.05);
+
 	private double calcProfitBasedDividend() {
-		double profits = Math.max(0.0, calcProfits());
-		double factor = ((getAgentId() % 10) + 1.0)/100.0;
-		double maxAdjustment = profits * factor;
-		if (Math.abs(excessMoney) > maxAdjustment){
-			if (excessMoney > 0){
-				return profits + maxAdjustment;
-			} else {
-				return profits - maxAdjustment;
-			}
-		} else {
-			return profits + excessMoney;
-		}
+		dividend.adapt(excessMoney > 0);
+		return dividend.getPrice();
+//		double profits = Math.max(0.0, calcProfits());
+//		double factor = ((getAgentId() % 10) + 1.0) / 100.0;
+//		double maxAdjustment = profits * factor;
+//		if (Math.abs(excessMoney) > maxAdjustment) {
+//			if (excessMoney > 0) {
+//				return profits + maxAdjustment;
+//			} else {
+//				return profits - maxAdjustment;
+//			}
+//		} else {
+//			return profits + excessMoney;
+//		}
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
@@ -219,7 +224,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	public Good getOutput() {
 		return output.getGood();
 	}
-	
+
 	@Override
 	public Firm clone() {
 		Firm klon = (Firm) super.clone();
