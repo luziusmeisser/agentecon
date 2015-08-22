@@ -153,14 +153,14 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		double profits = Math.max(0.0, calcProfits());
 		double factor = rand.nextDouble()/50 + 0.001;
 		double maxAdjustment = profits * factor;
-		if (Math.abs(excessMoney) > maxAdjustment) {
+		if (Math.abs(excessMoney / 5) > maxAdjustment) {
 			if (excessMoney > 0) {
 				return profits + maxAdjustment;
 			} else {
 				return profits - maxAdjustment;
 			}
 		} else {
-			return profits + excessMoney;
+			return profits + excessMoney / 5;
 		}
 	}
 
