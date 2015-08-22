@@ -19,8 +19,8 @@ import com.agentecon.price.IPriceFactory;
 import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
-	
-	private static final boolean FRACTIONAL_SPENDING = true;
+
+	private static final boolean FRACTIONAL_SPENDING = false;
 
 	public static double DIVIDEND_RATE = 0.1;
 
@@ -82,13 +82,23 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
 	}
 
+	static double totActual;
+	static double totDesired;
+
 	protected double getTotSalaries() {
-		if (FRACTIONAL_SPENDING){
-			return getMoney().getAmount() * 0.2;
+		if (FRACTIONAL_SPENDING) {
+			double totSalaries = prod.getCostOfMaximumProfit(this);
+			double actual = getMoney().getAmount() * 0.2;
+
+			return actual;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
 			double totSalaries = prod.getCostOfMaximumProfit(this);
-			return Math.min(budget, totSalaries);
+			double actual = Math.min(budget, totSalaries);
+			totActual += actual;
+			totDesired += totSalaries;
+//			System.out.println(actual + " vs desired " + totSalaries + ", avg " + (totActual/totDesired));
+			return actual;
 		}
 	}
 
@@ -150,7 +160,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private MovingAverage avgProfit = new MovingAverage(0.6);
-	
+
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
 		avgProfit.add(profits);
