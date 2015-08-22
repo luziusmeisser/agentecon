@@ -139,6 +139,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		IStock wallet = getMoney();
 		double dividend = Math.max(0, isFractionalSpending() ? calcProfitBasedDividend() : calcRelativeDividend(wallet));
 		assert dividend >= 0;
+		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
 
 		// register.payDividend(wallet, dividend);
@@ -150,7 +151,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcProfitBasedDividend() {
 		dividend.adapt(excessMoney > 0);
-		return dividend.getPrice();
+		return Math.min(getMoney().getAmount()/2, dividend.getPrice());
 //		double profits = Math.max(0.0, calcProfits());
 //		double factor = ((getAgentId() % 10) + 1.0) / 100.0;
 //		double maxAdjustment = profits * factor;

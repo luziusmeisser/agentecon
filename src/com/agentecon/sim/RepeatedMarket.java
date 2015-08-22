@@ -33,6 +33,7 @@ public class RepeatedMarket {
 			Collection<Firm> firms = world.getFirms().getRandomFirms();
 			Collection<Consumer> cons = world.getConsumers().getRandomConsumers();
 			distributeDividends(day, firms, cons);
+			listeners.notifyMarketClosed(null, false);
 			Market market = new Market(world.getRand());
 			market.addMarketListener(observer);
 			listeners.notifyMarketOpened(market);
