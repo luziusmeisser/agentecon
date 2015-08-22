@@ -55,7 +55,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 	
 	protected boolean isFractionalSpending(){
-		return getAgentId() % 2 == 0;
+		return true;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
@@ -164,12 +164,12 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcProfitBasedDividend() {
 		double profits = Math.max(0.0, calcProfits());
-		double maxAdjustment = profits * 0.1;
+		double maxAdjustment = profits * 0.2;
 		if (Math.abs(excessMoney) > maxAdjustment){
 			if (excessMoney > 0){
-				return profits * 1.1;
+				return profits * 1.2;
 			} else {
-				return profits / 1.1;
+				return profits / 1.2;
 			}
 		} else {
 			return profits + excessMoney;
