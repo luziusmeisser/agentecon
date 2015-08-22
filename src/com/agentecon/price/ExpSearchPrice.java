@@ -4,7 +4,7 @@ import com.agentecon.stats.Numbers;
 
 public class ExpSearchPrice extends AdaptablePrice {
 
-	public static final double MAX_ADAPTION_FACTOR = 0.05;
+	public static final double MAX_ADAPTION_FACTOR = 0.5;
 	public static final double MIN_ADAPTION_FACTOR = Numbers.EPSILON * 1000;
 
 	private double speed;
@@ -29,18 +29,22 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
+	
+	protected double getMaxFactor(){
+		return MAX_ADAPTION_FACTOR;
+	}
 
 	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
 			sameDirectionInARow++;
 			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
-				factor = Math.min(MAX_ADAPTION_FACTOR, factor * speed);
+				factor = Math.min(getMaxFactor(), factor * speed);
 			}
 		} else {
 			sameDirectionInARow = 0;
 			direction = increase;
-			factor = Math.max(MIN_ADAPTION_FACTOR, factor / speed);
+			factor = Math.max(getMaxFactor(), factor / speed);
 		}
 		return factor;
 	}
