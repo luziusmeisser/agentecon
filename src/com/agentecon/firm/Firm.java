@@ -146,22 +146,9 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		wallet.remove(dividend);
 		return dividend;
 	}
-	
-	private static final Random rand = new Random();
 
 	private double calcProfitBasedDividend() {
-//		double profits = Math.max(0.0, calcProfits());
-//		double factor = rand.nextDouble()/50 + 0.001;
-//		double maxAdjustment = profits * factor;
-//		if (Math.abs(excessMoney / 5) > maxAdjustment) {
-//			if (excessMoney > 0) {
-//				return profits + maxAdjustment;
-//			} else {
-//				return profits - maxAdjustment;
-//			}
-//		} else {
-			return calcProfits() + excessMoney / 10;
-//		}
+		return calcProfits() + excessMoney / 10;
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
