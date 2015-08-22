@@ -16,11 +16,8 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
-import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
-
-	private static final boolean FRACTIONAL_SPENDING = true;
 
 	public static double DIVIDEND_RATE = 0.1;
 
@@ -56,6 +53,10 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected InputFactor createInputFactor(IPriceFactory prices, IStock stock) {
 		return new InputFactor(stock, prices.createPrice(stock.getGood()));
 	}
+	
+	protected boolean isFractionalSpending(){
+		return getAgentId() % 2 == 0;
+	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
 		this.monitor.add(prodmon);
@@ -88,7 +89,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	private double excessMoney = 0.0;
 
 	protected double getTotSalaries() {
-		if (FRACTIONAL_SPENDING) {
+		if (isFractionalSpending()) {
 			double totSalaries = prod.getCostOfMaximumProfit(this);
 			double actual = getMoney().getAmount() * 0.2;
 			this.excessMoney = actual - totSalaries;
@@ -152,7 +153,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.max(0, FRACTIONAL_SPENDING ? calcProfitBasedDividend() : calcRelativeDividend(wallet));
+		double dividend = Math.max(0, isFractionalSpending() ? calcProfitBasedDividend() : calcRelativeDividend(wallet));
 		assert dividend >= 0;
 		monitor.reportDividend(dividend);
 
