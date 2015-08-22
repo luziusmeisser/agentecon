@@ -55,7 +55,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 	
 	protected boolean isFractionalSpending(){
-		return true;
+		return getAgentId() % 2 == 0;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
