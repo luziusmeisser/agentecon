@@ -20,7 +20,7 @@ import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
-	private static final boolean FRACTIONAL_SPENDING = false;
+	private static final boolean FRACTIONAL_SPENDING = true;
 
 	public static double DIVIDEND_RATE = 0.1;
 
@@ -84,12 +84,14 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	static double totActual;
 	static double totDesired;
+	
+	private double excessMoney = 0.0;
 
 	protected double getTotSalaries() {
 		if (FRACTIONAL_SPENDING) {
 			double totSalaries = prod.getCostOfMaximumProfit(this);
 			double actual = getMoney().getAmount() * 0.2;
-
+			this.excessMoney = actual - totSalaries;
 			return actual;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
@@ -159,12 +161,18 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
-	private MovingAverage avgProfit = new MovingAverage(0.6);
-
 	private double calcProfitBasedDividend() {
-		double profits = calcProfits();
-		avgProfit.add(profits);
-		return avgProfit.getAverage();
+		double profits = Math.max(0.0, calcProfits());
+		double maxAdjustment = profits * 0.1;
+		if (Math.abs(excessMoney) > maxAdjustment){
+			if (excessMoney > 0){
+				return profits * 1.1;
+			} else {
+				return profits / 1.1;
+			}
+		} else {
+			return profits + excessMoney;
+		}
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
