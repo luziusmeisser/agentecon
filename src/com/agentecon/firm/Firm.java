@@ -55,7 +55,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	protected boolean isFractionalSpending() {
-		return false;
+		return true;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
@@ -147,7 +147,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private double calcProfitBasedDividend() {
-		return calcProfits() + excessMoney / 10;
+		return calcProfits() + excessMoney / 20;
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
