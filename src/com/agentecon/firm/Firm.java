@@ -149,7 +149,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
-	private MovingAverage dividends = new MovingAverage(0.96);
+	private MovingAverage dividends = new MovingAverage(0.5);
 	
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
