@@ -16,6 +16,7 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
+import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
@@ -87,9 +88,11 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	protected double getTotSalaries() {
 		if (isFractionalSpending()) {
+			double cash = getMoney().getAmount();
 			double totSalaries = prod.getCostOfMaximumProfit(this);
-			double actual = getMoney().getAmount() * 0.2;
-			this.excessMoney = actual - totSalaries;
+			double actual = cash * 0.2;
+			this.excessMoney = 5 * (actual - totSalaries);
+			System.out.println(excessMoney);
 			return actual;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
@@ -146,8 +149,12 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
+	private MovingAverage dividends = new MovingAverage(0.96);
+	
 	private double calcProfitBasedDividend() {
-		return calcProfits() + excessMoney / 5;
+		double profits = calcProfits();
+		dividends.add(profits + excessMoney);
+		return dividends.getAverage();
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
