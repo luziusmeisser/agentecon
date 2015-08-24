@@ -94,7 +94,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			double actual = cash * 0.2;
 			this.excessMoney = 5 * (actual - totSalaries);
 			System.out.println(excessMoney);
-			return (actual + totSalaries)/2;
+			return (actual * 4 + totSalaries) / 5;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
 			double totSalaries = prod.getCostOfMaximumProfit(this);
@@ -152,13 +152,14 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private MovingAverage profits = new MovingAverage();
 	private ExpSearchPrice dividendAdjustment = new ExpSearchPrice(0.04);
-	
+
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
-		this.profits.add(profits);
-		this.dividendAdjustment.adapt(excessMoney > 0);
-		double max = getMoney().getAmount() / 3;
-		return Math.min(max, (this.profits.getAverage()*15 + dividendAdjustment.getPrice()) / 16);
+		return profits;
+//		this.profits.add(profits);
+//		this.dividendAdjustment.adapt(excessMoney > 0);
+//		double max = getMoney().getAmount() / 3;
+//		return Math.min(max, (this.profits.getAverage() * 15 + dividendAdjustment.getPrice()) / 16);
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
