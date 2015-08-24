@@ -147,7 +147,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private double calcProfitBasedDividend() {
-		return calcProfits() + excessMoney / 20;
+		return calcProfits() + excessMoney / 5;
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
