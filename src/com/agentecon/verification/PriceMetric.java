@@ -1,9 +1,9 @@
 package com.agentecon.verification;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.agentecon.api.IMarket;
 import com.agentecon.api.Price;
@@ -11,6 +11,7 @@ import com.agentecon.good.Good;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.util.InstantiatingHashMap;
+import com.agentecon.util.MovingAverage;
 import com.agentecon.util.WeightingMovingAverage;
 
 public class PriceMetric extends SimulationListenerAdapter implements IMarketListener {
@@ -18,26 +19,22 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	private static final double MEMORY = 0.95;
 
 	private HashMap<Good, WeightingMovingAverage> prices;
-	private HashMap<Good, WeightingMovingAverage> volume;
-	private ArrayList<WeightingMovingAverage> all;
+	private HashMap<Good, MovingAverage> volume;
 
 	public PriceMetric() {
-		this.all = new ArrayList<>();
 		this.prices = new InstantiatingHashMap<Good, WeightingMovingAverage>() {
 
 			@Override
 			protected WeightingMovingAverage create(Good key) {
 				WeightingMovingAverage wma = new WeightingMovingAverage(MEMORY);
-				all.add(wma);
 				return wma;
 			}
 		};
-		this.volume = new InstantiatingHashMap<Good, WeightingMovingAverage>() {
+		this.volume = new InstantiatingHashMap<Good, MovingAverage>() {
 
 			@Override
-			protected WeightingMovingAverage create(Good key) {
-				WeightingMovingAverage ama = new WeightingMovingAverage(MEMORY);
-				all.add(ama);
+			protected MovingAverage create(Good key) {
+				MovingAverage ama = new MovingAverage(MEMORY);
 				return ama;
 			}
 		};
@@ -54,7 +51,7 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	
 	@Override
 	public void notifyTradesCancelled() {
-		for (WeightingMovingAverage avg : all) {
+		for (WeightingMovingAverage avg : prices.values()) {
 			avg.reset();
 		}
 	}
@@ -65,7 +62,7 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	}
 
 	public boolean isStable() {
-		for (WeightingMovingAverage ma : all) {
+		for (WeightingMovingAverage ma : prices.values()) {
 			if (!ma.isStable()) {
 				return false;
 			}
@@ -75,7 +72,9 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	
 	@Override
 	public void notifyDayEnded(int day, double utility) {
-		for (WeightingMovingAverage avg : all) {
+		for (Entry<Good, WeightingMovingAverage> e : prices.entrySet()) {
+			WeightingMovingAverage avg = e.getValue();
+			volume.get(e.getKey()).add(avg.getWeight());
 			avg.flush();
 		}
 	}
@@ -95,10 +94,18 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 			for (Map.Entry<Good, WeightingMovingAverage> e : prices.entrySet()) {
 				ps.println(e.getKey() + " price: " + e.getValue().getWrapped().normalize(priceNormalization));
 				if (volume.containsKey(e.getKey())) {
-					ps.println(e.getKey() + " production: " + volume.get(e.getKey()).getWrapped().normalize(priceNormalization));
+					ps.println(e.getKey() + " production: " + volume.get(e.getKey()).normalize(priceNormalization));
 				}
 			}
 		}
+	}
+
+	public Result getResult() {
+		Result res = new Result();
+		for (Map.Entry<Good, WeightingMovingAverage> e : prices.entrySet()) {
+			res.include(e.getKey(), e.getValue().getWrapped().getAverage(), volume.get(e.getKey()).getAverage());
+		}
+		return null;
 	}
 
 }

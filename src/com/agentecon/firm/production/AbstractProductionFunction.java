@@ -18,6 +18,15 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 		this.totInputs = calcTotWeights();
 	}
 	
+	@Override
+	public double[] getWeights() {
+		double[] ws = new double[inputs.length];
+		for (int i=0; i<inputs.length; i++){
+			ws[i] = inputs[i].weight;
+		}
+		return ws;
+	}
+	
 	private double calcTotWeights() {
 		double tot = 0.0;
 		for (Weight w : inputs) {

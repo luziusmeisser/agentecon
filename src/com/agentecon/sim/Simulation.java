@@ -94,6 +94,10 @@ public class Simulation implements ISimulation {
 	public boolean isFinished() {
 		return day >= config.getRounds();
 	}
+	
+	public void finish() {
+		step(config.getRounds() - day);
+	}
 
 	public void step(int days) {
 		int target = this.day + days;

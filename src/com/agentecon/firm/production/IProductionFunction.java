@@ -6,6 +6,8 @@ import com.agentecon.good.Inventory;
 public interface IProductionFunction {
 
 	public Good[] getInput();
+	
+	public double[] getWeights();
 
 	public Good getOutput();
 
@@ -14,5 +16,5 @@ public interface IProductionFunction {
 	public double getCostOfMaximumProfit(IPriceProvider prices);
 	
 	public double getExpenses(Good good, double price, double totalSpendings);
-	
+
 }

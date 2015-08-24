@@ -22,4 +22,8 @@ public interface IUtility {
 
 	public boolean isValued(Good good);
 
+	public Good[] getGoods();
+
+	public double[] getWeights();
+
 }

@@ -46,4 +46,9 @@ public class ProductionTax implements IProductionFunction {
 		return wrapped.getExpenses(good, price, totalSpendings);
 	}
 
+	@Override
+	public double[] getWeights() {
+		return wrapped.getWeights();
+	}
+
 }

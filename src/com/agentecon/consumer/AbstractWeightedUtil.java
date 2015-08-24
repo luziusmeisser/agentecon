@@ -20,6 +20,24 @@ public abstract class AbstractWeightedUtil implements IUtility {
 		System.arraycopy(moreWeights, 0, this.weights, weights.length, moreWeights.length);
 	}
 	
+	@Override
+	public double[] getWeights() {
+		double[] ws = new double[weights.length];
+		for (int i=0; i<weights.length; i++){
+			ws[i] = weights[i].weight;
+		}
+		return ws;
+	}
+	
+	@Override
+	public Good[] getGoods() {
+		Good[] goods = new Good[weights.length];
+		for (int i=0; i<goods.length; i++){
+			goods[i] = weights[i].good;
+		}
+		return goods;
+	}
+	
 	protected void normalizeWeights(double total) {
 		double tot = getTotalWeight();
 		if (tot != total){
