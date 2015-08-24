@@ -16,13 +16,13 @@ public class ExpSearchPrice extends AdaptablePrice {
 		super(initialPrice);
 		this.factor = initialFactor;
 		this.sameDirectionInARow = 0;
-		this.speed = 1.2;
+		this.speed = 1.05;
 	}
 
 	public ExpSearchPrice(double initialFactor) {
 		this.factor = initialFactor;
 		this.sameDirectionInARow = 0;
-		this.speed = 1.2;
+		this.speed = 1.05;
 	}
 
 	@Override
