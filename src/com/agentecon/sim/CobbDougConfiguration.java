@@ -32,7 +32,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	protected ArrayList<EvolvingEvent> evolvingEvents;
 
 	public CobbDougConfiguration(int seed) {
-		this(FIRMS_PER_TYPE, CONSUMERS_PER_TYPE, 3, 3, seed);
+		this(FIRMS_PER_TYPE, CONSUMERS_PER_TYPE, 5, 5, seed);
 	}
 
 	public CobbDougConfiguration(int firmsPerType, int consumersPerType, int consumerTypes, int firmTypes, int seed) {

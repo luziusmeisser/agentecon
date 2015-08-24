@@ -8,7 +8,6 @@ import java.util.Queue;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
-import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
@@ -26,6 +25,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.verification.ComputationalBenchmark;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
@@ -47,10 +47,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new CobbDougConfiguration(17));
-//		this(new VolumeTraderConfiguration(133, 18.55));
-//		this(new VolumeTraderConfiguration(133, 20.0));
-//		this(new SavingConsumerConfiguration(133, 0.20));
+		this(new ComputationalBenchmark(1).createConfiguration());
 	}
 
 	public Simulation(IConfiguration metaConfig) {

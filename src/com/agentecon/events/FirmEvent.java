@@ -14,11 +14,11 @@ public class FirmEvent extends SimEvent {
 	protected IProductionFunction prodFun;
 	protected String[] priceParams;
 
-	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, String[] priceParams) {
+	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, String... priceParams) {
 		this(0, card, type, end, prodFun, priceParams);
 	}
 
-	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, String[] priceParams) {
+	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, String... priceParams) {
 		super(step, card);
 		this.end = end;
 		this.type = type;
