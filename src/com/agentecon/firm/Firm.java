@@ -19,7 +19,7 @@ import com.agentecon.price.IPriceFactory;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
-	public static double DIVIDEND_RATE = 0.2;
+	public static double DIVIDEND_RATE = 0.1;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
@@ -55,7 +55,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	protected boolean isFractionalSpending() {
-		return true;
+		return false;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
