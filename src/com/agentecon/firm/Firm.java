@@ -161,7 +161,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			dividends /= 1.01;
 		}
 		double max = getMoney().getAmount() / 3;
-		return Math.min(max, (this.profits.getAverage()*7 + dividends) / 8);
+		return Math.min(max, (this.profits.getAverage()*15 + dividends) / 16);
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
