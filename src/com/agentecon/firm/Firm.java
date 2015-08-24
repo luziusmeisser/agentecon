@@ -149,12 +149,19 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
-	private MovingAverage dividends = new MovingAverage(0.5);
+	private MovingAverage profits = new MovingAverage();
+	private double dividends = 100;
 	
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
-		dividends.add(profits + excessMoney);
-		return dividends.getAverage();
+		this.profits.add(profits);
+		if (excessMoney > 0){
+			dividends *= 1.01;
+		} else {
+			dividends /= 1.01;
+		}
+		double max = getMoney().getAmount() / 3;
+		return Math.min(max, (this.profits.getAverage()*7 + dividends) / 8);
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
