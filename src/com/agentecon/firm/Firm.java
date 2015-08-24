@@ -15,6 +15,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
+import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPriceFactory;
 import com.agentecon.util.MovingAverage;
 
@@ -150,18 +151,14 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	private MovingAverage profits = new MovingAverage();
-	private double dividends = 100;
+	private ExpSearchPrice dividendAdjustment = new ExpSearchPrice(0.04);
 	
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
 		this.profits.add(profits);
-		if (excessMoney > 0){
-			dividends *= 1.01;
-		} else {
-			dividends /= 1.01;
-		}
+		this.dividendAdjustment.adapt(excessMoney > 0);
 		double max = getMoney().getAmount() / 3;
-		return Math.min(max, (this.profits.getAverage()*15 + dividends) / 16);
+		return Math.min(max, (this.profits.getAverage()*15 + dividendAdjustment.getPrice()) / 16);
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
