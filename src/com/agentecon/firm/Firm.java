@@ -94,7 +94,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			double actual = cash * 0.2;
 			this.excessMoney = 5 * (actual - totSalaries);
 			System.out.println(excessMoney);
-			return actual;
+			return (actual + totSalaries)/2;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
 			double totSalaries = prod.getCostOfMaximumProfit(this);
