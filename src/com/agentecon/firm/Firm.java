@@ -3,7 +3,6 @@
 package com.agentecon.firm;
 
 import java.util.Arrays;
-import java.util.Random;
 
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
@@ -20,7 +19,7 @@ import com.agentecon.price.IPriceFactory;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
-	public static double DIVIDEND_RATE = 0.1;
+	public static double DIVIDEND_RATE = 0.2;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
