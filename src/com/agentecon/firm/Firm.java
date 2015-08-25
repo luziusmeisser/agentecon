@@ -7,6 +7,8 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
+import com.agentecon.firm.decisions.IFirmDecisions;
+import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -15,13 +17,9 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
-import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPriceFactory;
-import com.agentecon.util.MovingAverage;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
-
-	public static double DIVIDEND_RATE = 0.1;
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
@@ -31,6 +29,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	private FirmListeners monitor;
 
 	protected IPriceFactory prices;
+	
+	private IFirmDecisions strategy = new OptimalDividend();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
@@ -65,7 +65,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totSalaries = getTotSalaries();
+		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(this));
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
@@ -83,26 +83,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			}
 		}
 		output.createOffer(market, getMoney(), output.getStock().getAmount());
-	}
-
-	private double excessMoney = 0.0;
-
-	protected double getTotSalaries() {
-		if (isFractionalSpending()) {
-			double cash = getMoney().getAmount();
-			double totSalaries = prod.getCostOfMaximumProfit(this);
-			double actual = cash * 0.2;
-			this.excessMoney = 5 * (actual - totSalaries);
-			if (getAgentId() == 3){
-				System.out.println(excessMoney);
-			}
-			return (actual * 3 + totSalaries) / 4;
-		} else {
-			double budget = getMoney().getAmount() * 0.5;
-			double totSalaries = prod.getCostOfMaximumProfit(this);
-			double actual = Math.min(budget, totSalaries);
-			return actual;
-		}
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
@@ -142,7 +122,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.max(0, isFractionalSpending() ? calcProfitBasedDividend() : calcRelativeDividend(wallet));
+		double dividend = Math.max(0, strategy.calcDividend(wallet.getAmount(), calcProfits()));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
@@ -152,23 +132,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return dividend;
 	}
 
-	private MovingAverage profits = new MovingAverage();
-	private ExpSearchPrice dividendAdjustment = new ExpSearchPrice(0.04);
-
-	private double calcProfitBasedDividend() {
-		double profits = calcProfits();
-		if (getAgentId() == 3){
-			System.out.println("Profits " + profits);
-		}
-		return profits;
-//		this.profits.add(profits);
-//		this.dividendAdjustment.adapt(excessMoney > 0);
-//		double max = getMoney().getAmount() / 3;
-//		return Math.min(max, (this.profits.getAverage() * 15 + dividendAdjustment.getPrice()) / 16);
-	}
-
-	private double calcRelativeDividend(IStock wallet) {
-		return wallet.getAmount() * DIVIDEND_RATE;
+	private double calcOptimalProfits() {
+		return 0.0;
 	}
 
 	public double calcProfits() {

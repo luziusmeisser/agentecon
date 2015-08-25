@@ -16,5 +16,7 @@ public interface IProductionFunction {
 	public double getCostOfMaximumProfit(IPriceProvider prices);
 	
 	public double getExpenses(Good good, double price, double totalSpendings);
+	
+//	public double getMaximumProfits(IPriceProvider prices);
 
 }

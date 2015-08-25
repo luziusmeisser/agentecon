@@ -45,7 +45,14 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 		inventory.getStock(getOutput()).add(production);
 		return production;
 	}
-
+	
+//	@Override
+//	public double getMaximumProfits(IPriceProvider prices) {
+//		double cost = getCostOfMaximumProfit(prices);
+//		
+//		return 0;
+//	}
+	
 	@Override
 	public double getCostOfMaximumProfit(IPriceProvider prices) {
 		double totWeight = getTotalWeight();
