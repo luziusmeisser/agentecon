@@ -57,7 +57,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	protected boolean isFractionalSpending() {
-		return true;
+		return false;
 	}
 
 	public void addFirmMonitor(IFirmListener prodmon) {
@@ -93,7 +93,9 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 			double totSalaries = prod.getCostOfMaximumProfit(this);
 			double actual = cash * 0.2;
 			this.excessMoney = 5 * (actual - totSalaries);
-			System.out.println(excessMoney);
+			if (getAgentId() == 3){
+				System.out.println(excessMoney);
+			}
 			return (actual * 3 + totSalaries) / 4;
 		} else {
 			double budget = getMoney().getAmount() * 0.5;
@@ -155,10 +157,14 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double calcProfitBasedDividend() {
 		double profits = calcProfits();
-		this.profits.add(profits);
-		this.dividendAdjustment.adapt(excessMoney > 0);
-		double max = getMoney().getAmount() / 3;
-		return Math.min(max, (this.profits.getAverage() * 15 + dividendAdjustment.getPrice()) / 16);
+		if (getAgentId() == 3){
+			System.out.println("Profits " + profits);
+		}
+		return profits;
+//		this.profits.add(profits);
+//		this.dividendAdjustment.adapt(excessMoney > 0);
+//		double max = getMoney().getAmount() / 3;
+//		return Math.min(max, (this.profits.getAverage() * 15 + dividendAdjustment.getPrice()) / 16);
 	}
 
 	private double calcRelativeDividend(IStock wallet) {
