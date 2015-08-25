@@ -31,7 +31,7 @@ public class OptimalDividend implements IFirmDecisions {
 	}
 
 	public double calcCogs(double cash, double cogs) {
-		double actual = cash * 0.2;
+		double actual = cash * 0.3;
 		excessMoney = actual > cogs;
 		if (number == 0) {
 //			System.out.println(actual - cogs);
