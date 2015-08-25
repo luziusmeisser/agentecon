@@ -7,6 +7,8 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
+import com.agentecon.firm.decisions.FractionalDividends;
+import com.agentecon.firm.decisions.FractionalSpendings;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.production.IPriceProvider;
@@ -29,7 +31,8 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	private FirmListeners monitor;
 
 	protected IPriceFactory prices;
-	
+
+	private double profits;
 	private IFirmDecisions strategy = new OptimalDividend();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
@@ -92,18 +95,13 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public void adaptPrices() {
-		adaptInputPrices();
-		adaptOutputPrice();
-	}
-
-	public void adaptInputPrices() {
-		for (int i = 0; i < inputs.length; i++) {
-			inputs[i].adaptPrice();
+		double profits = output.getVolume();
+		for (InputFactor input : inputs) {
+			profits -= input.getVolume();
+			input.adaptPrice();
 		}
-	}
-
-	public void adaptOutputPrice() {
 		output.adaptPrice();
+		this.profits = profits;
 	}
 
 	public double produce(int day) {
@@ -122,7 +120,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.max(0, strategy.calcDividend(wallet.getAmount(), calcProfits()));
+		double dividend = Math.max(0, strategy.calcDividend(wallet.getAmount(), profits));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
@@ -130,22 +128,6 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		// register.payDividend(wallet, dividend);
 		wallet.remove(dividend);
 		return dividend;
-	}
-
-	private double calcOptimalProfits() {
-		return 0.0;
-	}
-
-	public double calcProfits() {
-		return output.getVolume() - calcCogs();
-	}
-
-	private double calcCogs() {
-		double cogs = 0.0;
-		for (InputFactor input : inputs) {
-			cogs += input.getVolume();
-		}
-		return cogs;
 	}
 
 	public IProductionFunction getProductionFunction() {

@@ -28,8 +28,8 @@ public class SensorOutputFactor extends OutputFactor {
 	public double getVolume() {
 		return super.getVolume() + (prevRealAsk == null ? 0.0 : prevRealAsk.getTransactionVolume());
 	}
-	
-	private double getSensorOfferSize(){
+
+	private double getSensorOfferSize() {
 		return accuracy / 5;
 	}
 
@@ -50,7 +50,7 @@ public class SensorOutputFactor extends OutputFactor {
 			} else {
 				accuracy = Math.min(0.5, accuracy * 2);
 			}
-			// prevRealAsk = null;
+			prevRealAsk = null;
 		}
 	}
 

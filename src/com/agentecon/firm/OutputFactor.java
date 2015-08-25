@@ -22,7 +22,7 @@ public class OutputFactor extends Factor {
 	public void adaptPrice() {
 		if (prevAsk != null) {
 			super.adaptPrice(prevAsk.isUsed());
-//			prevAsk = null;
+			prevAsk = null;
 		}
 	}
 

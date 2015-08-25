@@ -46,10 +46,7 @@ public class RepeatedMarket {
 				c.maximizeUtility(market);
 			}
 			for (Firm firm: firms) {
-				firm.adaptOutputPrice();
-			}
-			for (Firm firm: firms) {
-				firm.adaptInputPrices();
+				firm.adaptPrices();
 			}
 			if (observer.shouldTryAgain()){
 				market.notifyCancelled();

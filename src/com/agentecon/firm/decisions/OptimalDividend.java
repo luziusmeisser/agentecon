@@ -7,14 +7,23 @@ import com.agentecon.price.ExpSearchPrice;
 
 public class OptimalDividend implements IFirmDecisions {
 
-//	private MovingAverage profits = new MovingAverage();
+	private static int instance = 0;
+	
+	private int number = instance++;
+
+	// private MovingAverage profits = new MovingAverage();
 	private ExpSearchPrice dividends = new ExpSearchPrice(0.04);
 	private boolean excessMoney = false;
-	
+
 	public double calcDividend(double cash, double profits) {
-		dividends.adapt(excessMoney);
-//		System.out.println(profits);
-		return Math.min(dividends.getPrice(), cash / 2);
+		// System.out.println(profits);
+		if (excessMoney) {
+			return profits + 1;
+		} else {
+			return profits - 1;
+		}
+		// dividends.adapt(excessMoney);
+		// return Math.min(profits *dividends.getPrice(), cash / 2);
 		// this.profits.add(profits);
 		// this.dividendAdjustment.adapt(excessMoney > 0);
 		// double max = getMoney().getAmount() / 3;
@@ -23,7 +32,10 @@ public class OptimalDividend implements IFirmDecisions {
 
 	public double calcCogs(double cash, double cogs) {
 		double actual = cash * 0.2;
-		excessMoney = actual > cogs; 
+		excessMoney = actual > cogs;
+		if (number == 0) {
+//			System.out.println(actual - cogs);
+		}
 		return actual;
 	}
 
