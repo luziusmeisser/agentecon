@@ -1,12 +1,9 @@
 package com.agentecon.verification;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IUtility;
-import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -72,7 +69,7 @@ public class ComputationalBenchmark {
 	}
 
 	public SimConfig createConfiguration() {
-		SimConfig config = new SimConfig(7000, 23, 5);
+		SimConfig config = new SimConfig(10000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), "SENSOR"));
@@ -80,19 +77,19 @@ public class ComputationalBenchmark {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-		config.addEvent(new UpdatePreferencesEvent(3000){
-
-			@Override
-			protected void update(Consumer c) {
-				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
-			}
-			
-		});
+//		config.addEvent(new UpdatePreferencesEvent(3000){
+//
+//			@Override
+//			protected void update(Consumer c) {
+//				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
+//			}
+//			
+//		});
 		return config;
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		for (int i = 6; i <= 10; i++) {
+		for (int i = 1; i <= 10; i++) {
 			System.out.println("Going for size " + i);
 			final ComputationalBenchmark bm = new ComputationalBenchmark(i);
 			long t0 = System.nanoTime();
