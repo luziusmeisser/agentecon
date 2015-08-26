@@ -1,9 +1,12 @@
 package com.agentecon.verification;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IUtility;
+import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -15,6 +18,8 @@ import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
 
 public class ComputationalBenchmark {
+
+	private static final long MAX_TIME = 60 * 60 * 1000;
 
 	private static final int HOURS_PER_DAY = 24;
 	private static final int CONSUMERS_PER_TYPE = 100;
@@ -50,8 +55,8 @@ public class ComputationalBenchmark {
 		prices.printResult(System.out);
 		return prices.getResult();
 	}
-	
-	public Result runConstrainedOptimization(Result hint){
+
+	public Result runConstrainedOptimization(Result hint) {
 		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint);
 		for (int i = 0; i < outputs.length; i++) {
 			IProductionFunction pf = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
@@ -67,28 +72,81 @@ public class ComputationalBenchmark {
 	}
 
 	public SimConfig createConfiguration() {
-		SimConfig config = new SimConfig(3000, 23, 5);
+		SimConfig config = new SimConfig(7000, 23, 5);
 		for (int i = 0; i < outputs.length; i++) {
-			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[]{new Stock(SimConfig.MONEY, 1000)}, new IStock[]{}), prodWeights.createProdFun(i, RETURNS_TO_SCALE), "SENSOR"));
+			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE), "SENSOR"));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
+		config.addEvent(new UpdatePreferencesEvent(3000){
+
+			@Override
+			protected void update(Consumer c) {
+				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
+			}
+			
+		});
 		return config;
 	}
 
-	public static void main(String[] args) {
-		ComputationalBenchmark bm = new ComputationalBenchmark(10);
-		long t0 = System.nanoTime();
-		Result res = bm.runAgentBased();
-		long t1 = System.nanoTime();
-//		Result exact1 = bm.runConstrainedOptimization(res);
-//		long t2 = System.nanoTime();
-//		Result exact2 = bm.runConstrainedOptimization(null);
-//		long t3 = System.nanoTime();
-		System.out.println("Agent-based took " + (t1 - t0) / 1000000 + "ms");
-//		System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
-//		System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
+	public static void main(String[] args) throws InterruptedException {
+		for (int i = 6; i <= 10; i++) {
+			System.out.println("Going for size " + i);
+			final ComputationalBenchmark bm = new ComputationalBenchmark(i);
+			long t0 = System.nanoTime();
+			final Result res = bm.runAgentBased();
+			long t1 = System.nanoTime();
+//			bm.new Runner(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					bm.runConstrainedOptimization(res);
+//				}
+//			}).waitForEnd(MAX_TIME);
+//			long t2 = System.nanoTime();
+//			bm.new Runner(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					bm.runConstrainedOptimization(null);
+//				}
+//			}).waitForEnd(MAX_TIME);
+//			long t3 = System.nanoTime();
+			System.out.println("Agent-based took " + (t1 - t0) / 1000000 + "ms");
+//			System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
+//			System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
+		}
+	}
+
+	class Runner extends Thread {
+
+		private Runnable r;
+
+		public Runner(Runnable r) {
+			this.r = r;
+			this.start();
+		}
+
+		public void run() {
+			r.run();
+		}
+
+		public boolean waitForEnd(long patience) throws InterruptedException {
+			long end = System.currentTimeMillis() + patience;
+			while (System.currentTimeMillis() < end && isAlive()) {
+				Thread.sleep(1000);
+			}
+			if (isAlive()) {
+				this.stop();
+				System.out.println("Had to abort task");
+				return false;
+			} else {
+				return true;
+			}
+		}
+
 	}
 
 }

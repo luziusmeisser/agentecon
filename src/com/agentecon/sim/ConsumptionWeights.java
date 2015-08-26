@@ -34,6 +34,21 @@ public class ConsumptionWeights {
 		prefs[prefs.length - 1] = inputs[type];
 		return new LogUtil(prefs);
 	}
+	
+	public LogUtil createDeviation(LogUtil basis, Good changedGood, double newWeight){
+		if (basis.isValued(changedGood)){
+			Good[] goods = basis.getGoods();
+			double[] weights = basis.getWeights();
+			Weight[] newWeights = new Weight[goods.length];
+			for (int i=0; i<goods.length; i++){
+				double w = goods[i] == changedGood ? newWeight : weights[i];
+				newWeights[i] = new Weight(goods[i], w);
+			}
+			return new LogUtil(newWeights);
+		} else {
+			return basis;
+		}
+	}
 
 	public IUtilityFactory getFactory(final int type) {
 		return new IUtilityFactory() {
