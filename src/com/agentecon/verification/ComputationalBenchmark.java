@@ -67,7 +67,7 @@ public class ComputationalBenchmark {
 	}
 
 	public SimConfig createConfiguration() {
-		SimConfig config = new SimConfig(10000, 23, 0);
+		SimConfig config = new SimConfig(3000, 23, 5);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[]{new Stock(SimConfig.MONEY, 1000)}, new IStock[]{}), prodWeights.createProdFun(i, RETURNS_TO_SCALE), "SENSOR"));
 		}
@@ -82,13 +82,13 @@ public class ComputationalBenchmark {
 		long t0 = System.nanoTime();
 		Result res = bm.runAgentBased();
 		long t1 = System.nanoTime();
-		Result exact1 = bm.runConstrainedOptimization(res);
-		long t2 = System.nanoTime();
-		Result exact2 = bm.runConstrainedOptimization(null);
-		long t3 = System.nanoTime();
+//		Result exact1 = bm.runConstrainedOptimization(res);
+//		long t2 = System.nanoTime();
+//		Result exact2 = bm.runConstrainedOptimization(null);
+//		long t3 = System.nanoTime();
 		System.out.println("Agent-based took " + (t1 - t0) / 1000000 + "ms");
-		System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
-		System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
+//		System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
+//		System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
 	}
 
 }

@@ -91,7 +91,7 @@ public abstract class AbstractWeightedUtil implements IUtility {
 
 	@Override
 	public boolean isValued(Good good) {
-		return getWeight(good) >= 0.0;
+		return getWeight(good) > 0.0;
 	}
 
 	public String toString() {
