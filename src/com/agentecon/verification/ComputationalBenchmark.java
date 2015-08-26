@@ -67,7 +67,7 @@ public class ComputationalBenchmark {
 	}
 
 	public SimConfig createConfiguration() {
-		SimConfig config = new SimConfig(1000, 23, 0);
+		SimConfig config = new SimConfig(10000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[]{new Stock(SimConfig.MONEY, 1000)}, new IStock[]{}), prodWeights.createProdFun(i, RETURNS_TO_SCALE), "SENSOR"));
 		}
@@ -78,7 +78,7 @@ public class ComputationalBenchmark {
 	}
 
 	public static void main(String[] args) {
-		ComputationalBenchmark bm = new ComputationalBenchmark(4);
+		ComputationalBenchmark bm = new ComputationalBenchmark(10);
 		long t0 = System.nanoTime();
 		Result res = bm.runAgentBased();
 		long t1 = System.nanoTime();

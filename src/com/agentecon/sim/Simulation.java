@@ -47,7 +47,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new ComputationalBenchmark(4).createConfiguration());
+		this(new ComputationalBenchmark(10).createConfiguration());
 	}
 
 	public Simulation(IConfiguration metaConfig) {
