@@ -8,6 +8,7 @@ import org.jacop.floats.constraints.PeqC;
 import org.jacop.floats.constraints.PeqQ;
 import org.jacop.floats.constraints.PmulCeqR;
 import org.jacop.floats.constraints.PplusQeqR;
+import org.jacop.floats.core.FloatDomain;
 import org.jacop.floats.core.FloatVar;
 import org.jacop.floats.search.SplitSelectFloat;
 import org.jacop.search.DepthFirstSearch;
@@ -25,24 +26,33 @@ public class ConfigurableWorld {
 	private Good[] inputs, outputs;
 	private FloatVar[] inputPrices, outputPrices;
 
-	public ConfigurableWorld(Good[] inputs, Good[] outputs) {
+	public ConfigurableWorld(Good[] inputs, Good[] outputs, Result hint) {
+		FloatDomain.setPrecision(0.001);
 		this.store = new Store();
 		this.inputs = inputs;
 		this.outputs = outputs;
 		this.consumers = new ArrayList<IConsumer>();
 		this.firms = new ArrayList<IFirm>();
 
+		hint = hint == null ? null : hint.normalize(outputs[0]);
 		this.inputPrices = new FloatVar[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
-			this.inputPrices[i] = new FloatVar(store, "wage_" + inputs[i], 0.0, Double.MAX_VALUE);
+			this.inputPrices[i] = create(hint, "wage_", inputs[i]);
 		}
 		this.outputPrices = new FloatVar[outputs.length];
 		for (int i = 0; i < outputs.length; i++) {
-			this.outputPrices[i] = new FloatVar(store, "price_" + outputs[i], 0.0, Double.MAX_VALUE);
+			this.outputPrices[i] = create(hint, "price_", outputs[i]);
 		}
 		this.dividend = new FloatVar(store, "dividends", 0.0, Double.MAX_VALUE);
+	}
 
-		System.out.println(store.variablesHashMap.size() + " variables");
+	private FloatVar create(Result hint, String prefix, Good good) {
+		if (hint == null) {
+			return new FloatVar(store, prefix + good, 0.0, Double.MAX_VALUE);
+		} else {
+			double guess = hint.getPrice(good);
+			return new FloatVar(store, prefix + good, guess * 0.95, guess * 1.05);
+		}
 	}
 
 	public void imposeConstraints() {
@@ -61,6 +71,7 @@ public class ConfigurableWorld {
 		wireLabor();
 		wireOutputsToConsumption();
 		wireDividend();
+		System.out.println(store.variablesHashMap.size() + " variables");
 	}
 
 	private void wireLabor() {
@@ -106,7 +117,7 @@ public class ConfigurableWorld {
 			store.impose(new PeqQ(sum, firms.get(i).getOutput()));
 		}
 	}
-	
+
 	private int count = 0;
 
 	private <T> FloatVar sum(ArrayList<T> list, IVarSelector<T> selector) {
@@ -145,14 +156,13 @@ public class ConfigurableWorld {
 		for (IConsumer c : consumers) {
 			all.add(c.getWorkHours());
 		}
-//		for (IConsumer c : consumers) {
-//			all.addAll(Arrays.asList(c.getConsumption()));
-//		}
+		for (IFirm f : firms) {
+			all.add(f.getOutput());
+		}
+		
+		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
-
 		search.setSolutionListener(new PrintOutListener<FloatVar>());
-
-		search.getSolutionListener().searchAll(true);
 		search.labeling(store, s);
 		System.out.println(store.variablesHashMap.size() + " variables");
 	}

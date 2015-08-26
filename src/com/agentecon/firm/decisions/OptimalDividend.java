@@ -1,41 +1,19 @@
 package com.agentecon.firm.decisions;
 
-/**
- * 
- */
-import com.agentecon.price.ExpSearchPrice;
-
 public class OptimalDividend implements IFirmDecisions {
-
-	private static int instance = 0;
 	
-	private int number = instance++;
+	private static final double SPENDING_FRACTION = 0.2;
 
-	// private MovingAverage profits = new MovingAverage();
-	private ExpSearchPrice dividends = new ExpSearchPrice(0.04);
 	private boolean excessMoney = false;
 
 	public double calcDividend(double cash, double profits) {
-		// System.out.println(profits);
-		if (excessMoney) {
-			return profits + 1;
-		} else {
-			return profits - 1;
-		}
-		// dividends.adapt(excessMoney);
-		// return Math.min(profits *dividends.getPrice(), cash / 2);
-		// this.profits.add(profits);
-		// this.dividendAdjustment.adapt(excessMoney > 0);
-		// double max = getMoney().getAmount() / 3;
-		// return Math.min(max, (this.profits.getAverage() * 15 + dividendAdjustment.getPrice()) / 16);
+		double adjustedProfits = profits + (excessMoney ? 1 : -1);
+		return Math.min(adjustedProfits, cash / 2);
 	}
 
 	public double calcCogs(double cash, double cogs) {
-		double actual = cash * 0.3;
+		double actual = cash * SPENDING_FRACTION;
 		excessMoney = actual > cogs;
-		if (number == 0) {
-//			System.out.println(actual - cogs);
-		}
 		return actual;
 	}
 

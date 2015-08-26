@@ -51,8 +51,8 @@ public class ComputationalBenchmark {
 		return prices.getResult();
 	}
 	
-	public Result runConstrainedOptimization(){
-		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs);
+	public Result runConstrainedOptimization(Result hint){
+		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint);
 		for (int i = 0; i < outputs.length; i++) {
 			IProductionFunction pf = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
 			world.addFirmType("firm_" + i, FIRMS_PER_TYPE, outputs[i], CobbDouglasProduction.PRODUCTIVITY, pf.getInput(), pf.getWeights());
@@ -78,9 +78,17 @@ public class ComputationalBenchmark {
 	}
 
 	public static void main(String[] args) {
-		ComputationalBenchmark bm = new ComputationalBenchmark(1);
-		bm.runConstrainedOptimization();
-		bm.runAgentBased();
+		ComputationalBenchmark bm = new ComputationalBenchmark(4);
+		long t0 = System.nanoTime();
+		Result res = bm.runAgentBased();
+		long t1 = System.nanoTime();
+		Result exact1 = bm.runConstrainedOptimization(res);
+		long t2 = System.nanoTime();
+		Result exact2 = bm.runConstrainedOptimization(null);
+		long t3 = System.nanoTime();
+		System.out.println("Agent-based took " + (t1 - t0) / 1000000 + "ms");
+		System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
+		System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
 	}
 
 }

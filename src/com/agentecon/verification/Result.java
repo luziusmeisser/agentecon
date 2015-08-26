@@ -29,6 +29,27 @@ public class Result {
 			this.volume = volume;
 		}
 		
+		public String toString(){
+			return good + " costs " + price + " (volume " + volume + ")";
+		}
+		
+	}
+
+	public double getPrice(Good good) {
+		return map.get(good).price;
+	}
+
+	public Result normalize(Good good) {
+		double price = getPrice(good);
+		Result norm = new Result();
+		for (DataPoint p: map.values()){
+			norm.include(p.good, p.price / price, p.volume);
+		}
+		return norm;
+	}
+	
+	public String toString(){
+		return map.values().toString();
 	}
 	
 }

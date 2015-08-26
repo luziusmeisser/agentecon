@@ -105,7 +105,7 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 		for (Map.Entry<Good, WeightingMovingAverage> e : prices.entrySet()) {
 			res.include(e.getKey(), e.getValue().getWrapped().getAverage(), volume.get(e.getKey()).getAverage());
 		}
-		return null;
+		return res;
 	}
 
 }
