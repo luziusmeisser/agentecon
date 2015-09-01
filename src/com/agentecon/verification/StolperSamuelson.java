@@ -76,7 +76,7 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration() {
-		SimConfig config = new SimConfig(10000, 23, 0);
+		SimConfig config = new SimConfig(3000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), PriceFactory.RANDOMIZED));
@@ -84,7 +84,7 @@ public class StolperSamuelson {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-		config.addEvent(new UpdatePreferencesEvent(2000){
+		config.addEvent(new UpdatePreferencesEvent(1000){
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
