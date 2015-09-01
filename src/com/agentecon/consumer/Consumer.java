@@ -58,12 +58,7 @@ public class Consumer extends Agent implements IConsumer {
 
 	public void maximizeUtility(IPriceTakerMarket market) {
 		Inventory inv = getInventory();
-		
-		// TEMP hide 50% of cash
 		IStock money = getMoney();
-		inv = inv.hide(money.getGood(), money.getAmount() * 0.8);
-		assert !AGING;
-		
 		double cash = money.getAmount();
 		if (isRetired()) {
 			int daysLeft = MAX_AGE - age + 1;
