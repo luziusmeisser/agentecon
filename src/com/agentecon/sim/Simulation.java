@@ -25,7 +25,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.verification.ComputationalBenchmark;
+import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
@@ -47,7 +47,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new ComputationalBenchmark(9).createConfiguration());
+		this(new StolperSamuelson().createConfiguration());
 	}
 
 	public Simulation(IConfiguration metaConfig) {

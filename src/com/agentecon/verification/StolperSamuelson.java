@@ -2,8 +2,10 @@ package com.agentecon.verification;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.IUtility;
+import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -15,9 +17,7 @@ import com.agentecon.sim.ProductionWeights;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
 
-public class ComputationalBenchmark {
-
-	private static final long MAX_TIME = 60 * 60 * 1000;
+public class StolperSamuelson {
 
 	private static final int HOURS_PER_DAY = 24;
 	private static final int CONSUMERS_PER_TYPE = 100;
@@ -28,8 +28,12 @@ public class ComputationalBenchmark {
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
 	private ConsumptionWeights consWeights;
+	
+	public StolperSamuelson() {
+		this(2);
+	}
 
-	public ComputationalBenchmark(int size) {
+	public StolperSamuelson(int size) {
 		this.inputs = createGoods("input", size);
 		this.outputs = createGoods("output", size);
 		this.prodWeights = new ProductionWeights(inputs, outputs);
@@ -78,21 +82,22 @@ public class ComputationalBenchmark {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-//		config.addEvent(new UpdatePreferencesEvent(3000){
-//
-//			@Override
-//			protected void update(Consumer c) {
-//				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
-//			}
-//			
-//		});
+		config.addEvent(new UpdatePreferencesEvent(2000){
+
+			@Override
+			protected void update(com.agentecon.consumer.Consumer c) {
+				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
+			}
+
+			
+		});
 		return config;
 	}
 
 	public static void main(String[] args) throws InterruptedException {
 //		for (int i = 1; i <= 10; i++) {
 //			System.out.println("Going for size " + i);
-			final ComputationalBenchmark bm = new ComputationalBenchmark(2);
+			final StolperSamuelson bm = new StolperSamuelson(2);
 			long t0 = System.nanoTime();
 			final Result res = bm.runAgentBased();
 			long t1 = System.nanoTime();
@@ -118,33 +123,33 @@ public class ComputationalBenchmark {
 //		}
 	}
 
-	class Runner extends Thread {
-
-		private Runnable r;
-
-		public Runner(Runnable r) {
-			this.r = r;
-			this.start();
-		}
-
-		public void run() {
-			r.run();
-		}
-
-		public boolean waitForEnd(long patience) throws InterruptedException {
-			long end = System.currentTimeMillis() + patience;
-			while (System.currentTimeMillis() < end && isAlive()) {
-				Thread.sleep(1000);
-			}
-			if (isAlive()) {
-				this.stop();
-				System.out.println("Had to abort task");
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-	}
+//	class Runner extends Thread {
+//
+//		private Runnable r;
+//
+//		public Runner(Runnable r) {
+//			this.r = r;
+//			this.start();
+//		}
+//
+//		public void run() {
+//			r.run();
+//		}
+//
+//		public boolean waitForEnd(long patience) throws InterruptedException {
+//			long end = System.currentTimeMillis() + patience;
+//			while (System.currentTimeMillis() < end && isAlive()) {
+//				Thread.sleep(1000);
+//			}
+//			if (isAlive()) {
+//				this.stop();
+//				System.out.println("Had to abort task");
+//				return false;
+//			} else {
+//				return true;
+//			}
+//		}
+//
+//	}
 
 }

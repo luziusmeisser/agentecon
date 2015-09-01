@@ -7,8 +7,6 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.firm.decisions.FractionalDividends;
-import com.agentecon.firm.decisions.FractionalSpendings;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.production.IPriceProvider;

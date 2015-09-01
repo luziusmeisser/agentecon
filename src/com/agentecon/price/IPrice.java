@@ -5,7 +5,7 @@ package com.agentecon.price;
 public interface IPrice extends Cloneable {
 
 	public double getPrice();
-
+	
 	public void adapt(boolean increasePrice);
 
 	/**
