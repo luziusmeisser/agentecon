@@ -3,7 +3,6 @@ package com.agentecon.sim;
 import com.agentecon.consumer.Weight;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
-import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 
 public class ProductionWeights {
@@ -25,7 +24,6 @@ public class ProductionWeights {
 			Good good = inputs[(i + type) % inputs.length];
 			prefs[i] = new Weight(good, WEIGHTS[i]);
 		}
-//		return new LogProdFun(outputs[type], prefs);
 		return new CobbDouglasProduction(outputs[type], prefs).scale(retToScale);
 	}
 
