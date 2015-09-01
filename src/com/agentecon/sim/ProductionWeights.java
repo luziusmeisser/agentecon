@@ -8,7 +8,7 @@ import com.agentecon.good.Good;
 public class ProductionWeights {
 
 	public static final int INPUTS = 3;
-	public static final double[] WEIGHTS = new double[]{6.0, 4.0, 2.0};
+	public static final double[] WEIGHTS = new double[]{6.0, 2.0, 4.0};
 	
 	private Good[] inputs;
 	private Good[] outputs;
