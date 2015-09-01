@@ -23,7 +23,7 @@ public class StolperSamuelson {
 	private static final int CONSUMERS_PER_TYPE = 100;
 	private static final int FIRMS_PER_TYPE = 10;
 
-	private static final double RETURNS_TO_SCALE = 0.5;
+	private static final double RETURNS_TO_SCALE = 0.2;
 	private static final double LOW = 2.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
 	
