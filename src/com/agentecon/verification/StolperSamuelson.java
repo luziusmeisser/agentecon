@@ -23,7 +23,7 @@ public class StolperSamuelson {
 	private static final int CONSUMERS_PER_TYPE = 100;
 	private static final int FIRMS_PER_TYPE = 10;
 
-	private static final double RETURNS_TO_SCALE = 0.2;
+	private static final double RETURNS_TO_SCALE = 0.1;
 	private static final double LOW = 2.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
 	
@@ -79,7 +79,7 @@ public class StolperSamuelson {
 		SimConfig config = new SimConfig(3000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), PriceFactory.CONSTANTFACTOR, "0.1"));
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE), PriceFactory.RANDOMIZED, "0.05"));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
