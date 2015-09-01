@@ -8,7 +8,7 @@ public class OptimalDividend implements IFirmDecisions {
 
 	public double calcDividend(double cash, double profits) {
 		double adjustedProfits = profits + (excessMoney ? 0.1 : -1); // TEMP
-		return Math.min(adjustedProfits, cash / 2);
+		return 0.0; // Math.min(adjustedProfits, cash / 2);
 	}
 
 	public double calcCogs(double cash, double cogs) {
