@@ -7,8 +7,8 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.firm.decisions.FractionalSpendings;
 import com.agentecon.firm.decisions.IFirmDecisions;
+import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -31,7 +31,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected IPriceFactory prices;
 
 	private double profits;
-	private IFirmDecisions strategy = new FractionalSpendings();
+	private IFirmDecisions strategy = new OptimalDividend();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);

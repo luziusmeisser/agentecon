@@ -1,10 +1,12 @@
 package com.agentecon.firm.decisions;
 
-public class FractionalSpendings implements IFirmDecisions {
+/**
+ * Obviously not optimal.
+ */
+public class FractionalBoth implements IFirmDecisions {
 
 	public double calcDividend(double cash, double profits) {
-//		return profits; TEMP
-		return cash * 0.2;
+		return cash * 0.1;
 	}
 
 	public double calcCogs(double cash, double cogs) {
