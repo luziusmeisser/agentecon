@@ -24,7 +24,9 @@ public class StolperSamuelson {
 	private static final int FIRMS_PER_TYPE = 10;
 
 	private static final double RETURNS_TO_SCALE = 0.5;
-
+	private static final double LOW = 2.0;
+	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
+	
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
 	private ConsumptionWeights consWeights;
@@ -37,7 +39,7 @@ public class StolperSamuelson {
 		this.inputs = createGoods("input", size);
 		this.outputs = createGoods("output", size);
 		this.prodWeights = new ProductionWeights(inputs, outputs);
-		this.consWeights = new ConsumptionWeights(inputs, outputs);
+		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
 	}
 
 	private Good[] createGoods(String string, int size) {
@@ -86,7 +88,10 @@ public class StolperSamuelson {
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
-				c.setUtilityFunction(consWeights.createDeviation((LogUtil) c.getUtilityFunction(), outputs[0], 10.0));
+				LogUtil util = (LogUtil) c.getUtilityFunction();
+				util = consWeights.createDeviation(util, outputs[0], LOW);
+				util = consWeights.createDeviation(util, outputs[1], HIGH);
+				c.setUtilityFunction(util);
 			}
 
 			
