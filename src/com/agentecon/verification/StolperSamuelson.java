@@ -77,7 +77,7 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(boolean sensor, String... priceParams) {
-		SimConfig config = new SimConfig(10000, 23, 0);
+		SimConfig config = new SimConfig(3000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), sensor, priceParams));

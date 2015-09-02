@@ -37,8 +37,12 @@ public class Simulation implements ISimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
+//	public Simulation() {
+//		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.CONSTANTPERCENTAGE, "0.05"));
+//	}
+	
 	public Simulation() {
-		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.CONSTANTPERCENTAGE, "0.05"));
+		this(new StolperSamuelsonMeta());
 	}
 
 	public Simulation(IConfiguration metaConfig) {
