@@ -12,7 +12,7 @@ public class StolperSamuelsonMeta implements IConfiguration {
 	@Override
 	public SimulationConfig createNextConfig() {
 		number++;
-		return ss.createConfiguration(isSensor(), PriceFactory.CONSTANTPERCENTAGE, "0.05");
+		return ss.createConfiguration(isSensor(), getSearch(), "0.01");
 	}
 
 	@Override
