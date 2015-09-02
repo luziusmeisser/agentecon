@@ -23,7 +23,7 @@ public class StolperSamuelsonMeta implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		return getSearch() + ", sensor " + (isSensor() ? "enabled" : "disabled");
+		return getSearch().toLowerCase() + (isSensor() ? "with sensor prices" : "");
 	}
 
 	private String getSearch() {
