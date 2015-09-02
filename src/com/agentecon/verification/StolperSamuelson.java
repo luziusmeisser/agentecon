@@ -106,7 +106,7 @@ public class StolperSamuelson {
 		final StolperSamuelson bm = new StolperSamuelson(2);
 		
 		long t0 = System.nanoTime();
-		String accuracy = "0.02";
+		String accuracy = "0.03";
 		for (String config: PriceFactory.STANDARD_CONFIGS){
 			results.put(config, bm.runAgentBased(false, config, accuracy));
 		}

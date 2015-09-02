@@ -12,8 +12,8 @@ import com.agentecon.price.IPrice;
 
 public class SensorOutputFactor extends OutputFactor {
 	
-	public static final double MIN = 0.02;
-	public static final double MAX = 0.2;
+	public static final double MIN = 0.01;
+	public static final double MAX = 0.5;
 	public static final double DEFAULT = MAX;
 
 	private Ask prevRealAsk;
