@@ -13,16 +13,18 @@ public class FirmEvent extends SimEvent {
 	protected Endowment end;
 	protected IProductionFunction prodFun;
 	protected String[] priceParams;
+	private boolean sensor;
 
-	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, String... priceParams) {
-		this(0, card, type, end, prodFun, priceParams);
+	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, boolean sensor, String... priceParams) {
+		this(0, card, type, end, prodFun, sensor, priceParams);
 	}
 
-	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, String... priceParams) {
+	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, boolean sensor, String... priceParams) {
 		super(step, card);
 		this.end = end;
 		this.type = type;
 		this.prodFun = prodFun;
+		this.sensor = sensor;
 		this.priceParams = priceParams;
 	}
 
@@ -30,17 +32,16 @@ public class FirmEvent extends SimEvent {
 	public void execute(IWorld sim) {
 		PriceFactory pf = new PriceFactory(sim.getRand(), priceParams);
 		for (int i = 0; i < getCardinality(); i++) {
-			if (priceParams[0].equals(PriceFactory.SENSOR)) {
-				SensorFirm firm = createFirm(type, end, prodFun, pf);
-				sim.getFirms().add(firm);
-			} else {
-				sim.getFirms().add(new Firm(type, end, prodFun, pf));
-			}
+			sim.getFirms().add(createFirm(type, end, prodFun, pf));
 		}
 	}
 
-	protected SensorFirm createFirm(String type2, Endowment end2, IProductionFunction prodFun2, PriceFactory pf) {
-		return new SensorFirm(type, end, prodFun, pf);
+	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
+		if (sensor) {
+			return new SensorFirm(type, end, prodFun, pf);
+		} else {
+			return new Firm(type, end, prodFun, pf);
+		}
 	}
 
 }

@@ -14,8 +14,11 @@ public class FractionalDividends implements IFirmDecisions {
 
 	public double calcCogs(double cash, double idealCogs){
 		double budget = cash * 0.5;
-		double actual = Math.min(budget, idealCogs);
-		return actual;
+		if (idealCogs < budget){
+			return idealCogs;
+		} else {
+			return budget;
+		}
 	}
 
 }

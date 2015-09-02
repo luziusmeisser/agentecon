@@ -20,8 +20,7 @@ public abstract class AdaptablePrice implements IPrice {
 	}
 	
 	public void adapt(boolean increase) {
-		double ftemp = getFactor(increase);
-		double factor = (1.0 + ftemp);
+		double factor = getFactor(increase);
 		if (increase) {
 			price = Math.min(MAX, price * factor);
 		} else {
@@ -34,6 +33,10 @@ public abstract class AdaptablePrice implements IPrice {
 	}
 
 	protected abstract double getFactor(boolean increase);
+	
+	public double getSensorDelta(){
+		return getFactor(true) - 1.0;
+	}
 
 	public double getPrice() {
 		return price;

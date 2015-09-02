@@ -16,7 +16,7 @@ import com.agentecon.util.WeightingMovingAverage;
 
 public class PriceMetric extends SimulationListenerAdapter implements IMarketListener {
 
-	private static final double MEMORY = 0.95;
+	private static final double MEMORY = 0.98;
 
 	private HashMap<Good, WeightingMovingAverage> prices;
 	private HashMap<Good, MovingAverage> volume;

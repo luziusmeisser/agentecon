@@ -5,9 +5,9 @@ public class ConstantFactorPrice extends AdaptablePrice {
 
 	private double factor;
 	
-	public ConstantFactorPrice(double factor) {
+	public ConstantFactorPrice(double delta) {
 		super();
-		this.factor = factor;
+		this.factor = 1.0 + delta;
 	}
 	
 	@Override

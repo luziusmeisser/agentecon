@@ -26,8 +26,8 @@ public class ConfigurableWorld {
 	private Good[] inputs, outputs;
 	private FloatVar[] inputPrices, outputPrices;
 
-	public ConfigurableWorld(Good[] inputs, Good[] outputs, Result hint) {
-		FloatDomain.setPrecision(0.001);
+	public ConfigurableWorld(Good[] inputs, Good[] outputs, Result hint, double accuracy) {
+		FloatDomain.setPrecision(accuracy);
 		this.store = new Store();
 		this.inputs = inputs;
 		this.outputs = outputs;

@@ -8,19 +8,19 @@ public class ExpSearchPrice extends AdaptablePrice {
 	public static final double MIN_ADAPTION_FACTOR = Numbers.EPSILON * 1000;
 
 	private double speed;
-	private double factor;
+	private double delta;
 	private boolean direction;
 	private int sameDirectionInARow;
 
-	public ExpSearchPrice(double initialFactor, double initialPrice) {
+	public ExpSearchPrice(double initialDelta, double initialPrice) {
 		super(initialPrice);
-		this.factor = initialFactor;
+		this.delta = initialDelta;
 		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
 
-	public ExpSearchPrice(double initialFactor) {
-		this.factor = initialFactor;
+	public ExpSearchPrice(double initialDelta) {
+		this.delta = initialDelta;
 		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
@@ -30,14 +30,14 @@ public class ExpSearchPrice extends AdaptablePrice {
 		if (increase == direction) {
 			sameDirectionInARow++;
 			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
-				factor = Math.min(MAX_ADAPTION_FACTOR, factor * speed);
+				delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
 			}
 		} else {
 			sameDirectionInARow = 0;
 			direction = increase;
-			factor = Math.max(MIN_ADAPTION_FACTOR, factor / speed);
+			delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
 		}
-		return factor;
+		return 1.0 + delta;
 	}
 
 	@Override

@@ -18,12 +18,14 @@ public class PriceFactory implements IPriceFactory {
 	public static Good NORMALIZED_GOOD = null;
 
 	public static final String CONSTANT = "CONSTANT";
+	public static final String CONSTANTPERCENTAGE = "CONSTANTPERCENTAGE";
 	public static final String CONSTANTFACTOR = "CONSTANTFACTOR";
 	public static final String RANDOMIZED = "RANDOMIZED";
 	public static final String EXPSEARCH = "EXPSEARCH";
-	public static final String SENSOR = "SENSOR";
 	public static final String HISTORICHINT = "HISTORICHINT";
 	public static final String RATIONAL = "RATIONAL";
+	
+	public static final String[] STANDARD_CONFIGS = new String[]{CONSTANTPERCENTAGE, CONSTANTFACTOR, RANDOMIZED, EXPSEARCH};
 
 	private String type;
 	private Random rand;
@@ -59,11 +61,12 @@ public class PriceFactory implements IPriceFactory {
 		default:
 		case CONSTANT:
 			return new HardcodedPrice(factor);
+		case CONSTANTPERCENTAGE:
+			return new ConstantPrecentagePrice(factor);
 		case CONSTANTFACTOR:
 			return new ConstantFactorPrice(factor);
 		case RANDOMIZED:
 			return new RandomizedFactorPrice(rand, factor);
-		case SENSOR:
 		case EXPSEARCH:
 			return new ExpSearchPrice(factor);
 		case RATIONAL:

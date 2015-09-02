@@ -38,6 +38,10 @@ public class Result {
 	public double getPrice(Good good) {
 		return map.get(good).price;
 	}
+	
+	public double getAmount(Good good) {
+		return map.get(good).volume;
+	}
 
 	public Result normalize(Good good) {
 		double price = getPrice(good);
@@ -51,5 +55,5 @@ public class Result {
 	public String toString(){
 		return map.values().toString();
 	}
-	
+
 }
