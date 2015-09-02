@@ -38,7 +38,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.CONSTANTPERCENTAGE, "0.03"));
+		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.CONSTANTPERCENTAGE, "0.05"));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
