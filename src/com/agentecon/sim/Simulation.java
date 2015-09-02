@@ -7,25 +7,18 @@ import java.util.Queue;
 
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
+import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
-import com.agentecon.consumer.Consumer;
-import com.agentecon.consumer.Weight;
-import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.price.PriceFactory;
-import com.agentecon.verification.StolperSamuelson;
-import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation {
+public class Simulation implements ISimulation, IIteratedSimulation {
 
 	private IConfiguration metaConfig;
 
@@ -42,7 +35,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public Simulation() {
-		this(new StolperSamuelson().createConfiguration(true, "EXPSEARCH", "0.05"));
+		this(new StolperSamuelsonMeta());
 	}
 
 	public Simulation(IConfiguration metaConfig) {
@@ -59,7 +52,7 @@ public class Simulation implements ISimulation {
 	}
 
 	public ISimulation getNext() {
-		if (metaConfig.shouldTryAgain()) {
+		if (metaConfig != null && metaConfig.shouldTryAgain()) {
 			return new Simulation(metaConfig);
 		} else {
 			return null;
