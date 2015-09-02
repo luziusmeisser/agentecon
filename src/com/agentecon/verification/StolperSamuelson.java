@@ -126,7 +126,7 @@ public class StolperSamuelson {
 		//
 		// @Override
 		// public void run() {
-		bm.runConstrainedOptimization(null, 0.000000001);
+		bm.runConstrainedOptimization(null, 0.000001);
 		// }
 		// }).waitForEnd(MAX_TIME);
 		long t3 = System.nanoTime();
