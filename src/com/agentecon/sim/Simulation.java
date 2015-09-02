@@ -21,7 +21,7 @@ import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation, IIteratedSimulation {
+public class Simulation implements ISimulation {
 
 	private IConfiguration metaConfig;
 
@@ -37,13 +37,13 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
-//	public Simulation() {
-//		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.CONSTANTPERCENTAGE, "0.05"));
-//	}
-	
 	public Simulation() {
-		this(new StolperSamuelsonMeta());
+		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.EXPSEARCH, "0.05"));
 	}
+	
+//	public Simulation() {
+//		this(new StolperSamuelsonMeta());
+//	}
 
 	public Simulation(IConfiguration metaConfig) {
 		this(metaConfig.createNextConfig());
