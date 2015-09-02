@@ -7,6 +7,7 @@ import com.agentecon.firm.InputFactor;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
+import com.agentecon.price.AdaptablePrice;
 import com.agentecon.price.IPrice;
 
 public class SensorInputFactor extends InputFactor {
@@ -22,6 +23,10 @@ public class SensorInputFactor extends InputFactor {
 		super(stock, price);
 		this.accuracy = accuracy;
 	}
+	
+	protected double getAccuracy(){
+		return price instanceof AdaptablePrice ? ((AdaptablePrice)price).getSensorDelta() : accuracy;
+	}
 
 	@Override
 	public double getVolume() {
@@ -35,7 +40,7 @@ public class SensorInputFactor extends InputFactor {
 
 	@Override
 	public void createOffers(IPriceMakerMarket market, IStock money, double moneySpentOnBid) {
-		double sensorSize = accuracy;
+		double sensorSize = getAccuracy();
 		double sensorAmount = sensorSize * moneySpentOnBid;
 		super.createOffers(market, money, sensorAmount);
 		double left = moneySpentOnBid - sensorAmount;
@@ -59,12 +64,13 @@ public class SensorInputFactor extends InputFactor {
 	}
 
 	private double getSafePrice() {
-		return super.getPrice() * (1 + accuracy);
+		return super.getPrice() * (1 +  getAccuracy());
 	}
 
+	@Override
 	public InputFactor duplicate(IStock stock) {
 		assert prevRealBid == null;
-		return new SensorInputFactor(stock, price, accuracy);
+		return new SensorInputFactor(stock, price,  getAccuracy());
 	}
 
 	@Override

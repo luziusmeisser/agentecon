@@ -5,10 +5,8 @@ import java.util.Map;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.IUtility;
-import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -87,17 +85,17 @@ public class StolperSamuelson {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-		config.addEvent(new UpdatePreferencesEvent(1000) {
-
-			@Override
-			protected void update(com.agentecon.consumer.Consumer c) {
-				LogUtil util = (LogUtil) c.getUtilityFunction();
-				util = consWeights.createDeviation(util, outputs[0], LOW);
-				util = consWeights.createDeviation(util, outputs[1], HIGH);
-				c.setUtilityFunction(util);
-			}
-
-		});
+//		config.addEvent(new UpdatePreferencesEvent(1000) {
+//
+//			@Override
+//			protected void update(com.agentecon.consumer.Consumer c) {
+//				LogUtil util = (LogUtil) c.getUtilityFunction();
+//				util = consWeights.createDeviation(util, outputs[0], LOW);
+//				util = consWeights.createDeviation(util, outputs[1], HIGH);
+//				c.setUtilityFunction(util);
+//			}
+//
+//		});
 		return config;
 	}
 
@@ -109,9 +107,9 @@ public class StolperSamuelson {
 		
 		long t0 = System.nanoTime();
 		String accuracy = "0.02";
-		for (String config: PriceFactory.STANDARD_CONFIGS){
-			results.put(config, bm.runAgentBased(false, config, accuracy));
-		}
+//		for (String config: PriceFactory.STANDARD_CONFIGS){
+//			results.put(config, bm.runAgentBased(false, config, accuracy));
+//		}
 		for (String config: PriceFactory.STANDARD_CONFIGS){
 			results.put("Sensor " + config, bm.runAgentBased(true, config, accuracy));
 		}
