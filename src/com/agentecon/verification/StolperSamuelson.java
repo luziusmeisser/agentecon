@@ -54,7 +54,7 @@ public class StolperSamuelson {
 	public Result runAgentBased(boolean sensor, String... priceParams) {
 		SimConfig config = createConfiguration(sensor, priceParams);
 		Simulation sim = new Simulation(config);
-		PriceMetric prices = new PriceMetric();
+		PriceMetric prices = new PriceMetric(config.getRounds() / 5);
 		sim.addListener(prices);
 		sim.finish();
 		prices.printResult(System.out);

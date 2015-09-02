@@ -47,7 +47,7 @@ public class ComputationalBenchmark {
 	public Result runAgentBased() {
 		SimConfig config = createConfiguration();
 		Simulation sim = new Simulation(config);
-		PriceMetric prices = new PriceMetric();
+		PriceMetric prices = new PriceMetric(config.getRounds() / 5);
 		sim.addListener(prices);
 		sim.finish();
 		prices.printResult(System.out);
@@ -55,7 +55,7 @@ public class ComputationalBenchmark {
 	}
 
 	public Result runConstrainedOptimization(Result hint) {
-		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint);
+		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint, 0.0001);
 		for (int i = 0; i < outputs.length; i++) {
 			IProductionFunction pf = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
 			world.addFirmType("firm_" + i, FIRMS_PER_TYPE, outputs[i], CobbDouglasProduction.PRODUCTIVITY, pf.getInput(), pf.getWeights());
@@ -73,7 +73,7 @@ public class ComputationalBenchmark {
 		SimConfig config = new SimConfig(10000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), PriceFactory.SENSOR));
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE), true, PriceFactory.EXPSEARCH, "0.05"));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
