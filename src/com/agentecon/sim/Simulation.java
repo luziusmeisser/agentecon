@@ -21,7 +21,7 @@ import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation {
+public class Simulation implements ISimulation, IIteratedSimulation {
 
 	private IConfiguration metaConfig;
 
