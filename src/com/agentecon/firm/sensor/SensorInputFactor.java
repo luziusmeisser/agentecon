@@ -7,7 +7,6 @@ import com.agentecon.firm.InputFactor;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
-import com.agentecon.price.AdaptablePrice;
 import com.agentecon.price.IPrice;
 
 public class SensorInputFactor extends InputFactor {
@@ -16,16 +15,12 @@ public class SensorInputFactor extends InputFactor {
 	private double accuracy;
 
 	public SensorInputFactor(IStock stock, IPrice price) {
-		this(stock, price, 0.1);
+		this(stock, price, SensorOutputFactor.DEFAULT);
 	}
 
 	public SensorInputFactor(IStock stock, IPrice price, double accuracy) {
 		super(stock, price);
 		this.accuracy = accuracy;
-	}
-	
-	protected double getAccuracy(){
-		return price instanceof AdaptablePrice ? ((AdaptablePrice)price).getSensorDelta() : accuracy;
 	}
 
 	@Override
@@ -40,7 +35,7 @@ public class SensorInputFactor extends InputFactor {
 
 	@Override
 	public void createOffers(IPriceMakerMarket market, IStock money, double moneySpentOnBid) {
-		double sensorSize = getAccuracy();
+		double sensorSize = accuracy;
 		double sensorAmount = sensorSize * moneySpentOnBid;
 		super.createOffers(market, money, sensorAmount);
 		double left = moneySpentOnBid - sensorAmount;
@@ -55,22 +50,21 @@ public class SensorInputFactor extends InputFactor {
 		super.adaptPrice();
 		if (prevRealBid != null) {
 			if (prevRealBid.isUsed()) {
-				accuracy = Math.max(0.05, accuracy / 1.005);
+				accuracy = Math.max(SensorOutputFactor.MIN, accuracy / 1.005);
 			} else {
-				accuracy = Math.min(0.5, accuracy * 2);
+				accuracy = Math.min(SensorOutputFactor.MAX, accuracy * 2);
 			}
 			prevRealBid = null;
 		}
 	}
 
 	private double getSafePrice() {
-		return super.getPrice() * (1 +  getAccuracy());
+		return super.getPrice() * (1 + accuracy);
 	}
 
-	@Override
 	public InputFactor duplicate(IStock stock) {
 		assert prevRealBid == null;
-		return new SensorInputFactor(stock, price,  getAccuracy());
+		return new SensorInputFactor(stock, price, accuracy);
 	}
 
 	@Override

@@ -11,12 +11,16 @@ import com.agentecon.price.AdaptablePrice;
 import com.agentecon.price.IPrice;
 
 public class SensorOutputFactor extends OutputFactor {
+	
+	public static final double MIN = 0.02;
+	public static final double MAX = 0.2;
+	public static final double DEFAULT = MAX;
 
 	private Ask prevRealAsk;
 	private double accuracy;
 
 	public SensorOutputFactor(IStock stock, IPrice price) {
-		this(stock, price, 0.1);
+		this(stock, price, DEFAULT);
 	}
 
 	public SensorOutputFactor(IStock stock, IPrice price, double accuracy) {
@@ -46,9 +50,9 @@ public class SensorOutputFactor extends OutputFactor {
 		super.adaptPrice();
 		if (prevRealAsk != null) {
 			if (prevRealAsk.isUsed()) {
-				accuracy = Math.max(0.05, accuracy / 1.005);
+				accuracy = Math.max(MIN, accuracy / 1.005);
 			} else {
-				accuracy = Math.min(0.5, accuracy * 2);
+				accuracy = Math.min(MAX, accuracy * 2);
 			}
 			prevRealAsk = null;
 		}
