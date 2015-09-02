@@ -27,11 +27,11 @@ public class StolperSamuelsonMeta implements IConfiguration {
 	}
 
 	private String getSearch() {
-		return PriceFactory.STANDARD_CONFIGS[number / 2];
+		return PriceFactory.STANDARD_CONFIGS[number % PriceFactory.STANDARD_CONFIGS.length];
 	}
 
 	private boolean isSensor() {
-		return number % 2 == 0;
+		return number / PriceFactory.STANDARD_CONFIGS.length == 0;
 	}
 
 }
