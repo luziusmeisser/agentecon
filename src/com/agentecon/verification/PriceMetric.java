@@ -75,7 +75,9 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 
 	@Override
 	public void notifyDayEnded(int day, double utility) {
-		if (day > startRecordingDate) {
+		if (day == startRecordingDate) {
+			notifyTradesCancelled();
+		} else if (day > startRecordingDate) {
 			for (Entry<Good, AccumulatingAverage> e : prices.entrySet()) {
 				AccumulatingAverage avg = e.getValue();
 				volume.get(e.getKey()).add(avg.getWeight());
