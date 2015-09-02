@@ -52,10 +52,6 @@ public class Consumer extends Agent implements IConsumer {
 		this.utility = utility;
 	}
 
-	public void collectDividend(double dividend) {
-		getMoney().add(dividend);
-	}
-
 	public void maximizeUtility(IPriceTakerMarket market) {
 		Inventory inv = getInventory();
 		IStock money = getMoney();

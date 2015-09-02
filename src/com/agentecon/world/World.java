@@ -94,7 +94,7 @@ public class World implements IWorld {
 			}
 		}
 		if (inheritance > 0){
-			consumers.iterator().next().collectDividend(inheritance);
+			consumers.iterator().next().getMoney().add(inheritance);
 		}
 		
 		listeners.notifyDayEnded(day, util / consumers.size());

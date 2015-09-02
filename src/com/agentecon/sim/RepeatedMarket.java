@@ -8,9 +8,12 @@ import com.agentecon.api.Price;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.firm.Firm;
 import com.agentecon.good.Good;
+import com.agentecon.good.IStock;
+import com.agentecon.good.Stock;
 import com.agentecon.market.Market;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListeners;
+import com.agentecon.stats.Numbers;
 import com.agentecon.util.Average;
 import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.world.Trader;
@@ -61,24 +64,25 @@ public class RepeatedMarket {
 	}
 
 	private void distributeDividends(int day, Collection<Firm> firms, Collection<Consumer> cons) {
-		double dividends = 0.0;
+		IStock wallet = new Stock(SimConfig.MONEY, 100000);
 		for (Firm firm : firms) {
-			dividends += firm.payDividends(day);
+			firm.payDividends(wallet, day);
 		}
+		wallet.remove(100000);
 //		for (Trader trader : agents.getAllTraders()) {
 //			if (trader instanceof VolumeTrader){
 //				dividends = ((VolumeTrader)trader).refillWallet(dividends);
 //			}
 //			trader.notifyDayEnded(day);
 //		}
-		double perConsumer = dividends / cons.size();
+		System.out.println("Dividends: " + wallet.getAmount());
+		double perConsumer = wallet.getAmount() / cons.size();
 		for (Consumer c : cons) {
-			c.collectDividend(perConsumer);
-			dividends -= perConsumer;
+			c.getMoney().transfer(wallet, perConsumer);
 		}
-		if (dividends != 0.0) {
+		if (wallet.getAmount() != 0.0) {
 			// ensure no money lost due to rounding
-			cons.iterator().next().collectDividend(dividends);
+			cons.iterator().next().getMoney().absorb(wallet);
 		}
 	}
 
