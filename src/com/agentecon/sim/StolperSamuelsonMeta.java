@@ -17,7 +17,7 @@ public class StolperSamuelsonMeta implements IConfiguration {
 
 	@Override
 	public boolean shouldTryAgain() {
-		return number < 8;
+		return number < 7;
 	}
 
 	@Override

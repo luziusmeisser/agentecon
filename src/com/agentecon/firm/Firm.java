@@ -118,9 +118,9 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	public double payDividends(IStock worldWallet, int day) {
 		IStock wallet = getMoney();
-		double dividend = strategy.calcDividend(wallet.getAmount(), profits); // TEMP, add Math.max again
-//		assert dividend >= 0;
-//		assert dividend <= wallet.getAmount();
+		double dividend = Math.max(0, strategy.calcDividend(wallet.getAmount(), profits));
+		assert dividend >= 0;
+		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
 
 		// register.payDividend(wallet, dividend);

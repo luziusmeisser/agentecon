@@ -64,11 +64,10 @@ public class RepeatedMarket {
 	}
 
 	private void distributeDividends(int day, Collection<Firm> firms, Collection<Consumer> cons) {
-		IStock wallet = new Stock(SimConfig.MONEY, 100000);
+		IStock wallet = new Stock(SimConfig.MONEY);
 		for (Firm firm : firms) {
 			firm.payDividends(wallet, day);
 		}
-		wallet.remove(100000);
 //		for (Trader trader : agents.getAllTraders()) {
 //			if (trader instanceof VolumeTrader){
 //				dividends = ((VolumeTrader)trader).refillWallet(dividends);

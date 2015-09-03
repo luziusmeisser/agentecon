@@ -5,8 +5,10 @@ import java.util.Map;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.IUtility;
+import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -33,7 +35,10 @@ public class StolperSamuelson {
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson() {
-		this(2);
+		this.inputs = new Good[]{new Good("Italian man-hours"), new Good("Swiss man-hours")};
+		this.outputs = new Good[]{new Good("Pizza"), new Good("Fondue")};
+		this.prodWeights = new ProductionWeights(inputs, outputs);
+		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
 	}
 
 	public StolperSamuelson(int size) {
@@ -85,17 +90,17 @@ public class StolperSamuelson {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-//		config.addEvent(new UpdatePreferencesEvent(1000) {
-//
-//			@Override
-//			protected void update(com.agentecon.consumer.Consumer c) {
-//				LogUtil util = (LogUtil) c.getUtilityFunction();
-//				util = consWeights.createDeviation(util, outputs[0], LOW);
-//				util = consWeights.createDeviation(util, outputs[1], HIGH);
-//				c.setUtilityFunction(util);
-//			}
-//
-//		});
+		config.addEvent(new UpdatePreferencesEvent(1000) {
+
+			@Override
+			protected void update(com.agentecon.consumer.Consumer c) {
+				LogUtil util = (LogUtil) c.getUtilityFunction();
+				util = consWeights.createDeviation(util, outputs[0], LOW);
+				util = consWeights.createDeviation(util, outputs[1], HIGH);
+				c.setUtilityFunction(util);
+			}
+
+		});
 		return config;
 	}
 
