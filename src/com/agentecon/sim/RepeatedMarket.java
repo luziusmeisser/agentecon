@@ -74,7 +74,6 @@ public class RepeatedMarket {
 //			}
 //			trader.notifyDayEnded(day);
 //		}
-		System.out.println("Dividends: " + wallet.getAmount());
 		double perConsumer = wallet.getAmount() / cons.size();
 		for (Consumer c : cons) {
 			c.getMoney().transfer(wallet, perConsumer);

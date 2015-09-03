@@ -29,6 +29,7 @@ public class StolperSamuelson {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final double LOW = 2.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
+	private static final int ROUNDS = 3000;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
@@ -82,7 +83,7 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(boolean sensor, String... priceParams) {
-		SimConfig config = new SimConfig(5000, 23, 0);
+		SimConfig config = new SimConfig(ROUNDS, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), sensor, priceParams));
