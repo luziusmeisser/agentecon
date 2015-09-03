@@ -10,18 +10,15 @@ import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
-import com.agentecon.api.Price;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.price.PriceFactory;
-import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
-public class Simulation implements ISimulation {
+public class Simulation implements ISimulation, IIteratedSimulation {
 
 	private IConfiguration metaConfig;
 
