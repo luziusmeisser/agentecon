@@ -8,48 +8,34 @@ import java.util.Random;
 import com.agentecon.good.Good;
 
 /**
- * Creates prices according to settings.
- * A separate instance is required for each firm.
- * PriceFactory must be carried over through generations for evolving firms and "createPrice" only called
- * once per generation for each good.
+ * Creates prices according to settings. A separate instance is required for each firm. PriceFactory must be carried over through generations for evolving firms and "createPrice" only called once per
+ * generation for each good.
  */
 public class PriceFactory implements IPriceFactory {
 
 	public static Good NORMALIZED_GOOD = null;
 
-	public static final String CONSTANT = "CONSTANT";
-	public static final String CONSTANTPERCENTAGE = "CONSTANTPERCENTAGE";
-	public static final String CONSTANTFACTOR = "CONSTANTFACTOR";
-	public static final String RANDOMIZED = "RANDOMIZED";
-	public static final String EXPSEARCH = "EXPSEARCH";
-	public static final String HISTORICHINT = "HISTORICHINT";
-	public static final String RATIONAL = "RATIONAL";
-	
-	public static final String[] STANDARD_CONFIGS = new String[]{CONSTANTPERCENTAGE, CONSTANTFACTOR, RANDOMIZED, EXPSEARCH};
-
-	private String type;
+	private PriceConfig type;
 	private Random rand;
-	private double factor;
 
 	private HashMap<Good, IEvolvable> evolvablePrices;
 
-	public PriceFactory(Random rand, String... params) {
-		this.type = params[0];
+	public PriceFactory(Random rand, PriceConfig config) {
+		this.type = config;
 		this.rand = rand;
-		this.factor = params.length == 1 ? 1.0 : Double.parseDouble(params[1]);
 		this.evolvablePrices = new HashMap<>();
 	}
 
 	public IPrice createPrice(Good good) {
 		if (NORMALIZED_GOOD != null && good.equals(NORMALIZED_GOOD)) {
 			return new HardcodedPrice(10.0);
-		} else if (evolvablePrices.containsKey(good)){
+		} else if (evolvablePrices.containsKey(good)) {
 			IEvolvable ev = evolvablePrices.get(good).createNextGeneration();
 			evolvablePrices.put(good, ev);
 			return (IPrice) ev;
 		} else {
 			IPrice price = instantiatePrice(good);
-			if (price instanceof IEvolvable){
+			if (price instanceof IEvolvable) {
 				evolvablePrices.put(good, (IEvolvable) price);
 			}
 			return price;
@@ -57,23 +43,7 @@ public class PriceFactory implements IPriceFactory {
 	}
 
 	private IPrice instantiatePrice(Good good) {
-		switch (type) {
-		default:
-		case CONSTANT:
-			return new HardcodedPrice(factor);
-		case CONSTANTPERCENTAGE:
-			return new ConstantPrecentagePrice(factor);
-		case CONSTANTFACTOR:
-			return new ConstantFactorPrice(factor);
-		case RANDOMIZED:
-			return new RandomizedFactorPrice(rand, factor);
-		case EXPSEARCH:
-			return new ExpSearchPrice(factor);
-		case RATIONAL:
-			return new RationalExpectationsPrice(new ExpSearchPrice(factor));
-		case HISTORICHINT:
-			return new HistoricHintPrice(factor);
-		}
+		return type.createPrice(rand);
 	}
 
 }

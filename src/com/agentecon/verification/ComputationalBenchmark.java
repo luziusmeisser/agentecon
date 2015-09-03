@@ -9,6 +9,7 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.sim.ConsumptionWeights;
 import com.agentecon.sim.ProductionWeights;
@@ -73,7 +74,7 @@ public class ComputationalBenchmark {
 		SimConfig config = new SimConfig(10000, 23, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), true, PriceFactory.EXPSEARCH, "0.05"));
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE), PriceConfig.DEFAULT));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));

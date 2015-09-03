@@ -14,7 +14,7 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
-import com.agentecon.price.PriceFactory;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.ConsumptionWeights;
 import com.agentecon.sim.ProductionWeights;
 import com.agentecon.sim.SimConfig;
@@ -57,8 +57,8 @@ public class StolperSamuelson {
 		return goods;
 	}
 
-	public Result runAgentBased(boolean sensor, String... priceParams) {
-		SimConfig config = createConfiguration(sensor, priceParams);
+	public Result runAgentBased(PriceConfig pconfig) {
+		SimConfig config = createConfiguration(pconfig);
 		Simulation sim = new Simulation(config);
 		PriceMetric prices = new PriceMetric(config.getRounds() / 5);
 		sim.addListener(prices);
@@ -82,11 +82,11 @@ public class StolperSamuelson {
 		return null;
 	}
 
-	public SimConfig createConfiguration(boolean sensor, String... priceParams) {
+	public SimConfig createConfiguration(PriceConfig pricing) {
 		SimConfig config = new SimConfig(ROUNDS, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), sensor, priceParams));
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE),pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
@@ -113,11 +113,8 @@ public class StolperSamuelson {
 		
 		long t0 = System.nanoTime();
 		String accuracy = "0.03";
-		for (String config: PriceFactory.STANDARD_CONFIGS){
-			results.put(config, bm.runAgentBased(false, config, accuracy));
-		}
-		for (String config: PriceFactory.STANDARD_CONFIGS){
-			results.put("Sensor " + config, bm.runAgentBased(true, config, accuracy));
+		for (PriceConfig config: PriceConfig.STANDARD_CONFIGS){
+			results.put(config.getName(), bm.runAgentBased(config));
 		}
 		long t1 = System.nanoTime();
 		// bm.new Runner(new Runnable() {

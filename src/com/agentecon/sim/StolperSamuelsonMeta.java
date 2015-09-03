@@ -1,7 +1,7 @@
 package com.agentecon.sim;
 
 import com.agentecon.api.SimulationConfig;
-import com.agentecon.price.PriceFactory;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.verification.StolperSamuelson;
 
 public class StolperSamuelsonMeta implements IConfiguration {
@@ -12,25 +12,21 @@ public class StolperSamuelsonMeta implements IConfiguration {
 	@Override
 	public SimulationConfig createNextConfig() {
 		number++;
-		return ss.createConfiguration(isSensor(), getSearch(), "0.01");
+		return ss.createConfiguration(getSearch());
 	}
 
 	@Override
 	public boolean shouldTryAgain() {
-		return number < 7;
+		return number < PriceConfig.STANDARD_CONFIGS.length - 1;
 	}
 
 	@Override
 	public String getComment() {
-		return getSearch().toLowerCase() + (isSensor() ? " with sensor prices" : "");
+		return getSearch().getName();
 	}
 
-	private String getSearch() {
-		return PriceFactory.STANDARD_CONFIGS[number % PriceFactory.STANDARD_CONFIGS.length];
-	}
-
-	private boolean isSensor() {
-		return number / PriceFactory.STANDARD_CONFIGS.length == 0;
+	private PriceConfig getSearch() {
+		return PriceConfig.STANDARD_CONFIGS[number];
 	}
 
 }

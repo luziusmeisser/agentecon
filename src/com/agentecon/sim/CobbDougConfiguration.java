@@ -11,6 +11,7 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 
 public class CobbDougConfiguration implements IConfiguration {
@@ -128,7 +129,7 @@ public class CobbDougConfiguration implements IConfiguration {
 		for (int i = 0; i < outputs.length; i++) {
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			IProductionFunction fun = prod.createProdFun(i, 1.0);
-			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, true, PriceFactory.EXPSEARCH, "0.05"));
+			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, PriceConfig.DEFAULT));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
 	}

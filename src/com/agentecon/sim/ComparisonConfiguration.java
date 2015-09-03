@@ -11,6 +11,7 @@ import com.agentecon.events.FirmEvent;
 import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 
 public class ComparisonConfiguration {
@@ -47,7 +48,7 @@ public class ComparisonConfiguration {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
 			LogProdFun fun = new LogProdFun(outputs[i], prodWeights);
-			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, true, PriceFactory.EXPSEARCH, "0.05"));
+			config.addEvent(new FirmEvent(firmsPerType, "Firm " + i, end, fun, PriceConfig.DEFAULT));
 		}
 		return config;
 	}

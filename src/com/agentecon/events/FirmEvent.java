@@ -4,6 +4,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.firm.sensor.SensorFirm;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.world.IWorld;
 
@@ -12,19 +13,13 @@ public class FirmEvent extends SimEvent {
 	private String type;
 	protected Endowment end;
 	protected IProductionFunction prodFun;
-	protected String[] priceParams;
-	private boolean sensor;
+	protected PriceConfig priceParams;
 
-	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, boolean sensor, String... priceParams) {
-		this(0, card, type, end, prodFun, sensor, priceParams);
-	}
-
-	public FirmEvent(int step, int card, String type, Endowment end, IProductionFunction prodFun, boolean sensor, String... priceParams) {
-		super(step, card);
+	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, PriceConfig priceParams) {
+		super(0, card);
 		this.end = end;
 		this.type = type;
 		this.prodFun = prodFun;
-		this.sensor = sensor;
 		this.priceParams = priceParams;
 	}
 
@@ -37,7 +32,7 @@ public class FirmEvent extends SimEvent {
 	}
 
 	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
-		if (sensor) {
+		if (priceParams.isSensor()) {
 			return new SensorFirm(type, end, prodFun, pf);
 		} else {
 			return new Firm(type, end, prodFun, pf);

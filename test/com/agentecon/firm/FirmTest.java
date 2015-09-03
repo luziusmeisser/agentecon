@@ -24,6 +24,7 @@ import com.agentecon.market.Market;
 import com.agentecon.price.HardcodedPrice;
 import com.agentecon.price.IPrice;
 import com.agentecon.price.IPriceFactory;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.stats.Numbers;
@@ -46,7 +47,7 @@ public class FirmTest {
 	@Test
 	public void testPriceFinding() {
 		TestConsumer tc = new TestConsumer(new Price(SimConfig.PIZZA, 30), new Price(SimConfig.SWISSTIME, 10), new Price(SimConfig.ITALTIME, 15));
-		Firm firm = new Firm("testfirm", end, new LogProdFun(SimConfig.PIZZA, new Weight(SimConfig.ITALTIME, 5.0), new Weight(SimConfig.SWISSTIME, 5.0)), new PriceFactory(rand, new String[] { PriceFactory.EXPSEARCH, "0.05" }));
+		Firm firm = new Firm("testfirm", end, new LogProdFun(SimConfig.PIZZA, new Weight(SimConfig.ITALTIME, 5.0), new Weight(SimConfig.SWISSTIME, 5.0)), new PriceFactory(rand, PriceConfig.DEFAULT));
 		for (int i = 0; i < 100; i++) {
 			Market market = new Market(rand);
 			firm.offer(market);

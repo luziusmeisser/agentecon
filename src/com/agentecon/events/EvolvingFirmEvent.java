@@ -9,6 +9,7 @@ import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
@@ -20,13 +21,13 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 	private LogProdFun prodFun;
 	private ArrayList<Firm> firms;
 
-	public EvolvingFirmEvent(int firmsPerType, String type, Endowment end, LogProdFun fun, Random rand, String... priceParams) {
+	public EvolvingFirmEvent(int firmsPerType, String type, Endowment end, LogProdFun fun, Random rand, PriceConfig config) {
 		super(0, firmsPerType);
 		this.end = end;
 		this.prodFun = fun;
 		this.firms = new ArrayList<>();
 		for (int i = 0; i < getCardinality(); i++) {
-			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, priceParams[0], priceParams[1])));
+			firms.add(new SensorFirm(type, end, fun, new PriceFactory(rand, config)));
 		}
 		initListener();
 	}
