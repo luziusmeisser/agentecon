@@ -14,7 +14,7 @@ public enum EPrice {
 		case CONSTANTPERCENTAGE:
 			return "constant percentage";
 		case EXPSEARCH:
-			return "constant percentage";
+			return "exponential";
 		case HISTORICHINT:
 			return "historic hint";
 		case RANDOMIZED:

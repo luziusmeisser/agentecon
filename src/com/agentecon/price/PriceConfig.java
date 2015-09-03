@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class PriceConfig {
 
-	private static final double DEFAULT_ACCURACY = 0.03;
+	private static final double DEFAULT_ACCURACY = 0.01;
 
 	public static final PriceConfig DEFAULT = new PriceConfig(true, EPrice.EXPSEARCH, DEFAULT_ACCURACY);
 
