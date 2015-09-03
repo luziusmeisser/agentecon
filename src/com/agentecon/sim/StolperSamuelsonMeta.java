@@ -7,7 +7,7 @@ import com.agentecon.verification.StolperSamuelson;
 public class StolperSamuelsonMeta implements IConfiguration {
 
 	private int number = -1;
-	private StolperSamuelson ss = new StolperSamuelson(2);
+	private StolperSamuelson ss = new StolperSamuelson();
 	
 	@Override
 	public SimulationConfig createNextConfig() {
