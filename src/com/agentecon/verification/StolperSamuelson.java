@@ -41,7 +41,7 @@ public class StolperSamuelson {
 		this.outputs = new Good[]{new Good("Pizza"), new Good("Fondue")};
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
-		PriceFactory.NORMALIZED_GOOD = inputs[0];
+		PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public StolperSamuelson(int size) {
