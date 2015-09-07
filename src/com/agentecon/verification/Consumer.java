@@ -41,7 +41,7 @@ public class Consumer implements IConsumer {
 			}
 		}
 		this.work = new FloatVar(store, type + "_work", 0.0, hoursPerDay);
-		this.leisure = new FloatVar(store, timeType.toString(), 0.0, hoursPerDay);
+		this.leisure = new FloatVar(store, timeType.toString_(), 0.0, hoursPerDay);
 
 		FloatVar sum = new FloatVar(store, 0.0, Double.MAX_VALUE);
 		store.impose(new PplusQeqR(work, leisure, sum));

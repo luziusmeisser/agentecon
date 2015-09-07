@@ -40,7 +40,7 @@ public class CobbDouglasFirm implements IFirm {
 
 		this.rawInputs = new FloatVar[inputWeights.length];
 		for (int i = 0; i < inputWeights.length; i++) {
-			this.rawInputs[i] = new FloatVar(store, type + "-" + inputGoods[i], 0.0, Double.MAX_VALUE);
+			this.rawInputs[i] = new FloatVar(store, type + "-" + inputGoods[i].toString_(), 0.0, Double.MAX_VALUE);
 		}
 	}
 

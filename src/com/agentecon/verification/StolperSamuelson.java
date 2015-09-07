@@ -41,7 +41,7 @@ public class StolperSamuelson {
 		this.outputs = new Good[]{new Good("Pizza"), new Good("Fondue")};
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
-		PriceFactory.NORMALIZED_GOOD = outputs[0];
+		PriceFactory.NORMALIZED_GOOD = inputs[0];
 	}
 
 	public StolperSamuelson(int size) {
@@ -111,10 +111,9 @@ public class StolperSamuelson {
 		// for (int i = 1; i <= 10; i++) {
 		// System.out.println("Going for size " + i);
 		HashMap<String, Result> results = new HashMap<>();
-		final StolperSamuelson bm = new StolperSamuelson(2);
+		final StolperSamuelson bm = new StolperSamuelson();
 		
 		long t0 = System.nanoTime();
-		String accuracy = "0.03";
 		for (PriceConfig config: PriceConfig.STANDARD_CONFIGS){
 			results.put(config.getName(), bm.runAgentBased(config));
 		}

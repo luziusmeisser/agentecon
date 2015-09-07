@@ -48,10 +48,10 @@ public class ConfigurableWorld {
 
 	private FloatVar create(Result hint, String prefix, Good good) {
 		if (hint == null) {
-			return new FloatVar(store, prefix + good, 0.0, Double.MAX_VALUE);
+			return new FloatVar(store, prefix + good.toString_(), 0.0, Double.MAX_VALUE);
 		} else {
 			double guess = hint.getPrice(good);
-			return new FloatVar(store, prefix + good, guess * 0.95, guess * 1.05);
+			return new FloatVar(store, prefix + good.toString_(), guess * 0.95, guess * 1.05);
 		}
 	}
 
