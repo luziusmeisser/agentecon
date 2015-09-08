@@ -12,15 +12,19 @@ import com.agentecon.price.IPrice;
 public class SensorInputFactor extends InputFactor {
 	
 	private Bid prevRealBid;
-	private double accuracy;
+	private SensorAccuracy acc;
 
 	public SensorInputFactor(IStock stock, IPrice price) {
-		this(stock, price, SensorOutputFactor.DEFAULT);
+		this(stock, price, new SensorAccuracy());
+	}
+	
+	public SensorInputFactor(IStock stock, IPrice price, double accuracy) {
+		this(stock, price, new SensorAccuracy(accuracy));
 	}
 
-	public SensorInputFactor(IStock stock, IPrice price, double accuracy) {
+	public SensorInputFactor(IStock stock, IPrice price, SensorAccuracy accuracy) {
 		super(stock, price);
-		this.accuracy = accuracy;
+		this.acc = accuracy;
 	}
 
 	@Override
@@ -32,10 +36,10 @@ public class SensorInputFactor extends InputFactor {
 	public double getQuantity() {
 		return super.getQuantity() + (prevRealBid == null ? 0.0 : prevRealBid.getTransactionVolume() / prevRealBid.getPrice().getPrice());
 	}
-
+	
 	@Override
 	public void createOffers(IPriceMakerMarket market, IStock money, double moneySpentOnBid) {
-		double sensorSize = accuracy;
+		double sensorSize = acc.getOfferSize();
 		double sensorAmount = sensorSize * moneySpentOnBid;
 		super.createOffers(market, money, sensorAmount);
 		double left = moneySpentOnBid - sensorAmount;
@@ -50,27 +54,28 @@ public class SensorInputFactor extends InputFactor {
 		super.adaptPrice();
 		if (prevRealBid != null) {
 			if (prevRealBid.isUsed()) {
-				accuracy = Math.max(SensorOutputFactor.MIN, accuracy / 1.005);
+				acc.moreAccurate();
 			} else {
-				accuracy = Math.min(SensorOutputFactor.MAX, accuracy * 2);
+				acc.lessAccurate();
 			}
 			prevRealBid = null;
 		}
 	}
 
 	private double getSafePrice() {
-		return super.getPrice() * (1 + accuracy);
+		return super.getPrice() * (1 + acc.getAccuracy());
 	}
 
 	public InputFactor duplicate(IStock stock) {
 		assert prevRealBid == null;
-		return new SensorInputFactor(stock, price, accuracy);
+		return new SensorInputFactor(stock, price, acc);
 	}
 
 	@Override
 	public double getPrice() {
 		double sensor = super.getPrice();
 		double most = getSafePrice();
+		double accuracy = acc.getOfferSize();
 		return accuracy * sensor + (1 - accuracy) * most;
 	}
 

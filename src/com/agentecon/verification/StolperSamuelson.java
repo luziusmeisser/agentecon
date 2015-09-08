@@ -27,7 +27,7 @@ public class StolperSamuelson {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final double LOW = 3.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
-	private static final int ROUNDS = 10000;
+	private static final int ROUNDS = 4000;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
@@ -60,7 +60,7 @@ public class StolperSamuelson {
 		System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig);
 		Simulation sim = new Simulation(config);
-		PriceMetric prices = new PriceMetric(config.getRounds() / 5);
+		PriceMetric prices = new PriceMetric(3000);
 		sim.addListener(prices);
 		sim.finish();
 		prices.printResult(System.out);
@@ -112,6 +112,7 @@ public class StolperSamuelson {
 		final StolperSamuelson bm = new StolperSamuelson();
 
 		long t0 = System.nanoTime();
+//		PriceConfig config = PriceConfig.STANDARD_CONFIGS[7];
 		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
 			if (config.isSensor()) {
 				results.put(config.getName(), bm.runAgentBased(config));
@@ -130,7 +131,7 @@ public class StolperSamuelson {
 		//
 		// @Override
 		// public void run() {
-		bm.runConstrainedOptimization(null, 0.0001);
+//		bm.runConstrainedOptimization(null, 0.000001);
 		// }
 		// }).waitForEnd(MAX_TIME);
 		long t3 = System.nanoTime();
@@ -142,6 +143,9 @@ public class StolperSamuelson {
 		for (Map.Entry<String, Result> e : results.entrySet()) {
 			System.out.println(e.getKey() + "\t" + e.getValue().getPrice(bm.outputs[1]) / e.getValue().getPrice(bm.outputs[0]) + "\t" + e.getValue().getAmount(bm.outputs[0]));
 		}
+		double benchmark = 639.311;
+		double actual = results.get("sensor prices with exponential adjustments").getAmount(bm.outputs[0]);
+		System.out.println("Production error: " + (benchmark - actual) / benchmark);
 	}
 
 	// class Runner extends Thread {

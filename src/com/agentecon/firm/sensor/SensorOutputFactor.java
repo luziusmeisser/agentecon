@@ -12,18 +12,18 @@ import com.agentecon.price.IPrice;
 
 public class SensorOutputFactor extends OutputFactor {
 	
-	public static final double MIN = 0.01;
-	public static final double MAX = 0.5;
-	public static final double DEFAULT = MAX;
-
 	private Ask prevRealAsk;
-	private double accuracy;
+	private SensorAccuracy accuracy;
 
 	public SensorOutputFactor(IStock stock, IPrice price) {
-		this(stock, price, DEFAULT);
+		this(stock, price, new SensorAccuracy());
 	}
 
 	public SensorOutputFactor(IStock stock, IPrice price, double accuracy) {
+		this(stock, price, new SensorAccuracy(accuracy));
+	}
+	
+	public SensorOutputFactor(IStock stock, IPrice price, SensorAccuracy accuracy) {
 		super(stock, price);
 		this.accuracy = accuracy;
 	}
@@ -33,13 +33,9 @@ public class SensorOutputFactor extends OutputFactor {
 		return super.getVolume() + (prevRealAsk == null ? 0.0 : prevRealAsk.getTransactionVolume());
 	}
 
-	private double getSensorOfferSize() {
-		return accuracy / 5;
-	}
-
 	@Override
 	public void createOffer(IPriceMakerMarket market, IStock money, double amount) {
-		double sensorSize = getSensorOfferSize() * amount;
+		double sensorSize = accuracy.getOfferSize() * amount;
 		super.createOffer(market, money, sensorSize);
 		prevRealAsk = new Ask(money, getStock(), new Price(getGood(), getSafePrice()), amount - sensorSize);
 		market.offer(prevRealAsk);
@@ -50,21 +46,21 @@ public class SensorOutputFactor extends OutputFactor {
 		super.adaptPrice();
 		if (prevRealAsk != null) {
 			if (prevRealAsk.isUsed()) {
-				accuracy = Math.max(MIN, accuracy / 1.005);
+				accuracy.moreAccurate();
 			} else {
-				accuracy = Math.min(MAX, accuracy * 2);
+				accuracy.lessAccurate();
 			}
 			prevRealAsk = null;
 		}
 	}
 
 	private double getSafePrice() {
-		return Math.max(AdaptablePrice.MIN, super.getPrice() / (1 + accuracy));
+		return Math.max(AdaptablePrice.MIN, super.getPrice() / (1 + accuracy.getAccuracy()));
 	}
 
 	@Override
 	public double getPrice() {
-		double offerSize = getSensorOfferSize();
+		double offerSize = accuracy.getOfferSize();
 		double sensor = super.getPrice();
 		double most = getSafePrice();
 		return offerSize * sensor + (1 - offerSize) * most;
