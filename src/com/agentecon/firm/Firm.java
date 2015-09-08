@@ -32,7 +32,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected IPriceFactory prices;
 
 	private double profits;
-	private IFirmDecisions strategy = new StandardStrategy();
+	private IFirmDecisions strategy = new FractionalDividends();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);

@@ -5,17 +5,14 @@ import java.util.Map;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.IUtility;
-import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
-import com.agentecon.price.PriceFactory;
 import com.agentecon.sim.ConsumptionWeights;
 import com.agentecon.sim.ProductionWeights;
 import com.agentecon.sim.SimConfig;
@@ -30,18 +27,18 @@ public class StolperSamuelson {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final double LOW = 3.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
-	private static final int ROUNDS = 3000;
+	private static final int ROUNDS = 10000;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson() {
-		this.inputs = new Good[]{new Good("Italian man-hours"), new Good("Swiss man-hours")};
-		this.outputs = new Good[]{new Good("Pizza"), new Good("Fondue")};
+		this.inputs = new Good[] { new Good("Italian man-hours"), new Good("Swiss man-hours") };
+		this.outputs = new Good[] { new Good("Pizza"), new Good("Fondue") };
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
-//		PriceFactory.NORMALIZED_GOOD = outputs[0];
+		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public StolperSamuelson(int size) {
@@ -88,22 +85,22 @@ public class StolperSamuelson {
 		SimConfig config = new SimConfig(ROUNDS, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE),pricing));
+					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-		config.addEvent(new UpdatePreferencesEvent(1000) {
-
-			@Override
-			protected void update(com.agentecon.consumer.Consumer c) {
-				LogUtil util = (LogUtil) c.getUtilityFunction();
-				util = consWeights.createDeviation(util, outputs[0], LOW);
-				util = consWeights.createDeviation(util, outputs[1], HIGH);
-				c.setUtilityFunction(util);
-			}
-
-		});
+//		config.addEvent(new UpdatePreferencesEvent(1000) {
+//
+//			@Override
+//			protected void update(com.agentecon.consumer.Consumer c) {
+//				LogUtil util = (LogUtil) c.getUtilityFunction();
+//				util = consWeights.createDeviation(util, outputs[0], LOW);
+//				util = consWeights.createDeviation(util, outputs[1], HIGH);
+//				c.setUtilityFunction(util);
+//			}
+//
+//		});
 		return config;
 	}
 
@@ -112,10 +109,12 @@ public class StolperSamuelson {
 		// System.out.println("Going for size " + i);
 		HashMap<String, Result> results = new HashMap<>();
 		final StolperSamuelson bm = new StolperSamuelson();
-		
+
 		long t0 = System.nanoTime();
-		for (PriceConfig config: PriceConfig.STANDARD_CONFIGS){
-			results.put(config.getName(), bm.runAgentBased(config));
+		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
+			if (config.isSensor()) {
+				results.put(config.getName(), bm.runAgentBased(config));
+			}
 		}
 		long t1 = System.nanoTime();
 		// bm.new Runner(new Runnable() {
@@ -130,7 +129,7 @@ public class StolperSamuelson {
 		//
 		// @Override
 		// public void run() {
-		bm.runConstrainedOptimization(null, 0.000001);
+		bm.runConstrainedOptimization(null, 0.0001);
 		// }
 		// }).waitForEnd(MAX_TIME);
 		long t3 = System.nanoTime();
@@ -138,8 +137,8 @@ public class StolperSamuelson {
 		// System.out.println("Jacop with hints took " + (t2 - t1) / 1000000 + "ms");
 		System.out.println("Jacop without hints took " + (t3 - t2) / 1000000 + "ms");
 		// }
-		
-		for (Map.Entry<String, Result> e: results.entrySet()){
+
+		for (Map.Entry<String, Result> e : results.entrySet()) {
 			System.out.println(e.getKey() + "\t" + e.getValue().getPrice(bm.outputs[1]) / e.getValue().getPrice(bm.outputs[0]) + "\t" + e.getValue().getAmount(bm.outputs[0]));
 		}
 	}
