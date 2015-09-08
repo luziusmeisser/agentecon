@@ -25,11 +25,11 @@ public class SensorAccuracy {
 	}
 
 	public void lessAccurate() {
-		accuracy = Math.min(MAX, accuracy * 1.1);
+		accuracy = Math.min(MAX, accuracy * 2);
 	}
 
 	public void moreAccurate() {
-		accuracy = Math.max(MIN, accuracy / 1.01);		
+		accuracy = Math.max(MIN, accuracy / 1.005);		
 	}
 	
 }
