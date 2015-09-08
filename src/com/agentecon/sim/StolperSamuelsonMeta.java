@@ -6,7 +6,7 @@ import com.agentecon.verification.StolperSamuelson;
 
 public class StolperSamuelsonMeta implements IConfiguration {
 
-	private int number = -1;
+	private int number = 3;
 	private StolperSamuelson ss = new StolperSamuelson();
 	
 	@Override
