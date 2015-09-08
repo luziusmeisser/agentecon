@@ -27,7 +27,7 @@ public class StolperSamuelson {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final double LOW = 3.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
-	private static final int ROUNDS = 4000;
+	private static final int ROUNDS = 2000;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
@@ -60,7 +60,7 @@ public class StolperSamuelson {
 		System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig);
 		Simulation sim = new Simulation(config);
-		PriceMetric prices = new PriceMetric(3000);
+		PriceMetric prices = new PriceMetric(1000);
 		sim.addListener(prices);
 		sim.finish();
 		prices.printResult(System.out);
@@ -131,7 +131,7 @@ public class StolperSamuelson {
 		//
 		// @Override
 		// public void run() {
-//		bm.runConstrainedOptimization(null, 0.000001);
+		bm.runConstrainedOptimization(null, 0.0000001);
 		// }
 		// }).waitForEnd(MAX_TIME);
 		long t3 = System.nanoTime();
