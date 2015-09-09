@@ -36,11 +36,13 @@ public class Result {
 	}
 
 	public double getPrice(Good good) {
-		return map.get(good).price;
+		DataPoint dp = map.get(good);
+		return dp == null ? Double.NaN : dp.price;
 	}
 	
 	public double getAmount(Good good) {
-		return map.get(good).volume;
+		DataPoint dp = map.get(good);
+		return dp == null ? Double.NaN : dp.volume;
 	}
 
 	public Result normalize(Good good) {
@@ -50,6 +52,10 @@ public class Result {
 			norm.include(p.good, p.price / price, p.volume);
 		}
 		return norm;
+	}
+	
+	public double getRatio(Good i, Good s) {
+		return getPrice(i) / getPrice(s);
 	}
 	
 	public String toString(){

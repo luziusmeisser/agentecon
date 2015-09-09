@@ -6,13 +6,13 @@ import com.agentecon.verification.StolperSamuelson;
 
 public class StolperSamuelsonMeta implements IConfiguration {
 
-	private int number = 3;
+	private int number = -1;
 	private StolperSamuelson ss = new StolperSamuelson();
 	
 	@Override
 	public SimulationConfig createNextConfig() {
 		number++;
-		return ss.createConfiguration(getSearch());
+		return ss.createConfiguration(getSearch(), 3000);
 	}
 
 	@Override

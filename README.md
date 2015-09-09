@@ -1,4 +1,3 @@
-# Mastering Agent-Based Economics
-Repository for the agent-based economic models of my master's thesis. All tagged simulations are browsable on master.agentecon.com .
+# An Agent-Based Simulation of the Stolper-Samuelson Effect
 
-More to come. My submission deadline for the final version is 2015-11-11.
+Relevant classes: Simulation, StolperSamuelsonChart, StolperSamuelson

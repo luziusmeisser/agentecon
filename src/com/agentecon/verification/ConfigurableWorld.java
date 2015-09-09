@@ -51,7 +51,7 @@ public class ConfigurableWorld {
 			return new FloatVar(store, prefix + good.toString_(), 0.0, Double.MAX_VALUE);
 		} else {
 			double guess = hint.getPrice(good);
-			return new FloatVar(store, prefix + good.toString_(), guess * 0.95, guess * 1.05);
+			return new FloatVar(store, prefix + good.toString_(), guess * 0.98, guess * 1.02);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class ConfigurableWorld {
 		firms.add(new ScaledFirm(store, firm, count));
 	}
 
-	public void solve() {
+	public Result solve() {
 		DepthFirstSearch<FloatVar> search = new DepthFirstSearch<FloatVar>();
 		ArrayList<FloatVar> all = new ArrayList<FloatVar>();
 		all.addAll(Arrays.asList(inputPrices));
@@ -159,12 +159,29 @@ public class ConfigurableWorld {
 		for (IFirm f : firms) {
 			all.add(f.getOutput());
 		}
-		
+
 		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
 		search.setSolutionListener(new PrintOutListener<FloatVar>());
 		search.labeling(store, s);
 		System.out.println(store.variablesHashMap.size() + " variables");
+
+		Result res = new Result();
+		for (int i = 0; i < inputs.length; i++) {
+			try {
+				res.include(inputs[i], inputPrices[i].value(), consumers.get(i).getWorkHours().value());
+			} catch (AssertionError e) {
+				System.out.println(e.toString());
+			}
+		}
+		for (int i = 0; i < outputs.length; i++) {
+			try {
+				res.include(outputs[i], outputPrices[i].value(), firms.get(i).getOutput().value());
+			} catch (AssertionError e) {
+				System.out.println(e.toString());
+			}
+		}
+		return res;
 	}
 
 }

@@ -34,10 +34,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
-//	public Simulation() {
-//		this(new StolperSamuelson(2).createConfiguration(false, PriceFactory.EXPSEARCH, "0.05"));
-//	}
-	
 	public Simulation() {
 		this(new StolperSamuelsonMeta());
 	}

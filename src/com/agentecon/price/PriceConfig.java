@@ -16,6 +16,14 @@ public class PriceConfig {
 	private boolean sensor;
 	private EPrice type;
 	private double accuracy;
+	
+	public PriceConfig() {
+		this(true, EPrice.EXPSEARCH);
+	}
+	
+	public PriceConfig(boolean sensor, EPrice type) {
+		this(sensor, type, DEFAULT_ACCURACY);
+	}
 
 	public PriceConfig(boolean sensor, EPrice type, double accuracy) {
 		super();

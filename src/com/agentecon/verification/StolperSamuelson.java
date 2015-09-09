@@ -27,17 +27,20 @@ public class StolperSamuelson {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final double LOW = 3.0;
 	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
-	private static final int ROUNDS = 2000;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson() {
+		this(LOW);
+	}
+
+	public StolperSamuelson(double low) {
 		this.inputs = new Good[] { new Good("Italian man-hours"), new Good("Swiss man-hours") };
 		this.outputs = new Good[] { new Good("Pizza"), new Good("Fondue") };
 		this.prodWeights = new ProductionWeights(inputs, outputs);
-		this.consWeights = new ConsumptionWeights(inputs, outputs, HIGH, LOW);
+		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - low, low);
 		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
@@ -56,9 +59,9 @@ public class StolperSamuelson {
 		return goods;
 	}
 
-	public Result runAgentBased(PriceConfig pconfig) {
+	public Result runAgentBased(PriceConfig pconfig, int rounds) {
 		System.out.println("Running agent-based simulation with " + pconfig);
-		SimConfig config = createConfiguration(pconfig);
+		SimConfig config = createConfiguration(pconfig, rounds);
 		Simulation sim = new Simulation(config);
 		PriceMetric prices = new PriceMetric(1000);
 		sim.addListener(prices);
@@ -78,12 +81,11 @@ public class StolperSamuelson {
 			world.addConsumerType("cons_" + i, CONSUMERS_PER_TYPE, inputs[i], HOURS_PER_DAY, util.getGoods(), util.getWeights());
 		}
 		world.imposeConstraints();
-		world.solve();
-		return null;
+		return world.solve();
 	}
 
-	public SimConfig createConfiguration(PriceConfig pricing) {
-		SimConfig config = new SimConfig(ROUNDS, 25, 0);
+	public SimConfig createConfiguration(PriceConfig pricing, int rounds) {
+		SimConfig config = new SimConfig(rounds, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
@@ -91,17 +93,17 @@ public class StolperSamuelson {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-//		config.addEvent(new UpdatePreferencesEvent(1000) {
-//
-//			@Override
-//			protected void update(com.agentecon.consumer.Consumer c) {
-//				LogUtil util = (LogUtil) c.getUtilityFunction();
-//				util = consWeights.createDeviation(util, outputs[0], LOW);
-//				util = consWeights.createDeviation(util, outputs[1], HIGH);
-//				c.setUtilityFunction(util);
-//			}
-//
-//		});
+		// config.addEvent(new UpdatePreferencesEvent(1000) {
+		//
+		// @Override
+		// protected void update(com.agentecon.consumer.Consumer c) {
+		// LogUtil util = (LogUtil) c.getUtilityFunction();
+		// util = consWeights.createDeviation(util, outputs[0], LOW);
+		// util = consWeights.createDeviation(util, outputs[1], HIGH);
+		// c.setUtilityFunction(util);
+		// }
+		//
+		// });
 		return config;
 	}
 
@@ -112,11 +114,9 @@ public class StolperSamuelson {
 		final StolperSamuelson bm = new StolperSamuelson();
 
 		long t0 = System.nanoTime();
-//		PriceConfig config = PriceConfig.STANDARD_CONFIGS[7];
+		// PriceConfig config = PriceConfig.STANDARD_CONFIGS[7];
 		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
-			if (config.isSensor()) {
-				results.put(config.getName(), bm.runAgentBased(config));
-			}
+			results.put(config.getName(), bm.runAgentBased(config, 10000));
 		}
 		long t1 = System.nanoTime();
 		// bm.new Runner(new Runnable() {
@@ -131,7 +131,7 @@ public class StolperSamuelson {
 		//
 		// @Override
 		// public void run() {
-		bm.runConstrainedOptimization(null, 0.0000001);
+		// bm.runConstrainedOptimization(null, 0.0000001);
 		// }
 		// }).waitForEnd(MAX_TIME);
 		long t3 = System.nanoTime();
@@ -146,6 +146,14 @@ public class StolperSamuelson {
 		double benchmark = 639.311;
 		double actual = results.get("sensor prices with exponential adjustments").getAmount(bm.outputs[0]);
 		System.out.println("Production error: " + (benchmark - actual) / benchmark);
+	}
+
+	public Good[] getOutputs() {
+		return outputs;
+	}
+
+	public Good[] getInputs() {
+		return outputs;
 	}
 
 	// class Runner extends Thread {
