@@ -22,7 +22,7 @@ public class IncreasingWiggle implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		return "scale " + wiggles;
+		return "wiggles: " + wiggles;
 	}
 
 }
