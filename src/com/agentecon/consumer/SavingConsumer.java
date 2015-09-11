@@ -4,7 +4,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
 import com.agentecon.good.Inventory;
 import com.agentecon.market.IPriceTakerMarket;
-import com.agentecon.sim.TaxShockConfiguration;
+import com.agentecon.sim.config.TaxShockConfiguration;
 import com.agentecon.util.Average;
 
 public class SavingConsumer extends Consumer {

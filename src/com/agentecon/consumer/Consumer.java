@@ -13,7 +13,7 @@ import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 

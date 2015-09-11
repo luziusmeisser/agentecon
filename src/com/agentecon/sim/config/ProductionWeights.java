@@ -1,4 +1,4 @@
-package com.agentecon.sim;
+package com.agentecon.sim.config;
 
 import com.agentecon.consumer.Weight;
 import com.agentecon.firm.production.CobbDouglasProduction;

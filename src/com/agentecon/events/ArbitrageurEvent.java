@@ -3,7 +3,7 @@ package com.agentecon.events;
 import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.trader.Arbitrageur;
 import com.agentecon.world.IWorld;
 

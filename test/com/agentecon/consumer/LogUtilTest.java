@@ -11,7 +11,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
 import com.agentecon.good.Stock;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 
 public class LogUtilTest {

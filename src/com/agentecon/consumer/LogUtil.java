@@ -9,7 +9,7 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 
 public class LogUtil extends AbstractWeightedUtil implements IUtility {
 

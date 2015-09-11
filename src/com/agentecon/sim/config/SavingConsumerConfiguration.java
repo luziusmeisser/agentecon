@@ -1,4 +1,4 @@
-package com.agentecon.sim;
+package com.agentecon.sim.config;
 
 import java.util.ArrayList;
 

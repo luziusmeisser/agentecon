@@ -7,7 +7,7 @@ import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.Market;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 
 public class TestConsumer {
 

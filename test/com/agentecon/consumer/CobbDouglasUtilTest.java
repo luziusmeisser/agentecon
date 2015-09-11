@@ -14,7 +14,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IOffer;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 
 public class CobbDouglasUtilTest {

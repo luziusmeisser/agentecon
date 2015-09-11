@@ -13,10 +13,10 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
-import com.agentecon.sim.ConsumptionWeights;
-import com.agentecon.sim.ProductionWeights;
-import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
+import com.agentecon.sim.config.ConsumptionWeights;
+import com.agentecon.sim.config.ProductionWeights;
+import com.agentecon.sim.config.SimConfig;
 
 public class StolperSamuelson {
 
@@ -85,13 +85,17 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(PriceConfig pricing, int rounds) {
+		return createConfiguration(pricing, 1, rounds);
+	}
+
+	public SimConfig createConfiguration(PriceConfig pricing, int scale, int rounds) {
 		SimConfig config = new SimConfig(rounds, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
-			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
+			config.addEvent(new FirmEvent(scale * FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
-			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
+			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
 		// config.addEvent(new UpdatePreferencesEvent(1000) {
 		//

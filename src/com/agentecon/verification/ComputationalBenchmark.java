@@ -11,10 +11,10 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.sim.ConsumptionWeights;
-import com.agentecon.sim.ProductionWeights;
-import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
+import com.agentecon.sim.config.ConsumptionWeights;
+import com.agentecon.sim.config.ProductionWeights;
+import com.agentecon.sim.config.SimConfig;
 
 public class ComputationalBenchmark {
 

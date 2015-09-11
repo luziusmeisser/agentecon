@@ -9,7 +9,7 @@ import com.agentecon.firm.Firm;
 import com.agentecon.good.Inventory;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 
 public class World implements IWorld {
 

@@ -13,7 +13,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.Market;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.stats.Numbers;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.util.Average;
 import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.world.Trader;

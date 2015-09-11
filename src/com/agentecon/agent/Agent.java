@@ -4,7 +4,7 @@ import com.agentecon.api.IAgent;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 
 public abstract class Agent implements IAgent, Cloneable {
 

@@ -1,4 +1,4 @@
-package com.agentecon.sim;
+package com.agentecon.sim.config;
 
 import com.agentecon.events.VolumeTraderEvent;
 import com.agentecon.trader.VolumeTrader;

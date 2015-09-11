@@ -1,7 +1,7 @@
 package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.sim.IUtilityFactory;
+import com.agentecon.sim.config.IUtilityFactory;
 import com.agentecon.world.IWorld;
 
 public class SinConsumerEvent extends ConsumerEvent {

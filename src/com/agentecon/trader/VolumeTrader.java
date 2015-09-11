@@ -6,7 +6,7 @@ import com.agentecon.firm.sensor.SensorOutputFactor;
 import com.agentecon.good.Good;
 import com.agentecon.market.Market;
 import com.agentecon.price.ExpSearchPrice;
-import com.agentecon.sim.TaxShockConfiguration;
+import com.agentecon.sim.config.TaxShockConfiguration;
 import com.agentecon.world.Trader;
 
 public class VolumeTrader extends Trader {

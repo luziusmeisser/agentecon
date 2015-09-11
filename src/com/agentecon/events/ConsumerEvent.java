@@ -4,7 +4,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtil;
-import com.agentecon.sim.IUtilityFactory;
+import com.agentecon.sim.config.IUtilityFactory;
 import com.agentecon.world.IWorld;
 
 public class ConsumerEvent extends SimEvent {

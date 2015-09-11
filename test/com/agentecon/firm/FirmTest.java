@@ -26,7 +26,7 @@ import com.agentecon.price.IPrice;
 import com.agentecon.price.IPriceFactory;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.sim.SimConfig;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 
 public class FirmTest {

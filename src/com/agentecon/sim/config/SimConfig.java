@@ -1,6 +1,6 @@
 // Created on May 29, 2015 by Luzius Meisser
 
-package com.agentecon.sim;
+package com.agentecon.sim.config;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
