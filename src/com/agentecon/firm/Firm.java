@@ -9,7 +9,6 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
 import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
-import com.agentecon.firm.decisions.StandardStrategy;
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
