@@ -15,9 +15,10 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.IConfiguration;
-import com.agentecon.sim.config.IncreasingWiggle;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
@@ -37,13 +38,13 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
-	public Simulation() {
-		this(new IncreasingWiggle());
-	}
-	
 //	public Simulation() {
-//		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 1, 2000));
+//		this(new IncreasingWiggle());
 //	}
+	
+	public Simulation() {
+		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 2000));
+	}
 
 	public Simulation(IConfiguration metaConfig) {
 		this(metaConfig.createNextConfig());
