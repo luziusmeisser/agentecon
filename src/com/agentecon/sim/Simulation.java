@@ -15,9 +15,10 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
+import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.IConfiguration;
-import com.agentecon.sim.config.IncreasingScale;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
@@ -37,8 +38,12 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
+//	public Simulation() {
+//		this(new IncreasingScale());
+//	}
+	
 	public Simulation() {
-		this(new IncreasingScale());
+		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 3, 5000));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
@@ -53,9 +58,14 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.world = new World(config.getSeed(), listeners);
 		this.day = 0;
 	}
+	
+	@Override
+	public boolean hasNext() {
+		return metaConfig != null && metaConfig.shouldTryAgain();
+	}
 
 	public ISimulation getNext() {
-		if (metaConfig != null && metaConfig.shouldTryAgain()) {
+		if (hasNext()) {
 			return new Simulation(metaConfig);
 		} else {
 			return null;
