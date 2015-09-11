@@ -9,7 +9,7 @@ public class FractionalDividends implements IFirmDecisions {
 	public static double DIVIDEND_RATE = 0.1;
 
 	public double calcDividend(double cash, double profits) {
-		return (profits + cash - 800) / 2; // TEMP
+		return (3*profits + cash - 800) / 4; // TEMP
 	}
 
 	public double calcCogs(double cash, double idealCogs){
