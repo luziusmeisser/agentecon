@@ -14,7 +14,7 @@ public class FractionalDividends implements IFirmDecisions {
 		double div = cash - 800;
 		if (div > 0) {
 			if (profits < maxprofits) {
-				return profits / maxprofits * div;
+				return div; //profits / maxprofits * div;
 			} else {
 				return div;
 			}
