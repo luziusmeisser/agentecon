@@ -5,8 +5,10 @@ import java.util.Map;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.IUtility;
+import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -89,6 +91,10 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(PriceConfig pricing, int scale, int rounds) {
+		return createConfiguration(pricing, 0, scale, rounds);
+	}
+
+	public SimConfig createConfiguration(PriceConfig pricing, int wiggles, int scale, int rounds) {
 		SimConfig config = new SimConfig(rounds, 25, 1);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(scale * FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
@@ -97,17 +103,17 @@ public class StolperSamuelson {
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
 		}
-		// config.addEvent(new UpdatePreferencesEvent(1000) {
-		//
-		// @Override
-		// protected void update(com.agentecon.consumer.Consumer c) {
-		// LogUtil util = (LogUtil) c.getUtilityFunction();
-		// util = consWeights.createDeviation(util, outputs[0], LOW);
-		// util = consWeights.createDeviation(util, outputs[1], HIGH);
-		// c.setUtilityFunction(util);
-		// }
-		//
-		// });
+		config.addEvent(new UpdatePreferencesEvent(1000) {
+
+			@Override
+			protected void update(com.agentecon.consumer.Consumer c) {
+				LogUtil util = (LogUtil) c.getUtilityFunction();
+				util = consWeights.createDeviation(util, outputs[0], LOW);
+				util = consWeights.createDeviation(util, outputs[1], HIGH);
+				c.setUtilityFunction(util);
+			}
+
+		});
 		return config;
 	}
 
