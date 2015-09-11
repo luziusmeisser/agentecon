@@ -89,7 +89,7 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(PriceConfig pricing, int scale, int rounds) {
-		SimConfig config = new SimConfig(rounds, 25, 0);
+		SimConfig config = new SimConfig(rounds, 25, 1);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(scale * FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
