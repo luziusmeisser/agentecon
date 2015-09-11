@@ -100,9 +100,10 @@ public class FirmTest {
 			}
 
 		});
+		firm.adaptPrices();
 		double production = firm.produce(0);
 		assert Math.abs(production - 36.1564) < 0.001;
-		double profits = firm.calcProfits();
+		double profits = firm.getLatestProfits();
 		assert Math.abs(profits - 264.537) < 0.001;
 	}
 	
@@ -112,7 +113,7 @@ public class FirmTest {
 		final double fonduePrice = 10.0;
 		this.end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000) }, new Stock[] {});
 		double alpha = 0.5;
-		IProductionFunction prodFun = new CobbDouglasProduction(SimConfig.FONDUE, new Weight(SimConfig.SWISSTIME, alpha));
+		IProductionFunction prodFun = new CobbDouglasProduction(SimConfig.FONDUE, 1.0, new Weight(SimConfig.SWISSTIME, alpha));
 		Firm firm = new Firm("chalet", end, prodFun, new IPriceFactory(){
 
 			@Override
@@ -156,7 +157,8 @@ public class FirmTest {
 		this.end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000) }, new Stock[] {});
 		double alpha = 0.45;
 		double beta = 0.25;
-		IProductionFunction prodFun = new CobbDouglasProduction(SimConfig.FONDUE, new Weight(SimConfig.SWISSTIME, alpha), new Weight(SimConfig.ITALTIME, beta));
+		double factor = 2.0;
+		IProductionFunction prodFun = new CobbDouglasProduction(SimConfig.FONDUE, factor, new Weight(SimConfig.SWISSTIME, alpha), new Weight(SimConfig.ITALTIME, beta));
 		Firm firm = new Firm("chalet", end, prodFun, new IPriceFactory(){
 
 			@Override
@@ -188,7 +190,7 @@ public class FirmTest {
 		});
 		double production = firm.produce(0);
 		System.out.println("Produced " + production);
-		double x1 = Math.pow(fonduePrice*Math.pow(alpha / hourPrice1, 1 - beta)*Math.pow(beta / hourPrice2, beta), 1/(1 - alpha - beta));
+		double x1 = Math.pow(factor * fonduePrice*Math.pow(alpha / hourPrice1, 1 - beta)*Math.pow(beta / hourPrice2, beta), 1/(1 - alpha - beta));
 		double x2 = hourPrice1 / hourPrice2 * beta / alpha * x1;
 		double production2 = prodFun.produce(new Inventory(new Stock(SimConfig.SWISSTIME, x1), new Stock(SimConfig.ITALTIME, x2)));
 		System.out.println(production2);

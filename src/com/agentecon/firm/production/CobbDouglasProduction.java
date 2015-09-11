@@ -60,7 +60,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 			// increasing returns to scale
 			return Double.MAX_VALUE;
 		} else {
-			double outprice = prices.getPrice(output) * constantFactor;
+			double outprice = prices.getPrice(output);
 			double prod = getCBHelperProduct(prices);
 			double factor = Math.pow(outprice * prod, 1 / (1 - totWeight));
 			return totWeight * factor;
@@ -68,7 +68,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 	}
 
 	private double getCBHelperProduct(IPriceProvider prices) {
-		double tot = 1.0;
+		double tot = constantFactor;
 		for (Weight in : inputs) {
 			double price = prices.getPrice(in.good);
 			if (Double.isInfinite(price)) {

@@ -103,6 +103,10 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		this.profits = profits;
 	}
 
+	public double getLatestProfits(){
+		return profits;
+	}
+	
 	public double produce(int day) {
 		IStock[] inputAmounts = new IStock[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
