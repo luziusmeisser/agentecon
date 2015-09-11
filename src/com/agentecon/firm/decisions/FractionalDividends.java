@@ -7,20 +7,16 @@ package com.agentecon.firm.decisions;
 public class FractionalDividends implements IFirmDecisions {
 
 	public static double DIVIDEND_RATE = 0.1;
-	
-	private double potential;
 
 	public double calcDividend(double cash, double profits) {
-		return potential * (cash - 800); // TEMP
+		return (profits + cash - 800) / 2; // TEMP
 	}
 
 	public double calcCogs(double cash, double idealCogs){
 		double budget = cash * 0.5;
 		if (idealCogs < budget){
-			potential = 1.0;
 			return idealCogs;
 		} else {
-			potential = ((double)budget) / idealCogs;
 			return budget;
 		}
 	}
