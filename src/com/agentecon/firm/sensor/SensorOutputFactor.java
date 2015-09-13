@@ -27,6 +27,13 @@ public class SensorOutputFactor extends OutputFactor {
 		super(stock, price);
 		this.accuracy = accuracy;
 	}
+	
+	@Override
+	protected double getCurrentSuccessRate() {
+		double sensorSize = accuracy.getOfferSize();
+		double bulkSuccess = prevRealAsk.isUsed() ? 1.0 : 0.0;
+		return sensorSize * super.getCurrentSuccessRate() + (1-sensorSize)*bulkSuccess;
+	}
 
 	@Override
 	public double getVolume() {
@@ -34,9 +41,9 @@ public class SensorOutputFactor extends OutputFactor {
 	}
 
 	@Override
-	public void createOffer(IPriceMakerMarket market, IStock money, double amount) {
+	public void createOffers(IPriceMakerMarket market, IStock money, double amount) {
 		double sensorSize = accuracy.getOfferSize() * amount;
-		super.createOffer(market, money, sensorSize);
+		super.createOffers(market, money, sensorSize);
 		prevRealAsk = new Ask(money, getStock(), new Price(getGood(), getSafePrice()), amount - sensorSize);
 		market.offer(prevRealAsk);
 	}
@@ -66,6 +73,7 @@ public class SensorOutputFactor extends OutputFactor {
 		return offerSize * sensor + (1 - offerSize) * most;
 	}
 
+	@Override
 	public OutputFactor duplicate(IStock stock) {
 		// assert prevRealAsk == null;
 		return new SensorOutputFactor(stock, price, accuracy);

@@ -4,6 +4,9 @@ import java.util.Random;
 
 import com.agentecon.stats.Numbers;
 
+/**
+ * Does not work. Very volatile.
+ */
 public class RandomizedExpSearch extends AdaptablePrice {
 
 	public static final double MAX_ADAPTION_FACTOR = 0.5;

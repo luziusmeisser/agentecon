@@ -19,7 +19,7 @@ import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
 
-public class Firm extends Agent implements IFirm, IPriceProvider {
+public class Firm extends Agent implements IFirm {
 
 	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
@@ -66,7 +66,20 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(this));
+		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
+			
+			private double adjustment = getInputAcquisitionSuccessProbability();
+			
+			@Override
+			public double getPrice(Good output) {
+				Factor f = Firm.this.getFactor(output);
+				if (output.equals(Firm.this.output.getGood())){
+					return f.getPrice();
+				} else {
+					return f.getPrice() / adjustment * f.getSuccessRateAverage();
+				}
+			}
+		}));
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
@@ -83,7 +96,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 				}
 			}
 		}
-		output.createOffer(market, getMoney(), output.getStock().getAmount());
+		output.createOffers(market, getMoney(), output.getStock().getAmount());
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
@@ -148,18 +161,25 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 		return new Firm(getType(), end, prod, prices);
 	}
 
-	@Override
-	public double getPrice(Good output) {
-		if (output.equals(this.output.getGood())) {
-			return this.output.getPrice();
+	public double getInputAcquisitionSuccessProbability(){
+		double p = 1.0;
+		for (InputFactor in: inputs){
+			p *= in.getSuccessRateAverage();
+		}
+		return p;
+	}
+	
+	public Factor getFactor(Good good) {
+		if (good.equals(this.output.getGood())) {
+			return this.output;
 		} else {
 			for (InputFactor in : inputs) {
-				if (in.getGood().equals(output)) {
-					return in.isObtainable() ? in.getPrice() : Double.POSITIVE_INFINITY;
+				if (in.getGood().equals(good)) {
+					return in;
 				}
 			}
 		}
-		return Double.POSITIVE_INFINITY;
+		return null;
 	}
 
 	@Override
