@@ -23,6 +23,7 @@ public class HeterogenousScenario extends StolperSamuelson {
 		for (int i = 0; i < outputs.length; i++) {
 			Endowment end = new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {});
 			for (int f = 0; f < scale * FIRMS_PER_TYPE; f++) {
+				pricing = f % 2 == 0 ? pricing : PriceConfig.STANDARD_CONFIGS[6];
 				IProductionFunction prodfun = prodWeights.createProdFun(i, RETURNS_TO_SCALE - 0.05 + rand.nextDouble() / 10);
 				config.addEvent(new FirmEvent(1, "firm_" + i, end, prodfun, pricing));
 			}
