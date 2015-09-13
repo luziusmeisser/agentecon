@@ -3,6 +3,8 @@ package com.agentecon.verification;
 import java.util.Random;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.consumer.LogUtil;
+import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
@@ -16,6 +18,14 @@ public class HeterogenousScenario extends StolperSamuelson {
 
 	public HeterogenousScenario() {
 		this.rand = new Random(1313);
+	}
+	
+	protected void addConsumers(int scale, SimConfig config) {
+		for (int i = 0; i < inputs.length; i++) {
+			Endowment end = new Endowment(new Stock(inputs[i], HOURS_PER_DAY));
+			LogUtil util = consWeights.createUtilFun(i, 0).wiggle(rand);
+			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, end, util));
+		}
 	}
 
 	@Override

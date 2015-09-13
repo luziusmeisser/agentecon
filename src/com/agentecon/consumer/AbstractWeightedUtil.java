@@ -2,6 +2,7 @@ package com.agentecon.consumer;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
@@ -96,6 +97,18 @@ public abstract class AbstractWeightedUtil implements IUtility {
 
 	public String toString() {
 		return "Log utility function with weights " + Arrays.toString(weights);
+	}
+
+	protected Weight[] copyWeights(Random rand) {
+		Weight[] newWeights = new Weight[weights.length];
+		for (int i=0; i<weights.length; i++){
+			double factor = 1.0 + rand.nextDouble() / 10;
+			if (rand.nextBoolean()){
+				factor = 1.0 / factor;
+			}
+			newWeights[i] = new Weight(weights[i].good, weights[i].weight * factor);
+		}
+		return newWeights;
 	}
 
 }

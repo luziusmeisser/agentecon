@@ -4,6 +4,7 @@ package com.agentecon.consumer;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
@@ -72,4 +73,8 @@ public class LogUtil extends AbstractWeightedUtil implements IUtility {
 		return targetAmounts;
 	}
 
+	public LogUtil wiggle(Random rand) {
+		return new LogUtil(super.copyWeights(rand));
+	}
+	
 }
