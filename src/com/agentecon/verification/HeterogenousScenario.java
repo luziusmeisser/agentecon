@@ -3,6 +3,7 @@ package com.agentecon.verification;
 import java.util.Random;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
@@ -12,6 +13,7 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.world.IWorld;
 
 public class HeterogenousScenario extends StolperSamuelson {
 
@@ -32,16 +34,25 @@ public class HeterogenousScenario extends StolperSamuelson {
 
 	@Override
 	protected void addSpecialEvents(SimConfig config) {
-		int time = 0;
-		for (double current = LOW; current < HIGH; current += 0.01) {
-			final double c2 = current;
+		int time = 2000;
+		for (int i=0; i<1000; i++){
+//		for (double current = LOW; current < HIGH; current += 0.01) {
+//			final double c2 = current;
 			config.addEvent(new UpdatePreferencesEvent(time) {
+				
+				@Override
+				public void execute(IWorld sim) {
+					update(sim.getConsumers().getRandomConsumer());
+//					for (Consumer c : sim.getConsumers().getRandomConsumers(getCardinality())) {
+//						update(c);
+//					}
+				}
 
 				@Override
 				protected void update(com.agentecon.consumer.Consumer c) {
 					LogUtil util = (LogUtil) c.getUtilityFunction();
-					util = consWeights.createDeviation(util, outputs[0], HIGH + LOW - c2);
-					util = consWeights.createDeviation(util, outputs[1], c2);
+					util = consWeights.createDeviation(util, outputs[0], LOW);
+					util = consWeights.createDeviation(util, outputs[1], HIGH);
 					c.setUtilityFunction(util);
 				}
 
