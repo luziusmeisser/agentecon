@@ -9,7 +9,7 @@ public class ExpSearchPrice2 extends AdaptablePrice {
 	public static final double THRESHOLD = 0.5;
 	
 	public static final double MAX_ADAPTION_FACTOR = 0.5;
-	public static final double MIN_ADAPTION_FACTOR = Numbers.EPSILON * 1000;
+	public static final double MIN_ADAPTION_FACTOR = Numbers.EPSILON * 10000;
 
 	private double speed;
 	private double delta;
