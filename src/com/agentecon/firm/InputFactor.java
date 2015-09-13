@@ -17,10 +17,10 @@ public class InputFactor extends Factor {
 		return new Bid(money, getStock(), new Price(getGood(), p), planned);
 	}
 	
-//	@Override
-//	public void createOffers(IPriceMakerMarket market, IStock money, double budget) {
-//		super.createOffers(market, money, budget / price.getPrice());  // NOT getPrice() as overridden in subclass
-//	}
+	@Override
+	public void createOffers(IPriceMakerMarket market, IStock money, double budget) {
+		super.createOffers(market, money, budget / price.getPrice());  // NOT getPrice() as overridden in subclass
+	}
 	
 	public InputFactor duplicate(IStock stock){
 		return new InputFactor(stock, price);

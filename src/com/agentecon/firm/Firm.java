@@ -73,11 +73,11 @@ public class Firm extends Agent implements IFirm {
 			@Override
 			public double getPrice(Good output) {
 				Factor f = Firm.this.getFactor(output);
-				// if (output.equals(Firm.this.output.getGood())){
-				return f.getPrice();
-				// } else {
-				// return f.getPrice() / adjustment * f.getSuccessRateAverage();
-				// }
+				if (output.equals(Firm.this.output.getGood())) {
+					return f.getPrice();
+				} else {
+					return f.getPrice() / adjustment * f.getSuccessRateAverage();
+				}
 			}
 		};
 
@@ -86,9 +86,9 @@ public class Firm extends Agent implements IFirm {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
 					double fakePrice = pp.getPrice(f.getGood());
-					double budget = prod.getExpenses(f.getGood(), fakePrice, totSalaries);
+					double budget = prod.getExpenses(f.getGood(), fakePrice, totSalaries) / fakePrice * f.getPrice();
 					if (budget > 0) {
-						f.createOffers(market, getMoney(), budget / fakePrice);
+						f.createOffers(market, getMoney(), budget);
 					} else {
 						// so we find out about the true price even if we are not interested
 						createSymbolicOffer(market, f);
