@@ -27,11 +27,11 @@ public class HeterogenousScenario extends StolperSamuelson {
 
 	@Override
 	protected void addSpecialEvents(SimConfig config) {
-		int time = 2000;
+		int time = 4000;
 		for (int i = 0; i < 1000; i++) {
 			// for (double current = LOW; current < HIGH; current += 0.01) {
 			// final double c2 = current;
-			config.addEvent(new SimEvent(time, -1) {
+			config.addEvent(new SimEvent(time / 2, -1) {
 
 				@Override
 				public void execute(IWorld sim) {
