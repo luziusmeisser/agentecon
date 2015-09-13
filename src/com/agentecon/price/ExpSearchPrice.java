@@ -9,32 +9,34 @@ public class ExpSearchPrice extends AdaptablePrice {
 
 	private double speed;
 	private double delta;
-	private boolean increasetm2, increasetm1;
+	private boolean direction;
+	private int sameDirectionInARow;
 
 	public ExpSearchPrice(double initialDelta, double initialPrice) {
 		super(initialPrice);
 		this.delta = initialDelta;
-		this.increasetm1 = true;
-		this.increasetm2 = true;
+		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
 
 	public ExpSearchPrice(double initialDelta) {
 		this.delta = initialDelta;
-		this.increasetm1 = true;
-		this.increasetm2 = true;
+		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
 
 	@Override
-	protected double getFactor(boolean increasetm0) {
-		if (increasetm0 == increasetm1 && increasetm1 == increasetm2) {
-			delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
-		} else if (increasetm0 != increasetm1) {
+	protected double getFactor(boolean increase) {
+		if (increase == direction) {
+			sameDirectionInARow++;
+			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
+				delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
+			}
+		} else {
+			sameDirectionInARow = 0;
+			direction = increase;
 			delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
 		}
-		increasetm2 = increasetm1;
-		increasetm1 = increasetm0;
 		return 1.0 + delta;
 	}
 
