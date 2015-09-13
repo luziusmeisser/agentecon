@@ -98,6 +98,11 @@ public class StolperSamuelson {
 		SimConfig config = new SimConfig(rounds, 25, wiggles);
 		addFirms(pricing, scale, config);
 		addConsumers(scale, config);
+		addSpecialEvents(config);
+		return config;
+	}
+
+	protected void addSpecialEvents(SimConfig config) {
 		config.addEvent(new UpdatePreferencesEvent(1000) {
 
 			@Override
@@ -109,7 +114,6 @@ public class StolperSamuelson {
 			}
 
 		});
-		return config;
 	}
 
 	protected void addConsumers(int scale, SimConfig config) {
