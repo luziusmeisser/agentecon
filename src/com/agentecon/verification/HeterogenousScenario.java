@@ -32,8 +32,8 @@ public class HeterogenousScenario extends StolperSamuelson {
 
 	@Override
 	protected void addSpecialEvents(SimConfig config) {
-		int time = 500;
-		for (double current = LOW; current < HIGH; current += 0.01) {
+		int time = 0;
+		for (double current = LOW; current < HIGH; current += 0.02) {
 			final double c2 = current;
 			config.addEvent(new UpdatePreferencesEvent(time) {
 
