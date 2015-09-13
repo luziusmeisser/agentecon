@@ -25,7 +25,7 @@ public class ExpSearchPrice2 extends AdaptablePrice {
 		this.increasetm2 = true;
 		this.speed = 1.1;
 	}
-	
+
 	static int increase;
 	static int decrease;
 	static int total;
@@ -33,15 +33,14 @@ public class ExpSearchPrice2 extends AdaptablePrice {
 	@Override
 	protected double getFactor(boolean increasetm0) {
 		total++;
-		if (increasetm0 == increasetm1 && increasetm1 == increasetm2){
-			if (increasetm0) {
-				increase++;
-				delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
-			} else {
-				decrease++;
-				delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
-			}
+		if (increasetm0 == increasetm1 && increasetm1 == increasetm2) {
+			increase++;
+			delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
+		} else if (increasetm0 != increasetm1 && increasetm1 != increasetm2) {
+			decrease++;
+			delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
 		}
+		System.out.println(increase + ", " + decrease + " of " + total);
 		increasetm2 = increasetm1;
 		increasetm1 = increasetm0;
 		return 1.0 + delta;
