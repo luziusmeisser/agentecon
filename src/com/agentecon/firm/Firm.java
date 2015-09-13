@@ -83,7 +83,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 				}
 			}
 		}
-		output.createOffer(market, getMoney(), output.getStock().getAmount());
+		output.createOffer(market, getMoney(), output.getStock().getAmount() / 10.0);
 	}
 
 	private void createSymbolicOffer(IPriceMakerMarket market, InputFactor f) {
