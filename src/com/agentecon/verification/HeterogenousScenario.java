@@ -47,7 +47,7 @@ public class HeterogenousScenario extends StolperSamuelson {
 
 				protected boolean update(com.agentecon.consumer.Consumer c) {
 					LogUtil util = (LogUtil) c.getUtilityFunction();
-					if (util.getWeights()[0] == HIGH) {
+					if (util.getWeight(outputs[0]) == HIGH) {
 						util = consWeights.createDeviation(util, outputs[0], LOW);
 						util = consWeights.createDeviation(util, outputs[1], HIGH);
 						c.setUtilityFunction(util);
@@ -58,7 +58,7 @@ public class HeterogenousScenario extends StolperSamuelson {
 				}
 
 			});
-			time += 3;
+			time += 1;
 		}
 	}
 
