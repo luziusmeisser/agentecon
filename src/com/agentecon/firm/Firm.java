@@ -66,25 +66,29 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		final double adjustment = getInputAcquisitionSuccessProbability();
-		double totSalaries = Math.sqrt(adjustment) * strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
-			
+		IPriceProvider pp = new IPriceProvider() {
+
+			final double adjustment = getInputAcquisitionSuccessProbability();
+
 			@Override
 			public double getPrice(Good output) {
 				Factor f = Firm.this.getFactor(output);
-//				if (output.equals(Firm.this.output.getGood())){
-					return f.getPrice();
-//				} else {
-//					return f.getPrice() / adjustment * f.getSuccessRateAverage();
-//				}
+				// if (output.equals(Firm.this.output.getGood())){
+				return f.getPrice();
+				// } else {
+				// return f.getPrice() / adjustment * f.getSuccessRateAverage();
+				// }
 			}
-		}));
+		};
+
+		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(pp));
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
-					double amount = prod.getExpenses(f.getGood(), f.getPrice(), totSalaries);
-					if (amount > 0) {
-						f.createOffers(market, getMoney(), amount);
+					double fakePrice = pp.getPrice(f.getGood());
+					double budget = prod.getExpenses(f.getGood(), fakePrice, totSalaries);
+					if (budget > 0) {
+						f.createOffers(market, getMoney(), budget / fakePrice);
 					} else {
 						// so we find out about the true price even if we are not interested
 						createSymbolicOffer(market, f);
@@ -114,10 +118,10 @@ public class Firm extends Agent implements IFirm {
 		this.profits = profits;
 	}
 
-	public double getLatestProfits(){
+	public double getLatestProfits() {
 		return profits;
 	}
-	
+
 	public double produce(int day) {
 		IStock[] inputAmounts = new IStock[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
@@ -160,14 +164,14 @@ public class Firm extends Agent implements IFirm {
 		return new Firm(getType(), end, prod, prices);
 	}
 
-	public double getInputAcquisitionSuccessProbability(){
+	public double getInputAcquisitionSuccessProbability() {
 		double p = 1.0;
-		for (InputFactor in: inputs){
+		for (InputFactor in : inputs) {
 			p *= in.getSuccessRateAverage();
 		}
 		return p;
 	}
-	
+
 	public Factor getFactor(Good good) {
 		if (good.equals(this.output.getGood())) {
 			return this.output;
