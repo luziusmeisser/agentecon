@@ -3,6 +3,9 @@ package com.agentecon.price;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
+/**
+ * Experiment. Not as stable as default.
+ */
 public class ExpSearchPrice2 extends AdaptablePrice {
 
 	public static final double MEMORY = 0.8;
