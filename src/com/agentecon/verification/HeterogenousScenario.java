@@ -6,11 +6,13 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
+import com.agentecon.events.SimEvent;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.world.IWorld;
 
 public class HeterogenousScenario extends StolperSamuelson {
 
@@ -26,6 +28,16 @@ public class HeterogenousScenario extends StolperSamuelson {
 			LogUtil util = consWeights.createUtilFun(i, 0).wiggle(rand);
 			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, end, util));
 		}
+		config.addEvent(new SimEvent(0, 1, -1){
+
+			@Override
+			public void execute(IWorld sim) {
+				for (com.agentecon.consumer.Consumer c: sim.getConsumers().getRandomConsumers()){
+					c.setUtilityFunction(((LogUtil)c.getUtilityFunction()).wiggle(rand));
+				}
+			}
+			
+		});
 	}
 
 	@Override

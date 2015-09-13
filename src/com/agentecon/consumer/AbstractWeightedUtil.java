@@ -106,7 +106,7 @@ public abstract class AbstractWeightedUtil implements IUtility {
 			if (rand.nextBoolean()){
 				factor = 1.0 / factor;
 			}
-			newWeights[i] = new Weight(weights[i].good, weights[i].weight * factor);
+			newWeights[i] = new Weight(weights[i].good, Math.max(1.0, weights[i].weight * factor));
 		}
 		return newWeights;
 	}

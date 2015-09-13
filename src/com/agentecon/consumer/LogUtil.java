@@ -11,6 +11,7 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.stats.Numbers;
 
 public class LogUtil extends AbstractWeightedUtil implements IUtility {
 
@@ -66,8 +67,14 @@ public class LogUtil extends AbstractWeightedUtil implements IUtility {
 					// Should happen rarely
 					ignorelist.add(good);
 					return getOptimalAllocation(inv, prices, ignorelist);
+				} else if (target < 0.0){
+					target = 0.0;
+					if (Numbers.equals(target, present)){
+						ignorelist.add(good);
+						return getOptimalAllocation(inv, prices, ignorelist);
+					}
 				}
-				targetAmounts[pos++] = target;
+				targetAmounts[pos++] = Math.max(0.0, target);
 			}
 		}
 		return targetAmounts;
