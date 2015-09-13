@@ -46,7 +46,7 @@ public class HeterogenousScenario extends StolperSamuelson {
 				}
 
 			});
-			time += 10;
+			time += 3;
 		}
 	}
 
