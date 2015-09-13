@@ -7,28 +7,24 @@ import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;
-import com.agentecon.util.MovingAverage;
 
 public abstract class Factor {
 	
 	private IStock stock;
 	protected IPrice price;
 	private AbstractOffer prevOffer;
-	private MovingAverage successRate;
 
 	public Factor(IStock stock, IPrice price) {
 		assert stock != null;
 		assert price != null;
 		this.stock = stock;
 		this.price = price;
-		this.successRate = new MovingAverage(0.7);
 	}
 	
 	public void adaptPrice() {
 		if (prevOffer != null) {
 			boolean success = prevOffer.isUsed();
 			price.adapt(prevOffer.isBid() ? !success : success);
-			successRate.add(getCurrentSuccessRate());
 			prevOffer = null;
 		}
 	}
@@ -59,10 +55,6 @@ public abstract class Factor {
 	
 	protected double getCurrentSuccessRate() {
 		return prevOffer.isUsed() ? 1.0 : 0.0;
-	}
-	
-	public double getSuccessRateAverage(){
-		return successRate.getAverage();
 	}
 	
 	public final Good getGood() {

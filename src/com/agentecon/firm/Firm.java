@@ -66,8 +66,7 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		final double adjustment = getInputAcquisitionSuccessProbability();
-		double totSalaries = Math.sqrt(Math.sqrt(adjustment)) * strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
+		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
 
 			@Override
 			public double getPrice(Good output) {
@@ -153,14 +152,6 @@ public class Firm extends Agent implements IFirm {
 
 	public Firm createNextGeneration(Endowment end, IProductionFunction prod) {
 		return new Firm(getType(), end, prod, prices);
-	}
-
-	public double getInputAcquisitionSuccessProbability() {
-		double p = 1.0;
-		for (InputFactor in : inputs) {
-			p *= in.getSuccessRateAverage();
-		}
-		return p;
 	}
 
 	public Factor getFactor(Good good) {

@@ -22,17 +22,17 @@ import com.agentecon.sim.config.SimConfig;
 
 public class StolperSamuelson {
 
-	private static final int HOURS_PER_DAY = 24;
-	private static final int CONSUMERS_PER_TYPE = 100;
-	private static final int FIRMS_PER_TYPE = 10;
+	protected static final int HOURS_PER_DAY = 24;
+	protected static final int CONSUMERS_PER_TYPE = 100;
+	protected static final int FIRMS_PER_TYPE = 10;
 
-	private static final double RETURNS_TO_SCALE = 0.5;
-	private static final double LOW = 3.0;
-	private static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
+	protected static final double RETURNS_TO_SCALE = 0.5;
+	protected static final double LOW = 3.0;
+	protected static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
 
-	private Good[] inputs, outputs;
-	private ProductionWeights prodWeights;
-	private ConsumptionWeights consWeights;
+	protected Good[] inputs, outputs;
+	protected ProductionWeights prodWeights;
+	protected ConsumptionWeights consWeights;
 
 	public StolperSamuelson() {
 		this(LOW);
@@ -96,13 +96,8 @@ public class StolperSamuelson {
 
 	public SimConfig createConfiguration(PriceConfig pricing, int wiggles, int scale, int rounds) {
 		SimConfig config = new SimConfig(rounds, 25, wiggles);
-		for (int i = 0; i < outputs.length; i++) {
-			config.addEvent(new FirmEvent(scale * FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
-		}
-		for (int i = 0; i < inputs.length; i++) {
-			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
-		}
+		addFirms(pricing, scale, config);
+		addConsumers(scale, config);
 		config.addEvent(new UpdatePreferencesEvent(1000) {
 
 			@Override
@@ -115,6 +110,21 @@ public class StolperSamuelson {
 
 		});
 		return config;
+	}
+
+	protected void addConsumers(int scale, SimConfig config) {
+		for (int i = 0; i < inputs.length; i++) {
+			Endowment end = new Endowment(new Stock(inputs[i], HOURS_PER_DAY));
+			config.addEvent(new ConsumerEvent(scale * CONSUMERS_PER_TYPE, "cons_" + i, end, consWeights.createUtilFun(i, 0)));
+		}
+	}
+
+	protected void addFirms(PriceConfig pricing, int scale, SimConfig config) {
+		for (int i = 0; i < outputs.length; i++) {
+			Endowment end = new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {});
+			IProductionFunction prodfun = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
+			config.addEvent(new FirmEvent(scale * FIRMS_PER_TYPE, "firm_" + i, end, prodfun, pricing));
+		}
 	}
 
 	public static void main(String[] args) throws InterruptedException {

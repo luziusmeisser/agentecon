@@ -44,7 +44,7 @@ public class VolumeTrader extends Trader {
 				if (day == TaxShockConfiguration.ROUNDS - 1){
 					assert sell == present; 
 				}
-				output.createOffer(market, getMoney(), sell);
+				output.createOffers(market, getMoney(), sell);
 			}
 		}
 	}

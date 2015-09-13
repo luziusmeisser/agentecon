@@ -18,7 +18,7 @@ import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.StolperSamuelson;
+import com.agentecon.verification.HeterogenousScenario;
 import com.agentecon.world.World;
 
 // The world
@@ -43,7 +43,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 2000));
+		this(new HeterogenousScenario().createConfiguration(PriceConfig.DEFAULT, 5000));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
