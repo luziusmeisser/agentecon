@@ -16,14 +16,14 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.delta = initialDelta;
 		this.increasetm1 = true;
 		this.increasetm2 = true;
-		this.speed = 1.1;
+		this.speed = 2.0;
 	}
 
 	public ExpSearchPrice(double initialDelta) {
 		this.delta = initialDelta;
 		this.increasetm1 = true;
 		this.increasetm2 = true;
-		this.speed = 1.1;
+		this.speed = 2.0;
 	}
 
 	@Override

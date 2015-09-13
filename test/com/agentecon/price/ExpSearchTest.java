@@ -28,5 +28,24 @@ public class ExpSearchTest {
 		}
 		System.out.println(steps);
 	}
+	
+	@Test
+	public void test2() {
+		ExpSearchPrice price = new ExpSearchPrice(0.05);
+		double target = 100;
+		for (int i=0; i<1000; i++){
+			price.adapt(price.getPrice() < target);
+		}
+		System.out.println("Current factor " + price.getFactor(false));
+		target = 1000;
+		int steps = 0;
+		while (Math.abs(price.getPrice() - target) > 1.0){
+			price.adapt(price.getPrice() < target);
+			System.out.println(price);
+			steps++;
+//			assert steps < 100;
+		}
+		System.out.println(steps);
+	}
 
 }
