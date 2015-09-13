@@ -43,7 +43,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new HeterogenousScenario().createConfiguration(PriceConfig.DEFAULT, 10, 1, 5000));
+		this(new HeterogenousScenario().createConfiguration(PriceConfig.DEFAULT, 0, 1, 5000));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
