@@ -21,7 +21,7 @@ public abstract class Factor {
 		assert price != null;
 		this.stock = stock;
 		this.price = price;
-		this.successRate = new MovingAverage(0.5);
+		this.successRate = new MovingAverage(0.7);
 	}
 	
 	public void adaptPrice() {

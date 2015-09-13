@@ -66,18 +66,17 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
-			
-			private double adjustment = getInputAcquisitionSuccessProbability();
+		final double adjustment = getInputAcquisitionSuccessProbability();
+		double totSalaries = Math.sqrt(adjustment) * strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
 			
 			@Override
 			public double getPrice(Good output) {
 				Factor f = Firm.this.getFactor(output);
-				if (output.equals(Firm.this.output.getGood())){
+//				if (output.equals(Firm.this.output.getGood())){
 					return f.getPrice();
-				} else {
-					return f.getPrice() / adjustment * f.getSuccessRateAverage();
-				}
+//				} else {
+//					return f.getPrice() / adjustment * f.getSuccessRateAverage();
+//				}
 			}
 		}));
 		if (!getMoney().isEmpty()) {
