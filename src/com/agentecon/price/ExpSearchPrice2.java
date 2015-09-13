@@ -19,14 +19,14 @@ public class ExpSearchPrice2 extends AdaptablePrice {
 	public ExpSearchPrice2(double initialDelta, double initialPrice) {
 		super(initialPrice);
 		this.delta = initialDelta;
-		this.speed = 1.5;
+		this.speed = 1.1;
 		this.prevIncrease = false;
 		this.avg = new MovingAverage(MEMORY);
 	}
 
 	public ExpSearchPrice2(double initialDelta) {
 		this.delta = initialDelta;
-		this.speed = 1.5;
+		this.speed = 1.1;
 		this.prevIncrease = false;
 		this.avg = new MovingAverage(MEMORY);
 	}
