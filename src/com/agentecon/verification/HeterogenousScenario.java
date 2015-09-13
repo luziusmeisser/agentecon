@@ -33,20 +33,20 @@ public class HeterogenousScenario extends StolperSamuelson {
 	@Override
 	protected void addSpecialEvents(SimConfig config) {
 		int time = 0;
-		for (double current = LOW; current < HIGH; current += 0.02) {
+		for (double current = LOW; current < HIGH; current += 0.01) {
 			final double c2 = current;
 			config.addEvent(new UpdatePreferencesEvent(time) {
 
 				@Override
 				protected void update(com.agentecon.consumer.Consumer c) {
 					LogUtil util = (LogUtil) c.getUtilityFunction();
-					util = consWeights.createDeviation(util, outputs[0], c2);
-					util = consWeights.createDeviation(util, outputs[1], HIGH + LOW - c2);
+					util = consWeights.createDeviation(util, outputs[0], HIGH + LOW - c2);
+					util = consWeights.createDeviation(util, outputs[1], c2);
 					c.setUtilityFunction(util);
 				}
 
 			});
-			time += 25;
+			time += 10;
 		}
 	}
 
