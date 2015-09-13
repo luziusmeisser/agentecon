@@ -66,29 +66,20 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		IPriceProvider pp = new IPriceProvider() {
-
-			final double adjustment = getInputAcquisitionSuccessProbability();
+		final double adjustment = getInputAcquisitionSuccessProbability();
+		double totSalaries = Math.sqrt(Math.sqrt(adjustment)) * strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
 
 			@Override
 			public double getPrice(Good output) {
-				Factor f = Firm.this.getFactor(output);
-				if (output.equals(Firm.this.output.getGood())) {
-					return f.getPrice();
-				} else {
-					return f.getPrice() / adjustment * f.getSuccessRateAverage();
-				}
+				return Firm.this.getFactor(output).getPrice();
 			}
-		};
-
-		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(pp));
+		}));
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
-					double fakePrice = pp.getPrice(f.getGood());
-					double budget = prod.getExpenses(f.getGood(), fakePrice, totSalaries) / fakePrice * f.getPrice();
-					if (budget > 0) {
-						f.createOffers(market, getMoney(), budget);
+					double amount = prod.getExpenses(f.getGood(),  f.getPrice(), totSalaries);
+					if (amount > 0) {
+						f.createOffers(market, getMoney(), amount);
 					} else {
 						// so we find out about the true price even if we are not interested
 						createSymbolicOffer(market, f);
