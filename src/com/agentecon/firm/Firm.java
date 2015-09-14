@@ -31,12 +31,17 @@ public class Firm extends Agent implements IFirm {
 	protected IPriceFactory prices;
 
 	private double profits;
-	private IFirmDecisions strategy = new FractionalDividends();
+	private IFirmDecisions strategy;
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
+		this(type, end, prod, prices, new FractionalDividends());
+	}
+
+	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
 		super(type, end);
 		this.prod = prod;
 		this.prices = prices;
+		this.strategy = strategy;
 		// this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
@@ -76,7 +81,7 @@ public class Firm extends Agent implements IFirm {
 		if (!getMoney().isEmpty()) {
 			for (InputFactor f : inputs) {
 				if (f.isObtainable()) {
-					double amount = prod.getExpenses(f.getGood(),  f.getPrice(), totSalaries);
+					double amount = prod.getExpenses(f.getGood(), f.getPrice(), totSalaries);
 					if (amount > 0) {
 						f.createOffers(market, getMoney(), amount);
 					} else {
@@ -105,6 +110,7 @@ public class Firm extends Agent implements IFirm {
 			input.adaptPrice();
 		}
 		output.adaptPrice();
+		monitor.reportProfits(profits);
 		this.profits = profits;
 	}
 

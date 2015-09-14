@@ -15,10 +15,9 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.HeterogenousScenario;
+import com.agentecon.verification.CompetitiveScenario;
 import com.agentecon.world.World;
 
 // The world
@@ -43,7 +42,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new HeterogenousScenario().createConfiguration(PriceConfig.DEFAULT, 0, 1, 5000));
+		this(new CompetitiveScenario());
 	}
 
 	public Simulation(IConfiguration metaConfig) {

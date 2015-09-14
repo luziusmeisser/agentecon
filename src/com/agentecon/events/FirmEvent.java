@@ -2,6 +2,8 @@ package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
+import com.agentecon.firm.decisions.FractionalDividends;
+import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.price.PriceConfig;
@@ -30,8 +32,12 @@ public class FirmEvent extends SimEvent {
 			sim.getFirms().add(createFirm(type, end, prodFun, pf));
 		}
 	}
-
+	
 	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
+		return createFirm(type, end, prodFun, pf, new FractionalDividends());
+	}
+
+	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf, IFirmDecisions strategy) {
 		if (priceParams.isSensor()) {
 			return new SensorFirm(type, end, prodFun, pf);
 		} else {

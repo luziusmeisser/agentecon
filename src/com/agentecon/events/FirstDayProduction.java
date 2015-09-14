@@ -39,4 +39,8 @@ public class FirstDayProduction implements IFirmListener {
 		return avg.getAverage();
 	}
 
+	@Override
+	public void reportProfits(double amount) {
+	}
+
 }
