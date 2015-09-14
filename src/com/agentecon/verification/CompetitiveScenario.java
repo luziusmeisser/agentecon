@@ -38,10 +38,12 @@ public class CompetitiveScenario implements IConfiguration {
 
 			@Override
 			protected void addSpecialEvents(SimConfig config) {
-				boolean high = false;
-				for (int i = 1000; i < 10000; i += 2000) {
-					super.updatePrefs(config, i, high ? HIGH : LOW);
-					high = !high;
+				double val = HIGH;
+				double step = 0.05;
+				for (int i = 1000; i < 5000; i += 500) {
+					val -= step;
+					step += 0.05;
+					super.updatePrefs(config, i, val);
 				}
 				config.addEvent(new SimEvent(0, 0) {
 
