@@ -25,7 +25,6 @@ public abstract class Factor {
 		if (prevOffer != null) {
 			boolean success = prevOffer.isUsed();
 			price.adapt(prevOffer.isBid() ? !success : success);
-			prevOffer = null;
 		}
 	}
 	
