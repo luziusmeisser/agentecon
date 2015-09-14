@@ -25,7 +25,7 @@ public class CompetitiveScenario implements IConfiguration {
 	private ArrayList<FirmStatistics> firmStats;
 
 	public CompetitiveScenario() {
-		this.iteration = -1;
+		this.iteration = 9;
 		this.firmStats = new ArrayList<>();
 	}
 
@@ -115,8 +115,8 @@ public class CompetitiveScenario implements IConfiguration {
 	@Override
 	public boolean shouldTryAgain() {
 //		return false;
-		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
-		return iteration < 9;
+//		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
+		return iteration < 10;
 	}
 
 	@Override
