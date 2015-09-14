@@ -3,6 +3,7 @@ package com.agentecon.firm.decisions;
 public class CogsDividend implements IFirmDecisions {
 
 	private int mode;
+	private double divs;
 	private double dividendRatio;
 
 	public CogsDividend(double returnsToScale, int mode) {
@@ -11,7 +12,11 @@ public class CogsDividend implements IFirmDecisions {
 	}
 
 	public double calcCogs(double cash, double cogs) {
-		return cash / 5.0;
+		if (mode == 0) {
+			return divs;
+		} else {
+			return cash / 5.0;
+		}
 	}
 
 	@Override
@@ -19,7 +24,8 @@ public class CogsDividend implements IFirmDecisions {
 		switch (mode) {
 		case 0:
 		default:
-			return calcCogs(metrics.getCash(), 0.0); // 55.20651895154295
+			divs = metrics.getCash() / 5; // 55.22366121385854
+			return divs;
 		case 1:
 			return metrics.getLatestCogs(); // 55.22325880317713
 		case 2:
@@ -37,7 +43,7 @@ public class CogsDividend implements IFirmDecisions {
 		case 8:
 			return metrics.getIdealCogs() * 2 - metrics.getLatestCogs(); // 45.55217613220216 Blows up
 		case 9:
-			return metrics.getLatestCogs() * 2 - metrics.getIdealCogs(); // 45.55217613220216 Blows up
+			return metrics.getLatestCogs() * 2 - metrics.getIdealCogs(); // 55.19501169759995
 		}
 	}
 
@@ -45,7 +51,7 @@ public class CogsDividend implements IFirmDecisions {
 		switch (mode) {
 		default:
 		case 0:
-			return "cash fraction";
+			return "cash / 5 and cogs the same";
 		case 1:
 			return "latest cogs";
 		case 2:
