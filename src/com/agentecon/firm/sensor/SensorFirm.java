@@ -6,6 +6,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.InputFactor;
 import com.agentecon.firm.OutputFactor;
+import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
 import com.agentecon.price.HardcodedPrice;
@@ -14,8 +15,8 @@ import com.agentecon.price.IPriceFactory;
 
 public class SensorFirm extends Firm {
 
-	public SensorFirm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
-		super(type, end, prod, prices);
+	public SensorFirm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
+		super(type, end, prod, prices, strategy);
 	}
 
 	@Override

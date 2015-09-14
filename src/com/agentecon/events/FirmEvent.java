@@ -39,9 +39,9 @@ public class FirmEvent extends SimEvent {
 
 	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf, IFirmDecisions strategy) {
 		if (priceParams.isSensor()) {
-			return new SensorFirm(type, end, prodFun, pf);
+			return new SensorFirm(type, end, prodFun, pf, strategy);
 		} else {
-			return new Firm(type, end, prodFun, pf);
+			return new Firm(type, end, prodFun, pf, strategy);
 		}
 	}
 
