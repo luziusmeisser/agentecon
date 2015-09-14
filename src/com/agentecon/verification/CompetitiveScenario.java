@@ -53,7 +53,7 @@ public class CompetitiveScenario implements IConfiguration {
 			@Override
 			protected void addFirms(PriceConfig pricing, int scale, SimConfig config) {
 				for (int i = 0; i < outputs.length; i++) {
-					Endowment end = new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {});
+					Endowment end = new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 2000) }, new IStock[] {});
 					for (int f = 0; f < scale * FIRMS_PER_TYPE; f++) {
 						final int number = f;
 						IProductionFunction prodfun = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
