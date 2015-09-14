@@ -12,11 +12,12 @@ public class CogsDividend implements IFirmDecisions {
 	}
 
 	public double calcCogs(double cash, double cogs) {
-		if (mode == 0) {
+//		if (mode == 0) {
+//			return divs;
+//		} else {
+			divs = cash / 5.0;
 			return divs;
-		} else {
-			return cash / 5.0;
-		}
+//		}
 	}
 
 	@Override
@@ -24,8 +25,8 @@ public class CogsDividend implements IFirmDecisions {
 		switch (mode) {
 		case 0:
 		default:
-			divs = metrics.getCash() / 5; // 55.22366121385854
-			return divs;
+//			divs = metrics.getCash() / 5; 	// 55.22366121385854
+			return divs;					// 55.22365403882499
 		case 1:
 			return metrics.getLatestCogs(); // 55.22325880317713
 		case 2:
