@@ -19,23 +19,51 @@ public class CogsDividend implements IFirmDecisions {
 		switch (mode) {
 		case 0:
 		default:
-			return calcCogs(metrics.getCash(), 0.0);	// 55.20651895154295
+			return calcCogs(metrics.getCash(), 0.0); // 55.20651895154295
 		case 1:
-			return metrics.getLatestCogs();				// 55.22325880317713
+			return metrics.getLatestCogs(); // 55.22325880317713
 		case 2:
-			return metrics.getIdealCogs();				// 45.55217246381391 Blows up
+			return metrics.getIdealCogs(); // 45.55217246381391 Blows up
 		case 3:
-			return metrics.getLatestRevenue() / 2;		// 55.2233039078274	Lowest peak
+			return metrics.getLatestRevenue() / 2; // 55.2233039078274 Lowest peak
 		case 4:
-			return metrics.getExpectedRevenue() / 2;	// 55.22332350825784
+			return metrics.getExpectedRevenue() / 2; // 55.22332350825784
 		case 5:
-			return metrics.getLatestRevenue() - metrics.getLatestCogs();	// 54.83194273768103 Prices through the roof
+			return metrics.getLatestRevenue() - metrics.getLatestCogs(); // 54.83194273768103 Prices through the roof
 		case 6:
-			return metrics.getExpectedRevenue() - metrics.getLatestCogs();	// 50.88448137265661 Lots of micro-volatility
+			return metrics.getExpectedRevenue() - metrics.getLatestCogs(); // 50.88448137265661 Lots of micro-volatility
 		case 7:
-			return metrics.getExpectedRevenue() - metrics.getIdealCogs();	// 55.22338764543314 Very moderate peaks
+			return metrics.getExpectedRevenue() - metrics.getIdealCogs(); // 55.22338764543314 Very moderate peaks
 		case 8:
-			return metrics.getIdealCogs() * 2 - metrics.getLatestCogs();	// 45.55217613220216 Blows up
+			return metrics.getIdealCogs() * 2 - metrics.getLatestCogs(); // 45.55217613220216 Blows up
+		case 9:
+			return metrics.getLatestCogs() * 2 - metrics.getIdealCogs(); // 45.55217613220216 Blows up
+		}
+	}
+
+	public String getDescription() {
+		switch (mode) {
+		default:
+		case 0:
+			return "cash fraction";
+		case 1:
+			return "latest cogs";
+		case 2:
+			return "ideal cogs";
+		case 3:
+			return "latest revenue / 2";
+		case 4:
+			return "expected revenue / 2";
+		case 5:
+			return "latest revenue - latest cogs";
+		case 6:
+			return "expected revenue - latest cogs";
+		case 7:
+			return "expected revenue - ideal cogs";
+		case 8:
+			return "2 ideal cogs - latest cogs";
+		case 9:
+			return "2 latest cogs - ideal cogs";
 		}
 	}
 

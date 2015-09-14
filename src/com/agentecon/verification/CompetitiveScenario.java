@@ -114,12 +114,12 @@ public class CompetitiveScenario implements IConfiguration {
 	public boolean shouldTryAgain() {
 //		return false;
 		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
-		return iteration < 8;
+		return iteration < 9;
 	}
 
 	@Override
 	public String getComment() {
-		return firmStats.get(firmStats.size() - 1).toString();
+		return new CogsDividend(0.5, iteration).getDescription();
 	}
 
 }
