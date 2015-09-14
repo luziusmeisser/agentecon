@@ -7,9 +7,10 @@ import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
+import com.agentecon.firm.decisions.AdjustingDividend;
+import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
-import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.decisions.StandardStrategy;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
@@ -86,19 +87,22 @@ public class CompetitiveScenario implements IConfiguration {
 							}
 
 							private IFirmDecisions createStrategy(int type) {
-								int count = (iteration + 2) / 3;
-								int shift = (iteration - 1) % 3;
-								int index = type % count;
-								switch ((index + shift) % 3) {
-								case 0:
-									return new OptimalDividend();
-								case 1:
-									return new FractionalDividends();
-								case 2:
-									return new StandardStrategy();
-								default:
-									throw new RuntimeException();
-								}
+								return new CogsDividend(0.5);
+//								int count = (iteration + 2) / 3;
+//								int shift = (iteration - 1) % 3;
+//								int index = type % count;
+//								switch ((index + shift) % 3) {
+//								case 0:
+//									return new AdjustingDividend();
+//								case 1:
+//									return new FractionalDividends();
+//								case 2:
+//									return new StandardStrategy();
+//								case 3:
+//									return new CogsDividend(0.5);
+//								default:
+//									throw new RuntimeException();
+//								}
 							}
 						});
 					}

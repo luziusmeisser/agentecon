@@ -1,6 +1,6 @@
 package com.agentecon.firm.decisions;
 
-public class OptimalDividend implements IFirmDecisions {
+public class AdjustingDividend implements IFirmDecisions {
 	
 	private static final double SPENDING_FRACTION = 0.2;
 
