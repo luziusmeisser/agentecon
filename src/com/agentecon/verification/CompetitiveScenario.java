@@ -86,14 +86,18 @@ public class CompetitiveScenario implements IConfiguration {
 							}
 
 							private IFirmDecisions createStrategy(int type) {
-								switch (iteration) {
-								case 1:
+								int count = (iteration + 2) / 3;
+								int shift = (iteration - 1) % 3;
+								int index = type % count;
+								switch ((index + shift) % 3) {
+								case 0:
 									return new OptimalDividend();
-								case 2:
+								case 1:
 									return new FractionalDividends();
-								default:
-								case 3:
+								case 2:
 									return new StandardStrategy();
+								default:
+									throw new RuntimeException();
 								}
 							}
 						});
@@ -102,18 +106,18 @@ public class CompetitiveScenario implements IConfiguration {
 			}
 
 		};
-		return scenario.createConfiguration(PriceConfig.DEFAULT, 10000);
+		return scenario.createConfiguration(PriceConfig.DEFAULT, 5000);
 	}
 
 	@Override
 	public boolean shouldTryAgain() {
 		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
-		return iteration < 3;
+		return iteration < 7;
 	}
 
 	@Override
 	public String getComment() {
-		return null;
+		return firmStats.toString();
 	}
 
 }

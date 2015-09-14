@@ -47,7 +47,7 @@ public class FirmStatistics extends SimulationListenerAdapter {
 	
 	@Override
 	public String toString(){
-		return getRanking();
+		return avg.keySet().toString();
 	}
 
 }
