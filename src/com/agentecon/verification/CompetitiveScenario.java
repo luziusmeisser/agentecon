@@ -117,7 +117,7 @@ public class CompetitiveScenario implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		return firmStats.toString();
+		return firmStats.get(firmStats.size() - 1).toString();
 	}
 
 }
