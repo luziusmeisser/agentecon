@@ -132,7 +132,7 @@ public class Firm extends Agent implements IFirm {
 	public double payDividends(IStock worldWallet, int day) {
 		double expectedProfts = getStock(output.getGood()).getAmount() * output.getPrice() - cogs;
 		IStock wallet = getMoney();
-		double dividend = Math.min(wallet.getAmount() / 4, Math.max(0, strategy.calcDividend(wallet.getAmount(), expectedProfts)));
+		double dividend = Math.min(wallet.getAmount(), Math.max(0, strategy.calcDividend(wallet.getAmount(), expectedProfts)));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
