@@ -27,7 +27,7 @@ public class CompetitiveScenario implements IConfiguration {
 	private ArrayList<FirmStatistics> firmStats;
 
 	public CompetitiveScenario() {
-		this.iteration = 0;
+		this.iteration = 2;
 		this.firmStats = new ArrayList<>();
 	}
 
@@ -75,10 +75,10 @@ public class CompetitiveScenario implements IConfiguration {
 									@Override
 									public void notifyProduced(String producer, IStock[] inputs, IStock output) {
 									}
-
+									
 									@Override
-									public void reportProfits(double amount) {
-										stats.reportProfits(strategy, amount);
+									public void reportResults(double revenue, double cogs, double profits) {
+										stats.reportProfits(strategy, profits);
 									}
 
 								});
@@ -111,8 +111,9 @@ public class CompetitiveScenario implements IConfiguration {
 
 	@Override
 	public boolean shouldTryAgain() {
-		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
-		return iteration < 7;
+		return false;
+//		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
+//		return iteration < 7;
 	}
 
 	@Override

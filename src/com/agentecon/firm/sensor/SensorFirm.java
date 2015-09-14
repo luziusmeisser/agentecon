@@ -14,6 +14,10 @@ import com.agentecon.price.IPrice;
 import com.agentecon.price.IPriceFactory;
 
 public class SensorFirm extends Firm {
+	
+	public SensorFirm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
+		super(type, end, prod, prices);
+	}
 
 	public SensorFirm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
 		super(type, end, prod, prices, strategy);

@@ -104,14 +104,15 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void adaptPrices() {
-		double profits = output.getVolume();
+		double revenue = output.getVolume();
+		double cogs = 0.0;
 		for (InputFactor input : inputs) {
-			profits -= input.getVolume();
+			cogs += input.getVolume();
 			input.adaptPrice();
 		}
+		this.profits = revenue - cogs;
 		output.adaptPrice();
-		monitor.reportProfits(profits);
-		this.profits = profits;
+		monitor.reportResults(revenue, cogs, profits);
 	}
 
 	public double getLatestProfits() {
