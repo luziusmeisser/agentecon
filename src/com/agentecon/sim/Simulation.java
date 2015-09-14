@@ -38,7 +38,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 //	public Simulation() {
-//		this(new IncreasingWiggle());
+//		this(new IncreasingWiggle() ); 
 //	}
 	
 	public Simulation() {
