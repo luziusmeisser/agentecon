@@ -71,7 +71,8 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void offer(IPriceMakerMarket market) {
-		double totSalaries = strategy.calcCogs(getMoney().getAmount(), prod.getCostOfMaximumProfit(new IPriceProvider() {
+		double budget = getMoney().getAmount();
+		double totSalaries = strategy.calcCogs(budget, prod.getCostOfMaximumProfit(new IPriceProvider() {
 
 			@Override
 			public double getPrice(Good output) {
