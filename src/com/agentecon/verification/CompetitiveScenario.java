@@ -77,8 +77,8 @@ public class CompetitiveScenario implements IConfiguration {
 									}
 									
 									@Override
-									public void reportResults(double revenue, double cogs, double profits) {
-										stats.reportProfits(strategy, profits);
+									public void reportResults(double revenue, double cogs, double realizedPreviousProfits, double expectedCurrentProfits) {
+										stats.reportProfits(strategy, realizedPreviousProfits);
 									}
 
 								});

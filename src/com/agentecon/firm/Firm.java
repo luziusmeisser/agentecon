@@ -30,7 +30,7 @@ public class Firm extends Agent implements IFirm {
 
 	protected IPriceFactory prices;
 
-	private double profits;
+	private double cogs;
 	private IFirmDecisions strategy;
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
@@ -104,28 +104,23 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public void adaptPrices() {
-		double revenue = output.getVolume();
-		double cogs = 0.0;
 		for (InputFactor input : inputs) {
-			cogs += input.getVolume();
 			input.adaptPrice();
 		}
-		this.profits = revenue - cogs;
 		output.adaptPrice();
-		monitor.reportResults(revenue, cogs, profits);
-	}
-
-	public double getLatestProfits() {
-		return profits;
 	}
 
 	public double produce(int day) {
+		double prevCogs = this.cogs;
 		IStock[] inputAmounts = new IStock[inputs.length];
+		this.cogs = 0.0;
 		for (int i = 0; i < inputs.length; i++) {
+			cogs += inputs[i].getVolume();
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
 		double produced = prod.produce(getInventory());
 		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
+		monitor.reportResults(output.getVolume(), cogs, output.getVolume() - prevCogs, produced * output.getPrice() - cogs);
 		return produced;
 	}
 
@@ -134,8 +129,9 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public double payDividends(IStock worldWallet, int day) {
+		double expectedProfts = getStock(output.getGood()).getAmount() * output.getPrice() - cogs;
 		IStock wallet = getMoney();
-		double dividend = Math.min(wallet.getAmount() / 2, Math.max(0, strategy.calcDividend(wallet.getAmount(), profits)));
+		double dividend = Math.min(wallet.getAmount() / 2, Math.max(0, strategy.calcDividend(wallet.getAmount(), expectedProfts)));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);

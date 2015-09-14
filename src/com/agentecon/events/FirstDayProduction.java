@@ -40,7 +40,7 @@ public class FirstDayProduction implements IFirmListener {
 	}
 
 	@Override
-	public void reportResults(double revenue, double cogs, double profits) {
+	public void reportResults(double revenue, double cogs, double realizedPreviousProfits, double expectedCurrentProfits) {
 	}
 
 }

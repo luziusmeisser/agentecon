@@ -103,8 +103,8 @@ public class FirmTest {
 		firm.adaptPrices();
 		double production = firm.produce(0);
 		assert Math.abs(production - 36.1564) < 0.001;
-		double profits = firm.getLatestProfits();
-		assert Math.abs(profits - 264.537) < 0.001;
+//		double profits = firm.getLatestProfits();
+//		assert Math.abs(profits - 264.537) < 0.001;
 	}
 	
 	@Test
