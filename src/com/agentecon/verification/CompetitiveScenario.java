@@ -7,9 +7,7 @@ import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
-import com.agentecon.firm.decisions.OptimalDividend;
 import com.agentecon.firm.decisions.StandardStrategy;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
@@ -37,7 +35,11 @@ public class CompetitiveScenario implements IConfiguration {
 			
 			@Override
 			protected void addSpecialEvents(SimConfig config) {
-				super.addSpecialEvents(config);
+				boolean high = false;
+				for (int i=1000; i<10000; i++){
+					super.updatePrefs(config, i, high ? HIGH : LOW);
+					high = !high;
+				}
 				config.addEvent(new SimEvent(0, 0) {
 
 					@Override

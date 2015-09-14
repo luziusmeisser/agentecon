@@ -103,13 +103,17 @@ public class StolperSamuelson {
 	}
 
 	protected void addSpecialEvents(SimConfig config) {
-		config.addEvent(new UpdatePreferencesEvent(1000) {
+		updatePrefs(config, 1000, LOW);
+	}
+
+	protected void updatePrefs(SimConfig config, int when, final double pizza) {
+		config.addEvent(new UpdatePreferencesEvent(when) {
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
 				LogUtil util = (LogUtil) c.getUtilityFunction();
-				util = consWeights.createDeviation(util, outputs[0], LOW);
-				util = consWeights.createDeviation(util, outputs[1], HIGH);
+				util = consWeights.createDeviation(util, outputs[0], pizza);
+				util = consWeights.createDeviation(util, outputs[1], HIGH + LOW - pizza);
 				c.setUtilityFunction(util);
 			}
 
