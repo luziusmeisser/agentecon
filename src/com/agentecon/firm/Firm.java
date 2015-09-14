@@ -7,7 +7,7 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.firm.decisions.FractionalDividends;
+import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
@@ -30,11 +30,10 @@ public class Firm extends Agent implements IFirm {
 
 	protected IPriceFactory prices;
 
-	private double cogs;
 	private IFirmDecisions strategy;
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
-		this(type, end, prod, prices, new FractionalDividends());
+		this(type, end, prod, prices, new DifferentialDividend());
 	}
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
@@ -112,16 +111,15 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public double produce(int day) {
-		double prevCogs = this.cogs;
 		IStock[] inputAmounts = new IStock[inputs.length];
-		this.cogs = 0.0;
+		double cogs = 0.0;
 		for (int i = 0; i < inputs.length; i++) {
 			cogs += inputs[i].getVolume();
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
 		double produced = prod.produce(getInventory());
 		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
-		monitor.reportResults(output.getVolume(), cogs, output.getVolume() - prevCogs, produced * output.getPrice() - cogs);
+		monitor.reportResults(output.getVolume(), cogs, produced * output.getPrice() - cogs);
 		return produced;
 	}
 
@@ -130,9 +128,21 @@ public class Firm extends Agent implements IFirm {
 	}
 
 	public double payDividends(IStock worldWallet, int day) {
-		double expectedProfts = getStock(output.getGood()).getAmount() * output.getPrice() - cogs;
 		IStock wallet = getMoney();
-		double dividend = Math.min(wallet.getAmount(), Math.max(0, strategy.calcDividend(wallet.getAmount(), expectedProfts)));
+		double dividend = Math.min(wallet.getAmount(), Math.max(0, strategy.calcDividend(new Financials(wallet, inputs, output){
+
+			@Override
+			public double getIdealCogs() {
+				return prod.getCostOfMaximumProfit(new IPriceProvider() {
+
+					@Override
+					public double getPrice(Good good) {
+						return Firm.this.getFactor(good).getPrice();
+					}
+				});
+			}
+			
+		})));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);

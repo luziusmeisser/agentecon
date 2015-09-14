@@ -7,11 +7,8 @@ import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.decisions.AdjustingDividend;
 import com.agentecon.firm.decisions.CogsDividend;
-import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
-import com.agentecon.firm.decisions.StandardStrategy;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
@@ -28,7 +25,7 @@ public class CompetitiveScenario implements IConfiguration {
 	private ArrayList<FirmStatistics> firmStats;
 
 	public CompetitiveScenario() {
-		this.iteration = 1;
+		this.iteration = -1;
 		this.firmStats = new ArrayList<>();
 	}
 
@@ -78,8 +75,8 @@ public class CompetitiveScenario implements IConfiguration {
 									}
 									
 									@Override
-									public void reportResults(double revenue, double cogs, double realizedPreviousProfits, double expectedCurrentProfits) {
-										stats.reportProfits(strategy, realizedPreviousProfits);
+									public void reportResults(double revenue, double cogs, double profits) {
+										stats.reportProfits(strategy, profits);
 									}
 
 								});
@@ -87,7 +84,7 @@ public class CompetitiveScenario implements IConfiguration {
 							}
 
 							private IFirmDecisions createStrategy(int type) {
-								return new CogsDividend(0.5);
+								return new CogsDividend(0.5, iteration);
 //								int count = (iteration + 2) / 3;
 //								int shift = (iteration - 1) % 3;
 //								int index = type % count;
@@ -115,9 +112,9 @@ public class CompetitiveScenario implements IConfiguration {
 
 	@Override
 	public boolean shouldTryAgain() {
-		return false;
-//		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
-//		return iteration < 7;
+//		return false;
+		System.out.println(firmStats.get(firmStats.size() - 1).getRanking());
+		return iteration < 8;
 	}
 
 	@Override

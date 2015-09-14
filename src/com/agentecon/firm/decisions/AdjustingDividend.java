@@ -6,15 +6,17 @@ public class AdjustingDividend implements IFirmDecisions {
 
 	private boolean excessMoney = false;
 
-	public double calcDividend(double cash, double profits) {
-		double adjustedProfits = profits + (excessMoney ? 1 : -1);
-		return Math.min(adjustedProfits, cash / 2);
-	}
-
 	public double calcCogs(double cash, double cogs) {
 		double actual = cash * SPENDING_FRACTION;
 		excessMoney = actual > cogs;
 		return actual;
+	}
+
+	@Override
+	public double calcDividend(IFinancials metrics) {
+		double profits = metrics.getLatestRevenue() - metrics.getLatestCogs();
+		double adjustedProfits = profits + (excessMoney ? 1 : -1);
+		return Math.min(adjustedProfits, metrics.getCash() / 2);
 	}
 
 }

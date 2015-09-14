@@ -2,7 +2,7 @@
 
 package com.agentecon.events;
 
-import com.agentecon.firm.decisions.FractionalDividends;
+import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.world.IWorld;
 
 public class SetDividendRateEvent extends SimEvent {
@@ -16,7 +16,7 @@ public class SetDividendRateEvent extends SimEvent {
 
 	@Override
 	public void execute(IWorld sim) {
-		FractionalDividends.DIVIDEND_RATE = rate;
+		DifferentialDividend.DIVIDEND_RATE = rate;
 	}
 
 }
