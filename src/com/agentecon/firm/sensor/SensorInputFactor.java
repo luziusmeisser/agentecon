@@ -58,7 +58,6 @@ public class SensorInputFactor extends InputFactor {
 			} else {
 				acc.lessAccurate();
 			}
-			prevRealBid = null;
 		}
 	}
 
@@ -67,7 +66,6 @@ public class SensorInputFactor extends InputFactor {
 	}
 
 	public InputFactor duplicate(IStock stock) {
-		assert prevRealBid == null;
 		return new SensorInputFactor(stock, price, acc);
 	}
 

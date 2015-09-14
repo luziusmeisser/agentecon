@@ -57,7 +57,6 @@ public class SensorOutputFactor extends OutputFactor {
 			} else {
 				accuracy.lessAccurate();
 			}
-			prevRealAsk = null;
 		}
 	}
 
@@ -75,7 +74,6 @@ public class SensorOutputFactor extends OutputFactor {
 
 	@Override
 	public OutputFactor duplicate(IStock stock) {
-		// assert prevRealAsk == null;
 		return new SensorOutputFactor(stock, price, accuracy);
 	}
 
