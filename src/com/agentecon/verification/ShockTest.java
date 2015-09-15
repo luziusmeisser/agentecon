@@ -28,6 +28,7 @@ public class ShockTest implements IConfiguration {
 
 	@Override
 	public SimulationConfig createNextConfig() {
+		strategyIndex++;
 		final IFirmDecisions strategy = getStrategy();
 		StolperSamuelson scenario = new StolperSamuelson() {
 
