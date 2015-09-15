@@ -37,15 +37,15 @@ public class ShockTest implements IConfiguration {
 			@Override
 			protected void addSpecialEvents(SimConfig config) {
 				super.updatePrefs(config, 500, HIGH - magnitude);
-				config.addEvent(new SimEvent(500, -1) {
-					
-					@Override
-					public void execute(IWorld sim) {
-						for (Firm f: sim.getFirms().getRandomFirms(getCardinality())){
-							f.setStrategy(strategy);
-						}
-					}
-				});
+//				config.addEvent(new SimEvent(500, -1) {
+//					
+//					@Override
+//					public void execute(IWorld sim) {
+//						for (Firm f: sim.getFirms().getRandomFirms(getCardinality())){
+//							f.setStrategy(strategy);
+//						}
+//					}
+//				});
 			}
 
 		};
