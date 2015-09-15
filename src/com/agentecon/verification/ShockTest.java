@@ -28,7 +28,7 @@ public class ShockTest implements IConfiguration {
 
 	@Override
 	public SimulationConfig createNextConfig() {
-		final IFirmDecisions strategy = this.strategy == null ? new CogsDividend(0.5, strategyIndex) : this.strategy;
+		final IFirmDecisions strategy = getStrategy();
 		StolperSamuelson scenario = new StolperSamuelson() {
 
 			@Override
@@ -49,6 +49,10 @@ public class ShockTest implements IConfiguration {
 		return scenario.createConfiguration(PriceConfig.DEFAULT, 1000);
 	}
 
+	protected IFirmDecisions getStrategy() {
+		return this.strategy == null ? new CogsDividend(0.5, strategyIndex) : this.strategy;
+	}
+
 	@Override
 	public boolean shouldTryAgain() {
 		return strategy == null && strategyIndex < CogsDividend.TYPES - 1;
@@ -56,7 +60,7 @@ public class ShockTest implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		return strategy.toString() + " with " + magnitude + " shock";
+		return getStrategy().toString() + " with " + magnitude + " shock";
 	}
 
 }
