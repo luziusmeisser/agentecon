@@ -53,7 +53,7 @@ public class CogsDividend implements IFirmDecisions {
 		case 6:
 			return metrics.getExpectedRevenue() - metrics.getLatestCogs(); // 50.88448137265661 Lots of micro-volatility
 		case 7:
-			return metrics.getExpectedRevenue() - metrics.getIdealCogs(); // 55.22338764543314 moderate peaks	// 3
+			return metrics.getExpectedRevenue() - metrics.getIdealCogs(); // 55.22338764543314 moderate peaks	// 3. Looks like best option
 		case 8:
 			return metrics.getIdealCogs() * 2 - metrics.getLatestCogs(); // 45.55217613220216 Blows up
 		case 9:
