@@ -6,4 +6,6 @@ public interface IFirmDecisions {
 
 	public double calcCogs(double cash, double idealCogs);
 
+	public IFirmDecisions duplicate();
+
 }

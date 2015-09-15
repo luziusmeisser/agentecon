@@ -12,4 +12,9 @@ public class StandardStrategy implements IFirmDecisions {
 		return metrics.getLatestRevenue() - metrics.getLatestCogs();
 	}
 
+	@Override
+	public IFirmDecisions duplicate() {
+		return new StandardStrategy();
+	}
+
 }

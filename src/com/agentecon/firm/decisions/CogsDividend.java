@@ -12,6 +12,17 @@ public class CogsDividend implements IFirmDecisions {
 		this.mode = mode;
 		this.dividendRatio = returnsToScale / (1.0 - returnsToScale);
 	}
+	
+	private CogsDividend(double dividendRatio, double divs, int mode) {
+		this.divs = divs;
+		this.mode = mode;
+		this.dividendRatio = dividendRatio;
+	}
+
+	@Override
+	public IFirmDecisions duplicate() {
+		return new CogsDividend(dividendRatio, divs, mode);
+	}
 
 	public double calcCogs(double cash, double cogs) {
 //		if (mode == 0) {
@@ -21,7 +32,7 @@ public class CogsDividend implements IFirmDecisions {
 			return divs;
 //		}
 	}
-
+	
 	@Override
 	public double calcDividend(IFinancials metrics) {
 		switch (mode) {

@@ -10,6 +10,7 @@ import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
 
 public class ShockTest implements IConfiguration {
@@ -37,15 +38,15 @@ public class ShockTest implements IConfiguration {
 			@Override
 			protected void addSpecialEvents(SimConfig config) {
 				super.updatePrefs(config, 500, HIGH - magnitude);
-//				config.addEvent(new SimEvent(500, -1) {
-//					
-//					@Override
-//					public void execute(IWorld sim) {
-//						for (Firm f: sim.getFirms().getRandomFirms(getCardinality())){
-//							f.setStrategy(strategy);
-//						}
-//					}
-//				});
+				config.addEvent(new SimEvent(500, -1) {
+					
+					@Override
+					public void execute(IWorld sim) {
+						for (Firm f: sim.getFirms().getRandomFirms(getCardinality())){
+							f.setStrategy(strategy);
+						}
+					}
+				});
 			}
 
 		};
@@ -69,13 +70,15 @@ public class ShockTest implements IConfiguration {
 	public static void main(String[] args) {
 		ShockTest test = new ShockTest(0.7, new CogsDividend(0.5, 0));
 		Simulation sim = new Simulation(test.createNextConfig());
+		final Average avg = new Average();
 		sim.addListener(new SimulationListenerAdapter(){
 			@Override
 			public void notifyDayEnded(int day, double utility) {
-				System.out.println(utility);
+				avg.add(utility);
 			}
 		});
 		sim.finish();
+		System.out.println(avg);
 	}
 	
 }

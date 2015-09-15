@@ -21,5 +21,10 @@ public class DifferentialDividend implements IFirmDecisions {
 	public double calcDividend(IFinancials metrics) {
 		return metrics.getCash() - 800;
 	}
+	
+	@Override
+	public IFirmDecisions duplicate() {
+		return new DifferentialDividend();
+	}
 
 }

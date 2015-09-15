@@ -40,7 +40,7 @@ public class Firm extends Agent implements IFirm {
 		super(type, end);
 		this.prod = prod;
 		this.prices = prices;
-		this.strategy = strategy;
+		this.setStrategy(strategy);
 		// this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
@@ -54,7 +54,7 @@ public class Firm extends Agent implements IFirm {
 	}
 	
 	public void setStrategy(IFirmDecisions strategy) {
-		this.strategy = strategy;
+		this.strategy = strategy.duplicate();
 	}
 
 	protected OutputFactor createOutputFactor(IPriceFactory prices, IStock outStock) {
@@ -204,6 +204,7 @@ public class Firm extends Agent implements IFirm {
 		Firm klon = (Firm) super.clone();
 		klon.output = output.duplicate(klon.getStock(output.getGood()));
 		klon.inputs = new InputFactor[inputs.length];
+		klon.strategy = strategy.duplicate();
 		for (int i = 0; i < inputs.length; i++) {
 			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
 		}

@@ -7,7 +7,6 @@ import com.agentecon.sim.Simulation;
 public class ShockBenchmark {
 
 	public ShockBenchmark() {
-
 	}
 
 	public void run() {
