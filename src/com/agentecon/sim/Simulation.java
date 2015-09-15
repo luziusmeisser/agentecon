@@ -13,6 +13,7 @@ import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
+import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
@@ -42,7 +43,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new ShockTest(0.7));
+		this(new ShockTest(0.7, new CogsDividend(0.5, 0)));
 	}
 
 	public Simulation(IConfiguration metaConfig) {

@@ -5,7 +5,9 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
+import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.price.PriceConfig;
+import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
@@ -64,4 +66,16 @@ public class ShockTest implements IConfiguration {
 		return getStrategy().toString() + " with " + magnitude + " shock";
 	}
 
+	public static void main(String[] args) {
+		ShockTest test = new ShockTest(0.7, new CogsDividend(0.5, 0));
+		Simulation sim = new Simulation(test.createNextConfig());
+		sim.addListener(new SimulationListenerAdapter(){
+			@Override
+			public void notifyDayEnded(int day, double utility) {
+				System.out.println(utility);
+			}
+		});
+		sim.finish();
+	}
+	
 }

@@ -22,19 +22,21 @@ public class ShockBenchmark {
 				ShockTest test = new ShockTest(magnitude, new CogsDividend(0.5, type));
 				Simulation sim = new Simulation(test.createNextConfig());
 				final double[] totUtil = new double[1];
-				sim.addListener(new SimulationListenerAdapter(){
+				sim.addListener(new SimulationListenerAdapter() {
 					@Override
 					public void notifyDayEnded(int day, double utility) {
-						totUtil[0] = utility;
+						if (day >= 500) {
+							totUtil[0] += utility;
+						}
 					}
 				});
 				sim.finish();
-				line += "\t" + Double.toString(totUtil[0]);
+				line += "\t" + Double.toString(totUtil[0] / 500);
 			}
 			System.out.println(line);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		new ShockBenchmark().run();
 	}
