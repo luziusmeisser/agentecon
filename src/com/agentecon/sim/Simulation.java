@@ -43,7 +43,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new ShockTest(0.7, new CogsDividend(0.5, 0)));
+		this(new ShockTest(0.7));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
