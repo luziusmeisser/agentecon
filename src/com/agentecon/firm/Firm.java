@@ -52,6 +52,10 @@ public class Firm extends Agent implements IFirm {
 		this.output = createOutputFactor(prices, outStock);
 		this.monitor = new FirmListeners();
 	}
+	
+	public void setStrategy(IFirmDecisions strategy) {
+		this.strategy = strategy;
+	}
 
 	protected OutputFactor createOutputFactor(IPriceFactory prices, IStock outStock) {
 		return new OutputFactor(outStock, prices.createPrice(outStock.getGood()));

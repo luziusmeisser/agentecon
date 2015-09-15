@@ -23,7 +23,6 @@ public class ExpSearchTest {
 		int steps = 0;
 		while (Math.abs(price.getPrice() - target) > ExpSearchPrice.MIN_ADAPTION_FACTOR * target){
 			price.adapt(price.getPrice() < target);
-			System.out.println(price);
 			assert steps++ < 100;
 		}
 		System.out.println(steps);
@@ -41,9 +40,8 @@ public class ExpSearchTest {
 		int steps = 0;
 		while (Math.abs(price.getPrice() - target) > 1.0){
 			price.adapt(price.getPrice() < target);
-			System.out.println(price);
 			steps++;
-//			assert steps < 100;
+			assert steps < 100;
 		}
 		System.out.println(steps);
 	}

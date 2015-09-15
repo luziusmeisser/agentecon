@@ -2,6 +2,8 @@ package com.agentecon.firm.decisions;
 
 public class CogsDividend implements IFirmDecisions {
 
+	public static final int TYPES = 11;
+	
 	private int mode;
 	private double divs;
 	private double dividendRatio;
@@ -44,9 +46,9 @@ public class CogsDividend implements IFirmDecisions {
 		case 8:
 			return metrics.getIdealCogs() * 2 - metrics.getLatestCogs(); // 45.55217613220216 Blows up
 		case 9:
-			return metrics.getLatestCogs() * 2 - metrics.getIdealCogs(); // 55.19501169759995 Very volatile trade
+			return metrics.getLatestCogs() * 2 - metrics.getIdealCogs(); // 55.19501169759995 Very volatile trade // 0
 		case 10:
-			return metrics.getLatestRevenue() / 2 + metrics.getLatestCogs() - metrics.getIdealCogs() * 1;
+			return 2 * metrics.getLatestCogs() - metrics.getIdealCogs();
 		}
 	}
 
@@ -75,6 +77,10 @@ public class CogsDividend implements IFirmDecisions {
 		case 9:
 			return "2 latest cogs - ideal cogs";
 		}
+	}
+	
+	public String toString(){
+		return getDescription();
 	}
 
 }

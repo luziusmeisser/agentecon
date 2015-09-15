@@ -17,7 +17,7 @@ import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.CompetitiveScenario;
+import com.agentecon.verification.ShockTest;
 import com.agentecon.world.World;
 
 // The world
@@ -42,7 +42,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new CompetitiveScenario());
+		this(new ShockTest(0.7));
 	}
 
 	public Simulation(IConfiguration metaConfig) {

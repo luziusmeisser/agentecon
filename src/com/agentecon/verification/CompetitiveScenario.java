@@ -25,7 +25,7 @@ public class CompetitiveScenario implements IConfiguration {
 	private ArrayList<FirmStatistics> firmStats;
 
 	public CompetitiveScenario() {
-		this.iteration = 9;
+		this.iteration = -1;
 		this.firmStats = new ArrayList<>();
 	}
 

@@ -2,8 +2,10 @@ package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Firm;
+import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
+import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.price.PriceConfig;
@@ -34,7 +36,7 @@ public class FirmEvent extends SimEvent {
 	}
 	
 	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
-		return createFirm(type, end, prodFun, pf, new DifferentialDividend());
+		return createFirm(type, end, prodFun, pf, new CogsDividend(((CobbDouglasProduction)prodFun).getReturnsToScale(), 0));
 	}
 
 	protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf, IFirmDecisions strategy) {
