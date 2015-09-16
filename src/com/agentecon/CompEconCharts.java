@@ -3,14 +3,43 @@ package com.agentecon;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.price.EPrice;
 import com.agentecon.price.PriceConfig;
+import com.agentecon.sim.IConfiguration;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
 import com.agentecon.verification.Result;
 import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.verification.StolperSamuelsonParameterExploration;
 
-public class CompEconCharts {
+public class CompEconCharts implements IConfiguration {
+	
+	private int figure = 7;
 
+	@Override
+	public SimulationConfig createNextConfig() {
+		figure++;
+		switch(figure){
+		default:
+		case 8:
+			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+		case 9:
+			return createChartConfig(new PriceConfig(true, EPrice.CONSTANTFACTOR), 5000);
+		case 10:
+			return createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 5000);
+		case 11:
+			return createChartConfig(new PriceConfig(true, EPrice.RANDOMIZED), 5000);
+		}
+	}
+
+	@Override
+	public boolean shouldTryAgain() {
+		return figure <= 11;
+	}
+
+	@Override
+	public String getComment() {
+		return "figure " + figure;
+	}
+	
 	public String createAccuracyBenchmark() {
 		String table = "Method\tp_pizza / p_fondue\tx_pizza";
 		final StolperSamuelson bm = new StolperSamuelson(3.0);
@@ -22,7 +51,7 @@ public class CompEconCharts {
 				hint = res;
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(null, 0.0001);
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.0001);
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
@@ -31,7 +60,7 @@ public class CompEconCharts {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
-			ss.enableShock(config, 1000 + i, 3.0);
+			ss.enableShock(config, 1200 + i, 3.0);
 		}
 		return config;
 	}
@@ -55,4 +84,5 @@ public class CompEconCharts {
 		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
 		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
 	}
+
 }

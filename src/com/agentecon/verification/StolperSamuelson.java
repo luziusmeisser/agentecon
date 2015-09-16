@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.ConsumerEvent;
@@ -21,7 +22,7 @@ import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
 
 public class StolperSamuelson {
-	
+
 	public static final Good PIZZA = new Good("Pizza");
 	public static final Good FONDUE = new Good("Fondue");
 	public static final Good IT_HOUR = new Good("Italian man-hours");
@@ -38,7 +39,7 @@ public class StolperSamuelson {
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson(double low) {
-		this.inputs = new Good[] { PIZZA, FONDUE};
+		this.inputs = new Good[] { PIZZA, FONDUE };
 		this.outputs = new Good[] { IT_HOUR, CH_HOUR };
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - low, low);
@@ -48,7 +49,7 @@ public class StolperSamuelson {
 		System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig, rounds);
 		Simulation sim = new Simulation(config);
-		PriceMetric prices = new PriceMetric(rounds / 2);
+		PriceMetric prices = new PriceMetric(config.getRounds() / 2);
 		sim.addListener(prices);
 		sim.finish();
 		// prices.printResult(System.out);
