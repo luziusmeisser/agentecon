@@ -14,17 +14,19 @@ public class CompEconCharts implements IConfiguration {
 
 	public static boolean ENABLE_NORMALIZATION = true;
 
-	private int figure = 10;
+	private int figure = 7;
 
 	@Override
 	public SimulationConfig createNextConfig() {
 		figure++;
-		switch (figure) {
+		switch (9) {
 		default:
 		case 8:
 			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 		case 9:
-			return createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 5000);
+			SimulationConfig sc = createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 5000);
+			sc.setSeed(42 + figure);
+			return sc;
 		case 10:
 			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 5000);
 		case 11:
