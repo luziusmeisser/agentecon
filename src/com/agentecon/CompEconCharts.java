@@ -22,14 +22,14 @@ public class CompEconCharts {
 				hint = res;
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
-		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
+//		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
+//		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
 	
 	public String createChartData(){
 		StolperSamuelson ss = new StolperSamuelson(3.0);
-		SimConfig config = ss.createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 10000);
+		SimConfig config = ss.createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 2000);
 		ss.enableShock(config, 1000, 3.0);
 		Simulation sim = new Simulation(config);
 		ChartData data = new ChartData(ss.getPizza(), ss.getFondue(), ss.getItalianHours(), ss.getSwissHours());

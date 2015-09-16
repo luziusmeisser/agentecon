@@ -7,18 +7,23 @@ package com.agentecon.firm.decisions;
 public class FractionalDividends implements IFirmDecisions {
 	
 	double div = 0.0;
+	
+	public FractionalDividends(){
+	}
 
 	public double calcDividend(double cash, double profits) {
-		return cash - 800;
+		return div;
 	}
 
 	public double calcCogs(double cash, double idealCogs){
-		double budget = cash * 0.5;
-		if (idealCogs < budget){
-			return idealCogs;
-		} else {
-			return budget;
-		}
+		div = cash / 5;
+		return div;
+//		double budget = cash * 0.5;
+//		if (idealCogs < budget){
+//			return idealCogs;
+//		} else {
+//			return budget;
+//		}
 //		return div;
 	}
 

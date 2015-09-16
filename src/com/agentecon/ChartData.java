@@ -62,6 +62,7 @@ public class ChartData extends SimulationListenerAdapter implements IMarketListe
 			line += "\t" + prices.get(good).getAverage();
 		}
 		table += "\n" + line;
+		this.prices.clear();
 	}
 
 	public String getTable() {
