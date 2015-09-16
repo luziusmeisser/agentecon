@@ -27,9 +27,9 @@ public class CompEconCharts {
 		return table;
 	}
 	
-	public SimulationConfig createChartConfig(PriceConfig priceConfig){
+	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds){
 		StolperSamuelson ss = new StolperSamuelson(3.0);
-		SimConfig config = ss.createConfiguration(priceConfig, 2000);
+		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
 			ss.enableShock(config, 1000 + i, 3.0);
 		}
@@ -37,7 +37,7 @@ public class CompEconCharts {
 	}
 
 	public String createChartData(PriceConfig priceConfig) {
-		Simulation sim = new Simulation(createChartConfig(priceConfig));
+		Simulation sim = new Simulation(createChartConfig(priceConfig, 5000));
 		ChartData data = new ChartData(StolperSamuelson.PIZZA, StolperSamuelson.FONDUE, StolperSamuelson.IT_HOUR, StolperSamuelson.CH_HOUR);
 		sim.addListener(data);
 		sim.finish();

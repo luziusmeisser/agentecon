@@ -39,7 +39,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(new CompEconCharts().createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE)));
+		this(new CompEconCharts().createChartConfig(new PriceConfig(true, EPrice.CONSTANTFACTOR), 5000));
 	}
 
 	protected static SimConfig createConfig() {
