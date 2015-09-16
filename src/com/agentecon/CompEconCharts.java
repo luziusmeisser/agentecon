@@ -14,7 +14,7 @@ public class CompEconCharts implements IConfiguration {
 
 	public static boolean ENABLE_NORMALIZATION = true;
 
-	private int figure = 7;
+	private int figure = 10;
 
 	@Override
 	public SimulationConfig createNextConfig() {
@@ -71,8 +71,8 @@ public class CompEconCharts implements IConfiguration {
 		return config;
 	}
 
-	public String createChartData(PriceConfig priceConfig) {
-		Simulation sim = new Simulation(createChartConfig(priceConfig, 5000));
+	public String createNextChart() {
+		Simulation sim = new Simulation(createNextConfig());
 		ChartData data = new ChartData(StolperSamuelson.PIZZA, StolperSamuelson.FONDUE, StolperSamuelson.IT_HOUR, StolperSamuelson.CH_HOUR);
 		sim.addListener(data);
 		sim.finish();
@@ -81,10 +81,10 @@ public class CompEconCharts implements IConfiguration {
 
 	public static void main(String[] args) {
 		CompEconCharts charts = new CompEconCharts();
-		System.out.println("\n***************** FIGURE 8 *****************");
-		System.out.println(charts.createChartData(new PriceConfig(true, EPrice.EXPSEARCH)));
-		System.out.println("\n***************** FIGURE 9 *****************");
-		System.out.println(charts.createChartData(new PriceConfig(true, EPrice.CONSTANTFACTOR)));
+		while (charts.shouldTryAgain()){
+			System.out.println("\n***************** " + charts.getComment() + " *****************");
+			System.out.println(charts.createNextChart());
+		}
 		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
 		System.out.println(charts.createAccuracyBenchmark());
 		System.out.println("\n***************** PARAMETER EXPLORATION *****************");

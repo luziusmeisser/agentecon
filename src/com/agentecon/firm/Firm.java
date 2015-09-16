@@ -4,6 +4,7 @@ package com.agentecon.firm;
 
 import java.util.Arrays;
 
+import com.agentecon.CompEconCharts;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
@@ -32,7 +33,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected IPriceFactory prices;
 
 	private double profits;
-	private IFirmDecisions strategy = new FractionalDividends();
+	private IFirmDecisions strategy = CompEconCharts.ENABLE_NORMALIZATION ? new FractionalDividends() : new StandardStrategy();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
