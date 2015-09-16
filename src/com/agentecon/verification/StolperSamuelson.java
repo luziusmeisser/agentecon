@@ -81,25 +81,16 @@ public class StolperSamuelson {
 		}
 		return config;
 	}
-
-	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref) {
+	
+	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref){
 		config.addEvent(new UpdatePreferencesEvent(day) {
-
-			private boolean updated = false;
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
-//				if (!updated) {
-					LogUtil util = (LogUtil) c.getUtilityFunction();
-					if (util.getWeight(getPizza()) == pizzaPref) {
-						// skip
-					} else {
-						util = consWeights.createDeviation(util, getPizza(), pizzaPref);
-						util = consWeights.createDeviation(util, getFondue(), HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
-						c.setUtilityFunction(util);
-						updated = true;
-					}
-//				}
+				LogUtil util = (LogUtil) c.getUtilityFunction();
+				util = consWeights.createDeviation(util, outputs[0], pizzaPref);
+				util = consWeights.createDeviation(util, outputs[1], HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
+				c.setUtilityFunction(util);
 			}
 
 		});
