@@ -16,7 +16,7 @@ public class FractionalDividends implements IFirmDecisions {
 	}
 
 	public double calcCogs(double cash, double idealCogs){
-		return Math.max(cash / 2, idealCogs);
+		return Math.min(cash / 2, idealCogs);
 //		double revenue = cash / 5;
 //		double laborShare = StolperSamuelson.RETURNS_TO_SCALE;
 //		double profitShare = 1.0 - laborShare;
