@@ -38,7 +38,13 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(new StolperSamuelson(3.0).createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 5000));
+		this(createConfig());
+	}
+
+	protected static SimConfig createConfig() {
+		StolperSamuelson ss = new StolperSamuelson(3.0);
+		SimConfig sc = ss.createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+		return ss.enableShock(sc, 1000, 3.0);
 	}
 
 	public Simulation(IConfiguration metaConfig) {

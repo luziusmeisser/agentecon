@@ -77,7 +77,7 @@ public class StolperSamuelson {
 		return config;
 	}
 	
-	public void enableShock(SimConfig config, int day, final double pizzaPref){
+	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref){
 		config.addEvent(new UpdatePreferencesEvent(day) {
 
 			@Override
@@ -89,6 +89,7 @@ public class StolperSamuelson {
 			}
 
 		});
+		return config;
 	}
 
 	public static void main(String[] args) throws InterruptedException {
