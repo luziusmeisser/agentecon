@@ -65,7 +65,7 @@ public class CompEconCharts implements IConfiguration {
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		for (int step = 500; step < 5000; step += 1000) {
 			ss.enableShock(config, step, 3.0);
-			ss.enableShock(config, step + 500, 7.0);
+			ss.enableShock(config, step + 20, 7.0);
 		}
 		return config;
 	}
