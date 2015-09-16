@@ -13,7 +13,7 @@ public class CompEconCharts {
 
 	public String createAccuracyBenchmark() {
 		String table = "Method\tp_pizza / p_fondue\tx_pizza";
-		final StolperSamuelson bm = new StolperSamuelson(4.0);
+		final StolperSamuelson bm = new StolperSamuelson(3.0);
 		Result hint = null;
 		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
 			if (config.isSensor()) {
@@ -28,10 +28,10 @@ public class CompEconCharts {
 	}
 	
 	public SimulationConfig createChartConfig(PriceConfig priceConfig){
-		StolperSamuelson ss = new StolperSamuelson(4.0);
+		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, 2000);
 		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
-			ss.enableShock(config, 1000 + i, 4.0);
+			ss.enableShock(config, 1000 + i, 3.0);
 		}
 		return config;
 	}

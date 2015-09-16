@@ -31,7 +31,7 @@ public class StolperSamuelson {
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;
 
-	public static final double RETURNS_TO_SCALE = 0.8;
+	public static final double RETURNS_TO_SCALE = 0.5;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
