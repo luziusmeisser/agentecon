@@ -60,9 +60,14 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.world = new World(config.getSeed(), listeners);
 		this.day = 0;
 	}
+	
+	@Override
+	public boolean hasNext() {
+		return metaConfig != null && metaConfig.shouldTryAgain();
+	}
 
 	public ISimulation getNext() {
-		if (metaConfig != null && metaConfig.shouldTryAgain()) {
+		if (hasNext()) {
 			return new Simulation(metaConfig);
 		} else {
 			return null;
