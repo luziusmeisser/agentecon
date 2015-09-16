@@ -59,14 +59,14 @@ public class CompEconCharts implements IConfiguration {
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
-	
+
 	public SimulationConfig createNonNormalizedConfig(PriceConfig priceConfig, int rounds) {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
-		ss.enableShock(config, 500, 3.0);
-		ss.enableShock(config, 1000, 7.0);
-		ss.enableShock(config, 1500, 3.0);
-		ss.enableShock(config, 2000, 7.0);
+		for (int step = 500; step < 5000; step += 1000) {
+			ss.enableShock(config, 500, 3.0);
+			ss.enableShock(config, 1000, 7.0);
+		}
 		return config;
 	}
 
@@ -74,9 +74,9 @@ public class CompEconCharts implements IConfiguration {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		ss.enableShock(config, 1000, 3.0);
-//		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
-//			ss.enableShock(config, 1200 + i, 3.0);
-//		}
+		// for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
+		// ss.enableShock(config, 1200 + i, 3.0);
+		// }
 		return config;
 	}
 
@@ -90,7 +90,7 @@ public class CompEconCharts implements IConfiguration {
 
 	public static void main(String[] args) {
 		CompEconCharts charts = new CompEconCharts();
-		while (charts.shouldTryAgain()){
+		while (charts.shouldTryAgain()) {
 			System.out.println("\n***************** " + charts.getComment() + " *****************");
 			System.out.println(charts.createNextChart());
 		}
