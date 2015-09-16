@@ -71,7 +71,7 @@ public class ConfigurableWorld {
 		wireLabor();
 		wireOutputsToConsumption();
 		wireDividend();
-		System.out.println(store.variablesHashMap.size() + " variables");
+		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables. Can take many minutes...");
 	}
 
 	private void wireLabor() {
@@ -162,9 +162,8 @@ public class ConfigurableWorld {
 
 		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
-		search.setSolutionListener(new PrintOutListener<FloatVar>());
+//		search.setSolutionListener(new PrintOutListener<FloatVar>());
 		search.labeling(store, s);
-		System.out.println(store.variablesHashMap.size() + " variables");
 
 		Result res = new Result();
 		for (int i = 0; i < inputs.length; i++) {

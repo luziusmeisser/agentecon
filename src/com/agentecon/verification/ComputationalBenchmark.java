@@ -18,8 +18,6 @@ import com.agentecon.sim.Simulation;
 
 public class ComputationalBenchmark {
 
-	private static final long MAX_TIME = 60 * 60 * 1000;
-
 	private static final int HOURS_PER_DAY = 24;
 	private static final int CONSUMERS_PER_TYPE = 100;
 	private static final int FIRMS_PER_TYPE = 10;

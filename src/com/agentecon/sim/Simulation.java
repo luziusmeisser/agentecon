@@ -15,6 +15,9 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
+import com.agentecon.price.EPrice;
+import com.agentecon.price.PriceConfig;
+import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
@@ -33,9 +36,9 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Disabled because too slow on app engine
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
-
+	
 	public Simulation() {
-		this(new StolperSamuelsonMeta());
+		this(new StolperSamuelson(3.0).createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 5000));
 	}
 
 	public Simulation(IConfiguration metaConfig) {

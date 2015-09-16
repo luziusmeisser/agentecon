@@ -5,11 +5,11 @@ package com.agentecon.firm.decisions;
  * Pay out a constant fraction of cash holdings as dividend, thereby implicitely setting price levels.
  */
 public class FractionalDividends implements IFirmDecisions {
-
-	public static double DIVIDEND_RATE = 0.1;
+	
+	double div = 0.0;
 
 	public double calcDividend(double cash, double profits) {
-		return cash - 800; // TEMP
+		return cash - 800;
 	}
 
 	public double calcCogs(double cash, double idealCogs){
@@ -19,6 +19,7 @@ public class FractionalDividends implements IFirmDecisions {
 		} else {
 			return budget;
 		}
+//		return div;
 	}
 
 }
