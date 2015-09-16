@@ -64,9 +64,10 @@ public class CompEconCharts implements IConfiguration {
 		ENABLE_NORMALIZATION = false;
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
-		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
-			ss.enableShock(config, 1200 + i, 3.0);
-		}
+		ss.enableShock(config, 1000, 3.0);
+//		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
+//			ss.enableShock(config, 1200 + i, 3.0);
+//		}
 		return config;
 	}
 

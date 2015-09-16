@@ -89,7 +89,7 @@ public class StolperSamuelson {
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
-				if (!updated) {
+//				if (!updated) {
 					LogUtil util = (LogUtil) c.getUtilityFunction();
 					if (util.getWeight(getPizza()) == pizzaPref) {
 						// skip
@@ -99,7 +99,7 @@ public class StolperSamuelson {
 						c.setUtilityFunction(util);
 						updated = true;
 					}
-				}
+//				}
 			}
 
 		});
