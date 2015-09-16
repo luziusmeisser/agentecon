@@ -14,7 +14,7 @@ public class CompEconCharts implements IConfiguration {
 
 	public static boolean ENABLE_NORMALIZATION = true;
 
-	private int figure = 7;
+	private int figure = 10;
 
 	@Override
 	public SimulationConfig createNextConfig() {
@@ -63,9 +63,9 @@ public class CompEconCharts implements IConfiguration {
 	public SimulationConfig createNonNormalizedConfig(PriceConfig priceConfig, int rounds) {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
-		for (int step = 500; step < 5000; step += 1000) {
+		for (int step = 500; step < 5000; step += 500) {
 			ss.enableShock(config, step, 3.0);
-			ss.enableShock(config, step + 20, 7.0);
+			ss.enableShock(config, step + 2*(step/500), 7.0);
 		}
 		return config;
 	}
