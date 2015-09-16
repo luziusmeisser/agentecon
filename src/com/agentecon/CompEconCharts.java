@@ -19,18 +19,18 @@ public class CompEconCharts implements IConfiguration {
 	@Override
 	public SimulationConfig createNextConfig() {
 		figure++;
-		switch (9) {
+		switch (figure) {
 		default:
 		case 8:
-			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500);
 		case 9:
-			SimulationConfig sc = createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 5000);
-			sc.setSeed(42 + figure);
+			SimulationConfig sc = createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 2500);
+			sc.setSeed(52);
 			return sc;
 		case 10:
-			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 5000);
+			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 2500);
 		case 11:
-			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500);
 			ENABLE_NORMALIZATION = false;
 			return config;
 		}
