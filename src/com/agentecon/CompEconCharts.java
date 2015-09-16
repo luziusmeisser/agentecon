@@ -1,5 +1,6 @@
 package com.agentecon;
 
+import com.agentecon.api.SimulationConfig;
 import com.agentecon.price.EPrice;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.SimConfig;
@@ -25,15 +26,19 @@ public class CompEconCharts {
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
-
-	public String createChartData(PriceConfig priceConfig) {
+	
+	public SimulationConfig createChartConfig(PriceConfig priceConfig){
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, 2000);
 		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE; i++) {
 			ss.enableShock(config, 1000 + i, 3.0);
 		}
-		Simulation sim = new Simulation(config);
-		ChartData data = new ChartData(ss.getPizza(), ss.getFondue(), ss.getItalianHours(), ss.getSwissHours());
+		return config;
+	}
+
+	public String createChartData(PriceConfig priceConfig) {
+		Simulation sim = new Simulation(createChartConfig(priceConfig));
+		ChartData data = new ChartData(StolperSamuelson.PIZZA, StolperSamuelson.FONDUE, StolperSamuelson.IT_HOUR, StolperSamuelson.CH_HOUR);
 		sim.addListener(data);
 		sim.finish();
 		return data.getTable();

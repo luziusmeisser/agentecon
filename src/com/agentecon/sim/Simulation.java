@@ -5,6 +5,7 @@ package com.agentecon.sim;
 import java.util.Collection;
 import java.util.Queue;
 
+import com.agentecon.CompEconCharts;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
@@ -38,7 +39,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(createConfig());
+		this(new CompEconCharts().createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH)));
 	}
 
 	protected static SimConfig createConfig() {

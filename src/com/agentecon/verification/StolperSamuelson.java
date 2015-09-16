@@ -21,6 +21,11 @@ import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
 
 public class StolperSamuelson {
+	
+	public static final Good PIZZA = new Good("Pizza");
+	public static final Good FONDUE = new Good("Fondue");
+	public static final Good IT_HOUR = new Good("Italian man-hours");
+	public static final Good CH_HOUR = new Good("Swiss man-hours");
 
 	public static final int HOURS_PER_DAY = 24;
 	public static final int CONSUMERS_PER_TYPE = 100;
@@ -33,11 +38,10 @@ public class StolperSamuelson {
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson(double low) {
-		this.inputs = new Good[] { new Good("Italian man-hours"), new Good("Swiss man-hours") };
-		this.outputs = new Good[] { new Good("Pizza"), new Good("Fondue") };
+		this.inputs = new Good[] { PIZZA, FONDUE};
+		this.outputs = new Good[] { IT_HOUR, CH_HOUR };
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - low, low);
-		// PriceFactory.NORMALIZED_GOOD = outputs[0];
 	}
 
 	public Result runAgentBased(PriceConfig pconfig, int rounds) {
