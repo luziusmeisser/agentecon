@@ -19,7 +19,7 @@ public class CompEconCharts implements IConfiguration {
 	@Override
 	public SimulationConfig createNextConfig() {
 		figure++;
-		switch (11) {
+		switch (figure) {
 		default:
 		case 8:
 			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500);
@@ -30,8 +30,8 @@ public class CompEconCharts implements IConfiguration {
 		case 10:
 			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 2500);
 		case 11:
-			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 10000);
-			config.setSeed(23 + figure);
+			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+			config.setSeed(31);
 			ENABLE_NORMALIZATION = false;
 			return config;
 		}
@@ -58,7 +58,7 @@ public class CompEconCharts implements IConfiguration {
 				hint = res;
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.0001);
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.001);
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
