@@ -39,8 +39,8 @@ public class StolperSamuelson {
 	private ConsumptionWeights consWeights;
 
 	public StolperSamuelson(double low) {
-		this.inputs = new Good[] { PIZZA, FONDUE };
-		this.outputs = new Good[] { IT_HOUR, CH_HOUR };
+		this.inputs = new Good[] { IT_HOUR, CH_HOUR };
+		this.outputs = new Good[] { PIZZA, FONDUE };
 		this.prodWeights = new ProductionWeights(inputs, outputs);
 		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - low, low);
 	}

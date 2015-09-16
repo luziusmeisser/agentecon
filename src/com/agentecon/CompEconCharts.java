@@ -11,35 +11,39 @@ import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.verification.StolperSamuelsonParameterExploration;
 
 public class CompEconCharts implements IConfiguration {
-	
+
+	public static boolean ENABLE_NORMALIZATION = true;
+
 	private int figure = 7;
 
 	@Override
 	public SimulationConfig createNextConfig() {
 		figure++;
-		switch(figure){
+		switch (figure) {
 		default:
 		case 8:
 			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 		case 9:
-			return createChartConfig(new PriceConfig(true, EPrice.CONSTANTFACTOR), 5000);
-		case 10:
 			return createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 5000);
+		case 10:
+			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 5000);
 		case 11:
-			return createChartConfig(new PriceConfig(true, EPrice.RANDOMIZED), 5000);
+			SimulationConfig config = createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+			ENABLE_NORMALIZATION = false;
+			return config;
 		}
 	}
 
 	@Override
 	public boolean shouldTryAgain() {
-		return figure <= 11;
+		return figure < 11;
 	}
 
 	@Override
 	public String getComment() {
 		return "figure " + figure;
 	}
-	
+
 	public String createAccuracyBenchmark() {
 		String table = "Method\tp_pizza / p_fondue\tx_pizza";
 		final StolperSamuelson bm = new StolperSamuelson(3.0);
@@ -55,8 +59,9 @@ public class CompEconCharts implements IConfiguration {
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
-	
-	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds){
+
+	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds) {
+		ENABLE_NORMALIZATION = false;
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
