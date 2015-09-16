@@ -28,7 +28,7 @@ public class CompEconCharts implements IConfiguration {
 		case 10:
 			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 5000);
 		case 11:
-			SimulationConfig config = createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
+			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 			ENABLE_NORMALIZATION = false;
 			return config;
 		}
@@ -59,9 +59,18 @@ public class CompEconCharts implements IConfiguration {
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
+	
+	public SimulationConfig createNonNormalizedConfig(PriceConfig priceConfig, int rounds) {
+		StolperSamuelson ss = new StolperSamuelson(3.0);
+		SimConfig config = ss.createConfiguration(priceConfig, rounds);
+		ss.enableShock(config, 500, 3.0);
+		ss.enableShock(config, 1000, 7.0);
+		ss.enableShock(config, 1500, 3.0);
+		ss.enableShock(config, 2000, 7.0);
+		return config;
+	}
 
 	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds) {
-		ENABLE_NORMALIZATION = false;
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		ss.enableShock(config, 1000, 3.0);
