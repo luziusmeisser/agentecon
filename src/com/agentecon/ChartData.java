@@ -1,19 +1,14 @@
 package com.agentecon;
 
-import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.agentecon.api.IMarket;
 import com.agentecon.api.Price;
 import com.agentecon.good.Good;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListenerAdapter;
-import com.agentecon.util.AccumulatingAverage;
 import com.agentecon.util.Average;
 import com.agentecon.util.InstantiatingHashMap;
-import com.agentecon.verification.Result;
 
 public class ChartData extends SimulationListenerAdapter implements IMarketListener {
 
@@ -24,7 +19,7 @@ public class ChartData extends SimulationListenerAdapter implements IMarketListe
 	public ChartData(Good... goods) {
 		this.table = "Day";
 		this.goods = goods;
-		for (Good g: goods){
+		for (Good g : goods) {
 			this.table += "\t" + g.getName();
 		}
 		this.prices = new InstantiatingHashMap<Good, Average>() {
@@ -57,9 +52,14 @@ public class ChartData extends SimulationListenerAdapter implements IMarketListe
 
 	@Override
 	public void notifyDayEnded(int day, double utility) {
-		String line = Integer.toString(day);
-		for (Good good: goods){
-			line += "\t" + prices.get(good).getAverage();
+		String line = Integer.toString(day + 1);
+		for (Good good : goods) {
+			Average avg = prices.get(good);
+			if (avg.getTotWeight() == 0.0) {
+				line += "\t0.0";
+			} else {
+				line += "\t" + prices.get(good).getAverage();
+			}
 		}
 		table += "\n" + line;
 		this.prices.clear();

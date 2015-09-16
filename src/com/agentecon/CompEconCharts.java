@@ -30,7 +30,7 @@ public class CompEconCharts implements IConfiguration {
 		case 10:
 			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 2500);
 		case 11:
-			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500);
+			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 			ENABLE_NORMALIZATION = false;
 			return config;
 		}
