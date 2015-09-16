@@ -30,7 +30,7 @@ public class CompEconCharts {
 	public SimulationConfig createChartConfig(PriceConfig priceConfig){
 		StolperSamuelson ss = new StolperSamuelson(4.0);
 		SimConfig config = ss.createConfiguration(priceConfig, 2000);
-		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE; i++) {
+		for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
 			ss.enableShock(config, 1000 + i, 4.0);
 		}
 		return config;
