@@ -22,11 +22,11 @@ import com.agentecon.sim.Simulation;
 
 public class StolperSamuelson {
 
-	private static final int HOURS_PER_DAY = 24;
-	private static final int CONSUMERS_PER_TYPE = 100;
-	private static final int FIRMS_PER_TYPE = 10;
+	public static final int HOURS_PER_DAY = 24;
+	public static final int CONSUMERS_PER_TYPE = 100;
+	public static final int FIRMS_PER_TYPE = 10;
 
-	public static final double RETURNS_TO_SCALE = 0.5;
+	public static final double RETURNS_TO_SCALE = 0.6;
 
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
@@ -47,7 +47,7 @@ public class StolperSamuelson {
 		PriceMetric prices = new PriceMetric(rounds / 2);
 		sim.addListener(prices);
 		sim.finish();
-//		prices.printResult(System.out);
+		// prices.printResult(System.out);
 		return prices.getResult();
 	}
 
@@ -76,16 +76,25 @@ public class StolperSamuelson {
 		}
 		return config;
 	}
-	
-	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref){
+
+	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref) {
 		config.addEvent(new UpdatePreferencesEvent(day) {
+
+			private boolean updated = false;
 
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
-				LogUtil util = (LogUtil) c.getUtilityFunction();
-				util = consWeights.createDeviation(util, outputs[0], pizzaPref);
-				util = consWeights.createDeviation(util, outputs[1], HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
-				c.setUtilityFunction(util);
+				if (!updated) {
+					LogUtil util = (LogUtil) c.getUtilityFunction();
+					if (util.getWeight(getPizza()) == pizzaPref) {
+						// skip
+					} else {
+						util = consWeights.createDeviation(util, getPizza(), pizzaPref);
+						util = consWeights.createDeviation(util, getFondue(), HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
+						c.setUtilityFunction(util);
+						updated = true;
+					}
+				}
 			}
 
 		});
