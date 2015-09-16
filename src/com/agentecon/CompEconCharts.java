@@ -12,7 +12,7 @@ import com.agentecon.verification.StolperSamuelsonParameterExploration;
 public class CompEconCharts {
 
 	public String createAccuracyBenchmark(){
-		String table = "Method\tp_fondue / p_pizza\tx_pizza";
+		String table = "Method\tp_pizza / p_fondue\tx_pizza";
 		final StolperSamuelson bm = new StolperSamuelson(3.0);
 		Result hint = null;
 		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
@@ -22,14 +22,14 @@ public class CompEconCharts {
 				hint = res;
 			}
 		}
-//		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
-//		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
+		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
 	
-	public String createChartData(){
+	public String createChartData(PriceConfig priceConfig){
 		StolperSamuelson ss = new StolperSamuelson(3.0);
-		SimConfig config = ss.createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 2000);
+		SimConfig config = ss.createConfiguration(priceConfig, 2000);
 		ss.enableShock(config, 1000, 3.0);
 		Simulation sim = new Simulation(config);
 		ChartData data = new ChartData(ss.getPizza(), ss.getFondue(), ss.getItalianHours(), ss.getSwissHours());
@@ -41,7 +41,9 @@ public class CompEconCharts {
 	public static void main(String[] args) {
 		CompEconCharts charts = new CompEconCharts();
 		System.out.println("\n***************** FIGURE 8 *****************");
-		System.out.println(charts.createChartData());
+		System.out.println(charts.createChartData(new PriceConfig(true, EPrice.EXPSEARCH)));
+		System.out.println("\n***************** FIGURE 9 *****************");
+		System.out.println(charts.createChartData(new PriceConfig(true, EPrice.CONSTANTFACTOR)));
 		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
 		System.out.println(charts.createAccuracyBenchmark());
 		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
