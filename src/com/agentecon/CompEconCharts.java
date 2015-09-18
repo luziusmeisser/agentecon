@@ -23,8 +23,11 @@ public class CompEconCharts implements IConfiguration {
 	public SimulationConfig createNextConfig() {
 		figure++;
 		switch (figure) {
-		default:
-			return createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
+		default: {
+			SimulationConfig sc = createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
+			sc.setSeed(24);
+			return sc;
+		}
 		case 8:
 			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500, true);
 		case 9:
