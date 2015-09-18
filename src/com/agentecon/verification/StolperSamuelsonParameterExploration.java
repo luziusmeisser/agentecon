@@ -3,6 +3,7 @@ package com.agentecon.verification;
 import com.agentecon.good.Good;
 import com.agentecon.price.EPrice;
 import com.agentecon.price.PriceConfig;
+import com.agentecon.sim.SimConfig;
 import com.agentecon.stats.Numbers;
 
 public class StolperSamuelsonParameterExploration {
@@ -32,8 +33,13 @@ public class StolperSamuelsonParameterExploration {
 		}
 		return table;
 	}
+	
+	public SimConfig createConfiguration(int rounds) {
+		return new StolperSamuelson(current).createConfiguration(config, rounds);
+	}
 
 	public static void main(String[] args) {
 		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
 	}
+
 }

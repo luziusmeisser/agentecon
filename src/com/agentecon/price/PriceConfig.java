@@ -45,10 +45,6 @@ public class PriceConfig {
 			return new RandomizedFactorPrice(rand, accuracy);
 		case EXPSEARCH:
 			return new ExpSearchPrice(accuracy);
-		case RATIONAL:
-			return new RationalExpectationsPrice(new ExpSearchPrice(accuracy));
-		case HISTORICHINT:
-			return new HistoricHintPrice(accuracy);
 		}
 	}
 

@@ -10,6 +10,9 @@ import com.agentecon.verification.Result;
 import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.verification.StolperSamuelsonParameterExploration;
 
+/**
+ * Run this to obtain the numbers presented in the paper. The resulting output is also provided in file CompEconCharts.output .
+ */
 public class CompEconCharts implements IConfiguration {
 
 	public static boolean ENABLE_NORMALIZATION = true;
@@ -58,7 +61,7 @@ public class CompEconCharts implements IConfiguration {
 				hint = res;
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.001);
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}

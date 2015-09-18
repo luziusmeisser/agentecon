@@ -5,7 +5,6 @@ package com.agentecon.sim;
 import java.util.Collection;
 import java.util.Queue;
 
-import com.agentecon.CompEconCharts;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
@@ -19,6 +18,7 @@ import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.EPrice;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.verification.StolperSamuelson;
+import com.agentecon.verification.StolperSamuelsonParameterExploration;
 import com.agentecon.world.World;
 
 // The world
@@ -39,7 +39,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(new CompEconCharts());
+		this(new StolperSamuelsonParameterExploration(1.2, 1.2, 0.1).createConfiguration(5000));
 	}
 
 	protected static SimConfig createConfig() {
