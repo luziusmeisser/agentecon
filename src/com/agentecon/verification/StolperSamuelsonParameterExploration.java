@@ -24,7 +24,7 @@ public class StolperSamuelsonParameterExploration {
 		while (current <= end) {
 			StolperSamuelson ss = new StolperSamuelson(current);
 			Result resA = ss.runAgentBased(config, 2000);
-			Result resC = ss.runConstrainedOptimization(resA, 0.00001);
+			Result resC = ss.runConstrainedOptimization(resA, 0.000001);
 			Good i = ss.getPizza();
 			Good s = ss.getFondue();
 			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s);
@@ -39,7 +39,7 @@ public class StolperSamuelsonParameterExploration {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
+		System.out.println(new StolperSamuelsonParameterExploration(3.0, 3.0, 0.1).run());
 	}
 
 }

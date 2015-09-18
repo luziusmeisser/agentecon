@@ -71,7 +71,7 @@ public class ConfigurableWorld {
 		wireLabor();
 		wireOutputsToConsumption();
 		wireDividend();
-		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables. Can take many minutes...");
+		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables and precision " + FloatDomain.precision() + ". Can take many minutes...");
 	}
 
 	private void wireLabor() {
