@@ -17,20 +17,22 @@ public class CompEconCharts implements IConfiguration {
 
 	public static boolean ENABLE_NORMALIZATION = true;
 
-	private int figure = 4;
+	private int figure = 3;
 
 	@Override
 	public SimulationConfig createNextConfig() {
 		figure++;
 		switch (figure) {
 		default:
-			return createChartConfig(PriceConfig.STANDARD_CONFIGS[figure - 1], 2500);
+			return createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
+		case 8:
+			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500, true);
 		case 9:
-			SimulationConfig sc = createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 2500);
+			SimulationConfig sc = createChartConfig(new PriceConfig(true, EPrice.CONSTANTPERCENTAGE), 2500, true);
 			sc.setSeed(52);
 			return sc;
 		case 10:
-			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 2500);
+			return createChartConfig(new PriceConfig(false, EPrice.EXPSEARCH), 2500, true);
 		case 11:
 			SimulationConfig config = createNonNormalizedConfig(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 			config.setSeed(31);
@@ -75,10 +77,12 @@ public class CompEconCharts implements IConfiguration {
 		return config;
 	}
 
-	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds) {
+	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds, boolean shock) {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
-		ss.enableShock(config, 1000, 7.0);
+		if (shock) {
+			ss.enableShock(config, 1000, 7.0);
+		}
 		return config;
 	}
 
