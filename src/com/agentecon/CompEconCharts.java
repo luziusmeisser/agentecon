@@ -25,7 +25,7 @@ public class CompEconCharts implements IConfiguration {
 		switch (figure) {
 		default: {
 			SimulationConfig sc = createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
-			sc.setSeed(25);
+			sc.setSeed(18);
 			return sc;
 		}
 		case 8:
