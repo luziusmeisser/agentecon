@@ -25,7 +25,7 @@ public class CompEconCharts implements IConfiguration {
 		switch (figure) {
 		default: {
 			SimulationConfig sc = createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
-			sc.setSeed(24);
+			sc.setSeed(25);
 			return sc;
 		}
 		case 8:
@@ -103,10 +103,10 @@ public class CompEconCharts implements IConfiguration {
 			System.out.println("\n***************** " + charts.getComment() + " *****************");
 			System.out.println(charts.createNextChart());
 		}
-		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
-		System.out.println(charts.createAccuracyBenchmark());
-		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
-		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
+//		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
+//		System.out.println(charts.createAccuracyBenchmark());
+//		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
+//		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
 	}
 
 }
