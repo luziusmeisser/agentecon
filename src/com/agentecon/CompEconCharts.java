@@ -61,7 +61,7 @@ public class CompEconCharts implements IConfiguration {
 				hint = res;
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.000001);
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
 		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
@@ -79,13 +79,7 @@ public class CompEconCharts implements IConfiguration {
 	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds) {
 		StolperSamuelson ss = new StolperSamuelson(3.0);
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
-		ss.enableShock(config, 500, 6.6);
-		ss.enableShock(config, 1000, 6.3);
-		ss.enableShock(config, 1500, 6.1);
-		ss.enableShock(config, 2000, 6);
-		// for (int i = 0; i < StolperSamuelson.CONSUMERS_PER_TYPE * 2; i++) {
-		// ss.enableShock(config, 1200 + i, 3.0);
-		// }
+		ss.enableShock(config, 1000, 7.0);
 		return config;
 	}
 

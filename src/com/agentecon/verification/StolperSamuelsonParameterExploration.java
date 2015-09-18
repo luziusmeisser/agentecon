@@ -27,7 +27,9 @@ public class StolperSamuelsonParameterExploration {
 			Result resC = ss.runConstrainedOptimization(resA, 0.000001);
 			Good i = ss.getPizza();
 			Good s = ss.getFondue();
-			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s);
+			Good wi = ss.getPizza();
+			Good ws = ss.getFondue();
+			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s) + "\t" + resA.getRatio(wi, ws) + "\t" + resC.getRatio(wi, ws);
 			table += "\n" + line;
 			current += increment;
 		}
