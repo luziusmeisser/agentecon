@@ -1,11 +1,15 @@
 package com.agentecon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.price.EPrice;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.sim.IConfiguration;
 import com.agentecon.sim.SimConfig;
 import com.agentecon.sim.Simulation;
+import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.verification.Result;
 import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.verification.StolperSamuelsonParameterExploration;
@@ -21,13 +25,13 @@ public class CompEconCharts implements IConfiguration {
 
 	@Override
 	public SimulationConfig createNextConfig() {
-		figure++;
-		switch (figure) {
-		default: {
-			SimulationConfig sc = createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
-			sc.setSeed(18);
-			return sc;
-		}
+		return createConfig(++figure);
+	}
+
+	public SimulationConfig createConfig(int index) {
+		switch (index) {
+		default:
+			return createChartConfig(PriceConfig.STANDARD_CONFIGS[figure], 2000, false);
 		case 8:
 			return createChartConfig(new PriceConfig(true, EPrice.EXPSEARCH), 2500, true);
 		case 9:
@@ -55,18 +59,35 @@ public class CompEconCharts implements IConfiguration {
 	}
 
 	public String createAccuracyBenchmark() {
-		String table = "Method\tp_pizza / p_fondue\tx_pizza";
+		String table = "Method\tp_pizza / p_fondue\tx_pizza\tw_Italian/w_Swiss";
 		final StolperSamuelson bm = new StolperSamuelson(3.0);
 		Result hint = null;
-		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
-			if (config.isSensor()) {
-				Result res = bm.runAgentBased(config, 2000);
-				table += "\n" + config.getName() + "\t" + res.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + res.getAmount(bm.getPizza());
-				hint = res;
+		HashMap<String, Result> results = new InstantiatingHashMap<String, Result>() {
+
+			@Override
+			protected Result create(String key) {
+				return new Result();
+			}
+		};
+		for (int i = 0; i < 1; i++) {
+			for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {
+				if (config.isSensor()) {
+					SimulationConfig simConfig = createChartConfig(config, 2000, false);
+					simConfig.setSeed(10 + i);
+					Result res = bm.runAgentBased(simConfig);
+					results.get(config.getName()).absorb(res);
+					hint = res;
+				}
 			}
 		}
-		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.00001);
-		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getAmount(bm.getPizza());
+		for (Map.Entry<String, Result> e: results.entrySet()){
+			Result res = e.getValue();
+			table += "\n" + e.getKey() + "\t" + res.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + res.getRatio(bm.getPizza(), bm.getSwissHours()) + "\t" + res.getAmount(bm.getPizza());
+		}
+
+		Result resBenchmark = bm.runConstrainedOptimization(hint, 0.000001);
+		table += "\nBenchmark\t" + resBenchmark.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + resBenchmark.getRatio(bm.getPizza(), bm.getSwissHours()) + "\t"
+				+ resBenchmark.getAmount(bm.getPizza());
 		return table;
 	}
 
@@ -103,10 +124,10 @@ public class CompEconCharts implements IConfiguration {
 			System.out.println("\n***************** " + charts.getComment() + " *****************");
 			System.out.println(charts.createNextChart());
 		}
-//		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
-//		System.out.println(charts.createAccuracyBenchmark());
-//		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
-//		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
+		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
+		System.out.println(charts.createAccuracyBenchmark());
+		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
+		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
 	}
 
 }

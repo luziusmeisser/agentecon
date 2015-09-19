@@ -24,12 +24,11 @@ public class StolperSamuelsonParameterExploration {
 		while (current <= end) {
 			StolperSamuelson ss = new StolperSamuelson(current);
 			Result resA = ss.runAgentBased(config, 2000);
-			Result resC = ss.runConstrainedOptimization(resA, 0.000001);
+			Result resC = ss.runConstrainedOptimization(resA, 0.00001);
 			Good i = ss.getPizza();
 			Good s = ss.getFondue();
-			Good wi = ss.getPizza();
-			Good ws = ss.getFondue();
-			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s) + "\t" + resA.getRatio(wi, ws) + "\t" + resC.getRatio(wi, ws);
+			Good ws = ss.getSwissHours();
+			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s) + "\t" + resA.getRatio(i, ws) + "\t" + resC.getRatio(i, ws);
 			table += "\n" + line;
 			current += increment;
 		}

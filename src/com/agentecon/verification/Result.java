@@ -20,6 +20,7 @@ public class Result {
 	class DataPoint {
 
 		private Good good;
+		private double weight = 1.0;
 		private double price;
 		private double volume;
 		
@@ -31,6 +32,13 @@ public class Result {
 		
 		public String toString(){
 			return good + " costs " + price + " (volume " + volume + ")";
+		}
+
+		public void absorb(DataPoint dp) {
+			assert good.equals(dp.good);
+			this.price = (price * weight + dp.price * dp.weight) / (weight + dp.weight);
+			this.volume = (volume * weight + dp.volume * dp.weight) / (weight + dp.weight);
+			this.weight = weight + dp.weight;
 		}
 		
 	}
@@ -60,6 +68,17 @@ public class Result {
 	
 	public String toString(){
 		return map.values().toString();
+	}
+
+	public void absorb(Result res) {
+		for (DataPoint dp: res.map.values()){
+			DataPoint existing = map.get(dp.good);
+			if (existing == null){
+				include(dp.good, dp.price, dp.volume);
+			} else {
+				existing.absorb(dp);
+			}
+		}
 	}
 
 }

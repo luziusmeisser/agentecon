@@ -48,6 +48,10 @@ public class StolperSamuelson {
 	public Result runAgentBased(PriceConfig pconfig, int rounds) {
 		System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig, rounds);
+		return runAgentBased(config);
+	}
+		
+	public Result runAgentBased(SimulationConfig config) {
 		Simulation sim = new Simulation(config);
 		PriceMetric prices = new PriceMetric(config.getRounds() / 2);
 		sim.addListener(prices);
