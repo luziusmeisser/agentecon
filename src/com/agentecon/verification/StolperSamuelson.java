@@ -36,7 +36,7 @@ public class StolperSamuelson {
 
 	public StolperSamuelson() {
 		this(LOW);
-	}
+	} 
 
 	public StolperSamuelson(double low) {
 		this.inputs = new Good[] { new Good("Italian man-hours"), new Good("Swiss man-hours") };
