@@ -13,17 +13,12 @@ import com.agentecon.good.Inventory;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
-import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer {
 
-	public static final boolean AGING = SimConfig.AGING;
-	public static final int MAX_AGE = 500;
-	public static final int RETIREMENT_AGE = MAX_AGE / 5 * 3;
-
-	private int age;
+	private int age, maxAge;
 	protected Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
@@ -31,9 +26,14 @@ public class Consumer extends Agent implements IConsumer {
 	private MovingAverage dailySpendings;
 
 	// private ConsumerListeners listeners; clone?
-
+	
 	public Consumer(String type, Endowment end, IUtility utility) {
+		this(type, Integer.MAX_VALUE, end, utility);
+	}
+
+	public Consumer(String type, int maxAge, Endowment end, IUtility utility) {
 		super(type, end);
+		this.maxAge = maxAge;
 		this.soldGood = end.getDaily()[0].getGood();
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
@@ -57,16 +57,17 @@ public class Consumer extends Agent implements IConsumer {
 		IStock money = getMoney();
 		double cash = money.getAmount();
 		if (isRetired()) {
-			int daysLeft = MAX_AGE - age + 1;
+			int daysLeft = maxAge - age + 1;
 			double toSpend = cash / daysLeft;
 			double toKeep = cash - toSpend;
 			inv = inv.hide(money.getGood(), toKeep);
 			inv = inv.hide(soldGood);
 			trade(inv, market);
 		} else {
-			if (AGING) {
-				double retirementSavingsGoal = dailySpendings.getAverage() * (MAX_AGE - RETIREMENT_AGE);
-				double bynow = retirementSavingsGoal * (age + 10) / RETIREMENT_AGE;
+			if (isMortal()) {
+				int retirementAge = getRetirementAge();
+				double retirementSavingsGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
+				double bynow = retirementSavingsGoal * (age + 10) / retirementAge;
 				double missing = bynow - cash;
 				if (missing > 0) {
 					// we lack savings, need to save more
@@ -148,16 +149,24 @@ public class Consumer extends Agent implements IConsumer {
 		lifetimeUtility += u;
 		return u;
 	}
+	
+	public boolean isMortal(){
+		return maxAge < Integer.MAX_VALUE;
+	}
 
 	@SuppressWarnings("unused")
 	public boolean age() {
 		this.age++;
-		return AGING && age > MAX_AGE;
+		return age > maxAge;
 	}
 
 	@SuppressWarnings("unused")
 	public boolean isRetired() {
-		return AGING && age > RETIREMENT_AGE;
+		return age > getRetirementAge();
+	}
+	
+	private int getRetirementAge(){
+		return maxAge / 5 * 3;
 	}
 
 	public Inventory notifyDied() {

@@ -18,6 +18,10 @@ public class FirmEvent extends SimEvent {
 	protected Endowment end;
 	protected IProductionFunction prodFun;
 	protected PriceConfig priceParams;
+	
+	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun) {
+		this(card, type, end, prodFun, PriceConfig.DEFAULT);
+	}
 
 	public FirmEvent(int card, String type, Endowment end, IProductionFunction prodFun, PriceConfig priceParams) {
 		super(0, card);

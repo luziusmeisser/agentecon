@@ -17,7 +17,6 @@ import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
-import com.agentecon.price.PriceFactory;
 
 public class TaxShockConfiguration {
 

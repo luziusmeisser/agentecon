@@ -11,14 +11,13 @@ import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
+import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
 import com.agentecon.firm.Firm;
-import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.ShockTest;
 import com.agentecon.world.World;
 
 // The world
@@ -43,7 +42,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new ShockTest(0.7));
+		this(new OverlappingGenerations());
 	}
 
 	public Simulation(IConfiguration metaConfig) {

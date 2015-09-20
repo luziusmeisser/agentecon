@@ -9,7 +9,7 @@ import com.agentecon.world.IWorld;
 
 public class ConsumerEvent extends SimEvent {
 
-	private int count;
+	protected int count;
 	protected String type;
 	protected Endowment end;
 	protected IUtilityFactory utilFun;

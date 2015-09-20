@@ -8,9 +8,10 @@ public class CogsDividend implements IFirmDecisions {
 	private double divs;
 	private double dividendRatio;
 
-	public CogsDividend(double returnsToScale, int mode) {
+	public CogsDividend(double laborshare, int mode) {
 		this.mode = mode;
-		this.dividendRatio = returnsToScale / (1.0 - returnsToScale);
+		double profitShare = 1.0 - laborshare;
+		this.dividendRatio = profitShare / laborshare;
 	}
 	
 	private CogsDividend(double dividendRatio, double divs, int mode) {
