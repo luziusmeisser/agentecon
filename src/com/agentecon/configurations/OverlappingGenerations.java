@@ -27,6 +27,8 @@ public class OverlappingGenerations extends SimConfig {
 		this.money = new Good("francs");
 		this.input = new Good("hours");
 		this.outputs = new Good[]{new Good("apples")};
+		addConsumers(100);
+		addFirms(10);
 	}
 	
 	public void addConsumers(int count){
