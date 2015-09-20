@@ -24,7 +24,7 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 
 	@Test
 	public void test() {
-		SinConsumerEvent e = new SinConsumerEvent(50, 7, 100, 500, 150, "test", new Endowment(new Stock(SimConfig.BEER, 1)), new LogUtil());
+		SinConsumerEvent e = new SinConsumerEvent(50, 7, 100, 500, 150, "test", new Endowment(new Stock(SimConfig.MONEY, 1)), new LogUtil());
 		for (day = 50; day<200; day++){
 			e.execute(this);
 		}

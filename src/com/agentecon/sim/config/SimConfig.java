@@ -14,15 +14,7 @@ public class SimConfig extends SimulationConfig {
 	
 	private static final int DEFAULT_WOBBLES = 0;
 	
-	public static final double GOODS_PERSISTENCE = 1.0;
-	
 	public static final Good MONEY = new Good("Taler");
-	public static final Good PIZZA = new Good("Pizza", GOODS_PERSISTENCE);
-	public static final Good FONDUE = new Good("Fondue", GOODS_PERSISTENCE);
-	public static final Good BEER = new Good("Beer", GOODS_PERSISTENCE);
-	public static final Good SWISSTIME = new Good("Swiss man-hours", 0.0);
-	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
-	public static final Good GERTIME = new Good("German man-hours", 0.0);
 
 	private int wobbles;
 	

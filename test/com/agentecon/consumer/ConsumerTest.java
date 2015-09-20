@@ -19,25 +19,30 @@ import com.agentecon.market.Bid;
 import com.agentecon.market.IOffer;
 import com.agentecon.market.IPriceFilter;
 import com.agentecon.market.IPriceTakerMarket;
-import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
 
 public class ConsumerTest {
+	
+	public static final Good MONEY = new Good("Taler");
+	public static final Good PIZZA = new Good("Pizza", 1.0);
+	public static final Good FONDUE = new Good("Fondue", 1.0);
+	public static final Good SWISSTIME = new Good("Swiss man-hours", 0.0);
+	public static final Good ITALTIME = new Good("Italian man-hours", 0.0);
 
 	public static IOffer createBid() {
-		return new Bid(new Stock(SimConfig.MONEY, 10000), new Stock(SimConfig.SWISSTIME), new Price(SimConfig.SWISSTIME, 2.97287), 1000);
+		return new Bid(new Stock(MONEY, 10000), new Stock(SWISSTIME), new Price(SWISSTIME, 2.97287), 1000);
 	}
 
 	public static IOffer createAsk() {
-		return new Ask(new Stock(SimConfig.MONEY), new Stock(SimConfig.FONDUE, 1000), new Price(SimConfig.FONDUE, 10), 1000);
+		return new Ask(new Stock(MONEY), new Stock(FONDUE, 1000), new Price(FONDUE, 10), 1000);
 	}
 
 	public static Endowment createEndowment() {
-		return new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 26.4537) }, new Stock[] { new Stock(SimConfig.SWISSTIME, 24) });
+		return new Endowment(new Stock[] { new Stock(MONEY, 26.4537) }, new Stock[] { new Stock(SWISSTIME, 24) });
 	}
 
 	public static Endowment createEndowment2() {
-		return new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1.465103413) }, new Stock[] { new Stock(SimConfig.ITALTIME, 24) });
+		return new Endowment(new Stock[] { new Stock(MONEY, 1.465103413) }, new Stock[] { new Stock(ITALTIME, 24) });
 	}
 
 	@Before
@@ -50,7 +55,7 @@ public class ConsumerTest {
 
 	@Test
 	public void test() {
-		LogUtil utilFun = new LogUtil(new Weight(SimConfig.FONDUE, 10), new Weight(SimConfig.SWISSTIME, 14));
+		LogUtil utilFun = new LogUtil(new Weight(FONDUE, 10), new Weight(SWISSTIME, 14));
 		Consumer cons = new Consumer("dummy", createEndowment(), utilFun);
 		cons.collectDailyEndowment();
 		cons.maximizeUtility(new IPriceTakerMarket() {
@@ -84,13 +89,13 @@ public class ConsumerTest {
 
 	@Test
 	public void test2() {
-		LogUtil utilFun = new LogUtil(new Weight(SimConfig.PIZZA, 8), new Weight(SimConfig.ITALTIME, 14));
+		LogUtil utilFun = new LogUtil(new Weight(PIZZA, 8), new Weight(ITALTIME, 14));
 		Consumer cons = new Consumer("dummy", createEndowment2(), utilFun);
 		cons.collectDailyEndowment();
 		cons.maximizeUtility(new IPriceTakerMarket() {
 
-			private IOffer ask = new Ask(new Stock(SimConfig.MONEY), new Stock(SimConfig.PIZZA, 1000), new Price(SimConfig.FONDUE, 1.0), 1000);
-			private IOffer bid = new Bid(new Stock(SimConfig.MONEY, 10000), new Stock(SimConfig.ITALTIME), new Price(SimConfig.ITALTIME, 0.24424871756), 1000);
+			private IOffer ask = new Ask(new Stock(MONEY), new Stock(PIZZA, 1000), new Price(FONDUE, 1.0), 1000);
+			private IOffer bid = new Bid(new Stock(MONEY, 10000), new Stock(ITALTIME), new Price(ITALTIME, 0.24424871756), 1000);
 
 			@Override
 			public Collection<IOffer> getOffers(IPriceFilter bidAskFilter) {
@@ -112,7 +117,7 @@ public class ConsumerTest {
 				return Arrays.asList(ask);
 			}
 		});
-		assert Numbers.equals(cons.consume(), cons.getUtilityFunction().getUtility(Arrays.<IStock>asList(new Stock(SimConfig.PIZZA, 2.116844127999999), new Stock(SimConfig.ITALTIME, 21.331651435017676))));
+		assert Numbers.equals(cons.consume(), cons.getUtilityFunction().getUtility(Arrays.<IStock>asList(new Stock(PIZZA, 2.116844127999999), new Stock(ITALTIME, 21.331651435017676))));
 	}
 
 }

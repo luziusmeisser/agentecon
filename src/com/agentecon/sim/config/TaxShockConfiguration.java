@@ -54,7 +54,7 @@ public class TaxShockConfiguration {
 		}
 		this.outputs = new Good[firmTypes];
 		for (int i = 0; i < firmTypes; i++) {
-			outputs[i] = new Good("output " + i, SimConfig.GOODS_PERSISTENCE);
+			outputs[i] = new Good("output " + i, 1.0);
 		}
 //		PriceFactory.NORMALIZED_GOOD = inputs[0];
 	}
