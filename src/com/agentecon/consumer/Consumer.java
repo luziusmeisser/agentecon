@@ -26,7 +26,7 @@ public class Consumer extends Agent implements IConsumer {
 	private MovingAverage dailySpendings;
 
 	// private ConsumerListeners listeners; clone?
-	
+
 	public Consumer(String type, Endowment end, IUtility utility) {
 		this(type, Integer.MAX_VALUE, end, utility);
 	}
@@ -68,14 +68,7 @@ public class Consumer extends Agent implements IConsumer {
 				int retirementAge = getRetirementAge();
 				double retirementSavingsGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
 				double bynow = retirementSavingsGoal * (age + 10) / retirementAge;
-				double missing = bynow - cash;
-				if (missing > 0) {
-					// we lack savings, need to save more
-					inv = inv.hide(money.getGood(), missing / 10);
-				} else {
-					// we have excess savings, let's spend 5% of that
-					inv = inv.hide(money.getGood(), bynow + missing / 20);
-				}
+				inv = inv.hide(money.getGood(), (19 * cash + bynow) / 20); // 5% step towards savings goal
 			}
 			trade(inv, market);
 		}
@@ -149,8 +142,8 @@ public class Consumer extends Agent implements IConsumer {
 		lifetimeUtility += u;
 		return u;
 	}
-	
-	public boolean isMortal(){
+
+	public boolean isMortal() {
 		return maxAge < Integer.MAX_VALUE;
 	}
 
@@ -164,8 +157,8 @@ public class Consumer extends Agent implements IConsumer {
 	public boolean isRetired() {
 		return age > getRetirementAge();
 	}
-	
-	private int getRetirementAge(){
+
+	private int getRetirementAge() {
 		return maxAge / 5 * 3;
 	}
 

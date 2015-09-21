@@ -3,8 +3,6 @@ package com.agentecon.price;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.agentecon.good.Good;
-
 public class RationalExpectationsPrice implements IPrice, IEvolvable {
 	
 	private int pos;
