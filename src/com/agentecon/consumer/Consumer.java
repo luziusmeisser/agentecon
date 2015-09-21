@@ -7,6 +7,8 @@ import java.util.Collection;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
+import com.agentecon.finance.IStockMarket;
+import com.agentecon.finance.Portfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
@@ -22,7 +24,7 @@ public class Consumer extends Agent implements IConsumer {
 	protected Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
-	// private Portfolio savings; clone?
+	private Portfolio portfolio;
 	private MovingAverage dailySpendings;
 
 	// private ConsumerListeners listeners; clone?
@@ -52,26 +54,46 @@ public class Consumer extends Agent implements IConsumer {
 		this.utility = utility;
 	}
 
+	private double savingsTarget;
+
+	public void manageSavings(IStockMarket stocks) {
+		IStock wallet = getMoney();
+		portfolio.collectDividends();
+		if (isMortal()) {
+			portfolio.absorb(wallet);
+			double savings = portfolio.getValue();
+			if (isRetired()) {
+				int daysLeft = maxAge - age + 1;
+				double toSpend = savings / daysLeft;
+				portfolio.balance(stocks, toSpend);
+				portfolio.payTo(wallet, toSpend);
+			} else {
+				int retirementAge = getRetirementAge();
+				double finalGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
+				double currentGoal = finalGoal * (age + 10) / retirementAge;
+				double missing = currentGoal - portfolio.getValue();
+				if (missing < 0) {
+					portfolio.balance(stocks, -missing);
+					portfolio.payTo(wallet);
+				} else {
+					portfolio.balance(stocks, 0.0);
+					savingsTarget = missing / 10; // 10% step towards savings goal
+				}
+			}
+		} else {
+			portfolio.payTo(wallet);
+		}
+	}
+
 	public void maximizeUtility(IPriceTakerMarket market) {
 		Inventory inv = getInventory();
-		IStock money = getMoney();
-		double cash = money.getAmount();
 		if (isRetired()) {
-			int daysLeft = maxAge - age + 1;
-			double toSpend = cash / daysLeft;
-			double toKeep = cash - toSpend;
-			inv = inv.hide(money.getGood(), toKeep);
-			inv = inv.hide(soldGood);
-			trade(inv, market);
-		} else {
-			if (isMortal()) {
-				int retirementAge = getRetirementAge();
-				double retirementSavingsGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
-				double bynow = retirementSavingsGoal * (age + 10) / retirementAge;
-				inv = inv.hide(money.getGood(), (19 * cash + bynow) / 20); // 5% step towards savings goal
-			}
-			trade(inv, market);
+			inv = inv.hide(soldGood); // cannot work any more, hide hours
 		}
+		if (savingsTarget > 0.0) {
+			inv = inv.hide(getMoney().getGood(), savingsTarget);
+		}
+		trade(inv, market);
 	}
 
 	protected void trade(Inventory inv, IPriceTakerMarket market) {
