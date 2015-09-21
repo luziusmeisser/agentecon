@@ -22,7 +22,7 @@ public class OverlappingGenerations extends SimConfig {
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(10000, 42, 0);
+		super(5000, 42, 0);
 		this.input = new Good("hours");
 		this.outputs = new Good[]{new Good("apples")};
 		addConsumers(100);
@@ -32,7 +32,7 @@ public class OverlappingGenerations extends SimConfig {
 	public void addConsumers(int count){
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
 		ConsumptionWeights consWeights = new ConsumptionWeights(new Good[]{input}, outputs, 7.0, 3.0);
-		addEvent(new SinConsumerEvent(0, 1, count / 4, MAX_AGE, 330, "Consumer", end, consWeights.getFactory(0)));
+		addEvent(new SinConsumerEvent(0, 20, count / 3, MAX_AGE, 400, "Consumer", end, consWeights.getFactory(0)));
 	}
 	
 	public void addFirms(int count){
