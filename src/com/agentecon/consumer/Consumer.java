@@ -131,9 +131,8 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 			int pos = 0;
 			for (IOffer offer : offers) {
 				IStock s = inv.getStock(offer.getGood());
-				double excessStock = s.getAmount() - allocs[pos];
-				if (excessStock > Numbers.EPSILON) {
-					assert offer.getGood() == soldGood;
+				double excessStock = Math.max(s.getAmount() - allocs[pos], s.getAmount() - 19); // TEMP: work at least 5 hours
+				if (excessStock > Numbers.EPSILON && offer.getGood() == soldGood) {
 					double amountAcquired = offer.accept(getMoney(), s, excessStock);
 					completedSales &= amountAcquired == excessStock;
 					trading = true;
@@ -147,8 +146,7 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 			for (IOffer offer : offers) {
 				IStock s = inv.getStock(offer.getGood());
 				double difference = allocs[pos] - s.getAmount();
-				if (difference > Numbers.EPSILON) {
-					assert offer.getGood() != soldGood;
+				if (difference > Numbers.EPSILON && offer.getGood() != soldGood) {
 					offer.accept(getMoney(), s, difference);
 					spendings += difference * offer.getPrice().getPrice();
 					trading = true;
