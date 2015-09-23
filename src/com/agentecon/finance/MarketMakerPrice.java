@@ -27,9 +27,9 @@ public class MarketMakerPrice {
 		assert pos.getTicker().equals(ticker);
 		if (lastBid != null && lastAsk != null) {
 			double change = lastBid.getTransactionVolume() / lastBid.getPrice().getPrice() - lastAsk.getTransactionVolume() / lastAsk.getPrice().getPrice();
-			if (change > 0.0 && needMore){
+			if (change >= 0.0 && needMore){
 				// we are ok
-			} else if (change < 0.0 && !needMore){
+			} else if (change <= 0.0 && !needMore){
 				// we are ok
 			} else {
 				price.adapt(needMore);

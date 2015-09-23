@@ -12,13 +12,13 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	public static final double TARGET_OWNERSHIP = 0.1;
 
 	private IStock money;
-	private TradingPortfolio portfolio;
+	private Portfolio portfolio;
 	private ShareRegister register;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
 	public MarketMaker(IStock money) {
 		this.money = money;
-		this.portfolio = new TradingPortfolio(money);
+		this.portfolio = new Portfolio(money);
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 		this.register = new ShareRegister("MarketMaker", money);
 	}
@@ -58,7 +58,7 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	private double calcDesiredCashLevel() {
 		double tot = 0.0;
 		for (MarketMakerPrice p: priceBeliefs.values()){
-			tot += p.getPrice() * Position.SHARES_PER_COMPANY / 100;
+			tot += p.getPrice() * Position.SHARES_PER_COMPANY * TARGET_OWNERSHIP;
 		}
 		return tot;
 	}

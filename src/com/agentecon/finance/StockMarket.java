@@ -1,7 +1,5 @@
 package com.agentecon.finance;
 
-import java.util.Collection;
-
 import com.agentecon.api.IFirm;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.good.Stock;
