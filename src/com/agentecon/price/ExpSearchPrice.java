@@ -24,6 +24,10 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.sameDirectionInARow = 0;
 		this.speed = 1.1;
 	}
+	
+	protected double getMinAdaptionFactor(){
+		return MIN_ADAPTION_FACTOR;
+	}
 
 	@Override
 	protected double getFactor(boolean increase) {
@@ -35,7 +39,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 		} else {
 			sameDirectionInARow = 0;
 			direction = increase;
-			delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
+			delta = Math.max(getMinAdaptionFactor(), delta / speed);
 		}
 		double f = 1.0 + delta;
 		return f;

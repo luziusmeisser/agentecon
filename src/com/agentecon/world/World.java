@@ -5,8 +5,11 @@ import java.util.Iterator;
 import java.util.Random;
 
 import com.agentecon.consumer.Consumer;
+import com.agentecon.finance.Portfolio;
 import com.agentecon.firm.Firm;
+import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
+import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.SimConfig;
@@ -20,10 +23,10 @@ public class World implements IWorld {
 	private SimulationListeners listeners;
 	
 	public World(long randomSeed, SimulationListeners listeners){
+		this.listeners = listeners;
 		this.randomBaseSeed = randomSeed + 123123453;
 		this.rand = new Random(randomSeed);
 		this.agents = new Agents(listeners, rand.nextLong());
-		this.listeners = listeners;
 	}
 	
 	@Override
@@ -79,7 +82,7 @@ public class World implements IWorld {
 	}
 
 	public void finishDay(int day) {
-		double inheritance = 0.0;
+		Portfolio inheritance = new Portfolio(SimConfig.MONEY);
 		Collection<Consumer> consumers = agents.getAllConsumers();
 		Iterator<Consumer> iter = consumers.iterator();
 		double util = 0.0;
@@ -88,13 +91,12 @@ public class World implements IWorld {
 			util += c.consume();
 			if (c.age()) {
 				iter.remove();
-				Inventory inv = c.notifyDied();
-				inheritance += inv.getStock(SimConfig.MONEY).consume();
+				Inventory inv = c.notifyDied(inheritance);
 				notifyConsumerDied(c);
 			}
 		}
-		if (inheritance > 0){
-			consumers.iterator().next().getMoney().add(inheritance);
+		if (inheritance.hasValue()){
+			agents.getAllMarketMakers().iterator().next().inherit(inheritance);
 		}
 		
 		listeners.notifyDayEnded(day, util / consumers.size());
@@ -111,6 +113,10 @@ public class World implements IWorld {
 	public void abortTransaction() {
 		assert backup != null;
 		this.agents = backup;
+	}
+
+	public Agents getAgents() {
+		return agents;
 	}
 
 }

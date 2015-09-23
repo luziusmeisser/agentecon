@@ -7,6 +7,9 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
+import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.ShareRegister;
+import com.agentecon.finance.Ticker;
 import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IPriceProvider;
@@ -19,18 +22,17 @@ import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 import com.agentecon.price.IPriceFactory;
 
-public class Firm extends Agent implements IFirm {
+public class Firm extends Agent implements IFirm, IPublicCompany {
 
-	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
 	private IProductionFunction prod;
 
 	private FirmListeners monitor;
-
 	protected IPriceFactory prices;
-
 	private IFirmDecisions strategy;
+
+	private ShareRegister register;
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		this(type, end, prod, prices, new DifferentialDividend());
@@ -41,7 +43,7 @@ public class Firm extends Agent implements IFirm {
 		this.prod = prod;
 		this.prices = prices;
 		this.setStrategy(strategy);
-		// this.register = new ShareRegister(getName(), getMoney());
+		this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
 		this.inputs = new InputFactor[inputs.length];
@@ -52,7 +54,7 @@ public class Firm extends Agent implements IFirm {
 		this.output = createOutputFactor(prices, outStock);
 		this.monitor = new FirmListeners();
 	}
-	
+
 	public void setStrategy(IFirmDecisions strategy) {
 		this.strategy = strategy.duplicate();
 	}
@@ -131,9 +133,9 @@ public class Firm extends Agent implements IFirm {
 		return output.getGood();
 	}
 
-	public double payDividends(IStock worldWallet, int day) {
+	public void payDividends(int day) {
 		IStock wallet = getMoney();
-		double dividend = Math.min(wallet.getAmount(), Math.max(0, strategy.calcDividend(new Financials(wallet, inputs, output){
+		double dividend = Math.min(wallet.getAmount(), Math.max(0, strategy.calcDividend(new Financials(wallet, inputs, output) {
 
 			@Override
 			public double getIdealCogs() {
@@ -145,15 +147,13 @@ public class Firm extends Agent implements IFirm {
 					}
 				});
 			}
-			
+
 		})));
 		assert dividend >= 0;
 		assert dividend <= wallet.getAmount();
 		monitor.reportDividend(dividend);
 
-		// register.payDividend(wallet, dividend);
-		worldWallet.transfer(wallet, dividend);
-		return dividend;
+		register.payDividend(wallet, dividend);
 	}
 
 	public IProductionFunction getProductionFunction() {
@@ -209,6 +209,16 @@ public class Firm extends Agent implements IFirm {
 			klon.inputs[i] = inputs[i].duplicate(klon.getStock(inputs[i].getGood()));
 		}
 		return klon;
+	}
+	
+	@Override
+	public ShareRegister getShareRegister() {
+		return register;
+	}
+	
+	@Override
+	public Ticker getTicker() {
+		return register.getTicker();
 	}
 
 	@Override

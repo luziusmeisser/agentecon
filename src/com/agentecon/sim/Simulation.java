@@ -5,6 +5,7 @@ package com.agentecon.sim;
 import java.util.Collection;
 import java.util.Queue;
 
+import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
@@ -13,6 +14,7 @@ import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
+import com.agentecon.finance.StockMarket;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
@@ -31,6 +33,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	private Queue<SimEvent> events;
 	private SimulationListeners listeners;
 	private World world;
+	private StockMarket stocks;
 
 	static {
 		// Disabled because too slow on app engine
@@ -55,6 +58,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.events = this.config.createEventQueue();
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
+		this.stocks = new StockMarket(world);
 		this.day = 0;
 	}
 	
@@ -104,6 +108,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		for (; day < target; day++) {
 			processEvents(day); // must happen before daily endowments
 			world.prepareDay(day);
+			stocks.trade(day);
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
 			market.iterate(day, config.getIntradayIterations());
 			for (Firm firm : world.getFirms().getAllFirms()) {
@@ -142,6 +147,11 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public Collection<? extends ITrader> getTraders() {
 		return world.getTraders().getAllTraders();
+	}
+	
+	@Override
+	public Collection<? extends IAgent> getAgents() {
+		return world.getAgents().getAll();
 	}
 
 	@Override

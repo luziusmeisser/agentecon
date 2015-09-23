@@ -63,10 +63,10 @@ public abstract class AbstractMarket {
 
 	private String getStats(Collection<? extends AbstractOffer> offers, boolean ask) {
 		double amount = 0.0;
-		double extremum = 0.0;
+		double extremum = ask ? Double.MAX_VALUE : 0.0;
 		for (AbstractOffer a : offers) {
 			amount += a.getAmount();
-			extremum = ask ? Math.min(extremum, a.getAmount()) : Math.max(extremum, a.getAmount());
+			extremum = ask ? Math.min(extremum, a.getPrice().getPrice()) : Math.max(extremum, a.getPrice().getPrice());
 		}
 		return Numbers.toString(amount) + " " + new Price(good, extremum) + (ask ? " offered" : " sought") + " in " + offers.size() + " offers";
 	}
@@ -81,7 +81,7 @@ public abstract class AbstractMarket {
 		boolean hasbids = getBid() != null;
 		boolean hasasks = getAsk() != null;
 		if (hasbids && hasasks) {
-			return getGood() + " for " + getStats(getAsks(), true) + " to " + getStats(getBids(), false);
+			return getStats(getAsks(), true) + " to " + getStats(getBids(), false);
 		} else if (hasbids) {
 			return getStats(getBids(), false);
 		} else if (hasasks) {

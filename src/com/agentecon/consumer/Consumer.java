@@ -7,8 +7,10 @@ import java.util.Collection;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
+import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.IStockMarket;
 import com.agentecon.finance.Portfolio;
+import com.agentecon.finance.TradingPortfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
@@ -18,13 +20,13 @@ import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
-public class Consumer extends Agent implements IConsumer {
+public class Consumer extends Agent implements IConsumer, IShareholder {
 
 	private int age, maxAge;
 	protected Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
-	private Portfolio portfolio;
+	private TradingPortfolio portfolio;
 	private MovingAverage dailySpendings;
 
 	// private ConsumerListeners listeners; clone?
@@ -39,6 +41,7 @@ public class Consumer extends Agent implements IConsumer {
 		this.soldGood = end.getDaily()[0].getGood();
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
+		this.portfolio = new TradingPortfolio(getMoney().getGood()); // separate wallet
 		// this.listeners = new ConsumerListeners();
 	}
 
@@ -60,10 +63,13 @@ public class Consumer extends Agent implements IConsumer {
 		IStock wallet = getMoney();
 		portfolio.collectDividends();
 		if (isMortal()) {
+			int daysLeft = maxAge - age + 1;
 			portfolio.absorb(wallet);
-			double savings = portfolio.getValue();
+			double savings = portfolio.getCombinedValue(stocks, daysLeft); // actually too high
+			if (getAgentId() == 27){
+				System.out.println(savings);
+			}
 			if (isRetired()) {
-				int daysLeft = maxAge - age + 1;
 				double toSpend = savings / daysLeft;
 				portfolio.balance(stocks, toSpend);
 				portfolio.payTo(wallet, toSpend);
@@ -71,7 +77,7 @@ public class Consumer extends Agent implements IConsumer {
 				int retirementAge = getRetirementAge();
 				double finalGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
 				double currentGoal = finalGoal * (age + 10) / retirementAge;
-				double missing = currentGoal - portfolio.getValue();
+				double missing = currentGoal - savings;
 				if (missing < 0) {
 					portfolio.balance(stocks, -missing);
 					portfolio.payTo(wallet);
@@ -91,7 +97,7 @@ public class Consumer extends Agent implements IConsumer {
 			inv = inv.hide(soldGood); // cannot work any more, hide hours
 		}
 		if (savingsTarget > 0.0) {
-			inv = inv.hide(getMoney().getGood(), savingsTarget);
+			inv = inv.hide(getMoney().getGood(), Math.min(savingsTarget, dailySpendings.getAverage() / 2));
 		}
 		trade(inv, market);
 	}
@@ -169,13 +175,11 @@ public class Consumer extends Agent implements IConsumer {
 		return maxAge < Integer.MAX_VALUE;
 	}
 
-	@SuppressWarnings("unused")
 	public boolean age() {
 		this.age++;
 		return age > maxAge;
 	}
 
-	@SuppressWarnings("unused")
 	public boolean isRetired() {
 		return age > getRetirementAge();
 	}
@@ -184,7 +188,9 @@ public class Consumer extends Agent implements IConsumer {
 		return maxAge / 5 * 3;
 	}
 
-	public Inventory notifyDied() {
+	public Inventory notifyDied(Portfolio inheritance) {
+		inheritance.absorb(getMoney());
+		inheritance.absorb(portfolio);
 		return dispose();
 	}
 
@@ -208,6 +214,10 @@ public class Consumer extends Agent implements IConsumer {
 	@Override
 	public String toString() {
 		return super.toString();
+	}
+
+	public Portfolio getPortfolio() {
+		return portfolio;
 	}
 
 }

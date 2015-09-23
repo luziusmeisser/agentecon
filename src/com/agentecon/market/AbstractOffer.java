@@ -93,7 +93,11 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	
 	@Override
 	public String toString(){
-		return (isBid() ? "Buying " : "Selling ") + price.toString();
+		String s = (isBid() ? "Buying " : "Selling ") + price.toString();
+		if (isUsed()){
+			s += " (filled)";
+		}
+		return s;
 	}
 
 }
