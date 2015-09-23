@@ -7,7 +7,7 @@ import com.agentecon.stats.Numbers;
 public abstract class AdaptablePrice implements IPrice {
 
 	public static final double MIN = 0.000001;
-	public static final double MAX = 1000000;
+	public static final double MAX = 100000;
 
 	private double price;
 	

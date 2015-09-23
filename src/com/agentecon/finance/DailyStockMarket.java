@@ -10,17 +10,20 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.BestPriceMarket;
-import com.agentecon.market.Bid;
+import com.agentecon.market.MarketListeners;
+import com.agentecon.metric.IMarketListener;
 import com.agentecon.util.InstantiatingHashMap;
 
 public class DailyStockMarket implements IStockMarket, IPriceProvider {
 
 	private MarketMaker maker;
+	private MarketListeners listeners;
 	private Iterator<BestPriceMarket> any;
 	private HashMap<Ticker, BestPriceMarket> market;
 
-	public DailyStockMarket(MarketMaker maker) {
+	public DailyStockMarket(MarketListeners listeners, MarketMaker maker) {
 		this.maker = maker;
+		this.listeners = listeners;
 		this.market = new InstantiatingHashMap<Ticker, BestPriceMarket>() {
 
 			@Override
@@ -44,11 +47,13 @@ public class DailyStockMarket implements IStockMarket, IPriceProvider {
 
 	@Override
 	public void offer(BidFin bid) {
+		bid.setListener(listeners);
 		this.market.get(bid.getGood()).offer(bid);
 	}
 
 	@Override
 	public void offer(AskFin ask) {
+		ask.setListener(listeners);
 		this.market.get(ask.getGood()).offer(ask);
 	}
 

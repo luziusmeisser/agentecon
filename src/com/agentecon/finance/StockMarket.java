@@ -1,19 +1,24 @@
 package com.agentecon.finance;
 
 import com.agentecon.api.IFirm;
+import com.agentecon.api.IMarket;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.good.Stock;
+import com.agentecon.market.MarketListeners;
+import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.Agents;
 import com.agentecon.world.World;
 
-public class StockMarket extends SimulationListenerAdapter {
+public class StockMarket extends SimulationListenerAdapter implements IMarket {
 
 	private World world;
 	private MarketMaker mm;
+	private MarketListeners listeners;
 
 	public StockMarket(World world) {
+		this.listeners = new MarketListeners();
 		this.world = world;
 		this.mm = new MarketMaker(new Stock(SimConfig.MONEY, 1000));
 		createInitialOwnershipStructure(mm);
@@ -26,7 +31,7 @@ public class StockMarket extends SimulationListenerAdapter {
 		for (IPublicCompany firm : ags.getPublicCompanies()) {
 			firm.payDividends(day);
 		}
-		DailyStockMarket dsm = new DailyStockMarket(mm);
+		DailyStockMarket dsm = new DailyStockMarket(listeners, mm);
 		for (MarketMaker mm : ags.getAllMarketMakers()) {
 			System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
@@ -45,17 +50,22 @@ public class StockMarket extends SimulationListenerAdapter {
 
 	private void createInitialOwnershipStructure(IPublicCompany comp) {
 		ShareRegister register = comp.getShareRegister();
-//		Collection<Consumer> cons = world.getAgents().getAllConsumers();
-//		if (cons.size() > 0) {
-//			mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY / 100));
-//			Position[] portfolios = register.split(cons.size());
-//			int i = 0;
-//			for (Consumer con : cons) {
-//				con.getPortfolio().addPosition(portfolios[i++]);
-//			}
-//		} else {
-			mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY));
-//		}
+		// Collection<Consumer> cons = world.getAgents().getAllConsumers();
+		// if (cons.size() > 0) {
+		// mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY / 100));
+		// Position[] portfolios = register.split(cons.size());
+		// int i = 0;
+		// for (Consumer con : cons) {
+		// con.getPortfolio().addPosition(portfolios[i++]);
+		// }
+		// } else {
+		mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY));
+		// }
+	}
+
+	@Override
+	public void addMarketListener(IMarketListener listener) {
+		listeners.add(listener);
 	}
 
 }

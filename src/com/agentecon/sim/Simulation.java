@@ -9,6 +9,7 @@ import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
+import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
@@ -169,6 +170,11 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public String getDescription() {
 		return "Description";
+	}
+
+	@Override
+	public IMarket getStockMarket() {
+		return stocks;
 	}
 
 }
