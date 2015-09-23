@@ -30,7 +30,7 @@ public class TradingPortfolio extends Portfolio {
 				}
 			}
 		}
-		while (wallet.getAmount() < cashTarget) {
+		while (Numbers.isSmaller(wallet.getAmount(), cashTarget)) {
 			Ticker ticker = stocks.findHighestBid(inv.keySet());
 			if (ticker != null) {
 				Position pos = inv.get(ticker);

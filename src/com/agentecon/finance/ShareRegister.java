@@ -19,19 +19,22 @@ public class ShareRegister implements IRegister {
 	}
 
 	public void payDividend(IStock sourceWallet, double totalDividends) {
+		if (!Numbers.equals(getTotalShares(), Position.SHARES_PER_COMPANY)) {
+			double diff = getTotalShares() - Position.SHARES_PER_COMPANY;
+			if (diff > 0) {
+				all.getLast().add(diff);
+			}
+		}
+
 		Iterator<Position> iter = all.iterator();
-		double presentShares = 0.0;
 		while (iter.hasNext()) {
 			Position pos = iter.next();
 			if (pos.isDisposed()) {
 				iter.remove();
 			} else {
-				double amount = pos.getAmount();
-				presentShares += amount;
 				pos.receiveDividend(sourceWallet, totalDividends / Position.SHARES_PER_COMPANY);
 			}
 		}
-		assert Numbers.equals(presentShares, Position.SHARES_PER_COMPANY);
 	}
 
 	public Position obtain(double size) {
@@ -57,9 +60,17 @@ public class ShareRegister implements IRegister {
 		all.add(position);
 	}
 
+	private double getTotalShares() {
+		double tot = 0.0;
+		for (Position p : all) {
+			tot += p.getAmount();
+		}
+		return tot;
+	}
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return ticker + " has " + all.size() + " shareholders";
 	}
-	
+
 }
