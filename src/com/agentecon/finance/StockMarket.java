@@ -24,7 +24,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		this.listeners = new MarketListeners();
 		this.world = world;
 		for (int i = 0; i < MARKET_MAKERS; i++) {
-			world.getAgents().add(new MarketMaker(new Stock(SimConfig.MONEY, 1000)));
+			world.getAgents().add(new MarketMaker());
 		}
 		for (MarketMaker mm : world.getAgents().getAllMarketMakers()) {
 			createInitialOwnershipStructure(mm);

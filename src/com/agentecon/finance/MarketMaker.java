@@ -6,10 +6,14 @@ import com.agentecon.api.IAgent;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
+import com.agentecon.good.Stock;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.util.Average;
 
 public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
+	private static final int MARKET_MAKER_CASH = 5000;
+	
 	private static int number = 1;
 
 	private IStock money;
@@ -17,8 +21,8 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	private ShareRegister register;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
-	public MarketMaker(IStock money) {
-		this.money = money;
+	public MarketMaker() {
+		this.money = new Stock(SimConfig.MONEY, MARKET_MAKER_CASH);
 		this.portfolio = new Portfolio(money);
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 		this.register = new ShareRegister("MarketMaker" + number++, money);
@@ -56,7 +60,7 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	}
 
 	private double calcDesiredCashLevel() {
-		return 1000;
+		return MARKET_MAKER_CASH;
 //		double tot = 0.0;
 //		for (MarketMakerPrice p: priceBeliefs.values()){
 //			tot += p.getPrice() * Position.SHARES_PER_COMPANY * TARGET_OWNERSHIP;
