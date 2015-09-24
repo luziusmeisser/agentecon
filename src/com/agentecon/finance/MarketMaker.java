@@ -12,7 +12,7 @@ import com.agentecon.util.Average;
 
 public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
-	private static final int MARKET_MAKER_CASH = 5000;
+	private static final int MARKET_MAKER_CASH = 1000;
 	
 	private static int number = 1;
 
