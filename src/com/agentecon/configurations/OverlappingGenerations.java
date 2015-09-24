@@ -22,7 +22,7 @@ public class OverlappingGenerations extends SimConfig {
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(7000, 42, 5);
+		super(7000, 42, 50);
 		this.input = new Good("hours");
 		this.outputs = new Good[]{new Good("apples")};
 		addConsumers(100);
