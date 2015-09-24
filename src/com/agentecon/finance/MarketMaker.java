@@ -61,7 +61,7 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 		for (MarketMakerPrice p: priceBeliefs.values()){
 			tot += p.getPrice() * Position.SHARES_PER_COMPANY * TARGET_OWNERSHIP;
 		}
-		return tot;
+		return Math.min(1000, tot);
 	}
 
 	@Override

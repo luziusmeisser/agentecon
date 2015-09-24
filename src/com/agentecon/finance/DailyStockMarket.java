@@ -95,11 +95,13 @@ public class DailyStockMarket implements IStockMarket, IPriceProvider {
 	}
 
 	@Override
-	public void sell(Position pos, IStock wallet, double budget) {
+	public double sell(Position pos, IStock wallet, double budget) {
 		BestPriceMarket best = market.get(pos.getTicker());
 		BidFin bid = (BidFin) best.getBid();
 		if (bid != null) {
-			bid.accept(wallet, pos, budget);
+			return bid.accept(wallet, pos, budget);
+		} else {
+			return 0.0;
 		}
 	}
 

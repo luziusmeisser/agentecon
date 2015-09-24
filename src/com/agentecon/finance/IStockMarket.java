@@ -17,6 +17,6 @@ public interface IStockMarket extends IPriceProvider {
 
 	public Ticker findHighestBid(Collection<Ticker> keySet);
 
-	public void sell(Position pos, IStock wallet, double maxAmount);
+	public double sell(Position pos, IStock wallet, double maxAmount);
 
 }

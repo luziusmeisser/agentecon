@@ -41,7 +41,7 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 		this.soldGood = end.getDaily()[0].getGood();
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
-		this.portfolio = new TradingPortfolio(getMoney().getGood()); // separate wallet
+		this.portfolio = new TradingPortfolio(getMoney());
 		// this.listeners = new ConsumerListeners();
 	}
 
@@ -60,34 +60,20 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 	private double savingsTarget;
 
 	public void manageSavings(IStockMarket stocks) {
-		IStock wallet = getMoney();
 		portfolio.collectDividends();
 		if (isMortal()) {
-			int daysLeft = maxAge - age + 1;
-			portfolio.absorb(wallet);
-			double savings = portfolio.getCombinedValue(stocks, daysLeft); // actually too high
-			if (getAgentId() == 27){
-				System.out.println(savings);
-			}
 			if (isRetired()) {
-				double toSpend = savings / daysLeft;
-				portfolio.balance(stocks, toSpend);
-				portfolio.payTo(wallet, toSpend);
+				int daysLeft = maxAge - age + 1;
+				portfolio.sell(stocks, 1.0 / daysLeft);
 			} else {
-				int retirementAge = getRetirementAge();
-				double finalGoal = dailySpendings.getAverage() * (maxAge - retirementAge);
-				double currentGoal = finalGoal * (age + 10) / retirementAge;
-				double missing = currentGoal - savings;
-				if (missing < 0) {
-					portfolio.balance(stocks, -missing);
-					portfolio.payTo(wallet);
-				} else {
-					portfolio.balance(stocks, 0.0);
-					savingsTarget = missing / 10; // 10% step towards savings goal
+				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
+				double dividendIncome = portfolio.getLatestDividendIncome();
+				if (dividendIncome < invest){
+					savingsTarget = invest - dividendIncome; 
+					invest = Math.min(getMoney().getAmount(), invest);
 				}
+				portfolio.invest(stocks, invest);
 			}
-		} else {
-			portfolio.payTo(wallet);
 		}
 	}
 
@@ -187,7 +173,6 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 	}
 
 	public Inventory notifyDied(Portfolio inheritance) {
-		inheritance.absorb(getMoney());
 		inheritance.absorb(portfolio);
 		return dispose();
 	}
