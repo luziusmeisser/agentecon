@@ -5,7 +5,7 @@ import com.agentecon.price.ExpSearchPrice;
 
 public class MarketMakerPrice {
 
-	public static final double MIN_SPREAD = 0.05;
+	public static final double MIN_SPREAD = 0.01;
 	public static final double SPREAD_MULTIPLIER = 1.0 + MIN_SPREAD / 2;
 
 	private FloorFactor floor;
