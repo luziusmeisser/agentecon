@@ -5,8 +5,6 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.agentecon.firm.production.IPriceProvider;
-import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.BestPriceMarket;
@@ -14,15 +12,13 @@ import com.agentecon.market.Bid;
 import com.agentecon.market.MarketListeners;
 import com.agentecon.util.InstantiatingHashMap;
 
-public class DailyStockMarket implements IStockMarket, IPriceProvider {
+public class DailyStockMarket implements IStockMarket {
 
-	private MarketMaker maker;
 	private MarketListeners listeners;
 	private Iterator<BestPriceMarket> any;
 	private HashMap<Ticker, BestPriceMarket> market;
 
-	public DailyStockMarket(MarketListeners listeners, MarketMaker maker) {
-		this.maker = maker;
+	public DailyStockMarket(MarketListeners listeners) {
 		this.listeners = listeners;
 		this.market = new InstantiatingHashMap<Ticker, BestPriceMarket>() {
 
@@ -103,11 +99,6 @@ public class DailyStockMarket implements IStockMarket, IPriceProvider {
 		} else {
 			return 0.0;
 		}
-	}
-
-	@Override
-	public double getPrice(Good output) {
-		return maker.getPrice(output);
 	}
 
 }

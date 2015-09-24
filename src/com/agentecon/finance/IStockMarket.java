@@ -6,7 +6,7 @@ import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.good.IStock;
 import com.agentecon.market.IPriceMakerMarket;
 
-public interface IStockMarket extends IPriceProvider, IPriceMakerMarket {
+public interface IStockMarket extends IPriceMakerMarket {
 
 	public Ticker findAnyAsk();
 	

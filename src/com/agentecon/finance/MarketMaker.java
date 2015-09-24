@@ -10,7 +10,7 @@ import com.agentecon.util.Average;
 
 public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
-	public static final double TARGET_OWNERSHIP = 0.1;
+	private static int number = 1;
 
 	private IStock money;
 	private Portfolio portfolio;
@@ -21,7 +21,7 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 		this.money = money;
 		this.portfolio = new Portfolio(money);
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
-		this.register = new ShareRegister("MarketMaker", money);
+		this.register = new ShareRegister("MarketMaker" + number++, money);
 	}
 
 	public void postOffers(IStockMarket dsm) {
@@ -56,11 +56,12 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	}
 
 	private double calcDesiredCashLevel() {
-		double tot = 0.0;
-		for (MarketMakerPrice p: priceBeliefs.values()){
-			tot += p.getPrice() * Position.SHARES_PER_COMPANY * TARGET_OWNERSHIP;
-		}
-		return Math.min(1000, tot);
+		return 1000;
+//		double tot = 0.0;
+//		for (MarketMakerPrice p: priceBeliefs.values()){
+//			tot += p.getPrice() * Position.SHARES_PER_COMPANY * TARGET_OWNERSHIP;
+//		}
+//		return Math.min(1000, tot);
 	}
 
 	@Override

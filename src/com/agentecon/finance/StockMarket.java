@@ -1,5 +1,7 @@
 package com.agentecon.finance;
 
+import java.util.Collection;
+
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IMarket;
 import com.agentecon.consumer.Consumer;
@@ -13,16 +15,20 @@ import com.agentecon.world.World;
 
 public class StockMarket extends SimulationListenerAdapter implements IMarket {
 
+	private static final int MARKET_MAKERS = 5;
+
 	private World world;
-	private MarketMaker mm;
 	private MarketListeners listeners;
 
 	public StockMarket(World world) {
 		this.listeners = new MarketListeners();
 		this.world = world;
-		this.mm = new MarketMaker(new Stock(SimConfig.MONEY, 1000));
-		createInitialOwnershipStructure(mm);
-		world.getAgents().add(mm);
+		for (int i = 0; i < MARKET_MAKERS; i++) {
+			world.getAgents().add(new MarketMaker(new Stock(SimConfig.MONEY, 1000)));
+		}
+		for (MarketMaker mm : world.getAgents().getAllMarketMakers()) {
+			createInitialOwnershipStructure(mm);
+		}
 		world.addListener(this);
 	}
 
@@ -31,7 +37,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		for (IPublicCompany firm : ags.getPublicCompanies()) {
 			firm.payDividends(day);
 		}
-		DailyStockMarket dsm = new DailyStockMarket(listeners, mm);
+		DailyStockMarket dsm = new DailyStockMarket(listeners);
 		for (MarketMaker mm : ags.getAllMarketMakers()) {
 			System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
@@ -50,17 +56,13 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 
 	private void createInitialOwnershipStructure(IPublicCompany comp) {
 		ShareRegister register = comp.getShareRegister();
-		// Collection<Consumer> cons = world.getAgents().getAllConsumers();
-		// if (cons.size() > 0) {
-		// mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY / 100));
-		// Position[] portfolios = register.split(cons.size());
-		// int i = 0;
-		// for (Consumer con : cons) {
-		// con.getPortfolio().addPosition(portfolios[i++]);
-		// }
-		// } else {
-		mm.addPosition(register.obtain(Position.SHARES_PER_COMPANY));
-		// }
+
+		Collection<MarketMaker> mms = world.getAgents().getAllMarketMakers();
+		Position[] poss = register.split(mms.size());
+		int i = 0;
+		for (MarketMaker mm : mms) {
+			mm.addPosition(poss[i++]);
+		}
 	}
 
 	@Override
