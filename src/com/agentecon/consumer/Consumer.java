@@ -187,7 +187,6 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 	}
 
 	public Inventory notifyDied(Portfolio inheritance) {
-		
 		inheritance.absorb(getMoney());
 		inheritance.absorb(portfolio);
 		return dispose();

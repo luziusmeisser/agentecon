@@ -6,6 +6,7 @@ import com.agentecon.api.IAgent;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Inventory;
+import com.agentecon.util.Average;
 
 public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
@@ -91,6 +92,14 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 		return priceBeliefs.get(output).getPrice();
 	}
 	
+	public Average getAvgHoldings(){
+		Average avg = new Average();
+		for (Ticker t: priceBeliefs.keySet()){
+			avg.add(portfolio.getShares(t).getAmount());
+		}
+		return avg;
+	}
+	
 	@Override
 	public MarketMaker clone(){
 		return this; // TEMP todo
@@ -98,7 +107,15 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
 	@Override
 	public String toString(){
-		return priceBeliefs.values().toString();
+		return money + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); //priceBeliefs.values().toString();
+	}
+
+	private Average getIndex() {
+		Average avg = new Average();
+		for (MarketMakerPrice mmp: priceBeliefs.values()){
+			avg.add(mmp.getPrice());
+		}
+		return avg;
 	}
 
 }
