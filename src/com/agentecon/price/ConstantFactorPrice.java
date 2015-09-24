@@ -14,5 +14,5 @@ public class ConstantFactorPrice extends AdaptablePrice {
 	protected double getFactor(boolean increase) {
 		return factor;
 	}
-	
+
 }

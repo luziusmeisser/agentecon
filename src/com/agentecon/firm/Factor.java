@@ -9,10 +9,10 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;
 
 public abstract class Factor {
-	
-	private IStock stock;
+
+	protected IStock stock;
 	protected IPrice price;
-	private AbstractOffer prevOffer;
+	protected AbstractOffer prevOffer;
 
 	public Factor(IStock stock, IPrice price) {
 		assert stock != null;
@@ -20,30 +20,33 @@ public abstract class Factor {
 		this.stock = stock;
 		this.price = price;
 	}
-	
+
 	public void adaptPrice() {
 		if (prevOffer != null) {
-			boolean success = prevOffer.isUsed();
-			price.adapt(prevOffer.isBid() ? !success : success);
+			price.adapt(shouldIncrease());
 		}
 	}
-	
+
+	protected boolean shouldIncrease() {
+		boolean success = prevOffer.isUsed();
+		return prevOffer.isBid() ? !success : success;
+	}
+
 	public void createOffers(IPriceMakerMarket market, IStock money, double amount) {
 		prevOffer = newOffer(money, price.getPrice(), amount);
-		if (prevOffer.isBid()){
-			market.offer((Bid)prevOffer);
+		if (prevOffer.isBid()) {
+			market.offer((Bid) prevOffer);
 		} else {
-			
-			market.offer((Ask)prevOffer);
+			market.offer((Ask) prevOffer);
 		}
 	}
 
 	protected abstract AbstractOffer newOffer(IStock money, double p, double planned);
-	
+
 	public double getVolume() {
 		return prevOffer == null ? 0.0 : prevOffer.getTransactionVolume();
 	}
-	
+
 	public double getQuantity() {
 		return prevOffer == null ? 0.0 : prevOffer.getTransactionVolume() / prevOffer.getPrice().getPrice();
 	}
@@ -51,11 +54,11 @@ public abstract class Factor {
 	public boolean isObtainable() {
 		return !price.isProbablyUnobtainable();
 	}
-	
+
 	protected double getCurrentSuccessRate() {
 		return prevOffer.isUsed() ? 1.0 : 0.0;
 	}
-	
+
 	public final Good getGood() {
 		return stock.getGood();
 	}
@@ -63,12 +66,12 @@ public abstract class Factor {
 	public final IStock getStock() {
 		return stock;
 	}
-	
+
 	public double getPrice() {
 		return price.getPrice();
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return stock + " at " + price;
 	}
 

@@ -26,10 +26,9 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 
 	public void postOffers(IStockMarket dsm) {
 		portfolio.collectDividends();
+		double budgetPerPosition = money.getAmount() / priceBeliefs.size() / 5;
 		for (MarketMakerPrice e : priceBeliefs.values()) {
-			Position pos = portfolio.getShares(e.getTicker());
-			boolean needMore = pos.getOwnershipShare() < TARGET_OWNERSHIP;
-			e.trade(dsm, money, pos, needMore);
+			e.trade(dsm, money, budgetPerPosition);
 		}
 	}
 
@@ -39,7 +38,7 @@ public class MarketMaker implements IPublicCompany, IAgent, Cloneable {
 	
 	public void addPosition(Position pos){
 		portfolio.addPosition(pos);
-		priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos.getTicker()));
+		priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos));
 	}
 
 	@Override

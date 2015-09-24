@@ -4,13 +4,10 @@ import java.util.Collection;
 
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.good.IStock;
+import com.agentecon.market.IPriceMakerMarket;
 
-public interface IStockMarket extends IPriceProvider {
+public interface IStockMarket extends IPriceProvider, IPriceMakerMarket {
 
-	public void offer(BidFin bid);
-	
-	public void offer(AskFin bid);
-	
 	public Ticker findAnyAsk();
 	
 	public Position buy(Ticker ticker, Position existing, IStock wallet, double budget);

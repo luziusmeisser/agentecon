@@ -10,8 +10,8 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.BestPriceMarket;
+import com.agentecon.market.Bid;
 import com.agentecon.market.MarketListeners;
-import com.agentecon.metric.IMarketListener;
 import com.agentecon.util.InstantiatingHashMap;
 
 public class DailyStockMarket implements IStockMarket, IPriceProvider {
@@ -46,13 +46,13 @@ public class DailyStockMarket implements IStockMarket, IPriceProvider {
 	}
 
 	@Override
-	public void offer(BidFin bid) {
+	public void offer(Bid bid) {
 		bid.setListener(listeners);
 		this.market.get(bid.getGood()).offer(bid);
 	}
 
 	@Override
-	public void offer(AskFin ask) {
+	public void offer(Ask ask) {
 		ask.setListener(listeners);
 		this.market.get(ask.getGood()).offer(ask);
 	}
@@ -95,11 +95,11 @@ public class DailyStockMarket implements IStockMarket, IPriceProvider {
 	}
 
 	@Override
-	public double sell(Position pos, IStock wallet, double budget) {
+	public double sell(Position pos, IStock wallet, double shares) {
 		BestPriceMarket best = market.get(pos.getTicker());
 		BidFin bid = (BidFin) best.getBid();
 		if (bid != null) {
-			return bid.accept(wallet, pos, budget);
+			return bid.accept(wallet, pos, shares);
 		} else {
 			return 0.0;
 		}

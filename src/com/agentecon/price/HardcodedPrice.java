@@ -36,4 +36,12 @@ public class HardcodedPrice implements IPrice {
 		return Numbers.toString(price) + "$";
 	}
 
+	@Override
+	public void adaptWithCeiling(boolean increasePrice, double max) {
+	}
+
+	@Override
+	public void adaptWithFloor(boolean increasePrice, double min) {
+	}
+
 }

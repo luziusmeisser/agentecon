@@ -28,6 +28,26 @@ public abstract class AdaptablePrice implements IPrice {
 		}
 	}
 	
+	@Override
+	public void adaptWithCeiling(boolean increase, double max) {
+		if (price < max || !increase){
+			adapt(increase);
+			if (price > max){
+				price = max;
+			}
+		}
+	}
+
+	@Override
+	public void adaptWithFloor(boolean increase, double min) {
+		if (price > min || increase){
+			adapt(increase);
+			if (price < min){
+				price = min;
+			}
+		}
+	}
+	
 	public void adapt(double towards, double weight){
 		this.price = price * (1-weight) + towards * weight;
 	}

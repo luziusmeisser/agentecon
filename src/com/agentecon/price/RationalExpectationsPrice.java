@@ -27,7 +27,7 @@ public class RationalExpectationsPrice implements IPrice, IEvolvable {
 		getCurrent().adapt(increasePrice);
 		pos++;
 	}
-
+	
 	private IPrice getCurrent() {
 		while (pos >= priceHistory.size()){
 			IPrice latest = priceHistory.get(priceHistory.size() - 1);
@@ -49,6 +49,18 @@ public class RationalExpectationsPrice implements IPrice, IEvolvable {
 	@Override
 	public RationalExpectationsPrice createNextGeneration() {
 		return new RationalExpectationsPrice(priceHistory);
+	}
+
+	@Override
+	public void adaptWithCeiling(boolean increasePrice, double max) {
+		getCurrent().adaptWithCeiling(increasePrice, max);
+		pos++;
+	}
+
+	@Override
+	public void adaptWithFloor(boolean increasePrice, double min) {
+		getCurrent().adaptWithFloor(increasePrice, min);
+		pos++;
 	}
 
 }

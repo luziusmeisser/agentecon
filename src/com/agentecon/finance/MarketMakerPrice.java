@@ -1,70 +1,48 @@
 package com.agentecon.finance;
 
-import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
 import com.agentecon.price.ExpSearchPrice;
-import com.agentecon.price.IPrice;
 
 public class MarketMakerPrice {
 
-	public static final double SPREAD = 0.05;
+	public static final double MIN_SPREAD = 0.05;
+	public static final double SPREAD_MULTIPLIER = 1.0 + MIN_SPREAD / 2;
 
-	private IPrice price;
-	private Ticker ticker;
-	private BidFin lastBid;
-	private AskFin lastAsk;
+	private FloorFactor floor;
+	private CeilingFactor ceiling;
 
-	public MarketMakerPrice(Ticker ticker) {
-		this.ticker = ticker;
-		this.price = new ExpSearchPrice(0.1, 10.0) {
+	public MarketMakerPrice(Position pos) {
+		this.floor = new FloorFactor(pos, new ExpSearchPrice(0.1, 10.0 / SPREAD_MULTIPLIER) {
 			protected double getMinAdaptionFactor() {
-				return SPREAD / 5;
+				return SPREAD_MULTIPLIER / 5;
 			}
-		};
-	}
-
-	public void trade(IStockMarket dsm, IStock wallet, Position pos, boolean needMore) {
-		assert pos.getTicker().equals(ticker);
-		if (lastBid != null && lastAsk != null) {
-			double change = lastBid.getTransactionVolume() / lastBid.getPrice().getPrice() - lastAsk.getTransactionVolume() / lastAsk.getPrice().getPrice();
-			if (change >= 0.0 && needMore){
-				// we are ok
-			} else if (change <= 0.0 && !needMore){
-				// we are ok
-			} else {
-				price.adapt(needMore);
+		});
+		this.ceiling = new CeilingFactor(pos, new ExpSearchPrice(0.1, 10.0 * SPREAD_MULTIPLIER) {
+			protected double getMinAdaptionFactor() {
+				return SPREAD_MULTIPLIER / 5;
 			}
-		}
-		double spreadFactor = (1.0 + SPREAD / 2);
-		double shares = pos.getAmount();
-		double upstep = needMore ? shares / 9 : shares / 10;
-		double downstep = needMore ? shares / 10 : shares / 9;
-		buy(dsm, wallet, pos, price.getPrice() / spreadFactor, upstep);
-		sell(dsm, wallet, pos, price.getPrice() * spreadFactor, downstep);
+		});
 	}
 
-	private void buy(IStockMarket dsm, IStock wallet, Position pos, double price, double shares) {
-		assert pos != null;
-		lastBid = new BidFin(wallet, pos, new Price(pos.getTicker(), price), shares);
-		dsm.offer(lastBid);
-	}
-
-	private void sell(IStockMarket dsm, IStock wallet, Position pos, double price, double shares) {
-		lastAsk = new AskFin(wallet, pos, new Price(pos.getTicker(), price), shares);
-		dsm.offer(lastAsk);
+	public void trade(IStockMarket dsm, IStock wallet, double budget) {
+		double low = floor.getPrice();
+		double high = ceiling.getPrice();
+		double middle = (low + high) / 2;
+		floor.adapt(middle / SPREAD_MULTIPLIER);
+		ceiling.adapt(middle * SPREAD_MULTIPLIER);
+		floor.createOffers(dsm, wallet, budget / floor.getPrice());
+		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() / 10); // offer a tenth of the present shares
 	}
 
 	public double getPrice() {
-		return price.getPrice();
-	}
-
-	public Ticker getTicker() {
-		return ticker;
+		double p1 = floor.getPrice();
+		double p2 = ceiling.getPrice();
+		return (p1 + p2) / 2;
 	}
 
 	@Override
 	public String toString() {
-		return new Price(ticker, price.getPrice()).toString();
+		return floor + " to " + ceiling;
 	}
 
 }
