@@ -3,7 +3,7 @@ package com.agentecon.price;
 public class ExpSearchPrice extends AdaptablePrice {
 
 	public static final double MAX_ADAPTION_FACTOR = 0.5;
-	public static final double MIN_ADAPTION_FACTOR = 0.05; // TEMP
+	public static final double MIN_ADAPTION_FACTOR = 0.005;
 
 	private double speed;
 	private double delta;
@@ -23,10 +23,6 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.speed = 1.1;
 	}
 	
-	protected double getMinAdaptionFactor(){
-		return MIN_ADAPTION_FACTOR;
-	}
-
 	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
@@ -37,7 +33,7 @@ public class ExpSearchPrice extends AdaptablePrice {
 		} else {
 			sameDirectionInARow = 0;
 			direction = increase;
-			delta = Math.max(getMinAdaptionFactor(), delta / speed);
+			delta = Math.max(MIN_ADAPTION_FACTOR, delta / speed);
 		}
 		double f = 1.0 + delta;
 		return f;
