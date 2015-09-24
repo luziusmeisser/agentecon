@@ -14,8 +14,8 @@ public class BidFin extends Bid {
 		return (Position)stock;
 	}
 	
-	public double accept(IStock seller, Position target, double budget) {
-		return super.accept(seller, target, Math.min(budget / getPrice().getPrice(), target.getAmount()));
+	public double accept(IStock seller, Position target, double shares) {
+		return super.accept(seller, target, Math.min(shares, target.getAmount()));
 	}
 
 	public Ticker getTicker() {

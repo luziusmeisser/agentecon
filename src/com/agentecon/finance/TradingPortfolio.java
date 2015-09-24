@@ -10,31 +10,6 @@ public class TradingPortfolio extends Portfolio {
 		super(money);
 	}
 
-	public void balance(IStockMarket stocks, double cashTarget) {
-		while (Numbers.isBigger(wallet.getAmount(), cashTarget)) {
-			Ticker any = stocks.findAnyAsk();
-			if (any == null) {
-				break;
-			} else {
-				Position pos = inv.get(any);
-				addPosition(stocks.buy(any, pos, wallet, wallet.getAmount() - cashTarget));
-			}
-		}
-		while (Numbers.isSmaller(wallet.getAmount(), cashTarget)) {
-			Ticker ticker = stocks.findHighestBid(inv.keySet());
-			if (ticker != null) {
-				Position pos = inv.get(ticker);
-				stocks.sell(pos, wallet, cashTarget - wallet.getAmount());
-				if (pos.isEmpty()) {
-					pos.dispose();
-					inv.remove(ticker);
-				}
-			} else {
-				break;
-			}
-		}
-	}
-
 	public double getCombinedValue(IPriceProvider prices, int timeHorizon) {
 		return getSubstanceValue(prices) + getEarningsValue(timeHorizon);
 	}
