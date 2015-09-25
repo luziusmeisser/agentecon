@@ -27,12 +27,14 @@ public class LinearConsumerEvent extends ConsumerEvent {
 			}
 		});
 	}
-	
+
 	@Override
 	public void execute(IWorld sim) {
-		int step = maxAge / initialPopulation;
-		for (;initialPopulation>0; initialPopulation--){
-			sim.getConsumers().add(new Consumer(type, Math.max(maxAge - initialPopulation * step, step), end, utilFun.create(count++)));
+		if (initialPopulation > 0) {
+			int step = maxAge / initialPopulation;
+			for (; initialPopulation > 0; initialPopulation--) {
+				sim.getConsumers().add(new Consumer(type, Math.max(maxAge - initialPopulation * step, step), end, utilFun.create(count++)));
+			}
 		}
 		super.execute(sim);
 	}
