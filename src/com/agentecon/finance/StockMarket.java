@@ -14,8 +14,6 @@ import com.agentecon.world.World;
 
 public class StockMarket extends SimulationListenerAdapter implements IMarket {
 
-	private static final int MARKET_MAKERS = 5;
-
 	private World world;
 	private MarketListeners listeners;
 
@@ -23,9 +21,6 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		this.listeners = new MarketListeners();
 		this.world = world;
 		this.world.addListener(this);
-		for (int i = 0; i < MARKET_MAKERS; i++) {
-			world.getAgents().add(new MarketMaker());
-		}
 	}
 
 	public void trade(int day) {
