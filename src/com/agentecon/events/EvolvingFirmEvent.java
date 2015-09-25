@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.good.IStock;
@@ -19,7 +19,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 	private Endowment end;
 	private FirstDayProduction prod;
 	private LogProdFun prodFun;
-	private ArrayList<Firm> firms;
+	private ArrayList<Producer> firms;
 
 	public EvolvingFirmEvent(int firmsPerType, String type, Endowment end, LogProdFun fun, Random rand, PriceConfig config) {
 		super(0, firmsPerType);
@@ -34,12 +34,12 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 
 	private void initListener() {
 		this.prod = new FirstDayProduction(firms.size());
-		for (Firm firm : firms) {
+		for (Producer firm : firms) {
 			firm.addFirmMonitor(prod);
 		}
 	}
 
-	private EvolvingFirmEvent(int cardinality, Endowment end, LogProdFun prodFun, ArrayList<Firm> firms) {
+	private EvolvingFirmEvent(int cardinality, Endowment end, LogProdFun prodFun, ArrayList<Producer> firms) {
 		super(0, cardinality);
 		this.end = end;
 		this.prodFun = prodFun;
@@ -50,9 +50,9 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 
 	@Override
 	public EvolvingEvent createNextGeneration() {
-		ArrayList<Firm> newFirms = new ArrayList<>();
+		ArrayList<Producer> newFirms = new ArrayList<>();
 		adaptEndowment();
-		for (Firm firm : firms) {
+		for (Producer firm : firms) {
 			newFirms.add(firm.createNextGeneration(end, prodFun));
 		}
 		return new EvolvingFirmEvent(getCardinality(), end, prodFun, newFirms);
@@ -73,7 +73,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 	@Override
 	public double getScore() {
 		Average avg = new Average();
-		for (Firm firm : firms) {
+		for (Producer firm : firms) {
 			avg.add(firm.getOutputPrice());
 		}
 		return avg.getAverage();
@@ -81,7 +81,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 
 	@Override
 	public void execute(IWorld sim) {
-		for (Firm firm : firms) {
+		for (Producer firm : firms) {
 			sim.getFirms().add(firm);
 		}
 	}

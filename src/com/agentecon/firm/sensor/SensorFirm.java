@@ -3,7 +3,7 @@
 package com.agentecon.firm.sensor;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.firm.InputFactor;
 import com.agentecon.firm.OutputFactor;
 import com.agentecon.firm.decisions.IFirmDecisions;
@@ -13,7 +13,7 @@ import com.agentecon.price.HardcodedPrice;
 import com.agentecon.price.IPrice;
 import com.agentecon.price.IPriceFactory;
 
-public class SensorFirm extends Firm {
+public class SensorFirm extends Producer {
 	
 	public SensorFirm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end, prod, prices);

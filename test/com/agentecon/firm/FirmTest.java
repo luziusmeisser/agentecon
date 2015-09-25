@@ -53,7 +53,7 @@ public class FirmTest {
 	@Test
 	public void testPriceFinding() {
 		TestConsumer tc = new TestConsumer(new Price(PIZZA, 30), new Price(SWISSTIME, 10), new Price(ITALTIME, 15));
-		Firm firm = new Firm("testfirm", end, new LogProdFun(PIZZA, new Weight(ITALTIME, 5.0), new Weight(SWISSTIME, 5.0)), new PriceFactory(rand, PriceConfig.DEFAULT));
+		Producer firm = new Producer("testfirm", end, new LogProdFun(PIZZA, new Weight(ITALTIME, 5.0), new Weight(SWISSTIME, 5.0)), new PriceFactory(rand, PriceConfig.DEFAULT));
 		for (int i = 0; i < 100; i++) {
 			Market market = new Market(rand);
 			firm.offer(market);
@@ -78,7 +78,7 @@ public class FirmTest {
 	public void testOptimalProduction(){
 		final double hourPrice = 2.972868529894414d;
 		this.end = new Endowment(new Stock[] { new Stock(MONEY, 1000), new Stock(FONDUE, 36.156428643107d) }, new Stock[] {});
-		Firm firm = new Firm("chalet", end, new LogProdFun(FONDUE, new Weight(SWISSTIME, 10.0)), new IPriceFactory(){
+		Producer firm = new Producer("chalet", end, new LogProdFun(FONDUE, new Weight(SWISSTIME, 10.0)), new IPriceFactory(){
 
 			@Override
 			public IPrice createPrice(Good good) {
@@ -120,7 +120,7 @@ public class FirmTest {
 		this.end = new Endowment(new Stock[] { new Stock(MONEY, 1000) }, new Stock[] {});
 		double alpha = 0.5;
 		IProductionFunction prodFun = new CobbDouglasProduction(FONDUE, 1.0, new Weight(SWISSTIME, alpha));
-		Firm firm = new Firm("chalet", end, prodFun, new IPriceFactory(){
+		Producer firm = new Producer("chalet", end, prodFun, new IPriceFactory(){
 
 			@Override
 			public IPrice createPrice(Good good) {
@@ -165,7 +165,7 @@ public class FirmTest {
 		double beta = 0.25;
 		double factor = 2.0;
 		IProductionFunction prodFun = new CobbDouglasProduction(FONDUE, factor, new Weight(SWISSTIME, alpha), new Weight(ITALTIME, beta));
-		Firm firm = new Firm("chalet", end, prodFun, new IPriceFactory(){
+		Producer firm = new Producer("chalet", end, prodFun, new IPriceFactory(){
 
 			@Override
 			public IPrice createPrice(Good good) {

@@ -3,18 +3,18 @@ package com.agentecon.world;
 import java.util.Collection;
 
 import com.agentecon.api.IFirm;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 
 public interface IFirms {
 	
-	public void add(Firm firm);
+	public void add(Producer firm);
 	
-	public Collection<Firm> getRandomFirms();
+	public Collection<Producer> getRandomFirms();
 	
 	/**
 	 * A random selection of 'cardinality' firms in random order
 	 */
-	public Collection<Firm> getRandomFirms(int cardinality);
+	public Collection<Producer> getRandomFirms(int cardinality);
 
 	public Collection<? extends IFirm> getAllFirms();
 

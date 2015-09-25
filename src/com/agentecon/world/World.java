@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.Portfolio;
-import com.agentecon.firm.Firm;
-import com.agentecon.good.Inventory;
+import com.agentecon.firm.Producer;
 import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
@@ -33,15 +33,15 @@ public class World implements IWorld {
 		return agents;
 	}
 
-	public void notifyConsumerDied(Consumer c) {
-		listeners.notfiyConsumerDied(c);
+	public void notifyAgentDied(IAgent c) {
+		listeners.notifyAgentDied(c);
 	}
 
 	public void handoutEndowments() {
 		for (Consumer c : agents.getAllConsumers()) {
 			c.collectDailyEndowment();
 		}
-		for (Firm f : agents.getAllFirms()) {
+		for (Producer f : agents.getAllFirms()) {
 			f.collectDailyEndowment();
 		}
 	}
@@ -91,7 +91,7 @@ public class World implements IWorld {
 			if (c.age()) {
 				iter.remove();
 				c.notifyDied(inheritance);
-				notifyConsumerDied(c);
+				notifyAgentDied(c);
 			}
 		}
 		if (inheritance.hasPositions() || inheritance.getCash() > 0.0) {

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.agentecon.api.Price;
 import com.agentecon.consumer.Consumer;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.good.Good;
 import com.agentecon.market.Market;
 import com.agentecon.metric.IMarketListener;
@@ -30,7 +30,7 @@ public class RepeatedMarket {
 		MarketObserver observer = new MarketObserver(iterations);
 		while (true) {
 			world.startTransaction();
-			Collection<Firm> firms = world.getFirms().getRandomFirms();
+			Collection<Producer> firms = world.getFirms().getRandomFirms();
 			Collection<Consumer> cons = world.getConsumers().getRandomConsumers();
 			Market market = new Market(world.getRand());
 			market.addMarketListener(observer);
@@ -38,13 +38,13 @@ public class RepeatedMarket {
 			for (Trader trader : world.getTraders().getAllTraders()) {
 				trader.offer(market, day);
 			}
-			for (Firm firm : firms) {
+			for (Producer firm : firms) {
 				firm.offer(market);
 			}
 			for (Consumer c : cons) {
 				c.maximizeUtility(market);
 			}
-			for (Firm firm: firms) {
+			for (Producer firm: firms) {
 				firm.adaptPrices();
 			}
 			if (observer.shouldTryAgain()){

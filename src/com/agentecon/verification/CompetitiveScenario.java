@@ -6,7 +6,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IProductionFunction;
@@ -63,9 +63,9 @@ public class CompetitiveScenario implements IConfiguration {
 						final int number = f;
 						IProductionFunction prodfun = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
 						config.addEvent(new FirmEvent(1, "firm_" + i, end, prodfun, pricing) {
-							protected Firm createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
+							protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
 								final IFirmDecisions strategy = createStrategy(number);
-								Firm f = createFirm(type, end, prodFun, pf, strategy);
+								Producer f = createFirm(type, end, prodFun, pf, strategy);
 								f.addFirmMonitor(new IFirmListener() {
 
 									@Override

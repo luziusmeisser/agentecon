@@ -2,7 +2,7 @@ package com.agentecon.verification;
 
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.SimEvent;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.metric.SimulationListenerAdapter;
@@ -42,7 +42,7 @@ public class ShockTest implements IConfiguration {
 					
 					@Override
 					public void execute(IWorld sim) {
-						for (Firm f: sim.getFirms().getRandomFirms(getCardinality())){
+						for (Producer f: sim.getFirms().getRandomFirms(getCardinality())){
 							f.setStrategy(strategy);
 						}
 					}

@@ -9,7 +9,7 @@ import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.IPublicCompany;
 import com.agentecon.finance.MarketMaker;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.metric.ISimulationListener;
 
 public class Agents implements IConsumers, IFirms, ITraders {
@@ -19,19 +19,19 @@ public class Agents implements IConsumers, IFirms, ITraders {
 
 	private ArrayList<IAgent> all;
 	private ArrayList<IPublicCompany> publicCompanies;
-	
-	private ArrayList<Firm> firms;
+
+	private ArrayList<Producer> firms;
 	private ArrayList<Consumer> consumers;
 	private ArrayList<Trader> traders;
 	private ArrayList<MarketMaker> marketMakers;
-	
+
 	private ISimulationListener listeners;
 
 	public Agents(ISimulationListener listeners, long seed) {
-		this(listeners, seed, new ArrayList<Firm>(), new ArrayList<Consumer>(), new ArrayList<Trader>(), new ArrayList<MarketMaker>());
+		this(listeners, seed, new ArrayList<Producer>(), new ArrayList<Consumer>(), new ArrayList<Trader>(), new ArrayList<MarketMaker>());
 	}
 
-	public Agents(ISimulationListener listeners, long seed, ArrayList<Firm> firms, ArrayList<Consumer> cons, ArrayList<Trader> trad, ArrayList<MarketMaker> mms) {
+	public Agents(ISimulationListener listeners, long seed, ArrayList<Producer> firms, ArrayList<Consumer> cons, ArrayList<Trader> trad, ArrayList<MarketMaker> mms) {
 		this.publicCompanies = new ArrayList<>();
 		this.all = new ArrayList<>();
 		this.consumers = new ArrayList<>();
@@ -41,8 +41,8 @@ public class Agents implements IConsumers, IFirms, ITraders {
 			addAgent(clon);
 		}
 		this.firms = new ArrayList<>();
-		for (Firm firm : firms) {
-			Firm klon = firm.clone();
+		for (Producer firm : firms) {
+			Producer klon = firm.clone();
 			this.firms.add(klon);
 			addAgent(klon);
 		}
@@ -53,44 +53,42 @@ public class Agents implements IConsumers, IFirms, ITraders {
 			addAgent(klon);
 		}
 		this.marketMakers = new ArrayList<>();
-		for (MarketMaker mm: mms){
+		for (MarketMaker mm : mms) {
 			MarketMaker klon = (MarketMaker) mm.clone();
 			marketMakers.add(klon);
 			addAgent(klon);
 		}
-		this.listeners = listeners;
+		this.listeners = listeners; // must be at the end to avoid unnecessary notifications
 		this.seed = seed;
 	}
 
-	public Collection<Firm> getAllFirms() {
+	public Collection<Producer> getAllFirms() {
 		return firms;
 	}
 
 	public Collection<Consumer> getAllConsumers() {
 		return consumers;
 	}
-	
+
 	public Collection<MarketMaker> getAllMarketMakers() {
 		return marketMakers;
 	}
-	
+
 	public void add(MarketMaker marketMaker) {
 		marketMakers.add(marketMaker);
 		addAgent(marketMaker);
 	}
 
 	@Override
-	public void add(Firm firm) {
+	public void add(Producer firm) {
 		firms.add(firm);
 		addAgent(firm);
-		listeners.notifyFirmCreated(firm);
 	}
 
 	@Override
 	public void add(Consumer consumer) {
 		consumers.add(consumer);
 		addAgent(consumer);
-		listeners.notifyConsumerCreated(consumer);
 	}
 
 	@Override
@@ -98,11 +96,14 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		addAgent(t);
 		traders.add(t);
 	}
-	
+
 	private void addAgent(IAgent agent) {
 		all.add(agent);
-		if (agent instanceof IPublicCompany){
+		if (agent instanceof IPublicCompany) {
 			publicCompanies.add((IPublicCompany) agent);
+		}
+		if (listeners != null) {
+			listeners.notifyAgentCreated(agent);
 		}
 	}
 
@@ -113,7 +114,7 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	public Collection<? extends IAgent> getAll() {
 		return all;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Consumer> getRandomConsumers(int cardinality) {
@@ -129,11 +130,11 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		return traders;
 	}
 
-	public Collection<Firm> getRandomFirms() {
+	public Collection<Producer> getRandomFirms() {
 		return getRandomFirms(-1);
 	}
 
-	public Collection<Firm> getRandomFirms(int cardinality) {
+	public Collection<Producer> getRandomFirms(int cardinality) {
 		Collections.shuffle(firms, getRand());
 		if (cardinality < 0 || cardinality >= firms.size()) {
 			return firms;
@@ -162,12 +163,12 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		}
 		return rand;
 	}
-	
+
 	public void notifyDayStarted(long seed) {
 		this.seed = seed;
 		this.rand = null;
 	}
-	
+
 	public Collection<IPublicCompany> getPublicCompanies() {
 		return publicCompanies;
 	}
@@ -179,7 +180,7 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	}
 
 	private void preserveRand() {
-		if (rand != null){
+		if (rand != null) {
 			seed = rand.nextLong();
 			rand = null;
 		}

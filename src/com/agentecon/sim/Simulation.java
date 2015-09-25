@@ -16,7 +16,7 @@ import com.agentecon.api.SimulationConfig;
 import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.StockMarket;
-import com.agentecon.firm.Firm;
+import com.agentecon.firm.Producer;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
@@ -112,7 +112,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 			stocks.trade(day);
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
 			market.iterate(day, config.getIntradayIterations());
-			for (Firm firm : world.getFirms().getAllFirms()) {
+			for (Producer firm : world.getFirms().getAllFirms()) {
 				firm.produce(day);
 			}
 			world.finishDay(day);
