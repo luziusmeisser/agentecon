@@ -44,8 +44,7 @@ public class TradingPortfolio extends Portfolio {
 				Position pos = inv.get(ticker);
 				sharesToSell -= stocks.sell(pos, wallet, sharesToSell);
 				if (pos.isEmpty()) {
-					inv.remove(ticker);
-					pos.dispose();
+					disposePosition(ticker);
 				}
 			}
 		}
@@ -57,7 +56,7 @@ public class TradingPortfolio extends Portfolio {
 			Ticker any = stocks.findAnyAsk();
 			if (any != null) {
 				double before = wallet.getAmount();
-				Position pos = getShares(any);
+				Position pos = getPosition(any);
 				addPosition(stocks.buy(any, pos, wallet, budget));
 				double spent = before - wallet.getAmount();
 				invest(stocks, budget - spent);

@@ -1,8 +1,6 @@
 package com.agentecon.sim.config;
 
 import com.agentecon.api.IAgent;
-import com.agentecon.good.IStock;
-import com.agentecon.good.Inventory;
 import com.agentecon.stats.Numbers;
 import com.agentecon.world.Agents;
 
@@ -18,13 +16,7 @@ public class MoneySupplyVerification {
 
 	private double calcSum() {
 		double money = 0.0;
-		for (IAgent ag : agents.getAllConsumers()) {
-			money += ag.getMoney().getAmount();
-		}
-		for (IAgent ag : agents.getAllFirms()) {
-			money += ag.getMoney().getAmount();
-		}
-		for (IAgent ag : agents.getAllTraders()) {
+		for (IAgent ag : agents.getAll()) {
 			money += ag.getMoney().getAmount();
 		}
 		return money;

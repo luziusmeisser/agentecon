@@ -71,11 +71,6 @@ public class World implements IWorld {
 	}
 
 	@Override
-	public Agents getTraders() {
-		return agents;
-	}
-
-	@Override
 	public void addListener(ISimulationListener listener) {
 		listeners.add(listener);
 	}
@@ -116,6 +111,11 @@ public class World implements IWorld {
 
 	public Agents getAgents() {
 		return agents;
+	}
+
+	@Override
+	public void add(IAgent agent) {
+		agents.add(agent);
 	}
 
 }

@@ -46,7 +46,7 @@ public class SinConsumerEvent extends ConsumerEvent {
 	
 	@Override
 	protected void addConsumer(IWorld sim) {
-		sim.getConsumers().add(new Consumer(type, maxAge, end, utilFun.create(count++)));
+		sim.add(new Consumer(type, maxAge, end, utilFun.create(count++)));
 	}
 	
 }

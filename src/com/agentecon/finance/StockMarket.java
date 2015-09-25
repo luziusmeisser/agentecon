@@ -38,8 +38,8 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 			System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
 		}
-		for (Consumer con : ags.getRandomConsumers()) {
-			con.manageSavings(dsm);
+		for (IStockMarketParticipant con : ags.getRandomStockMarketParticipants()) {
+			con.managePortfolio(dsm);
 		}
 	}
 

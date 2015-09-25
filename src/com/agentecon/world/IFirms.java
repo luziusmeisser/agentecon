@@ -7,8 +7,6 @@ import com.agentecon.firm.Producer;
 
 public interface IFirms {
 	
-	public void add(Producer firm);
-	
 	public Collection<Producer> getRandomFirms();
 	
 	/**

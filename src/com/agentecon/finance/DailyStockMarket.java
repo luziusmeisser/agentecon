@@ -66,10 +66,9 @@ public class DailyStockMarket implements IStockMarket {
 
 	@Override
 	public Position buy(Ticker ticker, Position existing, IStock wallet, double budget) {
-		BestPriceMarket best = market.get(ticker);
-		Ask ask = best.getAsk();
+		AskFin ask = getAsk(ticker);
 		if (ask != null) {
-			return ((AskFin) ask).accept(wallet, existing, budget);
+			return ask.accept(wallet, existing, budget);
 		} else {
 			return existing;
 		}
@@ -79,8 +78,7 @@ public class DailyStockMarket implements IStockMarket {
 	public Ticker findHighestBid(Collection<Ticker> keySet) {
 		BidFin highest = null;
 		for (Ticker ticker : keySet) {
-			BestPriceMarket bpm = market.get(ticker);
-			BidFin bid = (BidFin) bpm.getBid();
+			BidFin bid = getBid(ticker);
 			if (bid != null) {
 				if (highest == null || bid.getPrice().getPrice() > highest.getPrice().getPrice()) {
 					highest = bid;
@@ -92,13 +90,24 @@ public class DailyStockMarket implements IStockMarket {
 
 	@Override
 	public double sell(Position pos, IStock wallet, double shares) {
-		BestPriceMarket best = market.get(pos.getTicker());
-		BidFin bid = (BidFin) best.getBid();
+		BidFin bid = getBid(pos.getTicker());
 		if (bid != null) {
 			return bid.accept(wallet, pos, shares);
 		} else {
 			return 0.0;
 		}
+	}
+
+	@Override
+	public AskFin getAsk(Ticker ticker) {
+		BestPriceMarket best = market.get(ticker);
+		return (AskFin) best.getAsk();
+	}
+
+	@Override
+	public BidFin getBid(Ticker ticker) {
+		BestPriceMarket best = market.get(ticker);
+		return (BidFin) best.getBid();
 	}
 
 }

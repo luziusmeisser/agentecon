@@ -28,7 +28,7 @@ public class ArbitrageurEvent extends EvolvingEvent {
 	
 	@Override
 	public void execute(IWorld sim) {
-		sim.getTraders().addTrader(agent);
+		sim.add(agent);
 	}
 	
 	public double getScore() {

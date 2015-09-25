@@ -35,7 +35,7 @@ public class FirmEvent extends SimEvent {
 	public void execute(IWorld sim) {
 		PriceFactory pf = new PriceFactory(sim.getRand(), priceParams);
 		for (int i = 0; i < getCardinality(); i++) {
-			sim.getFirms().add(createFirm(type, end, prodFun, pf));
+			sim.add(createFirm(type, end, prodFun, pf));
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Random;
 import org.junit.Test;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.LogUtil;
@@ -14,7 +15,6 @@ import com.agentecon.metric.ISimulationListener;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IConsumers;
 import com.agentecon.world.IFirms;
-import com.agentecon.world.ITraders;
 import com.agentecon.world.IWorld;
 
 public class SinConsumerEventTest implements IWorld, IConsumers {
@@ -52,11 +52,6 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 	}
 
 	@Override
-	public void add(Consumer consumer) {
-		consumers++;
-	}
-
-	@Override
 	public Collection<Consumer> getRandomConsumers() {
 		return null;
 	}
@@ -72,17 +67,17 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 	}
 
 	@Override
-	public ITraders getTraders() {
-		return null;
-	}
-
-	@Override
 	public void addListener(ISimulationListener listener) {
 	}
 
 	@Override
 	public Collection<? extends IConsumer> getAllConsumers() {
 		return null;
+	}
+
+	@Override
+	public void add(IAgent agent) {
+		consumers++;
 	}
 
 }

@@ -4,6 +4,9 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
+import com.agentecon.events.SimEvent;
+import com.agentecon.finance.Fundamentalist;
+import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -11,12 +14,15 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.sim.config.ConsumptionWeights;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.world.IWorld;
 
 public class OverlappingGenerations extends SimConfig {
 	
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 1000;
+	protected static final int MARKET_MAKERS = 5;
+	private static final int FUNDAMENTALISTS = 1;
 	
 	private Good input;
 	private Good[] outputs;
@@ -27,6 +33,24 @@ public class OverlappingGenerations extends SimConfig {
 		this.outputs = new Good[]{new Good("apples")};
 		addConsumers(100);
 		addFirms(10);
+		addEvent(new SimEvent(-1, MARKET_MAKERS) {
+			
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < MARKET_MAKERS; i++) {
+					sim.add(new MarketMaker());
+				}
+			}
+		});
+		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
+			
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < FUNDAMENTALISTS; i++) {
+					sim.add(new Fundamentalist(sim));
+				}
+			}
+		});
 	}
 	
 	public void addConsumers(int count){

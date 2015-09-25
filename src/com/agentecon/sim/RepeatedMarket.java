@@ -13,7 +13,6 @@ import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.util.Average;
 import com.agentecon.util.InstantiatingHashMap;
-import com.agentecon.world.Trader;
 import com.agentecon.world.World;
 
 public class RepeatedMarket {
@@ -35,9 +34,6 @@ public class RepeatedMarket {
 			Market market = new Market(world.getRand());
 			market.addMarketListener(observer);
 			listeners.notifyMarketOpened(market);
-			for (Trader trader : world.getTraders().getAllTraders()) {
-				trader.offer(market, day);
-			}
 			for (Producer firm : firms) {
 				firm.offer(market);
 			}

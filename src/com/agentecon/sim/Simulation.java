@@ -11,7 +11,6 @@ import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
-import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
@@ -143,11 +142,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public Collection<? extends IFirm> getFirms() {
 		return world.getFirms().getAllFirms();
-	}
-	
-	@Override
-	public Collection<? extends ITrader> getTraders() {
-		return world.getTraders().getAllTraders();
 	}
 	
 	@Override

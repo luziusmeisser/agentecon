@@ -82,7 +82,7 @@ public class EvolvingFirmEvent extends EvolvingEvent {
 	@Override
 	public void execute(IWorld sim) {
 		for (Producer firm : firms) {
-			sim.getFirms().add(firm);
+			sim.add(firm);
 		}
 	}
 

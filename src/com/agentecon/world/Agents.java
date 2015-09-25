@@ -3,60 +3,47 @@ package com.agentecon.world;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
+import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.IStockMarketParticipant;
 import com.agentecon.finance.MarketMaker;
+import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Producer;
 import com.agentecon.metric.ISimulationListener;
 
-public class Agents implements IConsumers, IFirms, ITraders {
+public class Agents implements IConsumers, IFirms {
 
 	private long seed;
 	private Random rand;
 
 	private ArrayList<IAgent> all;
-	private ArrayList<IPublicCompany> publicCompanies;
+	private HashMap<Ticker, IPublicCompany> publicCompanies;
 
 	private ArrayList<Producer> firms;
 	private ArrayList<Consumer> consumers;
-	private ArrayList<Trader> traders;
+	private ArrayList<Fundamentalist> fundies;
 	private ArrayList<MarketMaker> marketMakers;
 
 	private ISimulationListener listeners;
 
 	public Agents(ISimulationListener listeners, long seed) {
-		this(listeners, seed, new ArrayList<Producer>(), new ArrayList<Consumer>(), new ArrayList<Trader>(), new ArrayList<MarketMaker>());
+		this(listeners, seed, new ArrayList<IAgent>());
 	}
 
-	public Agents(ISimulationListener listeners, long seed, ArrayList<Producer> firms, ArrayList<Consumer> cons, ArrayList<Trader> trad, ArrayList<MarketMaker> mms) {
-		this.publicCompanies = new ArrayList<>();
+	public Agents(ISimulationListener listeners, long seed, ArrayList<IAgent> all) {
+		this.publicCompanies = new HashMap<>();
 		this.all = new ArrayList<>();
 		this.consumers = new ArrayList<>();
-		for (Consumer con : cons) {
-			Consumer clon = con.clone();
-			this.consumers.add(clon);
-			addAgent(clon);
-		}
 		this.firms = new ArrayList<>();
-		for (Producer firm : firms) {
-			Producer klon = firm.clone();
-			this.firms.add(klon);
-			addAgent(klon);
-		}
-		this.traders = new ArrayList<>();
-		for (Trader t : trad) {
-			Trader klon = (Trader) t.clone();
-			traders.add(klon);
-			addAgent(klon);
-		}
 		this.marketMakers = new ArrayList<>();
-		for (MarketMaker mm : mms) {
-			MarketMaker klon = (MarketMaker) mm.clone();
-			marketMakers.add(klon);
-			addAgent(klon);
+		this.fundies = new ArrayList<>();
+		for (IAgent a: all){
+			add(a);
 		}
 		this.listeners = listeners; // must be at the end to avoid unnecessary notifications
 		this.seed = seed;
@@ -69,38 +56,40 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	public Collection<Consumer> getAllConsumers() {
 		return consumers;
 	}
+	
+	public Collection<IStockMarketParticipant> getRandomStockMarketParticipants() {
+		ArrayList<IStockMarketParticipant> list = new ArrayList<>();
+		list.addAll(consumers);
+		list.addAll(fundies);
+		Collections.shuffle(list, getRand()); // OPTIMIZABLE in case of cardinality < size
+		return list;
+	}
 
 	public Collection<MarketMaker> getAllMarketMakers() {
 		return marketMakers;
 	}
-
-	public void add(MarketMaker marketMaker) {
-		marketMakers.add(marketMaker);
-		addAgent(marketMaker);
+	
+	public IPublicCompany getCompany(Ticker ticker) {
+		return publicCompanies.get(ticker);
 	}
 
-	@Override
-	public void add(Producer firm) {
-		firms.add(firm);
-		addAgent(firm);
-	}
-
-	@Override
-	public void add(Consumer consumer) {
-		consumers.add(consumer);
-		addAgent(consumer);
-	}
-
-	@Override
-	public void addTrader(Trader t) {
-		addAgent(t);
-		traders.add(t);
-	}
-
-	private void addAgent(IAgent agent) {
+	public void add(IAgent agent) {
 		all.add(agent);
 		if (agent instanceof IPublicCompany) {
-			publicCompanies.add((IPublicCompany) agent);
+			IPublicCompany pc = (IPublicCompany) agent;
+			publicCompanies.put(pc.getTicker(), pc);
+		}
+		if (agent instanceof Fundamentalist){
+			fundies.add((Fundamentalist) agent);
+		}
+		if (agent instanceof MarketMaker){
+			marketMakers.add((MarketMaker) agent);
+		}
+		if (agent instanceof Producer){
+			firms.add((Producer) agent);
+		}
+		if (agent instanceof Consumer){
+			consumers.add((Consumer) agent);
 		}
 		if (listeners != null) {
 			listeners.notifyAgentCreated(agent);
@@ -126,10 +115,6 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		}
 	}
 
-	public Collection<Trader> getAllTraders() {
-		return traders;
-	}
-
 	public Collection<Producer> getRandomFirms() {
 		return getRandomFirms(-1);
 	}
@@ -148,15 +133,6 @@ public class Agents implements IConsumers, IFirms, ITraders {
 		return consumers.get(getRand().nextInt(consumers.size()));
 	}
 
-	public Collection<Trader> getRandomTraders(int cardinality) {
-		Collections.shuffle(traders, getRand());
-		if (cardinality < 0 || cardinality >= traders.size()) {
-			return traders;
-		} else {
-			return traders.subList(0, cardinality);
-		}
-	}
-
 	private Random getRand() {
 		if (rand == null) {
 			rand = new Random(seed);
@@ -170,13 +146,13 @@ public class Agents implements IConsumers, IFirms, ITraders {
 	}
 
 	public Collection<IPublicCompany> getPublicCompanies() {
-		return publicCompanies;
+		return publicCompanies.values();
 	}
 
 	public Agents duplicate() {
 		preserveRand();
 		assert rand == null;
-		return new Agents(listeners, seed, firms, consumers, traders, marketMakers);
+		return new Agents(listeners, seed, all);
 	}
 
 	private void preserveRand() {
@@ -188,7 +164,7 @@ public class Agents implements IConsumers, IFirms, ITraders {
 
 	@Override
 	public String toString() {
-		return consumers.size() + " consumers, " + firms.size() + " firms, " + traders.size() + " traders";
+		return consumers.size() + " consumers, " + firms.size() + " firms";
 	}
 
 }

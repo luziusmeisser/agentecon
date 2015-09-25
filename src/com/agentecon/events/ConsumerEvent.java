@@ -45,7 +45,7 @@ public class ConsumerEvent extends SimEvent {
 	}
 
 	protected void addConsumer(IWorld sim) {
-		sim.getConsumers().add(new Consumer(type, end, utilFun.create(count++)));
+		sim.add(new Consumer(type, end, utilFun.create(count++)));
 	}
 
 	public String toString() {

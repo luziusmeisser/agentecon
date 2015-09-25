@@ -48,7 +48,7 @@ public class MarketMaker extends PublicFirm implements IAgent, Cloneable {
 	public Average getAvgHoldings(){
 		Average avg = new Average();
 		for (Ticker t: priceBeliefs.keySet()){
-			avg.add(portfolio.getShares(t).getAmount());
+			avg.add(portfolio.getPosition(t).getAmount());
 		}
 		return avg;
 	}

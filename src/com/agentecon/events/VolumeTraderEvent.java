@@ -25,7 +25,7 @@ public class VolumeTraderEvent extends EvolvingEvent {
 
 	@Override
 	public void execute(IWorld sim) {
-		sim.getTraders().addTrader(agent);
+		sim.add(agent);
 	}
 
 	public String toString() {

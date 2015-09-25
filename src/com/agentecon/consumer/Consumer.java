@@ -7,8 +7,8 @@ import java.util.Collection;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
-import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.IStockMarket;
+import com.agentecon.finance.IStockMarketParticipant;
 import com.agentecon.finance.Portfolio;
 import com.agentecon.finance.TradingPortfolio;
 import com.agentecon.good.Good;
@@ -20,7 +20,7 @@ import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
-public class Consumer extends Agent implements IConsumer, IShareholder {
+public class Consumer extends Agent implements IConsumer, IStockMarketParticipant {
 
 	private int age, maxAge;
 	protected Good soldGood;
@@ -59,7 +59,7 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 
 	private double savingsTarget;
 
-	public void manageSavings(IStockMarket stocks) {
+	public void managePortfolio(IStockMarket stocks) {
 		portfolio.collectDividends();
 		if (isMortal()) {
 			if (isRetired()) {

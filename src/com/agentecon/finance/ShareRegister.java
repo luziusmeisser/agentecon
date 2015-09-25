@@ -10,15 +10,19 @@ public class ShareRegister implements IRegister {
 
 	private Ticker ticker;
 	private Position rootPosition;
+	private double latestDividends;
 	private LinkedList<Position> all;
 
 	public ShareRegister(String firmName, IStock wallet) {
 		this.ticker = new Ticker(firmName);
 		this.all = new LinkedList<>();
+		this.latestDividends = 0.0;
 		this.rootPosition = new Position(this, ticker, wallet.getGood());
 	}
 
 	public void payDividend(IStock sourceWallet, double totalDividends) {
+		latestDividends = totalDividends;
+
 		if (!Numbers.equals(getTotalShares(), Position.SHARES_PER_COMPANY)) {
 			double diff = getTotalShares() - Position.SHARES_PER_COMPANY;
 			if (diff > 0) {
@@ -35,6 +39,10 @@ public class ShareRegister implements IRegister {
 				pos.receiveDividend(sourceWallet, totalDividends / Position.SHARES_PER_COMPANY);
 			}
 		}
+	}
+	
+	public double getLatestDividends(){
+		return latestDividends;
 	}
 
 	public Position obtain(double size) {

@@ -7,8 +7,6 @@ import com.agentecon.consumer.Consumer;
 
 public interface IConsumers {
 
-	public void add(Consumer consumer);
-	
 	public Consumer getRandomConsumer();
 
 	public Collection<Consumer> getRandomConsumers();

@@ -32,7 +32,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	@Override
 	public void execute(IWorld sim) {
 		for (SavingConsumer sc : consumers) {
-			sim.getConsumers().add(sc);
+			sim.add(sc);
 		}
 	}
 
