@@ -110,4 +110,14 @@ public class DailyStockMarket implements IStockMarket {
 		return (BidFin) best.getBid();
 	}
 
+	@Override
+	public boolean hasBid(Ticker ticker) {
+		return getBid(ticker) != null;
+	}
+
+	@Override
+	public boolean hasAsk(Ticker ticker) {
+		return getAsk(ticker) != null;
+	}
+
 }

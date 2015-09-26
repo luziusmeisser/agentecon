@@ -7,6 +7,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.IAgent;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
+import com.agentecon.market.Bid;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
 
@@ -30,7 +31,9 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 		double innerValue = getMoney().getAmount();
 		YieldComparator yieldComp2 = new YieldComparator(dsm, false);
 		for (Position pos : portfolio.getPositions()) {
-			innerValue += yieldComp2.getPrice(pos.getTicker()) * pos.getAmount();
+			if (dsm.hasBid(pos.getTicker())) {
+				innerValue += yieldComp2.getPrice(pos.getTicker()) * pos.getAmount();
+			}
 		}
 		return innerValue;
 	}
@@ -38,7 +41,7 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 	public void managePortfolio(IStockMarket dsm) {
 		portfolio.collectDividends();
 
-		double outerValue = new YieldComparator(dsm, false).getPrice(getTicker()) * Position.SHARES_PER_COMPANY;
+		double outerValue = calcOuterValue(dsm);
 		double innerValue = calcInnerValue(dsm);
 		boolean buyingAllowed = 2 * outerValue > innerValue;
 		boolean sellingAllowed = outerValue < 2 * innerValue;
@@ -48,7 +51,7 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 		IPublicCompany best = findBestDeal(dsm, comps);
 		IPublicCompany worst = findWorstPosition(dsm);
 
-		if (sellingAllowed && worst != null && portfolio.getPositions().size() == NUMBER_OF_POSITIONS && getYield(dsm, worst, false) < getYield(dsm, best, true)) {
+		if (sellingAllowed && worst != null && best != null && portfolio.getPositions().size() == NUMBER_OF_POSITIONS && getYield(dsm, worst, false) < getYield(dsm, best, true)) {
 			Position pos = portfolio.getPosition(worst.getTicker());
 			dsm.sell(pos, getMoney(), pos.getAmount());
 			if (pos.isEmpty()) {
@@ -66,6 +69,16 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 		}
 	}
 
+	private double price = 10.0;
+
+	protected double calcOuterValue(IStockMarket dsm) {
+		Bid bid = dsm.getBid(getTicker());
+		if (bid != null) {
+			price = bid.getPrice().getPrice();
+		}
+		return price * Position.SHARES_PER_COMPANY;
+	}
+
 	private double getYield(IStockMarket dsm, IPublicCompany best, boolean b) {
 		return new YieldComparator(dsm, b).getYield(best);
 	}
@@ -77,7 +90,9 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 		} else {
 			PriorityQueue<IPublicCompany> queue = new PriorityQueue<>(pos.size(), new YieldComparator(dsm, false));
 			for (Position p : pos) {
-				queue.add(world.getAgents().getCompany(p.getTicker()));
+				if (dsm.hasBid(p.getTicker())) {
+					queue.add(world.getAgents().getCompany(p.getTicker()));
+				}
 			}
 			return queue.peek();
 		}
@@ -85,7 +100,11 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 
 	protected IPublicCompany findBestDeal(IStockMarket dsm, Collection<IPublicCompany> comps) {
 		PriorityQueue<IPublicCompany> queue = new PriorityQueue<>(comps.size(), new YieldComparator(dsm, true));
-		queue.addAll(comps);
+		for (IPublicCompany pc : comps) {
+			if (dsm.hasAsk(pc.getTicker())) {
+				queue.add(pc);
+			}
+		}
 		return queue.peek();
 	}
 

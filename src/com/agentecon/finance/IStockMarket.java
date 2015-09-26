@@ -19,6 +19,10 @@ public interface IStockMarket extends IPriceMakerMarket {
 
 	public Ask getAsk(Ticker ticker);
 	
-	public Bid getBid(Ticker ticker);	
+	public Bid getBid(Ticker ticker);
+
+	public boolean hasBid(Ticker ticker);
+
+	public boolean hasAsk(Ticker ticker);	
 
 }

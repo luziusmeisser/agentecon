@@ -8,7 +8,7 @@ public class YieldComparator implements Comparator<IPublicCompany> {
 
 	private boolean buying;
 	private IStockMarket dsm;
-	
+
 	public YieldComparator(IStockMarket dsm, boolean buying) {
 		this.dsm = dsm;
 		this.buying = buying;
@@ -24,16 +24,12 @@ public class YieldComparator implements Comparator<IPublicCompany> {
 	public double getYield(IPublicCompany o1) {
 		double dividend = o1.getShareRegister().getLatestDividends();
 		double price = getPrice(o1.getTicker());
-		if (price == 0.0){
-			return buying ? 0.0 : Double.MAX_VALUE;
-		} else {
-			return dividend / price;
-		}
+		return dividend / price;
 	}
 
 	public double getPrice(Ticker ticker) {
 		AbstractOffer offer = buying ? dsm.getAsk(ticker) : dsm.getBid(ticker);
-		return offer == null ? 0.0 : offer.getPrice().getPrice();
+		return offer.getPrice().getPrice();
 	}
 
 }
