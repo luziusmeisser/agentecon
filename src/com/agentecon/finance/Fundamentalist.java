@@ -45,7 +45,7 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 		double innerValue = calcInnerValue(dsm);
 		boolean buyingAllowed = 2 * outerValue > innerValue;
 		boolean sellingAllowed = outerValue < 2 * innerValue;
-		double excessValue = innerValue - outerValue;
+		double excessValue = innerValue - 1.2 * outerValue;
 
 		Collection<IPublicCompany> comps = world.getAgents().getPublicCompanies();
 		IPublicCompany best = findBestDeal(dsm, comps);
