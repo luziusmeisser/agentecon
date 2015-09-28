@@ -67,6 +67,7 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 				portfolio.addPosition(dsm.buy(best.getTicker(), pos, getMoney(), getMoney().getAmount() - dividend));
 			}
 		}
+		System.out.println(this);
 	}
 
 	private double price = 10.0;
@@ -122,5 +123,9 @@ public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketPa
 	public Portfolio getPortfolio() {
 		return portfolio;
 	}
-
+	
+	public String toString(){
+		return getTicker() + " with " + portfolio;
+	}
+	
 }
