@@ -20,19 +20,28 @@ public class OverlappingGenerations extends SimConfig {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 800;
-	protected static final int MARKET_MAKERS = 10;
+	protected static final int MARKET_MAKERS = 5;
 	private static final int FUNDAMENTALISTS = 10;
 	
 	private Good input;
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(7000, 42, 0);
+		super(10000, 42, 0);
 		this.input = new Good("hours");
 		this.outputs = new Good[]{new Good("apples")};
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
+			
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < MARKET_MAKERS; i++) {
+					sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
+				}
+			}
+		});
+		addEvent(new SimEvent(5000, MARKET_MAKERS) {
 			
 			@Override
 			public void execute(IWorld sim) {
