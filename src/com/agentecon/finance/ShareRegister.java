@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
 import com.agentecon.stats.Numbers;
+import com.agentecon.util.MovingAverage;
 
 public class ShareRegister implements IRegister {
 	
@@ -14,13 +15,13 @@ public class ShareRegister implements IRegister {
 
 	private Ticker ticker;
 	private Position rootPosition;
-	private double latestDividends;
+	private MovingAverage dividend;
 	private LinkedList<Position> all;
 
 	public ShareRegister(String firmName, IStock wallet) {
 		this.ticker = new Ticker(firmName);
 		this.all = new LinkedList<>();
-		this.latestDividends = 0.0;
+		this.dividend = new MovingAverage(0.8);
 		this.rootPosition = new Position(this, ticker, wallet.getGood(), SHARES_PER_COMPANY);
 	}
 	
@@ -32,7 +33,7 @@ public class ShareRegister implements IRegister {
 	}
 
 	public void payDividend(IStock sourceWallet, double totalDividends) {
-		latestDividends = totalDividends;
+		dividend.add(totalDividends);
 
 		if (!Numbers.equals(getTotalShares(), SHARES_PER_COMPANY)) {
 			double diff = getTotalShares() - SHARES_PER_COMPANY;
@@ -52,8 +53,9 @@ public class ShareRegister implements IRegister {
 		}
 	}
 	
-	public double getLatestDividends(){
-		return latestDividends;
+	@Override
+	public double getAverageDividend() {
+		return dividend.getAverage();
 	}
 	
 	public Position createPosition(){
@@ -80,8 +82,7 @@ public class ShareRegister implements IRegister {
 
 	@Override
 	public String toString() {
-		return ticker + " has " + all.size() + " shareholders";
+		return ticker + " has " + all.size() + " shareholders and pays " + dividend;
 	}
-
 
 }
