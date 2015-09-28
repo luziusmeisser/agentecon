@@ -1,5 +1,7 @@
 package com.agentecon.finance;
 
+import java.util.ArrayList;
+
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.good.IStock;
 import com.agentecon.stats.Numbers;
@@ -35,7 +37,7 @@ public class TradingPortfolio extends Portfolio {
 	}
 
 	public void sell(IStockMarket stocks, double fraction) {
-		for (Ticker ticker : inv.keySet()) {
+		for (Ticker ticker : new ArrayList<>(inv.keySet())) {
 			Position pos = inv.get(ticker);
 			stocks.sell(pos, wallet, pos.getAmount() * fraction);
 			if (pos.isEmpty()) {

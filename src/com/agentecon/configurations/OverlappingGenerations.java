@@ -16,24 +16,24 @@ import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
 
 public class OverlappingGenerations extends SimConfig {
-	
+
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 800;
 	protected static final int MARKET_MAKERS = 5;
 	private static final int FUNDAMENTALISTS = 10;
-	
+
 	private Good input;
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
 		super(10000, 42, 0);
 		this.input = new Good("hours");
-		this.outputs = new Good[]{new Good("apples")};
+		this.outputs = new Good[] { new Good("apples") };
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
-			
+
 			@Override
 			public void execute(IWorld sim) {
 				for (int i = 0; i < MARKET_MAKERS; i++) {
@@ -41,46 +41,45 @@ public class OverlappingGenerations extends SimConfig {
 				}
 			}
 		});
-		addEvent(new SimEvent(5000, MARKET_MAKERS) {
-			
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < MARKET_MAKERS; i++) {
+		for (int i = 0; i < MARKET_MAKERS; i++) {
+			addEvent(new SimEvent(5000 + i * 500, 1) {
+
+				@Override
+				public void execute(IWorld sim) {
 					sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
 				}
-			}
-		});
-//		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
-//			
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < FUNDAMENTALISTS; i++) {
-//					sim.add(new Fundamentalist(sim));
-//				}
-//			}
-//		});
+			});
+		}
+		// addEvent(new SimEvent(0, FUNDAMENTALISTS) {
+		//
+		// @Override
+		// public void execute(IWorld sim) {
+		// for (int i = 0; i < FUNDAMENTALISTS; i++) {
+		// sim.add(new Fundamentalist(sim));
+		// }
+		// }
+		// });
 	}
-	
-	public void addConsumers(int count){
+
+	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
-		ConsumptionWeights consWeights = new ConsumptionWeights(new Good[]{input}, outputs, 7.0, 3.0);
-//		addEvent(new SinConsumerEvent(0, 50, count / 5, MAX_AGE, 200, "Consumer", end, consWeights.getFactory(0)));
+		ConsumptionWeights consWeights = new ConsumptionWeights(new Good[] { input }, outputs, 7.0, 3.0);
+		// addEvent(new SinConsumerEvent(0, 50, count / 5, MAX_AGE, 200, "Consumer", end, consWeights.getFactory(0)));
 		addEvent(new LinearConsumerEvent(100, 1, MAX_AGE, 10 * 1000 / MAX_AGE, "Consumer", end, consWeights.getFactory(0)));
-		
+
 	}
-	
-	public void addFirms(int count){
-		for (int i=0; i<outputs.length; i++){
-			Endowment end = new Endowment(new IStock[]{new Stock(MONEY, MONEY_SUPPLY_PER_FIRM)}, new IStock[]{});
+
+	public void addFirms(int count) {
+		for (int i = 0; i < outputs.length; i++) {
+			Endowment end = new Endowment(new IStock[] { new Stock(MONEY, MONEY_SUPPLY_PER_FIRM) }, new IStock[] {});
 			IProductionFunction prodFun = new CobbDouglasProduction(outputs[i], new Weight(input, 10)).scale(RETURNS_TO_SCALE);
 			addEvent(new FirmEvent(10, outputs[i] + " firm", end, prodFun));
 		}
 	}
-	
+
 	@Override
-	public boolean hasAging(){
+	public boolean hasAging() {
 		return true;
 	}
-	
 
 }
