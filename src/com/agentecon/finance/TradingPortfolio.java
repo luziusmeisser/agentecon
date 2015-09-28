@@ -35,17 +35,11 @@ public class TradingPortfolio extends Portfolio {
 	}
 
 	public void sell(IStockMarket stocks, double fraction) {
-		double sharesToSell = countShares() * fraction;
-		while (Numbers.isBigger(sharesToSell, 0.0)) {
-			Ticker ticker = stocks.findHighestBid(inv.keySet());
-			if (ticker == null) {
-				break;
-			} else {
-				Position pos = inv.get(ticker);
-				sharesToSell -= stocks.sell(pos, wallet, sharesToSell);
-				if (pos.isEmpty()) {
-					disposePosition(ticker);
-				}
+		for (Ticker ticker : inv.keySet()) {
+			Position pos = inv.get(ticker);
+			stocks.sell(pos, wallet, pos.getAmount() * fraction);
+			if (pos.isEmpty()) {
+				disposePosition(ticker);
 			}
 		}
 	}
