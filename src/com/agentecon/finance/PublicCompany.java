@@ -5,12 +5,12 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 
-public abstract class PublicFirm extends Agent implements IPublicCompany {
+public abstract class PublicCompany extends Agent implements IPublicCompany {
 
 	private ShareRegister register;
 	protected FirmListeners monitor;
 	
-	public PublicFirm(String type, Endowment end) {
+	public PublicCompany(String type, Endowment end) {
 		super(type, end);
 		this.register = new ShareRegister(getName(), getMoney());
 		this.monitor = new FirmListeners();
@@ -28,6 +28,16 @@ public abstract class PublicFirm extends Agent implements IPublicCompany {
 	
 	public void addFirmMonitor(IFirmListener prodmon) {
 		this.monitor.add(prodmon);
+	}
+	
+	@Override
+	public void inherit(Position pos) {
+		register.inherit(pos);
+	}
+
+	@Override
+	public void raiseCapital(Object stockmarket) {
+		register.raiseCapital((DailyStockMarket) stockmarket, getMoney());
 	}
 
 	protected abstract double calculateDividends(int day);

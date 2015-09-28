@@ -3,10 +3,13 @@ package com.agentecon.finance;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
 import com.agentecon.stats.Numbers;
 
 public class ShareRegister implements IRegister {
+	
+	public static final double INITIAL_PRICE = 10.0;
 
 	private Ticker ticker;
 	private Position rootPosition;
@@ -18,6 +21,13 @@ public class ShareRegister implements IRegister {
 		this.all = new LinkedList<>();
 		this.latestDividends = 0.0;
 		this.rootPosition = new Position(this, ticker, wallet.getGood());
+	}
+	
+	public void raiseCapital(DailyStockMarket dsm, IStock wallet) {
+		if (!rootPosition.isEmpty()){
+			rootPosition.collectDividend(wallet);
+			dsm.offer(new AskFin(wallet, rootPosition, new Price(getTicker(), INITIAL_PRICE), rootPosition.getAmount()));
+		}
 	}
 
 	public void payDividend(IStock sourceWallet, double totalDividends) {
@@ -44,19 +54,13 @@ public class ShareRegister implements IRegister {
 	public double getLatestDividends(){
 		return latestDividends;
 	}
-
-	public Position obtain(double size) {
-		return rootPosition.split(size);
+	
+	public Position createPosition(){
+		return rootPosition.split(0);
 	}
-
-	public Position[] split(int number) {
-		double sharesPerPosition = rootPosition.getAmount() / number;
-		Position[] poses = new Position[number];
-		for (int i = 1; i < number; i++) {
-			poses[i] = rootPosition.split(sharesPerPosition);
-		}
-		poses[0] = rootPosition.split(rootPosition.getAmount());
-		return poses;
+	
+	public void inherit(Position pos){
+		pos.dispose(rootPosition);
 	}
 
 	public Ticker getTicker() {

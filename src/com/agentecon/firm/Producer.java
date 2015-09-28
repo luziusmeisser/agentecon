@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.finance.PublicFirm;
+import com.agentecon.finance.PublicCompany;
 import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.IPriceProvider;
@@ -17,7 +17,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPriceFactory;
 
-public class Producer extends PublicFirm implements IFirm {
+public class Producer extends PublicCompany implements IFirm {
 
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
@@ -153,7 +153,7 @@ public class Producer extends PublicFirm implements IFirm {
 	}
 
 	public Producer createNextGeneration(Endowment end, IProductionFunction prod) {
-		return new Producer(getType(), end, prod, prices);
+		return new Producer(getType(), end, prod, prices, strategy);
 	}
 
 	public Factor getFactor(Good good) {

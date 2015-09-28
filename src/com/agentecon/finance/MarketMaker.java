@@ -10,15 +10,15 @@ import com.agentecon.good.Stock;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.util.Average;
 
-public class MarketMaker extends PublicFirm implements IAgent, Cloneable {
+public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 
 	private static final int MARKET_MAKER_CASH = 1000;
-	
+
 	private Portfolio portfolio;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
 	public MarketMaker() {
-		super("Market Maker", new Endowment(new IStock[]{new Stock(SimConfig.MONEY, MARKET_MAKER_CASH)}, new IStock[]{}));
+		super("Market Maker", new Endowment(new IStock[] { new Stock(SimConfig.MONEY, MARKET_MAKER_CASH) }, new IStock[] {}));
 		this.portfolio = new Portfolio(getMoney());
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 	}
@@ -32,38 +32,38 @@ public class MarketMaker extends PublicFirm implements IAgent, Cloneable {
 		}
 	}
 
-	public void addPosition(Position pos){
-		portfolio.addPosition(pos);
-		priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos));
+	public void addPosition(Position pos) {
+		if (pos.getTicker().equals(getTicker())) {
+			pos.dispose(); // do not trade own shares
+		} else {
+			portfolio.addPosition(pos);
+			priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos));
+		}
 	}
 
-	public void inherit(Portfolio inheritance) {
-		portfolio.absorb(inheritance);
-	}
-	
 	public double getPrice(Good output) {
 		return priceBeliefs.get(output).getPrice();
 	}
-	
-	public Average getAvgHoldings(){
+
+	public Average getAvgHoldings() {
 		Average avg = new Average();
-		for (Ticker t: priceBeliefs.keySet()){
+		for (Ticker t : priceBeliefs.keySet()) {
 			avg.add(portfolio.getPosition(t).getAmount());
 		}
 		return avg;
 	}
-	
+
 	private Average getIndex() {
 		Average avg = new Average();
-		for (MarketMakerPrice mmp: priceBeliefs.values()){
+		for (MarketMakerPrice mmp : priceBeliefs.values()) {
 			avg.add(mmp.getPrice());
 		}
 		return avg;
 	}
-	
+
 	@Override
-	public String toString(){
-		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); //priceBeliefs.values().toString();
+	public String toString() {
+		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); // priceBeliefs.values().toString();
 	}
 
 	@Override
@@ -71,9 +71,9 @@ public class MarketMaker extends PublicFirm implements IAgent, Cloneable {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
 		return excessCash / 5;
 	}
-	
+
 	@Override
-	public MarketMaker clone(){
+	public MarketMaker clone() {
 		return this; // TEMP todo
 	}
 

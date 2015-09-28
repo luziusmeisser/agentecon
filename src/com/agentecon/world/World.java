@@ -7,7 +7,9 @@ import java.util.Random;
 import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.Portfolio;
+import com.agentecon.finance.Position;
 import com.agentecon.firm.Producer;
+import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
@@ -76,7 +78,8 @@ public class World implements IWorld {
 	}
 
 	public void finishDay(int day) {
-		Portfolio inheritance = new Portfolio(new Stock(SimConfig.MONEY));
+		IStock inheritedMoney = new Stock(SimConfig.MONEY);
+		Portfolio inheritance = new Portfolio(inheritedMoney);
 		Collection<Consumer> consumers = agents.getAllConsumers();
 		Iterator<Consumer> iter = consumers.iterator();
 		double util = 0.0;
@@ -89,8 +92,11 @@ public class World implements IWorld {
 				notifyAgentDied(c);
 			}
 		}
-		if (inheritance.hasPositions() || inheritance.getCash() > 0.0) {
-			agents.getAllMarketMakers().iterator().next().inherit(inheritance);
+		for (Position pos: inheritance.getPositions()){
+			agents.getCompany(pos.getTicker()).inherit(pos);
+		}
+		if (inheritedMoney.getAmount() > 0) {
+			agents.getRandomConsumer().getMoney().absorb(inheritedMoney);
 		}
 
 		listeners.notifyDayEnded(day, util / consumers.size());

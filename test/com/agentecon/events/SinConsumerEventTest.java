@@ -13,6 +13,7 @@ import com.agentecon.consumer.LogUtil;
 import com.agentecon.good.Stock;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.world.Agents;
 import com.agentecon.world.IConsumers;
 import com.agentecon.world.IFirms;
 import com.agentecon.world.IWorld;
@@ -78,6 +79,11 @@ public class SinConsumerEventTest implements IWorld, IConsumers {
 	@Override
 	public void add(IAgent agent) {
 		consumers++;
+	}
+
+	@Override
+	public Agents getAgents() {
+		return null;
 	}
 
 }

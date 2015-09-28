@@ -11,7 +11,7 @@ import com.agentecon.market.Bid;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
 
-public class Fundamentalist extends PublicFirm implements IAgent, IStockMarketParticipant {
+public class Fundamentalist extends PublicCompany implements IAgent, IStockMarketParticipant {
 
 	private static final int CASH = 1000;
 	private static final int NUMBER_OF_POSITIONS = 5;

@@ -5,7 +5,6 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
