@@ -32,12 +32,12 @@ public class OverlappingGenerations extends SimConfig {
 		this.outputs = new Good[]{new Good("apples")};
 		addConsumers(100);
 		addFirms(10);
-		addEvent(new SimEvent(-1, MARKET_MAKERS) {
+		addEvent(new SimEvent(0, MARKET_MAKERS) {
 			
 			@Override
 			public void execute(IWorld sim) {
 				for (int i = 0; i < MARKET_MAKERS; i++) {
-					sim.add(new MarketMaker());
+					sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
 				}
 			}
 		});

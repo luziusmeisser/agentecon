@@ -1,5 +1,6 @@
 package com.agentecon.finance;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import com.agentecon.agent.Endowment;
@@ -17,10 +18,13 @@ public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 	private Portfolio portfolio;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
-	public MarketMaker() {
+	public MarketMaker(Collection<IPublicCompany> comps) {
 		super("Market Maker", new Endowment(new IStock[] { new Stock(SimConfig.MONEY, MARKET_MAKER_CASH) }, new IStock[] {}));
 		this.portfolio = new Portfolio(getMoney());
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
+		for (IPublicCompany pc: comps){
+			addPosition(new Position(pc.getShareRegister(), pc.getTicker(), getMoney().getGood()));
+		}
 	}
 
 	public void postOffers(IStockMarket dsm) {
