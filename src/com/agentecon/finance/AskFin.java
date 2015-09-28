@@ -16,7 +16,7 @@ public class AskFin extends Ask {
 	
 	public Position accept(IStock payer, Position target, double budget) {
 		if (target == null){
-			target = getStock().split(0.0);
+			target = getStock().split();
 		}
 		super.accept(payer, target, budget / getPrice().getPrice());
 		return target;

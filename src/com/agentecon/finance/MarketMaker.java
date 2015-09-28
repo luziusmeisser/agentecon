@@ -23,7 +23,7 @@ public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 		this.portfolio = new Portfolio(getMoney());
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 		for (IPublicCompany pc: comps){
-			addPosition(new Position(pc.getShareRegister(), pc.getTicker(), getMoney().getGood()));
+			addPosition(pc.getShareRegister().createPosition());
 		}
 	}
 

@@ -77,7 +77,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 		if (bid != null) {
 			price = bid.getPrice().getPrice();
 		}
-		return price * Position.SHARES_PER_COMPANY;
+		return price * IRegister.SHARES_PER_COMPANY;
 	}
 
 	private double getYield(IStockMarket dsm, IPublicCompany best, boolean b) {

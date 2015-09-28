@@ -3,6 +3,7 @@ package com.agentecon.finance;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
 import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
 import com.agentecon.stats.Numbers;
@@ -20,7 +21,7 @@ public class ShareRegister implements IRegister {
 		this.ticker = new Ticker(firmName);
 		this.all = new LinkedList<>();
 		this.latestDividends = 0.0;
-		this.rootPosition = new Position(this, ticker, wallet.getGood());
+		this.rootPosition = new Position(this, ticker, wallet.getGood(), SHARES_PER_COMPANY);
 	}
 	
 	public void raiseCapital(DailyStockMarket dsm, IStock wallet) {
@@ -33,8 +34,8 @@ public class ShareRegister implements IRegister {
 	public void payDividend(IStock sourceWallet, double totalDividends) {
 		latestDividends = totalDividends;
 
-		if (!Numbers.equals(getTotalShares(), Position.SHARES_PER_COMPANY)) {
-			double diff = getTotalShares() - Position.SHARES_PER_COMPANY;
+		if (!Numbers.equals(getTotalShares(), SHARES_PER_COMPANY)) {
+			double diff = getTotalShares() - SHARES_PER_COMPANY;
 			if (diff > 0) {
 				all.getLast().add(diff);
 			}
@@ -46,7 +47,7 @@ public class ShareRegister implements IRegister {
 			if (pos.isDisposed()) {
 				iter.remove();
 			} else {
-				pos.receiveDividend(sourceWallet, totalDividends / Position.SHARES_PER_COMPANY);
+				pos.receiveDividend(sourceWallet, totalDividends / SHARES_PER_COMPANY);
 			}
 		}
 	}
@@ -56,7 +57,9 @@ public class ShareRegister implements IRegister {
 	}
 	
 	public Position createPosition(){
-		return rootPosition.split(0);
+		Position pos = new Position(this, getTicker(), rootPosition.getCurrency(), 0.0);
+		all.add(pos);
+		return pos;
 	}
 	
 	public void inherit(Position pos){
@@ -65,11 +68,6 @@ public class ShareRegister implements IRegister {
 
 	public Ticker getTicker() {
 		return ticker;
-	}
-
-	@Override
-	public void register(Position position) {
-		all.add(position);
 	}
 
 	private double getTotalShares() {
@@ -84,5 +82,6 @@ public class ShareRegister implements IRegister {
 	public String toString() {
 		return ticker + " has " + all.size() + " shareholders";
 	}
+
 
 }
