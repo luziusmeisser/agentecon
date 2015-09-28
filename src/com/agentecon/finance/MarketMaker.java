@@ -26,7 +26,7 @@ public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 	public void postOffers(IStockMarket dsm) {
 		portfolio.collectDividends();
 		IStock money = getMoney();
-		double budgetPerPosition = money.getAmount() / priceBeliefs.size() / 5;
+		double budgetPerPosition = money.getAmount() / priceBeliefs.size();
 		for (MarketMakerPrice e : priceBeliefs.values()) {
 			e.trade(dsm, money, budgetPerPosition);
 		}
