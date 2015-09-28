@@ -119,7 +119,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 
 	@Override
 	protected double calculateDividends(int day) {
-		return getMoney().getAmount() / 20;
+		return getMoney().getAmount() - 1000;
 	}
 
 	@Override
