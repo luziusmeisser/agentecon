@@ -28,14 +28,6 @@ public class TradingPortfolio extends Portfolio {
 		return value;
 	}
 
-	private double countShares() {
-		double shares = 0.0;
-		for (Position p : inv.values()) {
-			shares += p.getAmount();
-		}
-		return shares;
-	}
-
 	public void sell(IStockMarket stocks, double fraction) {
 		for (Ticker ticker : new ArrayList<>(inv.keySet())) {
 			Position pos = inv.get(ticker);
