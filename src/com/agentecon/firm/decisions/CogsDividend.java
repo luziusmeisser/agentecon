@@ -9,7 +9,7 @@ public class CogsDividend implements IFirmDecisions {
 	private double dividendRatio;
 	
 	public CogsDividend(double laborshare) {
-		this(laborshare, 7);
+		this(laborshare, 4);
 	}
 
 	public CogsDividend(double laborshare, int mode) {
