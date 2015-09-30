@@ -11,7 +11,7 @@ import com.agentecon.good.Stock;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.util.Average;
 
-public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
+public class MarketMaker extends PublicCompany implements IShareholder, Cloneable {
 
 	private static final int MARKET_MAKER_CASH = 1000;
 
@@ -79,6 +79,11 @@ public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 	@Override
 	public MarketMaker clone() {
 		return this; // TEMP todo
+	}
+
+	@Override
+	public Portfolio getPortfolio() {
+		return portfolio;
 	}
 
 }
