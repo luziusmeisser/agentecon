@@ -40,7 +40,7 @@ public class FirmEvent extends SimEvent {
 	}
 	
 	protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
-		return createFirm(type, end, prodFun, pf, new CogsDividend(((CobbDouglasProduction)prodFun).getReturnsToScale(), 0));
+		return createFirm(type, end, prodFun, pf, new CogsDividend(((CobbDouglasProduction)prodFun).getReturnsToScale()));
 	}
 
 	protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf, IFirmDecisions strategy) {

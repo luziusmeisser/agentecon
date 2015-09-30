@@ -7,6 +7,10 @@ public class CogsDividend implements IFirmDecisions {
 	private int mode;
 	private double divs;
 	private double dividendRatio;
+	
+	public CogsDividend(double laborshare) {
+		this(laborshare, 7);
+	}
 
 	public CogsDividend(double laborshare, int mode) {
 		this.mode = mode;
