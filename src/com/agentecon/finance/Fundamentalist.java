@@ -41,8 +41,8 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 
 		double outerValue = calcOuterValue(dsm);
 		double innerValue = calcInnerValue(dsm);
-		boolean buyingAllowed = true; // 2 * outerValue > innerValue;
-		boolean sellingAllowed = true; // outerValue < 2 * innerValue;
+		boolean buyingAllowed = 2 * outerValue > innerValue;
+		boolean sellingAllowed = outerValue < 2 * innerValue;
 
 		Collection<IPublicCompany> comps = world.getAgents().getPublicCompanies();
 		PriorityQueue<IPublicCompany> queue = getOfferQueue(dsm, comps);
