@@ -73,7 +73,7 @@ public class MarketMaker extends PublicCompany implements IAgent, Cloneable {
 	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		return excessCash / 5;
+		return excessCash / 10;
 	}
 
 	@Override
