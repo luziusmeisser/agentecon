@@ -7,15 +7,17 @@ import com.agentecon.metric.IFirmListener;
 
 public abstract class PublicCompany extends Agent implements IPublicCompany {
 
+	private Ticker ticker;
 	private ShareRegister register;
 	protected FirmListeners monitor;
 	
 	public PublicCompany(String type, Endowment end) {
 		super(type, end);
-		this.register = new ShareRegister(getName(), getMoney());
+		this.ticker = new Ticker(type, getAgentId());
+		this.register = new ShareRegister(ticker, getMoney());
 		this.monitor = new FirmListeners();
 	}
-
+	
 	@Override
 	public ShareRegister getShareRegister() {
 		return register;
@@ -23,7 +25,7 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 	
 	@Override
 	public Ticker getTicker() {
-		return register.getTicker();
+		return ticker;
 	}
 	
 	public void addFirmMonitor(IFirmListener prodmon) {

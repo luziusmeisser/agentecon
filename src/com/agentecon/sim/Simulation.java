@@ -14,6 +14,8 @@ import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
+import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.StockMarket;
 import com.agentecon.firm.Producer;
 import com.agentecon.metric.ISimulationListener;
@@ -148,6 +150,11 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	public Collection<? extends IAgent> getAgents() {
 		return world.getAgents().getAll();
 	}
+	
+	@Override
+	public Collection<? extends IPublicCompany> getListedCompanies() {
+		return world.getAgents().getPublicCompanies();
+	}
 
 	@Override
 	public void addListener(ISimulationListener listener) {
@@ -169,6 +176,11 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public IMarket getStockMarket() {
 		return stocks;
+	}
+
+	@Override
+	public Collection<? extends IShareholder> getShareHolders() {
+		return world.getAgents().getShareHolders();
 	}
 
 }

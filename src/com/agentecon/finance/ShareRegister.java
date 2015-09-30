@@ -18,8 +18,8 @@ public class ShareRegister implements IRegister {
 	private MovingAverage dividend;
 	private LinkedList<Position> all;
 
-	public ShareRegister(String firmName, IStock wallet) {
-		this.ticker = new Ticker(firmName);
+	public ShareRegister(Ticker ticker, IStock wallet) {
+		this.ticker = ticker;
 		this.all = new LinkedList<>();
 		this.dividend = new MovingAverage(0.8);
 		this.rootPosition = new Position(this, ticker, wallet.getGood(), SHARES_PER_COMPANY);

@@ -10,6 +10,7 @@ import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.IStockMarketParticipant;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.finance.Ticker;
@@ -28,6 +29,7 @@ public class Agents implements IConsumers, IFirms {
 	private ArrayList<Consumer> consumers;
 	private ArrayList<Fundamentalist> fundies;
 	private ArrayList<MarketMaker> marketMakers;
+	private ArrayList<IShareholder> shareholders;
 
 	private ISimulationListener listeners;
 
@@ -39,6 +41,7 @@ public class Agents implements IConsumers, IFirms {
 		this.publicCompanies = new HashMap<>();
 		this.all = new ArrayList<>();
 		this.consumers = new ArrayList<>();
+		this.shareholders = new ArrayList<>();
 		this.firms = new ArrayList<>();
 		this.marketMakers = new ArrayList<>();
 		this.fundies = new ArrayList<>();
@@ -78,6 +81,9 @@ public class Agents implements IConsumers, IFirms {
 		if (agent instanceof IPublicCompany) {
 			IPublicCompany pc = (IPublicCompany) agent;
 			publicCompanies.put(pc.getTicker(), pc);
+		}
+		if (agent instanceof IShareholder){
+			shareholders.add((IShareholder) agent);
 		}
 		if (agent instanceof Fundamentalist){
 			fundies.add((Fundamentalist) agent);
@@ -147,6 +153,10 @@ public class Agents implements IConsumers, IFirms {
 
 	public Collection<IPublicCompany> getPublicCompanies() {
 		return publicCompanies.values();
+	}
+	
+	public Collection<? extends IShareholder> getShareHolders() {
+		return shareholders;
 	}
 
 	public Agents duplicate() {
