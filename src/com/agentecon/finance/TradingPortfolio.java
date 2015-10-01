@@ -52,4 +52,9 @@ public class TradingPortfolio extends Portfolio {
 		}
 	}
 
+	@Override
+	public TradingPortfolio clone(IStock money) {
+		return (TradingPortfolio) super.clone(money);
+	}
+
 }

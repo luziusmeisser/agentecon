@@ -182,6 +182,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	public Consumer clone() {
 		Consumer klon = (Consumer) super.clone();
 		klon.dailySpendings = dailySpendings.clone();
+		klon.portfolio = portfolio.clone(klon.getMoney());
 		return klon;
 	}
 

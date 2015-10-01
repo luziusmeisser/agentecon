@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.agentecon.agent.Agent;
 import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.Fundamentalist;
@@ -165,7 +166,11 @@ public class Agents implements IConsumers, IFirms {
 	public Agents duplicate() {
 		preserveRand();
 		assert rand == null;
-		return new Agents(listeners, seed, all);
+		ArrayList<IAgent> allDup = new ArrayList<>(all.size());
+		for (IAgent a: all){
+			allDup.add(a.clone());
+		}
+		return new Agents(listeners, seed, allDup);
 	}
 
 	private void preserveRand() {
