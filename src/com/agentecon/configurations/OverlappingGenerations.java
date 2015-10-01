@@ -20,7 +20,7 @@ public class OverlappingGenerations extends SimConfig {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 800;
-	protected static final int MARKET_MAKERS = 10;
+	protected static final int MARKET_MAKERS = 5;
 	private static final int FUNDAMENTALISTS = 5;
 
 	private Good input;
