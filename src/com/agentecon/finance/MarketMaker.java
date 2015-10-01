@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
-import com.agentecon.good.HiddenStock;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.sim.config.SimConfig;
