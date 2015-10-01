@@ -35,10 +35,6 @@ public class World implements IWorld {
 		return agents;
 	}
 
-	public void notifyAgentDied(IAgent c) {
-		listeners.notifyAgentDied(c);
-	}
-
 	public void handoutEndowments() {
 		for (Consumer c : agents.getAllConsumers()) {
 			c.collectDailyEndowment();
@@ -57,7 +53,7 @@ public class World implements IWorld {
 		this.day = day;
 		// reset random every day to get more consistent results on small changes
 		this.rand = new Random(day ^ randomBaseSeed);
-		this.agents.notifyDayStarted(rand.nextLong());
+		this.agents = this.agents.renew(rand.nextLong());
 		this.handoutEndowments();
 		this.listeners.notifyDayStarted(day);
 	}
@@ -85,12 +81,9 @@ public class World implements IWorld {
 		double util = 0.0;
 		while (iter.hasNext()) {
 			Consumer c = iter.next();
+			assert c.isAlive();
 			util += c.consume();
-			if (c.age()) {
-				iter.remove();
-				c.notifyDied(inheritance);
-				notifyAgentDied(c);
-			}
+			c.age(inheritance);
 		}
 		for (Position pos: inheritance.getPositions()){
 			agents.getCompany(pos.getTicker()).inherit(pos);

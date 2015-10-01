@@ -45,8 +45,12 @@ public class Agents implements IConsumers, IFirms {
 		this.firms = new ArrayList<>();
 		this.marketMakers = new ArrayList<>();
 		this.fundies = new ArrayList<>();
-		for (IAgent a: all){
-			add(a);
+		for (IAgent a : all) {
+			if (a.isAlive()) {
+				add(a);
+			} else {
+				listeners.notifyAgentDied(a);
+			}
 		}
 		this.listeners = listeners; // must be at the end to avoid unnecessary notifications
 		this.seed = seed;
@@ -59,7 +63,7 @@ public class Agents implements IConsumers, IFirms {
 	public Collection<Consumer> getAllConsumers() {
 		return consumers;
 	}
-	
+
 	public Collection<IStockMarketParticipant> getRandomStockMarketParticipants() {
 		ArrayList<IStockMarketParticipant> list = new ArrayList<>();
 		list.addAll(consumers);
@@ -71,7 +75,7 @@ public class Agents implements IConsumers, IFirms {
 	public Collection<MarketMaker> getAllMarketMakers() {
 		return marketMakers;
 	}
-	
+
 	public IPublicCompany getCompany(Ticker ticker) {
 		return publicCompanies.get(ticker);
 	}
@@ -82,19 +86,19 @@ public class Agents implements IConsumers, IFirms {
 			IPublicCompany pc = (IPublicCompany) agent;
 			publicCompanies.put(pc.getTicker(), pc);
 		}
-		if (agent instanceof IShareholder){
+		if (agent instanceof IShareholder) {
 			shareholders.add((IShareholder) agent);
 		}
-		if (agent instanceof Fundamentalist){
+		if (agent instanceof Fundamentalist) {
 			fundies.add((Fundamentalist) agent);
 		}
-		if (agent instanceof MarketMaker){
+		if (agent instanceof MarketMaker) {
 			marketMakers.add((MarketMaker) agent);
 		}
-		if (agent instanceof Producer){
+		if (agent instanceof Producer) {
 			firms.add((Producer) agent);
 		}
-		if (agent instanceof Consumer){
+		if (agent instanceof Consumer) {
 			consumers.add((Consumer) agent);
 		}
 		if (listeners != null) {
@@ -146,17 +150,16 @@ public class Agents implements IConsumers, IFirms {
 		return rand;
 	}
 
-	public void notifyDayStarted(long seed) {
-		this.seed = seed;
-		this.rand = null;
-	}
-
 	public Collection<IPublicCompany> getPublicCompanies() {
 		return publicCompanies.values();
 	}
-	
+
 	public Collection<? extends IShareholder> getShareHolders() {
 		return shareholders;
+	}
+	
+	public Agents renew(long seed){
+		return new Agents(listeners, seed, all);
 	}
 
 	public Agents duplicate() {

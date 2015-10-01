@@ -68,8 +68,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
 				double dividendIncome = portfolio.getLatestDividendIncome();
-				if (dividendIncome < invest){
-					savingsTarget = invest - dividendIncome; 
+				if (dividendIncome < invest) {
+					savingsTarget = invest - dividendIncome;
 					invest = Math.min(getMoney().getAmount(), invest);
 				}
 				portfolio.invest(stocks, invest);
@@ -118,7 +118,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 			for (IOffer offer : offers) {
 				IStock s = inv.getStock(offer.getGood());
 				double excessStock = s.getAmount() - allocs[pos];
-//				double excessStock = Math.max(s.getAmount() - allocs[pos], s.getAmount() - 19); // work at least 5 hours
+				// double excessStock = Math.max(s.getAmount() - allocs[pos], s.getAmount() - 19); // work at least 5 hours
 				if (excessStock > Numbers.EPSILON && offer.getGood() == soldGood) {
 					double amountAcquired = offer.accept(getMoney(), s, excessStock);
 					completedSales &= amountAcquired == excessStock;
@@ -160,9 +160,14 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 		return maxAge < Integer.MAX_VALUE;
 	}
 
-	public boolean age() {
+	public Inventory age(Portfolio inheritance) {
 		this.age++;
-		return age > maxAge;
+		if (age > maxAge) {
+			inheritance.absorb(portfolio);
+			return super.dispose();
+		} else {
+			return null;
+		}
 	}
 
 	public boolean isRetired() {
@@ -171,11 +176,6 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 
 	private int getRetirementAge() {
 		return maxAge / 5 * 3;
-	}
-
-	public Inventory notifyDied(Portfolio inheritance) {
-		inheritance.absorb(portfolio);
-		return dispose();
 	}
 
 	@Override

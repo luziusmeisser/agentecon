@@ -9,19 +9,16 @@ import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.util.Average;
-import com.agentecon.util.MovingAverage;
 
 public class MarketMaker extends PublicCompany implements IShareholder, Cloneable {
 
 	private static final int MARKET_MAKER_CASH = 1000;
 
 	private Portfolio portfolio;
-	private MovingAverage dividends;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
 	public MarketMaker(Collection<IPublicCompany> comps) {
 		super("Market Maker", new Endowment(new IStock[] { new Stock(SimConfig.MONEY, MARKET_MAKER_CASH) }, new IStock[] {}));
-		this.dividends = new MovingAverage(0.8);
 		this.portfolio = new Portfolio(getMoney());
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 		for (IPublicCompany pc: comps){
@@ -70,8 +67,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		dividends.add(excessCash);
-		return Math.min(excessCash, dividends.getAverage()); // excessCash / 5 would lead to market makers eventually owning everything
+		return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
 	}
 
 	@Override
@@ -86,7 +82,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	
 	@Override
 	public String toString() {
-		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex() + " , dividends " + dividends; // priceBeliefs.values().toString();
+		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); // priceBeliefs.values().toString();
 	}
 
 }

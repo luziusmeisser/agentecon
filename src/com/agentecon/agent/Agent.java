@@ -14,14 +14,20 @@ public abstract class Agent implements IAgent, Cloneable {
 	private String type;
 	private Endowment end;
 	private Inventory inv;
+	private boolean alive;
 
 	public Agent(String type, Endowment end) {
 		this.type = type;
 		this.inv = end.getInitialInventory();
 		this.end = end;
 		this.number = current++;
+		this.alive = true;
 		
 		assert type != null;
+	}
+	
+	public boolean isAlive(){
+		return alive;
 	}
 	
 	public String getName() {
@@ -41,6 +47,8 @@ public abstract class Agent implements IAgent, Cloneable {
 	}
 	
 	public Inventory dispose(){
+		assert alive;
+		alive = false;
 		Inventory old = this.inv;
 		this.inv = new Inventory();
 		return old;
@@ -55,6 +63,7 @@ public abstract class Agent implements IAgent, Cloneable {
 	}
 
 	public final void collectDailyEndowment() {
+		assert alive;
 		inv.deprecate();
 		inv.receive(end.getDaily());
 	}
