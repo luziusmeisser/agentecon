@@ -5,7 +5,6 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
 import com.agentecon.events.SimEvent;
-import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
@@ -21,7 +20,7 @@ public class OverlappingGenerations extends SimConfig {
 	private static final double RETURNS_TO_SCALE = 0.5;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 800;
-	protected static final int MARKET_MAKERS = 5;
+	protected static final int MARKET_MAKERS = 10;
 	private static final int FUNDAMENTALISTS = 5;
 
 	private Good input;
