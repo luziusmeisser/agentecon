@@ -29,7 +29,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	public void postOffers(IStockMarket dsm) {
 		portfolio.collectDividends();
 		IStock money = getMoney();
-		double budgetPerPosition = money.getAmount() / priceBeliefs.size();
+		double budgetPerPosition = Math.min(money.getAmount(), MARKET_MAKER_CASH) / priceBeliefs.size();
 		for (MarketMakerPrice e : priceBeliefs.values()) {
 			e.trade(dsm, money, budgetPerPosition);
 		}
