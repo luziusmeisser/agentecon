@@ -5,6 +5,7 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
 import com.agentecon.events.SimEvent;
+import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
@@ -50,15 +51,15 @@ public class OverlappingGenerations extends SimConfig {
 //				}
 //			});
 //		}
-//		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
-//
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < getCardinality(); i++) {
-//					sim.add(new Fundamentalist(sim));
-//				}
-//			}
-//		});
+		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < getCardinality(); i++) {
+					sim.add(new Fundamentalist(sim));
+				}
+			}
+		});
 	}
 
 	public void addConsumers(int count) {
