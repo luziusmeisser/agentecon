@@ -51,15 +51,15 @@ public class OverlappingGenerations extends SimConfig {
 //				}
 //			});
 //		}
-//		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
-//
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < getCardinality(); i++) {
+		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < getCardinality(); i++) {
 //					sim.add(new Fundamentalist(sim));
-//				}
-//			}
-//		});
+				}
+			}
+		});
 	}
 
 	public void addConsumers(int count) {
