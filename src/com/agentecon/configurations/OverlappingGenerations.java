@@ -28,7 +28,7 @@ public class OverlappingGenerations extends SimConfig {
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(10000, 42, 10);
+		super(10000, 41, 10);
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("apples") };
 		addConsumers(100);
@@ -42,21 +42,21 @@ public class OverlappingGenerations extends SimConfig {
 				}
 			}
 		});
-//		for (int i = 0; i < MARKET_MAKERS; i++) {
-//			addEvent(new SimEvent(5000 + i * 500, 1) {
-//
-//				@Override
-//				public void execute(IWorld sim) {
-//					sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
-//				}
-//			});
-//		}
+		// for (int i = 0; i < MARKET_MAKERS; i++) {
+		// addEvent(new SimEvent(5000 + i * 500, 1) {
+		//
+		// @Override
+		// public void execute(IWorld sim) {
+		// sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
+		// }
+		// });
+		// }
 		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
 
 			@Override
 			public void execute(IWorld sim) {
 				for (int i = 0; i < getCardinality(); i++) {
-//					sim.add(new Fundamentalist(sim));
+					sim.add(new Fundamentalist(sim));
 				}
 			}
 		});

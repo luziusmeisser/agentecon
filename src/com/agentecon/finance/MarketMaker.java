@@ -42,7 +42,8 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 			pos.dispose(); // do not trade own shares
 		} else {
 			portfolio.addPosition(pos);
-			priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos));
+			MarketMakerPrice prev = priceBeliefs.put(pos.getTicker(), new MarketMakerPrice(pos));
+			assert prev == null;
 		}
 	}
 
@@ -70,7 +71,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
 		if (excessCash > 0) {
-			double dividend = excessCash / 7;
+			double dividend = excessCash / 3;
 			this.reserve = excessCash - dividend;
 			return dividend;
 		} else {
