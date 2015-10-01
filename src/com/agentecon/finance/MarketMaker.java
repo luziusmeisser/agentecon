@@ -67,7 +67,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		return excessCash / 5; // leads to market makers eventually owning everything
+		return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
 	}
 
 	@Override
