@@ -29,7 +29,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	public void postOffers(IStockMarket dsm) {
 		portfolio.collectDividends();
 		IStock money = getMoney();
-		double budgetPerPosition = Math.min(money.getAmount(), MARKET_MAKER_CASH) / priceBeliefs.size();
+		double budgetPerPosition = money.getAmount() / priceBeliefs.size();
 		for (MarketMakerPrice e : priceBeliefs.values()) {
 			e.trade(dsm, money, budgetPerPosition);
 		}
@@ -65,14 +65,9 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	}
 
 	@Override
-	public String toString() {
-		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); // priceBeliefs.values().toString();
-	}
-
-	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		return excessCash / 5;
+		return excessCash / 5; // leads to market makers eventually owning everything
 	}
 
 	@Override
@@ -83,6 +78,11 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	@Override
 	public Portfolio getPortfolio() {
 		return portfolio;
+	}
+	
+	@Override
+	public String toString() {
+		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); // priceBeliefs.values().toString();
 	}
 
 }
