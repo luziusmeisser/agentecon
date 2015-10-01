@@ -24,7 +24,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 		this.portfolio = new Portfolio(getMoney());
 		this.reserve = 0.0;
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
-		for (IPublicCompany pc: comps){
+		for (IPublicCompany pc : comps) {
 			addPosition(pc.getShareRegister().createPosition());
 		}
 	}
@@ -70,8 +70,15 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		return excessCash / 5;
-//		return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
+		if (excessCash > 0) {
+			double dividend = excessCash / 7;
+			this.reserve = excessCash - dividend;
+			return dividend;
+		} else {
+			this.reserve = 0.0;
+			return 0.0;
+		}
+		// return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
 	}
 
 	@Override
@@ -83,10 +90,10 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	public Portfolio getPortfolio() {
 		return portfolio;
 	}
-	
+
 	@Override
 	public String toString() {
-		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex(); // priceBeliefs.values().toString();
+		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex() + ", dividend " + getShareRegister().getAverageDividend();
 	}
 
 }
