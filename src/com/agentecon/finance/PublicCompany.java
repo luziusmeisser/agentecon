@@ -2,6 +2,7 @@ package com.agentecon.finance;
 
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
+import com.agentecon.good.IStock;
 import com.agentecon.metric.FirmListeners;
 import com.agentecon.metric.IFirmListener;
 
@@ -14,7 +15,7 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 	public PublicCompany(String type, Endowment end) {
 		super(type, end);
 		this.ticker = new Ticker(type, getAgentId());
-		this.register = new ShareRegister(ticker, getMoney());
+		this.register = new ShareRegister(ticker, getDividendWallet());
 		this.monitor = new FirmListeners();
 	}
 	
@@ -39,7 +40,7 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 
 	@Override
 	public void raiseCapital(Object stockmarket) {
-		register.raiseCapital((DailyStockMarket) stockmarket, getMoney());
+		register.raiseCapital((DailyStockMarket) stockmarket, getDividendWallet());
 	}
 
 	protected abstract double calculateDividends(int day);
@@ -49,8 +50,12 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 		double dividend = calculateDividends(day);
 		if (dividend > 0){
 			monitor.reportDividend(dividend);
-			register.payDividend(getMoney(), dividend);
+			register.payDividend(getDividendWallet(), dividend);
 		}
+	}
+
+	protected IStock getDividendWallet() {
+		return getMoney();
 	}
 
 }

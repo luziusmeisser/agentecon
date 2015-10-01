@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
+import com.agentecon.good.HiddenStock;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.sim.config.SimConfig;
@@ -14,12 +15,14 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 
 	private static final int MARKET_MAKER_CASH = 1000;
 
+	private double reserve;
 	private Portfolio portfolio;
 	private HashMap<Ticker, MarketMakerPrice> priceBeliefs;
 
 	public MarketMaker(Collection<IPublicCompany> comps) {
 		super("Market Maker", new Endowment(new IStock[] { new Stock(SimConfig.MONEY, MARKET_MAKER_CASH) }, new IStock[] {}));
 		this.portfolio = new Portfolio(getMoney());
+		this.reserve = 0.0;
 		this.priceBeliefs = new HashMap<Ticker, MarketMakerPrice>();
 		for (IPublicCompany pc: comps){
 			addPosition(pc.getShareRegister().createPosition());
@@ -28,7 +31,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 
 	public void postOffers(IStockMarket dsm) {
 		portfolio.collectDividends();
-		IStock money = getMoney();
+		IStock money = getMoney().hide(reserve);
 		double budgetPerPosition = money.getAmount() / priceBeliefs.size();
 		for (MarketMakerPrice e : priceBeliefs.values()) {
 			e.trade(dsm, money, budgetPerPosition);
@@ -67,7 +70,8 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 	@Override
 	protected double calculateDividends(int day) {
 		double excessCash = getMoney().getAmount() - MARKET_MAKER_CASH;
-		return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
+		return excessCash / 5;
+//		return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
 	}
 
 	@Override
