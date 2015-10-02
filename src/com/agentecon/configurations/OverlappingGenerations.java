@@ -24,21 +24,17 @@ public class OverlappingGenerations extends SimConfig {
 
 	private static final double RETURNS_TO_SCALE = 0.8;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
-	private static final int MAX_AGE = 800;
+	private static final int MAX_AGE = 1000;
 	protected static final int MARKET_MAKERS = 10;
 	private static final int FUNDAMENTALISTS = 5;
 
 	private Good input;
 	private Good[] outputs;
-	private Good[] youngConsumption;
-	private Good[] oldConsumption;
 
 	public OverlappingGenerations() {
 		super(10000, 41, 3);
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
-		this.youngConsumption = new Good[] { outputs[0] };
-		this.oldConsumption = outputs;
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
@@ -72,9 +68,9 @@ public class OverlappingGenerations extends SimConfig {
 
 	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
-		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, youngConsumption, 10.0);
-		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, oldConsumption, 3.0, 7.0);
-		int cyclesPerGeneration = 3;
+		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, outputs, 9.0, 1.0);
+		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, outputs, 1.0, 9.0);
+		int cyclesPerGeneration = 2;
 		addEvent(new SinConsumerEvent(0, 50, count / cyclesPerGeneration, MAX_AGE, MAX_AGE / cyclesPerGeneration, "Consumer", end, youngWeights.getFactory(0)) {
 
 			@Override
