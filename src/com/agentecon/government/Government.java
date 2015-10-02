@@ -22,8 +22,9 @@ public class Government extends Agent {
 		return tax;
 	}
 
-	public void distributeWelfare(Collection<Consumer> cons) {
+	public void distributeWelfare(int day, Collection<Consumer> cons){ 
 		IStock money = getMoney();
+		System.out.println(day + " distributing " + money.getAmount());
 		double amount = getMoney().getAmount() / cons.size();
 		for (IConsumer c : cons) {
 			c.getMoney().transfer(money, amount);
