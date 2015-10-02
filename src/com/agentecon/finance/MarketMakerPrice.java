@@ -2,6 +2,7 @@ package com.agentecon.finance;
 
 import com.agentecon.good.IStock;
 import com.agentecon.price.ExpSearchPrice;
+import com.agentecon.stats.Numbers;
 
 public class MarketMakerPrice {
 
@@ -20,9 +21,11 @@ public class MarketMakerPrice {
 		double low = floor.getPrice();
 		double high = ceiling.getPrice();
 		double middle = (low + high) / 2;
-		floor.adapt(middle / SPREAD_MULTIPLIER);
+		if (Numbers.isBigger(budget, 0.0)) {
+			floor.adapt(middle / SPREAD_MULTIPLIER);
+			floor.createOffers(dsm, wallet, budget / floor.getPrice());
+		}
 		ceiling.adapt(middle * SPREAD_MULTIPLIER);
-		floor.createOffers(dsm, wallet, budget / floor.getPrice());
 		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() / 10); // offer a tenth of the present shares
 	}
 

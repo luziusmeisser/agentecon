@@ -70,7 +70,7 @@ public class OverlappingGenerations extends SimConfig {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
 		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, outputs, 9.0, 1.0);
 		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, outputs, 1.0, 9.0);
-		int cyclesPerGeneration = 2;
+		int cyclesPerGeneration = 1;
 		addEvent(new SinConsumerEvent(0, 50, count / cyclesPerGeneration, MAX_AGE, MAX_AGE / cyclesPerGeneration, "Consumer", end, youngWeights.getFactory(0)) {
 
 			@Override
