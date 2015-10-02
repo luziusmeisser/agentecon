@@ -3,8 +3,8 @@ package com.agentecon.configurations;
 import com.agentecon.agent.Endowment;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
-import com.agentecon.events.LinearConsumerEvent;
 import com.agentecon.events.SimEvent;
+import com.agentecon.events.SinConsumerEvent;
 import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
@@ -65,8 +65,8 @@ public class OverlappingGenerations extends SimConfig {
 	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
 		ConsumptionWeights consWeights = new ConsumptionWeights(new Good[] { input }, outputs, 7.0, 3.0);
-		// addEvent(new SinConsumerEvent(0, 50, count / 5, MAX_AGE, 200, "Consumer", end, consWeights.getFactory(0)));
-		addEvent(new LinearConsumerEvent(100, 1, MAX_AGE, 10 * 1000 / MAX_AGE, "Consumer", end, consWeights.getFactory(0)));
+		addEvent(new SinConsumerEvent(0, 50, count / 5, MAX_AGE, 200, "Consumer", end, consWeights.getFactory(0)));
+		// addEvent(new LinearConsumerEvent(100, 1, MAX_AGE, 10 * 1000 / MAX_AGE, "Consumer", end, consWeights.getFactory(0)));
 
 	}
 
