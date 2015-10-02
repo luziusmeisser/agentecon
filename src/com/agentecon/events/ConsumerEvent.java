@@ -40,12 +40,12 @@ public class ConsumerEvent extends SimEvent {
 	@Override
 	public void execute(IWorld sim) {
 		for (int i = 0; i < cardinality; i++) {
-			addConsumer(sim);
+			sim.add(createConsumer());
 		}
 	}
 
-	protected void addConsumer(IWorld sim) {
-		sim.add(new Consumer(type, end, utilFun.create(count++)));
+	protected Consumer createConsumer() {
+		return new Consumer(type, end, utilFun.create(count++));
 	}
 
 	public String toString() {

@@ -28,8 +28,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	private double lifetimeUtility;
 	private TradingPortfolio portfolio;
 	private MovingAverage dailySpendings;
-
-	// private ConsumerListeners listeners; clone?
+	private ConsumerListeners listeners;
 
 	public Consumer(String type, Endowment end, IUtility utility) {
 		this(type, Integer.MAX_VALUE, end, utility);
@@ -42,18 +41,18 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
 		this.portfolio = new TradingPortfolio(getMoney());
-		// this.listeners = new ConsumerListeners();
+		this.listeners = new ConsumerListeners();
 	}
 
 	public void addListener(IConsumerListener listener) {
-		// this.listeners.add(listener);
+		 this.listeners.add(listener);
 	}
 
 	public IUtility getUtilityFunction() {
 		return utility;
 	}
 
-	public void setUtilityFunction(LogUtil utility) {
+	public void setUtilityFunction(IUtility utility) {
 		this.utility = utility;
 	}
 
@@ -161,6 +160,9 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public Inventory age(Portfolio inheritance) {
+		if (age == getRetirementAge()){
+			listeners.notifyRetiring(this, age);
+		}
 		this.age++;
 		if (age > maxAge) {
 			inheritance.absorb(portfolio);

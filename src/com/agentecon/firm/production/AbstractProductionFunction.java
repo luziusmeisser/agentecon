@@ -64,7 +64,7 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 	
 	@Override
 	public String toString(){
-		return getClass().getSimpleName() + " with weights " + Arrays.toString(inputs);
+		return getClass().getSimpleName() + " with weights " + Arrays.toString(inputs) + " and output " + output;
 	}
 	
 }

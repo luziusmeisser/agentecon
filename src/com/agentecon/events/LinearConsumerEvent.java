@@ -40,8 +40,8 @@ public class LinearConsumerEvent extends ConsumerEvent {
 	}
 
 	@Override
-	protected void addConsumer(IWorld sim) {
-		sim.add(new Consumer(type, maxAge, end, utilFun.create(count++)));
+	protected Consumer createConsumer() {
+		return new Consumer(type, maxAge, end, utilFun.create(count++));
 	}
 
 }

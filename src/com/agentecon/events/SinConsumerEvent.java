@@ -40,13 +40,13 @@ public class SinConsumerEvent extends ConsumerEvent {
 		this.births += (Math.sin(period) + 1.0) * getCardinality() / cycle;
 		while (births >= 1.0){
 			births -= 1.0;
-			addConsumer(sim);
+			sim.add(createConsumer());
 		}
 	}
 	
 	@Override
-	protected void addConsumer(IWorld sim) {
-		sim.add(new Consumer(type, maxAge, end, utilFun.create(count++)));
+	protected Consumer createConsumer() {
+		return new Consumer(type, maxAge, end, utilFun.create(count++));
 	}
 	
 }
