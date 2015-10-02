@@ -30,7 +30,7 @@ public class OverlappingGenerations extends SimConfig {
 	public OverlappingGenerations() {
 		super(10000, 41, 10);
 		this.input = new Good("hours");
-		this.outputs = new Good[] { new Good("apples") };
+		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
@@ -72,10 +72,12 @@ public class OverlappingGenerations extends SimConfig {
 	}
 
 	public void addFirms(int count) {
-		for (int i = 0; i < outputs.length; i++) {
-			Endowment end = new Endowment(new IStock[] { new Stock(MONEY, MONEY_SUPPLY_PER_FIRM) }, new IStock[] {});
-			IProductionFunction prodFun = new CobbDouglasProduction(outputs[i], new Weight(input, 10)).scale(RETURNS_TO_SCALE);
-			addEvent(new FirmEvent(10, outputs[i] + " firm", end, prodFun));
+		for (Good output : outputs) {
+			for (int i = 0; i < outputs.length; i++) {
+				Endowment end = new Endowment(new IStock[] { new Stock(MONEY, MONEY_SUPPLY_PER_FIRM) }, new IStock[] {});
+				IProductionFunction prodFun = new CobbDouglasProduction(output, new Weight(input, 10)).scale(RETURNS_TO_SCALE);
+				addEvent(new FirmEvent(10, outputs[i] + " firm", end, prodFun));
+			}
 		}
 	}
 
