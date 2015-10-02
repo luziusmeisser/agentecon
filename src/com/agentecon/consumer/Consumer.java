@@ -59,7 +59,6 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	private double savingsTarget;
 
 	public void managePortfolio(IStockMarket stocks) {
-		portfolio.collectDividends();
 		if (isMortal()) {
 			if (isRetired()) {
 				int daysLeft = maxAge - age + 1;

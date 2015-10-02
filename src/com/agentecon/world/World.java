@@ -11,6 +11,7 @@ import com.agentecon.finance.Position;
 import com.agentecon.firm.Producer;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
+import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.SimConfig;

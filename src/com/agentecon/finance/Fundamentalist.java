@@ -37,7 +37,6 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 	}
 
 	public void managePortfolio(IStockMarket dsm) {
-		portfolio.collectDividends();
 		IStock money = getMoney();
 		
 		double outerValue = calcOuterValue(dsm);

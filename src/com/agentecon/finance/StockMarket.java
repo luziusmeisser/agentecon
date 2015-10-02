@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.agentecon.api.IAgent;
 import com.agentecon.api.IMarket;
+import com.agentecon.government.Government;
 import com.agentecon.market.MarketListeners;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListenerAdapter;
@@ -26,6 +27,11 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		for (IPublicCompany firm : ags.getPublicCompanies()) {
 			firm.payDividends(day);
 		}
+		Government gov = ags.getGovernment();
+		for (IShareholder shareholder: ags.getShareHolders()){
+			shareholder.getPortfolio().collectDividends(gov.getDividendTax());
+		}
+		gov.distributeWelfare(ags.getAllConsumers());
 		DailyStockMarket dsm = new DailyStockMarket(listeners);
 		for (MarketMaker mm : ags.getAllMarketMakers()) {
 //			System.out.println(day + ": " + mm);
