@@ -1,6 +1,7 @@
 package com.agentecon.configurations;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IConsumer;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IConsumerListener;
 import com.agentecon.consumer.Weight;
@@ -21,10 +22,10 @@ import com.agentecon.world.IWorld;
 
 public class OverlappingGenerations extends SimConfig {
 
-	private static final double RETURNS_TO_SCALE = 0.5;
+	private static final double RETURNS_TO_SCALE = 0.8;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 800;
-	protected static final int MARKET_MAKERS = 5;
+	protected static final int MARKET_MAKERS = 10;
 	private static final int FUNDAMENTALISTS = 5;
 
 	private Good input;
@@ -71,25 +72,25 @@ public class OverlappingGenerations extends SimConfig {
 
 	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
-		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, oldConsumption, 7.0, 3.0);
+		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, youngConsumption, 7.0, 3.0);
 		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, oldConsumption, 7.0, 3.0);
 		int cyclesPerGeneration = 3;
 		addEvent(new SinConsumerEvent(0, 50, count / cyclesPerGeneration, MAX_AGE, MAX_AGE / cyclesPerGeneration, "Consumer", end, youngWeights.getFactory(0)) {
 
 			@Override
 			protected Consumer createConsumer() {
-				final Consumer c = super.createConsumer();
-				// c.addListener(new IConsumerListener() {
-				//
-				// @Override
-				// public void notifyRetiring(int age) {
-				// c.setUtilityFunction(oldWeights.getFactory(0).create(0));
-				// }
-				//
-				// @Override
-				// public void notifyConsuming(int age, Inventory inv, double utility) {
-				// }
-				// });
+				Consumer c = super.createConsumer();
+				c.addListener(new IConsumerListener() {
+
+					@Override
+					public void notifyConsuming(IConsumer inst, int age, Inventory inv, double utility) {
+					}
+
+					@Override
+					public void notifyRetiring(IConsumer inst, int age) {
+						((Consumer)inst).setUtilityFunction(oldWeights.getFactory(0).create(0));
+					}
+				});
 				return c;
 			}
 

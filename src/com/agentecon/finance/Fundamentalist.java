@@ -14,7 +14,7 @@ import com.agentecon.world.IWorld;
 
 public class Fundamentalist extends PublicCompany implements IAgent, IStockMarketParticipant {
 
-	private static final int CASH = 1000;
+	private static final int CASH = 0;
 
 	private IWorld world;
 	private Portfolio portfolio;
@@ -38,7 +38,8 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 
 	public void managePortfolio(IStockMarket dsm) {
 		portfolio.collectDividends();
-
+		IStock money = getMoney();
+		
 		double outerValue = calcOuterValue(dsm);
 		double innerValue = calcInnerValue(dsm);
 		boolean buyingAllowed = 1.5 * outerValue > innerValue;
@@ -48,23 +49,22 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 		PriorityQueue<IPublicCompany> queue = getOfferQueue(dsm, comps);
 		int count = queue.size() / 5;
 		if (sellingAllowed) {
-			sellBadShares(dsm, queue, count);
+			sellBadShares(money, dsm, queue, count);
 		}
 		while (queue.size() > count) {
 			queue.poll();
 		}
 		if (buyingAllowed) {
-			buyGoodShares(dsm, queue);
+			buyGoodShares(money, dsm, queue);
 		}
-
 	}
 
-	protected void sellBadShares(IStockMarket dsm, PriorityQueue<IPublicCompany> queue, int count) {
+	protected void sellBadShares(IStock money, IStockMarket dsm, PriorityQueue<IPublicCompany> queue, int count) {
 		for (int i = 0; i < count; i++) {
 			IPublicCompany pc = queue.poll();
 			Position pos = portfolio.getPosition(pc.getTicker());
 			if (pos != null && !pos.isEmpty()) {
-				dsm.sell(pos, getMoney(), pos.getAmount());
+				dsm.sell(pos, money, pos.getAmount());
 				if (pos.isEmpty()) {
 					portfolio.disposePosition(pos.getTicker());
 				}
@@ -72,12 +72,12 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 		}
 	}
 
-	protected void buyGoodShares(IStockMarket dsm, PriorityQueue<IPublicCompany> queue) {
+	protected void buyGoodShares(IStock money, IStockMarket dsm, PriorityQueue<IPublicCompany> queue) {
 		ArrayList<IPublicCompany> list = new ArrayList<>(queue);
-		for (int i = list.size() - 1; i >= 0 && !getMoney().isEmpty(); i--) {
+		for (int i = list.size() - 1; i >= 0 && !money.isEmpty(); i--) {
 			IPublicCompany pc = list.get(i);
 			Position pos = portfolio.getPosition(pc.getTicker());
-			Position pos2 = dsm.buy(pc.getTicker(), pos, getMoney(), getMoney().getAmount());
+			Position pos2 = dsm.buy(pc.getTicker(), pos, money, money.getAmount());
 			portfolio.addPosition(pos2);
 		}
 	}
