@@ -44,6 +44,7 @@ public class DailyStockMarket implements IStockMarket {
 
 	@Override
 	public Ticker findAnyAsk() {
+		// TEMP improve performance
 		ArrayList<Ask> list = new ArrayList<>();
 		double total = 0.0;
 		for (BestPriceMarket market: market.values()){
