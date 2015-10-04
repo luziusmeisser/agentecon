@@ -31,7 +31,7 @@ public class OverlappingGenerations extends SimConfig {
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(10000, 41, 3);
+		super(10000, 41, 7);
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
