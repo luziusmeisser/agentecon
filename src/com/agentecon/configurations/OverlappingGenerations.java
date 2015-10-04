@@ -8,7 +8,6 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.SinConsumerEvent;
-import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
@@ -36,7 +35,8 @@ public class OverlappingGenerations extends SimConfig {
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
-		addFirms(10);
+		addFirms(outputs[0], 15);
+		addFirms(outputs[1], 5);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
 
 			@Override
@@ -55,21 +55,21 @@ public class OverlappingGenerations extends SimConfig {
 		// }
 		// });
 		// }
-		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
-
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < getCardinality(); i++) {
-					sim.add(new Fundamentalist(sim));
-				}
-			}
-		});
+		// addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+		//
+		// @Override
+		// public void execute(IWorld sim) {
+		// for (int i = 0; i < getCardinality(); i++) {
+		// sim.add(new Fundamentalist(sim));
+		// }
+		// }
+		// });
 	}
 
 	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
 		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, outputs, 9.0, 1.0);
-		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, outputs, 1.0, 9.0);
+		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, outputs, 5.0, 5.0);
 		int cyclesPerGeneration = 1;
 		addEvent(new SinConsumerEvent(0, 50, count / cyclesPerGeneration, MAX_AGE, MAX_AGE / cyclesPerGeneration, "Consumer", end, youngWeights.getFactory(0)) {
 
@@ -84,7 +84,7 @@ public class OverlappingGenerations extends SimConfig {
 
 					@Override
 					public void notifyRetiring(IConsumer inst, int age) {
-						((Consumer)inst).setUtilityFunction(oldWeights.getFactory(0).create(0));
+						((Consumer) inst).setUtilityFunction(oldWeights.getFactory(0).create(0));
 					}
 				});
 				return c;
@@ -95,12 +95,10 @@ public class OverlappingGenerations extends SimConfig {
 
 	}
 
-	public void addFirms(int count) {
-		for (int i = 0; i < outputs.length; i++) {
-			Endowment end = new Endowment(new IStock[] { new Stock(MONEY, MONEY_SUPPLY_PER_FIRM) }, new IStock[] {});
-			IProductionFunction prodFun = new CobbDouglasProduction(outputs[i], new Weight(input, 10)).scale(RETURNS_TO_SCALE);
-			addEvent(new FirmEvent(10, outputs[i] + " firm", end, prodFun));
-		}
+	public void addFirms(Good good, int count) {
+		Endowment end = new Endowment(new IStock[] { new Stock(MONEY, MONEY_SUPPLY_PER_FIRM) }, new IStock[] {});
+		IProductionFunction prodFun = new CobbDouglasProduction(good, new Weight(input, 10)).scale(RETURNS_TO_SCALE);
+		addEvent(new FirmEvent(10, good + " firm", end, prodFun));
 	}
 
 	@Override
