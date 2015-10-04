@@ -32,7 +32,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 			shareholder.getPortfolio().collectDividends(gov.getDividendTax());
 		}
 		gov.distributeWelfare(day, ags.getAllConsumers());
-		DailyStockMarket dsm = new DailyStockMarket(listeners);
+		DailyStockMarket dsm = new DailyStockMarket(listeners, world.getRand());
 		for (MarketMaker mm : ags.getAllMarketMakers()) {
 //			System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);

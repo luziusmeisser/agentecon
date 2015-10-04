@@ -1,7 +1,5 @@
 package com.agentecon.finance;
 
-import java.util.Collection;
-
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
@@ -12,8 +10,6 @@ public interface IStockMarket extends IPriceMakerMarket {
 	public Ticker findAnyAsk();
 	
 	public Position buy(Ticker ticker, Position existing, IStock wallet, double budget);
-
-	public Ticker findHighestBid(Collection<Ticker> keySet);
 
 	public double sell(Position pos, IStock wallet, double maxAmount);
 

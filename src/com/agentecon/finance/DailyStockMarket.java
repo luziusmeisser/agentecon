@@ -1,9 +1,9 @@
 package com.agentecon.finance;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Random;
 
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
@@ -14,11 +14,12 @@ import com.agentecon.util.InstantiatingHashMap;
 
 public class DailyStockMarket implements IStockMarket {
 
+	private Random rand;
 	private MarketListeners listeners;
-	private Iterator<BestPriceMarket> any;
 	private HashMap<Ticker, BestPriceMarket> market;
 
-	public DailyStockMarket(MarketListeners listeners) {
+	public DailyStockMarket(MarketListeners listeners, Random rand) {
+		this.rand = rand;
 		this.listeners = listeners;
 		this.market = new InstantiatingHashMap<Ticker, BestPriceMarket>() {
 
@@ -27,18 +28,6 @@ public class DailyStockMarket implements IStockMarket {
 				return new BestPriceMarket(key);
 			}
 		};
-	}
-
-	public BestPriceMarket getAny() {
-		try {
-			if (any == null || !any.hasNext()) {
-				any = market.values().iterator();
-			}
-			return any.hasNext() ? any.next() : null;
-		} catch (ConcurrentModificationException e) {
-			any = null;
-			return getAny();
-		}
 	}
 
 	@Override
@@ -55,13 +44,24 @@ public class DailyStockMarket implements IStockMarket {
 
 	@Override
 	public Ticker findAnyAsk() {
-		Ask ask = null;
-		int count = 0;
-		while (ask == null && count < market.size()) {
-			ask = getAny().getAsk();
-			count++;
+		ArrayList<Ask> list = new ArrayList<>();
+		double total = 0.0;
+		for (BestPriceMarket market: market.values()){
+			Ask ask = market.getAsk();
+			if (ask != null){
+				list.add(ask);
+				total += ask.getPrice().getPrice();
+			}
 		}
-		return ask == null ? null : (Ticker) ask.getGood();
+		double selection = rand.nextDouble() * total;
+		double pos = 0.0;
+		for (Ask a: list){
+			pos += a.getPrice().getPrice();
+			if (pos >= selection){
+				return (Ticker) a.getGood();
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -74,7 +74,6 @@ public class DailyStockMarket implements IStockMarket {
 		}
 	}
 
-	@Override
 	public Ticker findHighestBid(Collection<Ticker> keySet) {
 		BidFin highest = null;
 		for (Ticker ticker : keySet) {
