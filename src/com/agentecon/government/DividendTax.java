@@ -16,7 +16,7 @@ public class DividendTax implements ITax {
 
 	@Override
 	public void collect(IStock wallet, double latestDividends) {
-//		TEMP money.transfer(wallet, Math.max(0, (latestDividends - FREE_AMOUNT) * TAX_RATE));
+//		TEMP money.transfer(wallet, Math.max(0, (latestDividends - FREE_AMOUNT) * TAX_RATE)); 
 	}
 
 }
