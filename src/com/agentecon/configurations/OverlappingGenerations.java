@@ -32,7 +32,7 @@ public class OverlappingGenerations extends SimConfig {
 	private Good[] outputs;
 
 	public OverlappingGenerations() {
-		super(3000, 41, 7);
+		super(7000, 41, 7);
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
@@ -56,15 +56,15 @@ public class OverlappingGenerations extends SimConfig {
 		// }
 		// });
 		// }
-		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
-
-			@Override
-			public void execute(IWorld sim) {
-				for (int i = 0; i < getCardinality(); i++) {
-					sim.add(new Fundamentalist(sim));
-				}
-			}
-		});
+		// addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+		//
+		// @Override
+		// public void execute(IWorld sim) {
+		// for (int i = 0; i < getCardinality(); i++) {
+		// sim.add(new Fundamentalist(sim));
+		// }
+		// }
+		// });
 	}
 
 	public void addConsumers(int count) {
