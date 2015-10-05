@@ -37,7 +37,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 			// System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
 		}
-		System.out.println(day + " trading stats " + dsm.getTradingStats());
+//		System.out.println(day + " trading stats " + dsm.getTradingStats());
 		for (IPublicCompany pc : ags.getPublicCompanies()) {
 			pc.raiseCapital(dsm);
 		}
