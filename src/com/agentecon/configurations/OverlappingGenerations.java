@@ -36,8 +36,8 @@ public class OverlappingGenerations extends SimConfig {
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
-		addFirms(outputs[0], 15);
-		addFirms(outputs[1], 15);
+		addFirms(outputs[0], 5);
+		addFirms(outputs[1], 5);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
 
 			@Override
