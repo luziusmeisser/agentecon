@@ -17,6 +17,7 @@ import com.agentecon.events.SimEvent;
 import com.agentecon.finance.IPublicCompany;
 import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.StockMarket;
+import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Producer;
 import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
@@ -183,6 +184,11 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public Collection<? extends IShareholder> getShareHolders() {
 		return world.getAgents().getShareHolders();
+	}
+
+	@Override
+	public IPublicCompany getListedCompany(Ticker ticker) {
+		return world.getAgents().getCompany(ticker);
 	}
 
 }
