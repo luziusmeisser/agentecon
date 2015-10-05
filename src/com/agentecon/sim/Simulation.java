@@ -111,7 +111,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	public void step(int days) {
 		int target = this.day + days;
 		for (; day < target; day++) {
-			processEvents(day); // must happen before daily endowments
+			processEvents(day); //  must happen before daily endowments
 			world.prepareDay(day);
 			stocks.trade(day);
 			RepeatedMarket market = new RepeatedMarket(world, listeners);
