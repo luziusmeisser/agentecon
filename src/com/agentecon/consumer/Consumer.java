@@ -71,7 +71,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 					invest = Math.min(getMoney().getAmount(), invest);
 				}
 				portfolio.invest(stocks, invest);
-			}
+			} 
 		}
 	}
 
