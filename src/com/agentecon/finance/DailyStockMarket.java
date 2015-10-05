@@ -119,5 +119,18 @@ public class DailyStockMarket implements IStockMarket {
 	public boolean hasAsk(Ticker ticker) {
 		return getAsk(ticker) != null;
 	}
+	
+	public String getTradingStats() {
+		int asks = 0, bids = 0;
+		for (BestPriceMarket bpm: market.values()){
+			if (bpm.getAsk() != null){
+				asks++;
+			}
+			if (bpm.getBid() != null){
+				bids++;
+			}
+		}
+		return asks + "/" + market.size() + " asks and " + bids + "/" + market.size() + " bids left";
+	}
 
 }
