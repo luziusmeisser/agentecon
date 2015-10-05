@@ -62,6 +62,7 @@ public class DailyStockMarket implements IStockMarket {
 				return (Ticker) a.getGood();
 			}
 		}
+		
 		return null;
 	}
 
