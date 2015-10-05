@@ -59,6 +59,9 @@ public class DailyStockMarket implements IStockMarket {
 		for (Ask a: list){
 			pos += a.getPrice().getPrice();
 			if (pos >= selection){
+				if (a.getGood().toString().contains("foo6")){
+					System.out.println(a.toString());
+				}
 				return (Ticker) a.getGood();
 			}
 		}
