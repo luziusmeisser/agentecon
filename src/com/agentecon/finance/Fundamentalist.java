@@ -14,7 +14,7 @@ import com.agentecon.world.IWorld;
 
 public class Fundamentalist extends PublicCompany implements IAgent, IStockMarketParticipant {
 
-	private static final int CASH = 0;
+	private static final int CASH = 1000;
 
 	private IWorld world;
 	private Portfolio portfolio;
