@@ -28,17 +28,17 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 			firm.payDividends(day);
 		}
 		Government gov = ags.getGovernment();
-		for (IShareholder shareholder: ags.getShareHolders()){
+		for (IShareholder shareholder : ags.getShareHolders()) {
 			shareholder.getPortfolio().collectDividends(gov.getDividendTax());
 		}
 		gov.distributeWelfare(day, ags.getAllConsumers());
 		DailyStockMarket dsm = new DailyStockMarket(listeners, world.getRand());
 		for (MarketMaker mm : ags.getAllMarketMakers()) {
-//			System.out.println(day + ": " + mm);
+			// System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
 		}
-//		System.out.println(day + " trading stats " + dsm.getTradingStats());
-		for (IPublicCompany pc: ags.getPublicCompanies()){
+		System.out.println(day + " trading stats " + dsm.getTradingStats());
+		for (IPublicCompany pc : ags.getPublicCompanies()) {
 			pc.raiseCapital(dsm);
 		}
 		for (IStockMarketParticipant con : ags.getRandomStockMarketParticipants()) {
@@ -54,7 +54,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 	}
 
 	private void notifyMarketMakers(IPublicCompany comp) {
-		ShareRegister register = (ShareRegister)comp.getShareRegister();
+		ShareRegister register = (ShareRegister) comp.getShareRegister();
 		Collection<MarketMaker> mms = world.getAgents().getAllMarketMakers();
 		for (MarketMaker mm : mms) {
 			mm.addPosition(register.createPosition());

@@ -26,7 +26,7 @@ public class MarketMakerPrice {
 			floor.createOffers(dsm, wallet, budget / floor.getPrice());
 		}
 		ceiling.adapt(middle * SPREAD_MULTIPLIER);
-		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() / 10); // offer a tenth of the present shares
+		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() / 20); // offer a fraction of the present shares
 	}
 
 	public double getPrice() {
