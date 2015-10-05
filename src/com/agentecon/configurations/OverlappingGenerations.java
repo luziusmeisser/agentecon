@@ -47,6 +47,7 @@ public class OverlappingGenerations extends SimConfig {
 				}
 			}
 		});
+		
 		// for (int i = 0; i < MARKET_MAKERS; i++) {
 		// addEvent(new SimEvent(5000 + i * 500, 1) {
 		//
