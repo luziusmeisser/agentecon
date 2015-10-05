@@ -6,6 +6,7 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
+import com.agentecon.finance.IPublicCompany;
 import com.agentecon.firm.Producer;
 import com.agentecon.firm.decisions.CogsDividend;
 import com.agentecon.firm.decisions.IFirmDecisions;
@@ -69,15 +70,15 @@ public class CompetitiveScenario implements IConfiguration {
 								f.addFirmMonitor(new IFirmListener() {
 
 									@Override
-									public void reportDividend(double amount) {
+									public void reportDividend(IPublicCompany inst, double amount) {
 									}
 
 									@Override
-									public void notifyProduced(String producer, IStock[] inputs, IStock output) {
+									public void notifyProduced(IPublicCompany inst, String producer, IStock[] inputs, IStock output) {
 									}
 									
 									@Override
-									public void reportResults(double revenue, double cogs, double profits) {
+									public void reportResults(IPublicCompany inst, double revenue, double cogs, double profits) {
 										stats.reportProfits(strategy, profits);
 									}
 

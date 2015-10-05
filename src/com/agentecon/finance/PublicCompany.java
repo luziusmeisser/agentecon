@@ -49,7 +49,7 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 	public void payDividends(int day) {
 		double dividend = calculateDividends(day);
 		if (dividend > 0){
-			monitor.reportDividend(dividend);
+			monitor.reportDividend(this, dividend);
 			register.payDividend(getDividendWallet(), dividend);
 		}
 	}

@@ -110,8 +110,8 @@ public class Producer extends PublicCompany implements IFirm {
 			inputAmounts[i] = inputs[i].getStock().duplicate();
 		}
 		double produced = prod.produce(getInventory());
-		monitor.notifyProduced(getType(), inputAmounts, new Stock(output.getGood(), produced));
-		monitor.reportResults(output.getVolume(), cogs, produced * output.getPrice() - cogs);
+		monitor.notifyProduced(this, getType(), inputAmounts, new Stock(output.getGood(), produced));
+		monitor.reportResults(this, output.getVolume(), cogs, produced * output.getPrice() - cogs);
 		return produced;
 	}
 

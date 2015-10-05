@@ -1,5 +1,6 @@
 package com.agentecon.events;
 
+import com.agentecon.finance.IPublicCompany;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.metric.IFirmListener;
@@ -17,7 +18,7 @@ public class FirstDayProduction implements IFirmListener {
 	}
 
 	@Override
-	public void notifyProduced(String producer, IStock[] inputs, IStock output) {
+	public void notifyProduced(IPublicCompany inst, String producer, IStock[] inputs, IStock output) {
 		if (count > 0) {
 			assert this.output == null || this.output.equals(output.getGood());
 			assert output.getAmount() < 100;
@@ -28,7 +29,7 @@ public class FirstDayProduction implements IFirmListener {
 	}
 
 	@Override
-	public void reportDividend(double amount) {
+	public void reportDividend(IPublicCompany inst, double amount) {
 	}
 
 	public Good getGood() {
@@ -40,7 +41,7 @@ public class FirstDayProduction implements IFirmListener {
 	}
 
 	@Override
-	public void reportResults(double revenue, double cogs, double profits) {
+	public void reportResults(IPublicCompany inst, double revenue, double cogs, double profits) {
 	}
 
 }
