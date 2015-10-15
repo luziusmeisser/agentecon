@@ -42,15 +42,6 @@ public class OverlappingGenerations extends SimConfig {
 				}
 			}
 		});
-		// for (int i = 0; i < MARKET_MAKERS; i++) {
-		// addEvent(new SimEvent(5000 + i * 500, 1) {
-		//
-		// @Override
-		// public void execute(IWorld sim) {
-		// sim.add(new MarketMaker(sim.getAgents().getPublicCompanies()));
-		// }
-		// });
-		// }
 		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
 
 			@Override
@@ -65,9 +56,7 @@ public class OverlappingGenerations extends SimConfig {
 	public void addConsumers(int count) {
 		Endowment end = new Endowment(new Stock(input, Endowment.HOURS_PER_DAY));
 		ConsumptionWeights consWeights = new ConsumptionWeights(new Good[] { input }, outputs, 7.0, 3.0);
-		// addEvent(new SinConsumerEvent(0, 50, count / 5, MAX_AGE, 200, "Consumer", end, consWeights.getFactory(0)));
 		addEvent(new LinearConsumerEvent(100, 1, MAX_AGE, 10 * 1000 / MAX_AGE, "Consumer", end, consWeights.getFactory(0)));
-
 	}
 
 	public void addFirms(int count) {
