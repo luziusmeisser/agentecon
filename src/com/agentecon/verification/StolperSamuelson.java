@@ -95,11 +95,15 @@ public class StolperSamuelson {
 	}
 
 	public SimConfig createConfiguration(PriceConfig pricing, int wiggles, int scale, int rounds) {
-		SimConfig config = new SimConfig(rounds, 25, wiggles);
+		SimConfig config = new SimConfig(rounds, getRandomSeed(), wiggles);
 		addFirms(pricing, scale, config);
 		addConsumers(scale, config);
 		addSpecialEvents(config);
 		return config;
+	}
+	
+	protected int getRandomSeed(){
+		return 25;
 	}
 
 	protected void addSpecialEvents(SimConfig config) {

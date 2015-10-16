@@ -6,19 +6,18 @@ public class StrategyExploration implements IFirmDecisions {
 
 	public static final int TYPES = 11;
 
-	private double laborshare, a, b;
+	private double laborshare, fr;
 	private EExplorationMode mode;
 
-	public StrategyExploration(double laborshare, double a, double b, EExplorationMode mode) {
+	public StrategyExploration(double laborshare, double fr, EExplorationMode mode) {
 		this.laborshare = laborshare;
 		this.mode = mode;
-		this.a = a;
-		this.b = b;
+		this.fr = fr;
 	}
 
 	@Override
 	public IFirmDecisions duplicate() {
-		return new StrategyExploration(laborshare, a, b, mode);
+		return new StrategyExploration(laborshare, fr, mode);
 	}
 
 	public double calcCogs(double cash, double cogs) {
@@ -28,16 +27,17 @@ public class StrategyExploration implements IFirmDecisions {
 	@Override
 	public double calcDividend(IFinancials metrics) {
 		double c = mode.selectCosts(metrics);
-		double r = mode.selectRevenue(metrics);
-		double res1 = r - c;
-		double res2 = (1 - laborshare) * r;
-		double res3 = (1 - laborshare) / laborshare * c;
-		return a * res1 + b * res2 + (1 - a - b) * res3;
-		// return a * r + b * c;
+		double r = mode.selectRevenue(metrics, laborshare);
+		double fc = calcFc();
+		return fr * r + fc * c;
+	}
+
+	protected double calcFc() {
+		return (1-laborshare)/laborshare*(1-fr);
 	}
 
 	public String toString() {
-		return mode + " exploration\t" + Numbers.toString(a) + "\t" + Numbers.toString(b);
+		return mode + " exploration\t" + Numbers.toString(fr) + "\t" + Numbers.toString(calcFc());
 	}
 
 }

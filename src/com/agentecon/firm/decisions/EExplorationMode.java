@@ -2,33 +2,38 @@ package com.agentecon.firm.decisions;
 
 public enum EExplorationMode {
 
-	IDEAL_COST, PLANNED, KNOWN, PAIRED, KNOWN_PAIRED;
+	IDEAL_COST, IDEAL_COST2, IDEAL_BOTH, EXPECTED, PLANNED, KNOWN, PAIRED;
 
 	public double selectCosts(IFinancials metrics) {
 		switch (this) {
 		default:
+		case IDEAL_BOTH:
+		case IDEAL_COST2:
 		case IDEAL_COST:
 			return metrics.getIdealCogs();
 		case PLANNED:
+		case EXPECTED:
 			return metrics.getPlannedCogs();
 		case KNOWN:
 			return metrics.getLatestCogs();
 		case PAIRED:
 			return metrics.getLatestCogs();
-		case KNOWN_PAIRED:
-			throw new RuntimeException("TODO");
 		}
 	}
 
-	public double selectRevenue(IFinancials metrics) {
+	public double selectRevenue(IFinancials metrics, double laborshare) {
 		switch (this) {
 		default:
-		case IDEAL_COST:
+		case IDEAL_BOTH:
+			return metrics.getIdealCogs()/laborshare*(1-laborshare);
 		case PLANNED:
+			return metrics.getPlannedCogs()/laborshare*(1-laborshare);
+		case IDEAL_COST:
+		case EXPECTED:
 		case PAIRED:
 			return metrics.getExpectedRevenue();
+		case IDEAL_COST2:
 		case KNOWN:
-		case KNOWN_PAIRED:
 			return metrics.getLatestRevenue();
 		}
 	}

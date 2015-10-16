@@ -25,28 +25,39 @@ import com.agentecon.world.IWorld;
 public class ExplorationScenario implements IConfiguration {
 
 	private static final int DAYS = 2000;
-	private static final boolean INTENSE_SEARCH = false;
-	
-	private static final double MIN = -1.0;
-	private static final double MAX = 2.0;
-	private static final double INCREMENT = INTENSE_SEARCH ? 0.05 : 0.5;
-	public static final int ROUNDS_PER_LINE = (int) Math.round((MAX - MIN) / INCREMENT) + 1;
 
-	private double a, b;
+	private static final double MIN = -5.0;
+	private static final double MAX = 5.0;
+	private static final double INCREMENT = 0.01;
+
+	private double fr;
+	private boolean exploreMode;
+	private EExplorationMode mode;
 	private ArrayList<FirmStatistics> firmStats;
 
-	public ExplorationScenario() {
-		this.a = MIN - INCREMENT;
-		this.b = INTENSE_SEARCH ? MIN : -0.3; //MIN;
+	public ExplorationScenario(EExplorationMode mode) {
+		this(mode, MIN);
+		this.exploreMode = false;
+	}
+	
+	public ExplorationScenario(double fr) {
+		this(EExplorationMode.values()[0], fr);
+		this.exploreMode = true;
+	}
+
+	private ExplorationScenario(EExplorationMode mode, double fr) {
+		this.mode = mode;
+		this.fr = fr - INCREMENT;
 		this.firmStats = new ArrayList<>();
 	}
 
 	@Override
 	public SimulationConfig createNextConfig() {
-		a += INCREMENT;
-		if (Numbers.isBigger(a, MAX)){
-			a = MIN;
-			b += INCREMENT;
+		if (exploreMode) {
+			int next = mode.ordinal() + 1;
+			this.mode = EExplorationMode.values()[next];
+		} else {
+			fr += INCREMENT;
 		}
 		final FirmStatistics stats = new FirmStatistics();
 		firmStats.add(stats);
@@ -69,6 +80,10 @@ public class ExplorationScenario implements IConfiguration {
 					}
 
 				});
+			}
+
+			protected int getRandomSeed() {
+				return (int) (fr * 1000);
 			}
 
 			@Override
@@ -115,11 +130,15 @@ public class ExplorationScenario implements IConfiguration {
 
 	@Override
 	public boolean shouldTryAgain() {
-		return Numbers.isSmaller(a, MAX) || INTENSE_SEARCH && Numbers.isSmaller(b, MAX);
+		if (exploreMode) {
+			return mode.ordinal() < EExplorationMode.values().length - 1;
+		} else {
+			return Numbers.isSmaller(fr, MAX);
+		}
 	}
-	
-	protected IFirmDecisions createStrategy(){
-		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, a, b, EExplorationMode.KNOWN);
+
+	protected IFirmDecisions createStrategy() {
+		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, fr, mode);
 	}
 
 	@Override
