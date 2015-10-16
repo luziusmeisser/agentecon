@@ -119,7 +119,7 @@ public class ExplorationScenario implements IConfiguration {
 	}
 	
 	protected IFirmDecisions createStrategy(){
-		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, a, b, EExplorationMode.PAIRED);
+		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, a, b, EExplorationMode.KNOWN);
 	}
 
 	@Override
