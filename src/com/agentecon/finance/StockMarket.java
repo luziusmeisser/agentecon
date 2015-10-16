@@ -4,10 +4,14 @@ import java.util.Collection;
 
 import com.agentecon.api.IAgent;
 import com.agentecon.api.IMarket;
+import com.agentecon.consumer.Consumer;
+import com.agentecon.good.IStock;
+import com.agentecon.good.Stock;
 import com.agentecon.government.Government;
 import com.agentecon.market.MarketListeners;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.SimulationListenerAdapter;
+import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.Agents;
 import com.agentecon.world.World;
 
@@ -27,17 +31,42 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		for (IPublicCompany firm : ags.getPublicCompanies()) {
 			firm.payDividends(day);
 		}
+		Collection<MarketMaker> mms = ags.getAllMarketMakers();
+		if (mms.isEmpty()) {
+			// Assume model without stock market, distribute dividends proportionally among consumers
+			distributeDividendsEqually(day, ags);
+		} else {
+			runDailyMarket(day, ags, mms);
+		}
+	}
+
+	private void distributeDividendsEqually(int day, Agents ags) {
+		IStock wallet = new Stock(SimConfig.MONEY);
+		for (IPublicCompany firm : ags.getPublicCompanies()) {
+			((ShareRegister)firm.getShareRegister()).collectRootDividend(wallet);
+		}
+		Collection<Consumer> consumers = ags.getAllConsumers();
+		double dividend = wallet.getAmount() / consumers.size();
+		for (Consumer cons: consumers){
+			cons.getMoney().transfer(wallet, dividend);
+		}
+		if (!wallet.isEmpty()){
+			consumers.iterator().next().getMoney().absorb(wallet);
+		}
+	}
+
+	protected void runDailyMarket(int day, Agents ags, Collection<MarketMaker> mms) {
 		Government gov = ags.getGovernment();
 		for (IShareholder shareholder : ags.getShareHolders()) {
 			shareholder.getPortfolio().collectDividends(gov.getDividendTax());
 		}
 		gov.distributeWelfare(day, ags.getAllConsumers());
 		DailyStockMarket dsm = new DailyStockMarket(listeners, world.getRand());
-		for (MarketMaker mm : ags.getAllMarketMakers()) {
+		for (MarketMaker mm : mms) {
 			// System.out.println(day + ": " + mm);
 			mm.postOffers(dsm);
 		}
-//		System.out.println(day + " trading stats " + dsm.getTradingStats());
+		// System.out.println(day + " trading stats " + dsm.getTradingStats());
 		for (IPublicCompany pc : ags.getPublicCompanies()) {
 			pc.raiseCapital(dsm);
 		}
