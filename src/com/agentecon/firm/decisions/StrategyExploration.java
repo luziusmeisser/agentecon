@@ -33,10 +33,11 @@ public class StrategyExploration implements IFirmDecisions {
 		double res2 = (1 - laborshare) * r;
 		double res3 = (1 - laborshare) / laborshare * c;
 		return a * res1 + b * res2 + (1 - a - b) * res3;
+		// return a * r + b * c;
 	}
 
 	public String toString() {
-		return "Exploration\t" + Numbers.toString(a) + "\t" + Numbers.toString(b);
+		return mode + " exploration\t" + Numbers.toString(a) + "\t" + Numbers.toString(b);
 	}
 
 }

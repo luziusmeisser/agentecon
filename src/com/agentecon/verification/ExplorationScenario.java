@@ -19,26 +19,35 @@ import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
+import com.agentecon.stats.Numbers;
 import com.agentecon.world.IWorld;
 
 public class ExplorationScenario implements IConfiguration {
 
-	private static final double MIN = 0.0;
-	private static final double MAX = 1.0;
-	private static final double INCREMENT = 0.1;
+	private static final int DAYS = 2000;
+	private static final boolean INTENSE_SEARCH = false;
+	
+	private static final double MIN = -1.0;
+	private static final double MAX = 2.0;
+	private static final double INCREMENT = INTENSE_SEARCH ? 0.05 : 0.5;
+	public static final int ROUNDS_PER_LINE = (int) Math.round((MAX - MIN) / INCREMENT) + 1;
 
 	private double a, b;
 	private ArrayList<FirmStatistics> firmStats;
 
 	public ExplorationScenario() {
 		this.a = MIN - INCREMENT;
-		this.b = MIN;
+		this.b = INTENSE_SEARCH ? MIN : -0.3; //MIN;
 		this.firmStats = new ArrayList<>();
 	}
 
 	@Override
 	public SimulationConfig createNextConfig() {
 		a += INCREMENT;
+		if (Numbers.isBigger(a, MAX)){
+			a = MIN;
+			b += INCREMENT;
+		}
 		final FirmStatistics stats = new FirmStatistics();
 		firmStats.add(stats);
 		StolperSamuelson scenario = new StolperSamuelson() {
@@ -47,7 +56,7 @@ public class ExplorationScenario implements IConfiguration {
 			protected void addSpecialEvents(SimConfig config) {
 				double val = HIGH;
 				double step = 0.1;
-				for (int i = 1000; i < 5000; i += 500) {
+				for (int i = 1000; i < DAYS; i += 250) {
 					val -= step;
 					step += 0.05;
 					super.updatePrefs(config, i, val);
@@ -101,21 +110,22 @@ public class ExplorationScenario implements IConfiguration {
 			}
 
 		};
-		return scenario.createConfiguration(PriceConfig.DEFAULT, 5000);
+		return scenario.createConfiguration(PriceConfig.DEFAULT, DAYS);
 	}
 
 	@Override
 	public boolean shouldTryAgain() {
-		return a < MAX;
+		return Numbers.isSmaller(a, MAX) || INTENSE_SEARCH && Numbers.isSmaller(b, MAX);
 	}
 	
 	protected IFirmDecisions createStrategy(){
-		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, a, b, EExplorationMode.LATEST);
+		return new StrategyExploration(StolperSamuelson.RETURNS_TO_SCALE, a, b, EExplorationMode.PAIRED);
 	}
 
 	@Override
 	public String getComment() {
-		return createStrategy().toString();
+		FirmStatistics latest = firmStats.get(firmStats.size() - 1);
+		return createStrategy().toString(); // + "\t" + latest.getProfits();
 	}
 
 }

@@ -38,12 +38,12 @@ public class ProductionTax implements IProductionFunction {
 
 	@Override
 	public double getCostOfMaximumProfit(IPriceProvider prices) {
-		return wrapped.getCostOfMaximumProfit(prices);
+		return wrapped.getCostOfMaximumProfit(prices); // TEMP wrong
 	}
-
+	
 	@Override
 	public double getExpenses(Good good, double price, double totalSpendings) {
-		return wrapped.getExpenses(good, price, totalSpendings);
+		return wrapped.getExpenses(good, price, totalSpendings);  // TEMP wrong
 	}
 
 	@Override

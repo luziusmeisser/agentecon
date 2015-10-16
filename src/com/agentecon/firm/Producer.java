@@ -135,6 +135,11 @@ public class Producer extends PublicCompany implements IFirm {
 				});
 			}
 
+			@Override
+			public double getPlannedCogs() {
+				return strategy.calcCogs(getCash(), getIdealCogs());
+			}
+
 		}));
 		assert dividend <= wallet.getAmount();
 		return dividend;

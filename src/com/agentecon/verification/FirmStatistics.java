@@ -9,9 +9,11 @@ import com.agentecon.util.InstantiatingHashMap;
 
 public class FirmStatistics extends SimulationListenerAdapter {
 	
+	private double totProfits;
 	private InstantiatingHashMap<String, AccumulatingAverage> avg;
 	
 	public FirmStatistics(){
+		this.totProfits = 0.0;
 		this.avg = new InstantiatingHashMap<String, AccumulatingAverage>() {
 			
 			@Override
@@ -30,6 +32,7 @@ public class FirmStatistics extends SimulationListenerAdapter {
 
 	public void reportProfits(IFirmDecisions strategy, double amount) {
 		avg.get(strategy.getClass().getSimpleName()).add(amount);
+		totProfits += amount;
 	}
 	
 	public String getRanking(){
@@ -48,6 +51,10 @@ public class FirmStatistics extends SimulationListenerAdapter {
 	@Override
 	public String toString(){
 		return avg.keySet().toString();
+	}
+
+	public double getProfits() {
+		return totProfits;
 	}
 
 }

@@ -55,7 +55,7 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 	
 	@Override
 	public double getCostOfMaximumProfit(IPriceProvider prices) {
-		double totWeight = getTotalWeight();
+		double totWeight = getReturnsToScale();
 		if (totWeight >= 1.0) {
 			// increasing returns to scale
 			return Double.MAX_VALUE;
@@ -84,6 +84,17 @@ public class CobbDouglasProduction extends AbstractProductionFunction {
 	public double getExpenses(Good good, double price, double totalSpendings) {
 		double offerPerWeight = totalSpendings / getTotalWeight();
 		return offerPerWeight * getWeight(good);
+	}
+	
+	public double getMaximumProfits(IPriceProvider prices) {
+		double laborshare = getReturnsToScale();
+		if (laborshare >= 1.0) {
+			return Double.MAX_VALUE;
+		} else {
+			double cogs = getCostOfMaximumProfit(prices);
+			double profitShare = 1.0 - laborshare;
+			return profitShare * cogs / laborshare;
+		}
 	}
 
 }

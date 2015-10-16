@@ -37,5 +37,5 @@ public class LinearProdFun extends AbstractProductionFunction {
 	public double getExpenses(Good good, double price, double totalSpendings) {
 		return Double.MAX_VALUE;
 	}
-
+	
 }
