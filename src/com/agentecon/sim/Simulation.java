@@ -50,7 +50,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new ExplorationScenario(EExplorationMode.PLANNED));
+		this(new ExplorationScenario(EExplorationMode.IDEAL_COST));
 	}
 
 	public Simulation(IConfiguration metaConfig) {

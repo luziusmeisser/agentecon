@@ -30,9 +30,9 @@ public class ExplorationScenario implements IConfiguration {
 //	private static final double MAX = 5.0;
 //	private static final double INCREMENT = 0.1;
 	
-	private static final double MIN = -1;
+	private static final double MIN = -1.0;
 	private static final double MAX = 1.0;
-	private static final double INCREMENT = 1;
+	private static final double INCREMENT = 0.5;
 
 	protected static final double STEP = 0.1;
 	protected static final double STEPSTEP = 0.05;
@@ -158,7 +158,7 @@ public class ExplorationScenario implements IConfiguration {
 		double val = StolperSamuelson.HIGH;
 		double step = STEP;
 		for (int i = 0; i < 5; i++) {
-			StolperSamuelson ss1 = new StolperSamuelson(val);
+			StolperSamuelson ss1 = new StolperSamuelson(10.0 - val);
 			val -= step;
 			step += STEPSTEP;
 			Result r1 = ss1.runConstrainedOptimization(null, 0.0001);
