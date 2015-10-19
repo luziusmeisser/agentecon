@@ -26,7 +26,7 @@ public class StolperSamuelson {
 	protected static final int CONSUMERS_PER_TYPE = 100;
 	protected static final int FIRMS_PER_TYPE = 10;
 
-	protected static final double RETURNS_TO_SCALE = 0.7;
+	protected static final double RETURNS_TO_SCALE = 0.5;
 	protected static final double LOW = 3.0;
 	protected static final double HIGH = HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - LOW;
 
@@ -187,34 +187,5 @@ public class StolperSamuelson {
 	public Good[] getInputs() {
 		return outputs;
 	}
-
-	// class Runner extends Thread {
-	//
-	// private Runnable r;
-	//
-	// public Runner(Runnable r) {
-	// this.r = r;
-	// this.start();
-	// }
-	//
-	// public void run() {
-	// r.run();
-	// }
-	//
-	// public boolean waitForEnd(long patience) throws InterruptedException {
-	// long end = System.currentTimeMillis() + patience;
-	// while (System.currentTimeMillis() < end && isAlive()) {
-	// Thread.sleep(1000);
-	// }
-	// if (isAlive()) {
-	// this.stop();
-	// System.out.println("Had to abort task");
-	// return false;
-	// } else {
-	// return true;
-	// }
-	// }
-	//
-	// }
 
 }

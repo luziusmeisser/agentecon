@@ -28,12 +28,11 @@ public class StrategyExploration implements IFirmDecisions {
 	public double calcDividend(IFinancials metrics) {
 		double c = mode.selectCosts(metrics);
 		double r = mode.selectRevenue(metrics, laborshare);
-		double fc = calcFc();
-		return fr * r + fc * c;
+		return fr * r + calcFc() * c;
 	}
 
 	protected double calcFc() {
-		return (1-laborshare)/laborshare*(1-fr);
+		return (1-laborshare)/laborshare - fr/laborshare;
 	}
 
 	public String toString() {

@@ -131,8 +131,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 			for (IOffer offer : offers) {
 				IStock s = inv.getStock(offer.getGood());
 				double difference = allocs[pos] - s.getAmount();
-				if (difference > Numbers.EPSILON && offer.getGood() != soldGood) {
-					offer.accept(getMoney(), s, difference);
+				if (difference > Numbers.EPSILON && offer.getGood() != soldGood && !getMoney().isEmpty()) {
+					double amount = offer.accept(getMoney(), s, difference);
 					spendings += difference * offer.getPrice().getPrice();
 					trading = true;
 				}

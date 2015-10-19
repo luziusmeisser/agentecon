@@ -38,7 +38,7 @@ public class PriceConfig {
 		case CONSTANT:
 			return new HardcodedPrice(accuracy);
 		case CONSTANTPERCENTAGE:
-			return new ConstantPrecentagePrice(accuracy);
+			return new ConstantPercentagePrice(accuracy);
 		case CONSTANTFACTOR:
 			return new ConstantFactorPrice(accuracy);
 		case RANDOMIZED:

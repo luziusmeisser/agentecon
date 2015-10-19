@@ -1,11 +1,11 @@
 package com.agentecon.price;
 
 
-public class ConstantPrecentagePrice extends AdaptablePrice {
+public class ConstantPercentagePrice extends AdaptablePrice {
 
 	private double delta;
 	
-	public ConstantPrecentagePrice(double delta) {
+	public ConstantPercentagePrice(double delta) {
 		super();
 		this.delta = delta;
 	}

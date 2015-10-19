@@ -26,9 +26,12 @@ public class ExplorationScenario implements IConfiguration {
 
 	private static final int DAYS = 2000;
 
-	private static final double MIN = -5.0;
+	private static final double MIN = -5;
 	private static final double MAX = 5.0;
-	private static final double INCREMENT = 0.01;
+	private static final double INCREMENT = 0.05;
+
+	protected static final double STEP = 0.1;
+	protected static final double STEPSTEP = 0.05;
 
 	private double fr;
 	private boolean exploreMode;
@@ -39,7 +42,7 @@ public class ExplorationScenario implements IConfiguration {
 		this(mode, MIN);
 		this.exploreMode = false;
 	}
-	
+
 	public ExplorationScenario(double fr) {
 		this(EExplorationMode.values()[0], fr);
 		this.exploreMode = true;
@@ -66,10 +69,10 @@ public class ExplorationScenario implements IConfiguration {
 			@Override
 			protected void addSpecialEvents(SimConfig config) {
 				double val = HIGH;
-				double step = 0.1;
+				double step = STEP;
 				for (int i = 1000; i < DAYS; i += 250) {
 					val -= step;
-					step += 0.05;
+					step += STEPSTEP;
 					super.updatePrefs(config, i, val);
 				}
 				config.addEvent(new SimEvent(0, 0) {
@@ -83,7 +86,7 @@ public class ExplorationScenario implements IConfiguration {
 			}
 
 			protected int getRandomSeed() {
-				return (int) (fr * 1000);
+				return (int) (fr * 10000);
 			}
 
 			@Override
@@ -125,7 +128,7 @@ public class ExplorationScenario implements IConfiguration {
 			}
 
 		};
-		return scenario.createConfiguration(PriceConfig.DEFAULT, DAYS);
+		return scenario.createConfiguration(PriceConfig.DEFAULT, 0, 1, DAYS);
 	}
 
 	@Override
@@ -145,6 +148,18 @@ public class ExplorationScenario implements IConfiguration {
 	public String getComment() {
 		FirmStatistics latest = firmStats.get(firmStats.size() - 1);
 		return createStrategy().toString(); // + "\t" + latest.getProfits();
+	}
+
+	public static void main(String[] args) {
+		double val = StolperSamuelson.HIGH;
+		double step = STEP;
+		for (int i = 0; i < 5; i++) {
+			StolperSamuelson ss1 = new StolperSamuelson(val);
+			val -= step;
+			step += STEPSTEP;
+			Result r1 = ss1.runConstrainedOptimization(null, 0.0001);
+			System.out.println(r1);
+		}
 	}
 
 }

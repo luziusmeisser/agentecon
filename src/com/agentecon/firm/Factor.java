@@ -20,7 +20,7 @@ public abstract class Factor {
 		this.stock = stock;
 		this.price = price;
 	}
-
+	
 	public void adaptPrice() {
 		if (prevOffer != null) {
 			price.adapt(shouldIncrease());
