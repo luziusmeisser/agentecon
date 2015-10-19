@@ -26,9 +26,13 @@ public class ExplorationScenario implements IConfiguration {
 
 	private static final int DAYS = 2000;
 
-	private static final double MIN = -5;
-	private static final double MAX = 5.0;
-	private static final double INCREMENT = 0.05;
+//	private static final double MIN = -5;
+//	private static final double MAX = 5.0;
+//	private static final double INCREMENT = 0.1;
+	
+	private static final double MIN = -1;
+	private static final double MAX = 1.0;
+	private static final double INCREMENT = 1;
 
 	protected static final double STEP = 0.1;
 	protected static final double STEPSTEP = 0.05;

@@ -25,9 +25,9 @@ public enum EExplorationMode {
 		switch (this) {
 		default:
 		case IDEAL_BOTH:
-			return metrics.getIdealCogs()/laborshare*(1-laborshare);
+			return metrics.getIdealCogs()/laborshare;
 		case PLANNED:
-			return metrics.getPlannedCogs()/laborshare*(1-laborshare);
+			return metrics.getPlannedCogs()/laborshare;
 		case IDEAL_COST:
 		case EXPECTED:
 		case PAIRED:
