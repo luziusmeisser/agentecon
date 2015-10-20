@@ -9,7 +9,7 @@ public class ExpectedRevenueBasedStrategy implements IFirmDecisions {
 
 	public ExpectedRevenueBasedStrategy(double laborshare) {
 		this.laborshare = laborshare;
-		this.laborshare = 1.0 - laborshare;
+		this.profitshare = 1.0 - laborshare;
 	}
 
 	@Override

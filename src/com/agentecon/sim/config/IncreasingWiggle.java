@@ -6,14 +6,10 @@ import com.agentecon.verification.StolperSamuelson;
 
 public class IncreasingWiggle implements IConfiguration {
 
-	private static final int[] CONFIGS = new int[]{0, 1, 10, 100};
+	private static final int[] CONFIGS = new int[]{0, 1, 2, 5, 10};
 	
 	private int round = -1;
-	private StolperSamuelson ss = new StolperSamuelson(4.0) { 
-		protected void addSpecialEvents(SimConfig config) {
-			updatePrefs(config, 500, 4.0);
-		}
-	};
+	private StolperSamuelson ss = new StolperSamuelson();
 
 	@Override
 	public SimulationConfig createNextConfig() {
