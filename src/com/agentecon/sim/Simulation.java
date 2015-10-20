@@ -22,8 +22,8 @@ import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
+import com.agentecon.sim.config.IncreasingWiggle;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.ExplorationScenario;
 import com.agentecon.world.World;
 
 // The world
@@ -44,14 +44,10 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		// Simulation.class.getClassLoader().setDefaultAssertionStatus(true);
 	}
 
-//	public Simulation() {
-//		this(new IncreasingWiggle() ); 
-//	}
-	
 	public Simulation() {
-		this(new ExplorationScenario());
+		this(new IncreasingWiggle());
 	}
-
+	
 	public Simulation(IConfiguration metaConfig) {
 		this(metaConfig.createNextConfig());
 		this.metaConfig = metaConfig;
