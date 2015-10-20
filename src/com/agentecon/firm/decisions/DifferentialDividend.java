@@ -8,6 +8,9 @@ public class DifferentialDividend implements IFirmDecisions {
 
 	public static double DIVIDEND_RATE = 0.1;
 
+	public DifferentialDividend(){
+	}
+	
 	public double calcCogs(double cash, double idealCogs){
 		double budget = cash * 0.5;
 		if (idealCogs < budget){
