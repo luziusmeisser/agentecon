@@ -66,7 +66,7 @@ public class RepeatedMarket {
 
 		public MarketObserver(int maxIters) {
 			this.iters = maxIters;
-			this.sensitivity = 0.0001;
+			this.sensitivity = 0.001;
 			next();
 		}
 
