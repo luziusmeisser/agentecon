@@ -17,8 +17,6 @@ import com.agentecon.util.InstantiatingHashMap;
 
 public class PriceMetric extends SimulationListenerAdapter implements IMarketListener {
 
-	private static final double MEMORY = 0.98;
-
 	private HashMap<Good, AccumulatingAverage> prices;
 	private HashMap<Good, IAverage> volume;
 
@@ -77,12 +75,20 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	public void notifyDayEnded(int day, double utility) {
 		if (day == startRecordingDate) {
 			notifyTradesCancelled();
+			System.out.print("\t");
+			for (Good good: prices.keySet()){
+				System.out.print(good.toString() + "\t");
+			}
+			System.out.println();
 		} else if (day > startRecordingDate) {
+			String line = Integer.toString(day);
 			for (Entry<Good, AccumulatingAverage> e : prices.entrySet()) {
 				AccumulatingAverage avg = e.getValue();
 				volume.get(e.getKey()).add(avg.getWeight());
-				avg.flush();
+				double val = avg.flush();
+				line += "\t" + val;
 			}
+			System.out.println(line);
 		}
 	}
 

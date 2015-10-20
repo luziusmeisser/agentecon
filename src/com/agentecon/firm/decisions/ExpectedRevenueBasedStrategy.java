@@ -18,7 +18,7 @@ public class ExpectedRevenueBasedStrategy implements IFirmDecisions {
 	}
 
 	public double calcCogs(double cash, double cogs) {
-		return cash / 2.0;
+		return cash / 5.0;
 	}
 
 	@Override

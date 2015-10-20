@@ -1,3 +1,3 @@
-# An Agent-Based Simulation of the Stolper-Samuelson Effect
+# Decentralized Tatonnement
 
-Relevant classes: Simulation, StolperSamuelsonChart, StolperSamuelson
+Run class com.agentecon.sim.config.IncreasingWiggle to get the data to produce chart/tatonnement.pdf

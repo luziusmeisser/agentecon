@@ -1,8 +1,12 @@
 package com.agentecon.sim.config;
 
 import com.agentecon.api.SimulationConfig;
+import com.agentecon.events.SimEvent;
 import com.agentecon.price.PriceConfig;
+import com.agentecon.sim.Simulation;
+import com.agentecon.verification.PriceMetric;
 import com.agentecon.verification.StolperSamuelson;
+import com.agentecon.world.IWorld;
 
 public class IncreasingWiggle implements IConfiguration {
 
@@ -12,6 +16,14 @@ public class IncreasingWiggle implements IConfiguration {
 	private StolperSamuelson ss = new StolperSamuelson() { 
 		protected void addSpecialEvents(SimConfig config) {
 			updatePrefs(config, 500, LOW);
+			config.addEvent(new SimEvent(0, 0) {
+				
+				@Override
+				public void execute(IWorld sim) {
+					PriceMetric metric = new PriceMetric(200);
+					sim.addListener(metric);
+				}
+			});
 		}
 	};
 
@@ -31,4 +43,12 @@ public class IncreasingWiggle implements IConfiguration {
 		return "Wiggles: " + CONFIGS[round];
 	}
 
+	public static void main(String[] args) {
+		Simulation simulation = new Simulation();
+		while (simulation != null) {
+			simulation.run();
+			simulation = (Simulation) simulation.getNext();
+		}
+	}
+	
 }
