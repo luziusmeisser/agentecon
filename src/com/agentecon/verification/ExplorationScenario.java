@@ -15,24 +15,23 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.metric.IFirmListener;
+import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.price.PriceConfig;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.stats.Numbers;
+import com.agentecon.util.Average;
 import com.agentecon.world.IWorld;
 
 public class ExplorationScenario implements IConfiguration {
 
 	private static final int DAYS = 2000;
 
-//	private static final double MIN = -5;
-//	private static final double MAX = 5.0;
-//	private static final double INCREMENT = 0.1;
-	
-	private static final double MIN = -1.0;
-	private static final double MAX = 1.0;
-	private static final double INCREMENT = 0.5;
+	private static final double MIN = -5.0;
+	private static final double MAX = 5.0;
+	private static final double INCREMENT = 0.001;
 
 	protected static final double STEP = 0.1;
 	protected static final double STEPSTEP = 0.05;
@@ -155,15 +154,42 @@ public class ExplorationScenario implements IConfiguration {
 	}
 
 	public static void main(String[] args) {
-		double val = StolperSamuelson.HIGH;
-		double step = STEP;
-		for (int i = 0; i < 5; i++) {
-			StolperSamuelson ss1 = new StolperSamuelson(10.0 - val);
-			val -= step;
-			step += STEPSTEP;
-			Result r1 = ss1.runConstrainedOptimization(null, 0.0001);
-			System.out.println(r1);
+		ArrayList<Simulation> sims = new ArrayList<Simulation>();
+		for (EExplorationMode mode: EExplorationMode.values()){
+			System.out.print(mode + "\t");
+			sims.add(new Simulation(new ExplorationScenario(mode)));
 		}
+		System.out.println();
+		while (!sims.isEmpty()) {
+			ArrayList<Simulation> next = new ArrayList<Simulation>();
+			for (Simulation sim: sims){
+				UtilityStats stats = new UtilityStats();
+				sim.addListener(stats);
+				sim.run();
+				System.out.print(stats.getUtility() + "\t");
+				sim = (Simulation) sim.getNext();
+				if (sim != null){
+					next.add(sim);
+				}
+			}
+			System.out.println();
+			sims = next;
+		}
+	}
+	
+}
+
+class UtilityStats extends SimulationListenerAdapter {
+	
+	private Average utility = new Average();
+	
+	@Override
+	public void notifyDayEnded(int day, double utility) {
+		this.utility.add(utility);
+	}
+
+	public double getUtility() {
+		return utility.getAverage();
 	}
 
 }
