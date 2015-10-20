@@ -28,7 +28,6 @@ public class Producer extends PublicCompany implements IFirm {
 	private IFirmDecisions strategy;
 
 	public Producer(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
-//		this(type, end, prod, prices, new DifferentialDividend());
 		this(type, end, prod, prices, new ExpectedRevenueBasedStrategy(((CobbDouglasProduction)prod).getTotalWeight()));
 	}
 

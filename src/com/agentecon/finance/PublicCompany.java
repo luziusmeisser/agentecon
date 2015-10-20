@@ -48,7 +48,6 @@ public abstract class PublicCompany extends Agent implements IPublicCompany {
 	@Override
 	public void payDividends(int day) {
 		double dividend = calculateDividends(day);
-		System.out.println(dividend);
 		if (dividend > 0){
 			monitor.reportDividend(this, dividend);
 			register.payDividend(getDividendWallet(), dividend);
