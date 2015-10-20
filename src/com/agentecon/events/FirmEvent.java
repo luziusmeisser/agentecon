@@ -2,10 +2,6 @@ package com.agentecon.events;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.firm.Producer;
-import com.agentecon.firm.decisions.ExpectedRevenueBasedStrategy;
-import com.agentecon.firm.decisions.DifferentialDividend;
-import com.agentecon.firm.decisions.IFirmDecisions;
-import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.firm.sensor.SensorFirm;
 import com.agentecon.price.PriceConfig;
@@ -38,16 +34,12 @@ public class FirmEvent extends SimEvent {
 			sim.add(createFirm(type, end, prodFun, pf));
 		}
 	}
-	
-	protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
-		return createFirm(type, end, prodFun, pf, new ExpectedRevenueBasedStrategy(((CobbDouglasProduction)prodFun).getReturnsToScale()));
-	}
 
-	protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf, IFirmDecisions strategy) {
+	protected Producer createFirm(String type, Endowment end, IProductionFunction prodFun, PriceFactory pf) {
 		if (priceParams.isSensor()) {
-			return new SensorFirm(type, end, prodFun, pf, strategy);
+			return new SensorFirm(type, end, prodFun, pf);
 		} else {
-			return new Producer(type, end, prodFun, pf, strategy);
+			return new Producer(type, end, prodFun, pf);
 		}
 	}
 
