@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.Price;
 import com.agentecon.consumer.Weight;
+import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.firm.production.LogProdFun;
@@ -53,7 +54,7 @@ public class FirmTest {
 	@Test
 	public void testPriceFinding() {
 		TestConsumer tc = new TestConsumer(new Price(PIZZA, 30), new Price(SWISSTIME, 10), new Price(ITALTIME, 15));
-		Producer firm = new Producer("testfirm", end, new LogProdFun(PIZZA, new Weight(ITALTIME, 5.0), new Weight(SWISSTIME, 5.0)), new PriceFactory(rand, PriceConfig.DEFAULT));
+		Producer firm = new Producer("testfirm", end, new LogProdFun(PIZZA, new Weight(ITALTIME, 5.0), new Weight(SWISSTIME, 5.0)), new PriceFactory(rand, PriceConfig.DEFAULT), new DifferentialDividend());
 		for (int i = 0; i < 100; i++) {
 			Market market = new Market(rand);
 			firm.offer(market);
@@ -89,7 +90,7 @@ public class FirmTest {
 				}
 			}
 			
-		});
+		}, new DifferentialDividend());
 		firm.offer(new IPriceMakerMarket() {
 			
 			@Override
@@ -131,7 +132,7 @@ public class FirmTest {
 				}
 			}
 			
-		});
+		}, new DifferentialDividend());
 		firm.offer(new IPriceMakerMarket() {
 			
 			@Override
@@ -178,7 +179,7 @@ public class FirmTest {
 				}
 			}
 			
-		});
+		}, new DifferentialDividend());
 		firm.offer(new IPriceMakerMarket() {
 			
 			@Override
