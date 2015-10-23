@@ -46,15 +46,15 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 		return config;
 	}
 
-	@Override
-	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ConsumptionWeights defaultPrefs) {
-		for (int i = 0; i < outputs.length; i++) {
-			String name = "Consumer " + i;
-			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
-			defaultPrefs = new ConsumptionWeights(inputs, outputs, LOW);
-			LogUtil util = defaultPrefs.createUtilFun(i);
-			newList.add(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0], savingsRate));
-		}
-	}
+//	@Override
+//	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ConsumptionWeights defaultPrefs) {
+//		for (int i = 0; i < outputs.length; i++) {
+//			String name = "Consumer " + i;
+//			Endowment end = new Endowment(new Stock(inputs[i], Endowment.HOURS_PER_DAY));
+//			defaultPrefs = new ConsumptionWeights(inputs, outputs, LOW);
+//			LogUtil util = defaultPrefs.createUtilFun(i);
+//			newList.add(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0], savingsRate));
+//		}
+//	}
 
 }
