@@ -21,10 +21,9 @@ import com.agentecon.firm.Producer;
 import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.price.PriceConfig;
+import com.agentecon.sim.config.CobbDougConfiguration;
 import com.agentecon.sim.config.IConfiguration;
 import com.agentecon.sim.config.SimConfig;
-import com.agentecon.verification.StolperSamuelson;
 import com.agentecon.world.World;
 
 // The world
@@ -46,7 +45,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 3000));
+		this(new CobbDougConfiguration(23));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {

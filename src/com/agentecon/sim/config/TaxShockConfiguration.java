@@ -12,13 +12,13 @@ import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.TaxEvent;
+import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
-import com.agentecon.firm.production.LogProdFun;
 import com.agentecon.good.Good;
 import com.agentecon.good.Stock;
 import com.agentecon.price.PriceConfig;
 
-public class TaxShockConfiguration {
+public class TaxShockConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 1000;
 	public static final int TAX_EVENT = ROUNDS / 2;
@@ -113,7 +113,7 @@ public class TaxShockConfiguration {
 		for (int i = 0; i < firmTypes; i++) {
 			Weight[] prodWeights = limit(rotate(inputWeights, i), 5);
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = new LogProdFun(outputs[i], prodWeights);
+			IProductionFunction fun = new CobbDouglasProduction(outputs[i], prodWeights);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, PriceConfig.DEFAULT));
 //			newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
