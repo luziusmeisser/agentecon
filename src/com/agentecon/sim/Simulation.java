@@ -46,7 +46,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 2000));
+		this(new StolperSamuelson().createConfiguration(PriceConfig.DEFAULT, 3000));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {
