@@ -79,7 +79,7 @@ public class CobbDougConfiguration implements IConfiguration {
 			}
 			evolvingEvents = newList;
 		}
-		SimulationConfig config = new SimConfig(ROUNDS, seed);
+		SimulationConfig config = new SimConfig(ROUNDS, seed, 5);
 		for (SimEvent event : constantEvents) {
 			config.addEvent(event);
 		}
