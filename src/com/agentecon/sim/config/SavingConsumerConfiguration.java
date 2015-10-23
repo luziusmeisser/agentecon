@@ -1,15 +1,8 @@
 package com.agentecon.sim.config;
 
-import java.util.ArrayList;
-
-import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
-import com.agentecon.events.EvolvingEvent;
-import com.agentecon.events.SavingConsumerEvent;
-import com.agentecon.events.SimEvent;
 import com.agentecon.events.UpdatePreferencesEvent;
-import com.agentecon.good.Stock;
 
 public class SavingConsumerConfiguration extends CobbDougConfiguration {
 
