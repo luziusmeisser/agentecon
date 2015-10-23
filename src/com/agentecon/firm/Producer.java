@@ -7,6 +7,7 @@ import java.util.Arrays;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
 import com.agentecon.finance.PublicCompany;
+import com.agentecon.firm.decisions.DifferentialDividend;
 import com.agentecon.firm.decisions.ExpectedRevenueBasedStrategy;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.production.CobbDouglasProduction;
@@ -28,7 +29,8 @@ public class Producer extends PublicCompany implements IFirm {
 	private IFirmDecisions strategy;
 
 	public Producer(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
-		this(type, end, prod, prices, new ExpectedRevenueBasedStrategy(((CobbDouglasProduction)prod).getTotalWeight()));
+		this(type, end, prod, prices, new DifferentialDividend());
+//		this(type, end, prod, prices, new ExpectedRevenueBasedStrategy(((CobbDouglasProduction)prod).getTotalWeight()));
 	}
 
 	public Producer(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
