@@ -21,8 +21,8 @@ import com.agentecon.firm.Producer;
 import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
-import com.agentecon.sim.config.CobbDougConfiguration;
 import com.agentecon.sim.config.IConfiguration;
+import com.agentecon.sim.config.SavingConsumerConfiguration;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.World;
 
@@ -45,7 +45,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new CobbDougConfiguration(23));
+		this(new SavingConsumerConfiguration());
 	}
 	
 	public Simulation(IConfiguration metaConfig) {

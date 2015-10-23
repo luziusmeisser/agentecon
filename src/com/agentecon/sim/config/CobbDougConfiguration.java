@@ -17,7 +17,7 @@ public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 1000;
 	public static final int ITERATIONS = 5;
-	
+
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;
 
@@ -84,25 +84,15 @@ public class CobbDougConfiguration implements IConfiguration {
 			}
 			evolvingEvents = newList;
 		}
-		SimulationConfig config = createConfig(seed);
-		for (SimEvent event : constantEvents)
-
-		{
+		SimulationConfig config = new SimConfig(ROUNDS, seed);
+		for (SimEvent event : constantEvents) {
 			config.addEvent(event);
 		}
-		for (
-
-		SimEvent event : evolvingEvents)
-
-		{
+		for (SimEvent event : evolvingEvents) {
 			config.addEvent(event);
 		}
 		iteration++;
 		return config;
-	}
-
-	protected SimConfig createConfig(int seed) {
-		return new SimConfig(ROUNDS, seed, ITERATIONS);
 	}
 
 	public String getComment() {
