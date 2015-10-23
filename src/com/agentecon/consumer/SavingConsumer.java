@@ -4,14 +4,12 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.good.Good;
 import com.agentecon.good.Inventory;
 import com.agentecon.market.IPriceTakerMarket;
-import com.agentecon.sim.config.TaxShockConfiguration;
+import com.agentecon.sim.config.SavingConsumerConfiguration;
 import com.agentecon.util.Average;
 
 public class SavingConsumer extends Consumer {
-
-	public static final int CHANGE = TaxShockConfiguration.TAX_EVENT;
-
-	private double savings;
+	
+	private double phaseOneDailySavings;
 	private double smoothConsumption;
 	private Average leisure;
 	private Good good;
@@ -31,22 +29,22 @@ public class SavingConsumer extends Consumer {
 		super(type, end, utility);
 		this.good = good;
 		this.leisure = new Average();
-		this.savings = Math.max(0, savingsPerDay);
+		this.phaseOneDailySavings = Math.max(0, savingsPerDay);
 		this.smoothConsumption = smoothConsumption;
 	}
-
+	
 	@Override
 	protected void trade(Inventory inv, IPriceTakerMarket market) {
-		double soll = calculateRecommendedReserves();
+		double soll = calculateRecommendedReserves(inv);
 		inv = inv.hide(good, soll);
 		super.trade(inv, market);
 	}
 
 	@Override
 	protected double doConsume(Inventory inv) {
-		double soll = calculateRecommendedReserves();
+		double soll = calculateRecommendedReserves(inv);
 		inv = inv.hide(good, soll);
-		if (getAge() < CHANGE) {
+		if (getAge() < SavingConsumerConfiguration.SHOCK) {
 			firstHalfConsumption += inv.getStock(good).getAmount();
 		}
 		leisure.add(1.0, getStock(soldGood).getAmount());
@@ -56,24 +54,26 @@ public class SavingConsumer extends Consumer {
 		return cons;
 	}
 
-	private double calculateRecommendedReserves() {
+	private double calculateRecommendedReserves(Inventory inv) {
 		int age = getAge();
-		if (age < CHANGE) {
-			return age * savings;
+		if (age < SavingConsumerConfiguration.SHOCK) {
+			return age * phaseOneDailySavings;
 		} else {
-			return (TaxShockConfiguration.ROUNDS - age - 1) * savings;
+			int daysLeft = SavingConsumerConfiguration.ROUNDS - age;
+			return inv.getStock(good).getAmount() / daysLeft * (daysLeft - 1);
 		}
 	}
 
 	public SavingConsumer getNextGeneration(Endowment end) {
-		double smoothConsumption = totalConsumption / TaxShockConfiguration.ROUNDS;
-		double savingsPerDay = firstHalfConsumption / CHANGE - smoothConsumption;
+		double smoothConsumption = totalConsumption / SavingConsumerConfiguration.ROUNDS;
+		double savingsPerDay = firstHalfConsumption / SavingConsumerConfiguration.SHOCK - smoothConsumption;
 		assert getStock(good).getAmount() == 0.0;
-		return new SavingConsumer(getType(), end, getUtilityFunction(), good, smoothConsumption, savingsPerDay + savings);
+//		return new SavingConsumer(getType(), end, getUtilityFunction(), good);
+		return new SavingConsumer(getType(), end, getUtilityFunction(), good, smoothConsumption, savingsPerDay + phaseOneDailySavings);
 	}
 
 	public double getDailySavings() {
-		return savings;
+		return phaseOneDailySavings;
 	}
 
 	public double getSmoothConsumption() {

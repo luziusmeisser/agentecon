@@ -20,4 +20,9 @@ public abstract class UpdatePreferencesEvent extends SimEvent {
 
 	protected abstract void update(Consumer c);
 
+	@Override
+	public String toString(){
+		return "Update preference event";
+	}
+	
 }

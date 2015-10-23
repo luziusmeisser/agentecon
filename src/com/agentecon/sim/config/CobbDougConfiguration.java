@@ -57,15 +57,10 @@ public class CobbDougConfiguration implements IConfiguration {
 	}
 
 	public SimulationConfig createNextConfig() {
-		if (iteration > 0) {
-			createGoods(inputs.length + 1, outputs.length + 1);
-		}
-		{
-			constantEvents.clear();
-			ArrayList<EvolvingEvent> evolvingEvents = iteration == 0 ? this.evolvingEvents : new ArrayList<EvolvingEvent>();
-			addFirms(constantEvents, evolvingEvents, new ProductionWeights(inputs, outputs));
-			addConsumers(constantEvents, evolvingEvents, new ConsumptionWeights(inputs, outputs));
-		}
+		constantEvents.clear();
+		ArrayList<EvolvingEvent> onlyUsedInInitialIteration = iteration == 0 ? this.evolvingEvents : new ArrayList<EvolvingEvent>();
+		addFirms(constantEvents, onlyUsedInInitialIteration, new ProductionWeights(inputs, outputs));
+		addConsumers(constantEvents, onlyUsedInInitialIteration, new ConsumptionWeights(inputs, outputs));
 
 		// constantEvents.add(new TaxEvent(TAX_EVENT, 0.2));
 		// constantEvents.add(new MoneyPrintEvent(1000, 1, 63));

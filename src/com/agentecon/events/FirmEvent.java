@@ -42,5 +42,10 @@ public class FirmEvent extends SimEvent {
 			return new Producer(type, end, prodFun, pf);
 		}
 	}
+	
+	@Override
+	public String toString(){
+		return getCardinalityString() + " firms";
+	}
 
 }
