@@ -3,6 +3,8 @@ package com.agentecon.sim.config;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.events.UpdatePreferencesEvent;
+import com.agentecon.sim.Simulation;
+import com.agentecon.verification.PriceMetric;
 
 public class SavingConsumerConfiguration extends CobbDougConfiguration {
 
@@ -49,5 +51,17 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 //			newList.add(new SavingConsumerEvent(consumersPerType, name, end, util, outputs[0], savingsRate));
 //		}
 //	}
+
+	public static void main(String[] args) {
+		SavingConsumerConfiguration config = new SavingConsumerConfiguration();
+		Simulation sim = new Simulation(config);
+		PriceMetric metric1 = new PriceMetric(100, 500);
+		PriceMetric metric2 = new PriceMetric(600, 1000);
+		sim.addListener(metric1);
+		sim.addListener(metric2);
+		sim.finish();
+		metric1.printResult(System.out);
+		metric2.printResult(System.out);
+	}
 
 }
