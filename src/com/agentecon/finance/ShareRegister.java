@@ -23,13 +23,18 @@ public class ShareRegister implements IRegister {
 		this.all = new LinkedList<>();
 		this.dividend = new MovingAverage(0.8);
 		this.rootPosition = new Position(this, ticker, wallet.getGood(), SHARES_PER_COMPANY);
+		this.all.add(rootPosition);
 	}
 	
 	public void raiseCapital(DailyStockMarket dsm, IStock wallet) {
 		if (!rootPosition.isEmpty()){
-			rootPosition.collectDividend(wallet);
+			collectRootDividend(wallet);
 			dsm.offer(new AskFin(wallet, rootPosition, new Price(getTicker(), INITIAL_PRICE), rootPosition.getAmount()));
 		}
+	}
+	
+	public void collectRootDividend(IStock wallet){
+		rootPosition.collectDividend(wallet);
 	}
 
 	public void payDividend(IStock sourceWallet, double totalDividends) {
@@ -38,7 +43,7 @@ public class ShareRegister implements IRegister {
 		if (!Numbers.equals(getTotalShares(), SHARES_PER_COMPANY)) {
 			double diff = getTotalShares() - SHARES_PER_COMPANY;
 			if (diff > 0) {
-				all.getLast().add(diff);
+				rootPosition.add(diff);
 			}
 		}
 
