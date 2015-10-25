@@ -15,7 +15,7 @@ import com.agentecon.stats.Numbers;
 
 public class LogUtil extends AbstractWeightedUtil implements IUtility {
 
-	private static final double ADJUSTMENT = 1.0; // to avoid negative utility
+	public static final double ADJUSTMENT = 1.0; // to avoid negative utility
 
 	public LogUtil(Weight[] weights, Weight... moreWeights) {
 		super(weights, moreWeights);

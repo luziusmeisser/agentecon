@@ -15,7 +15,7 @@ import com.agentecon.price.PriceConfig;
 
 public class CobbDougConfiguration implements IConfiguration {
 
-	public static final int ROUNDS = 1000;
+	public static final int ROUNDS = 1100;
 	public static final int WOBBLES = 10;
 	public static final int MAX_ITERATIONS = 10;
 

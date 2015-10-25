@@ -64,7 +64,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	public double getDailyConsumption() {
 		Average avg = new Average();
 		for (SavingConsumer sc : getSavers()) {
-			avg.add(1.0, sc.getSmoothConsumption());
+			avg.add(1.0, sc.getAverageConsumption());
 		}
 		return avg.getAverage();
 	}

@@ -19,7 +19,7 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 	private static final double LOW = 6.0;
 	private static final double HIGH = 12.0;
 
-	public static final int SHOCK = ROUNDS / 2;
+	public static final int SHOCK = 600;
 
 	private double savingsRate;
 
@@ -66,8 +66,8 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 		int iter = 0;
 		while (sim != null) {
 			System.out.println("******** ITERATION " + iter++ + " **********");
-			PriceMetric metric1 = new PriceMetric(100, 500);
-			PriceMetric metric2 = new PriceMetric(600, 1000);
+			PriceMetric metric1 = new PriceMetric(100, 600);
+			PriceMetric metric2 = new PriceMetric(600, 1100);
 			sim.addListener(metric1);
 			sim.addListener(metric2);
 			sim.finish();
