@@ -16,7 +16,8 @@ import com.agentecon.price.PriceConfig;
 public class CobbDougConfiguration implements IConfiguration {
 
 	public static final int ROUNDS = 1000;
-	public static final int ITERATIONS = 5;
+	public static final int WOBBLES = 10;
+	public static final int MAX_ITERATIONS = 10;
 
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;
@@ -79,7 +80,7 @@ public class CobbDougConfiguration implements IConfiguration {
 			}
 			evolvingEvents = newList;
 		}
-		SimulationConfig config = new SimConfig(ROUNDS, seed, 5);
+		SimulationConfig config = new SimConfig(ROUNDS, seed, WOBBLES);
 		for (SimEvent event : constantEvents) {
 			config.addEvent(event);
 		}
@@ -112,14 +113,14 @@ public class CobbDougConfiguration implements IConfiguration {
 	protected void addFirms(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ProductionWeights prod) {
 		for (int i = 0; i < outputs.length; i++) {
 			Endowment end = new Endowment(new Stock[] { new Stock(SimConfig.MONEY, 1000), new Stock(outputs[i], 10) }, new Stock[] {});
-			IProductionFunction fun = prod.createProdFun(i, 1.0);
+			IProductionFunction fun = prod.createProdFun(i, 0.7);
 			config.add(new FirmEvent(firmsPerType, "Firm " + i, end, fun, PriceConfig.DEFAULT));
 			// newList.add(new EvolvingFirmEvent(firmsPerType, "Firm " + i, end, fun, new Random(rand.nextLong()), PriceFactory.SENSOR, "0.05"));
 		}
 	}
 
 	public boolean shouldTryAgain() {
-		return iteration < 5;
+		return iteration < MAX_ITERATIONS;
 	}
 
 	public double getScore() {

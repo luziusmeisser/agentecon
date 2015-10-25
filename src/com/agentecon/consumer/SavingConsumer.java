@@ -33,22 +33,23 @@ public class SavingConsumer extends Consumer {
 		this.smoothConsumption = smoothConsumption;
 	}
 	
+	double reserves;
+	
 	@Override
 	protected void trade(Inventory inv, IPriceTakerMarket market) {
-		double soll = calculateRecommendedReserves(inv);
-		inv = inv.hide(good, soll);
+		reserves = calculateRecommendedReserves(inv);
+		inv = inv.hide(good, reserves);
 		super.trade(inv, market);
 	}
 
 	@Override
 	protected double doConsume(Inventory inv) {
-		double soll = calculateRecommendedReserves(inv);
-		inv = inv.hide(good, soll);
+		inv = inv.hide(good, reserves);
 		if (getAge() < SavingConsumerConfiguration.SHOCK) {
 			firstHalfConsumption += inv.getStock(good).getAmount();
 		}
-		leisure.add(1.0, getStock(soldGood).getAmount());
 		totalConsumption += inv.getStock(good).getAmount();
+		leisure.add(1.0, getStock(soldGood).getAmount());
 		double cons = super.doConsume(inv);
 		assert inv.getStock(good).isEmpty();
 		return cons;
@@ -64,12 +65,12 @@ public class SavingConsumer extends Consumer {
 		}
 	}
 
-	public SavingConsumer getNextGeneration(Endowment end) {
-		double smoothConsumption = totalConsumption / SavingConsumerConfiguration.ROUNDS;
+	public SavingConsumer getNextGeneration(IUtility util, Endowment end) {
+		double smoothConsumption = totalConsumption / 1500; // TEMP
 		double savingsPerDay = firstHalfConsumption / SavingConsumerConfiguration.SHOCK - smoothConsumption;
 		assert getStock(good).getAmount() == 0.0;
-//		return new SavingConsumer(getType(), end, getUtilityFunction(), good);
-		return new SavingConsumer(getType(), end, getUtilityFunction(), good, smoothConsumption, savingsPerDay + phaseOneDailySavings);
+//		return new SavingConsumer(getType(), end, util, good);
+		return new SavingConsumer(getType(), end, util, good, smoothConsumption, savingsPerDay + phaseOneDailySavings);
 	}
 
 	public double getDailySavings() {

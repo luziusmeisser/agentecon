@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.agentecon.agent.Agent;
 import com.agentecon.api.IAgent;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.finance.Fundamentalist;
@@ -192,6 +193,12 @@ public class Agents implements IConsumers, IFirms {
 	@Override
 	public String toString() {
 		return consumers.size() + " consumers, " + firms.size() + " firms";
+	}
+
+	public void refreshReferences() {
+		for (IAgent a: all){
+			((Agent)a).refreshRef();
+		}
 	}
 
 }

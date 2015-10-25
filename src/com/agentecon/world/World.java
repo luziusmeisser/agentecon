@@ -107,6 +107,7 @@ public class World implements IWorld {
 	public void abortTransaction() {
 		assert backup != null;
 		this.agents = backup;
+		this.agents.refreshReferences();
 	}
 
 	public Agents getAgents() {

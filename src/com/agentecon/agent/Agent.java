@@ -15,6 +15,8 @@ public abstract class Agent implements IAgent, Cloneable {
 	private Endowment end;
 	private Inventory inv;
 	private boolean alive;
+	
+	private AgentRef ref;
 
 	public Agent(String type, Endowment end) {
 		this.type = type;
@@ -22,8 +24,12 @@ public abstract class Agent implements IAgent, Cloneable {
 		this.end = end;
 		this.number = current++;
 		this.alive = true;
-		
+		this.ref = new AgentRef(this);
 		assert type != null;
+	}
+
+	public AgentRef getRef(){
+		return ref;
 	}
 	
 	public boolean isAlive(){
@@ -91,6 +97,10 @@ public abstract class Agent implements IAgent, Cloneable {
 
 	public String toString() {
 		return getType() + " with " + inv;
+	}
+
+	public void refreshRef() {
+		this.ref.set(this);
 	}
 	
 }
