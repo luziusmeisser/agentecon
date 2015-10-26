@@ -21,9 +21,15 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	private HashMap<Good, IAverage> volume;
 
 	private int startRecordingDate;
+	private int endRecordingDate;
 
 	public PriceMetric(int startRecordingDate) {
-		this.startRecordingDate = startRecordingDate;
+		this(startRecordingDate, Integer.MAX_VALUE);
+	}
+	
+	public PriceMetric(int start, int end){
+		this.startRecordingDate = start;
+		this.endRecordingDate = end;
 		this.prices = new InstantiatingHashMap<Good, AccumulatingAverage>() {
 
 			@Override
@@ -75,28 +81,24 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	public void notifyDayEnded(int day, double utility) {
 		if (day == startRecordingDate) {
 			notifyTradesCancelled();
-			System.out.print("\t");
-			for (Good good: prices.keySet()){
-				System.out.print(good.toString() + "\t");
-			}
-			System.out.println();
-		} else if (day > startRecordingDate) {
-			String line = Integer.toString(day);
+		}
+		if (day >= startRecordingDate && day < endRecordingDate) {
 			for (Entry<Good, AccumulatingAverage> e : prices.entrySet()) {
 				AccumulatingAverage avg = e.getValue();
 				volume.get(e.getKey()).add(avg.getWeight());
 				double val = avg.flush();
-				line += "\t" + val;
 			}
-			System.out.println(line);
 		}
 	}
 
 	public void printResult(PrintStream ps) {
 		for (Map.Entry<Good, AccumulatingAverage> e : prices.entrySet()) {
-			ps.println(e.getKey() + " price: " + e.getValue());
+			double price = e.getValue().getWrapped().getAverage();
+			ps.println(e.getKey() + " price: " + price);
 			if (volume.containsKey(e.getKey())) {
-				ps.println(e.getKey() + " production: " + volume.get(e.getKey()));
+				double vol = volume.get(e.getKey()).getAverage();
+				ps.println("\tproduction: " + vol);
+				ps.println("\tturnover: " + vol * price);
 			}
 		}
 
