@@ -83,5 +83,12 @@ public class SavingConsumer extends Consumer {
 	public double getAverageLeisure() {
 		return leisure.getAverage();
 	}
+	
+	@Override
+	public SavingConsumer clone() {
+		SavingConsumer klon = (SavingConsumer) super.clone();
+		klon.leisure = leisure.clone();
+		return klon;
+	}
 
 }
