@@ -10,7 +10,7 @@ import com.agentecon.util.Average;
 
 public class SavingConsumer extends Consumer {
 
-	private static final int START = 100;
+	public static final int START = 100;
 	private double phaseOneDailySavings;
 	private double smoothConsumption;
 	private Average leisure;

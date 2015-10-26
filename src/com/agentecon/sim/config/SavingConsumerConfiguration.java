@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
+import com.agentecon.consumer.SavingConsumer;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.SavingConsumerEvent;
@@ -19,7 +20,7 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 	private static final double LOW = 6.0;
 	private static final double HIGH = 12.0;
 
-	public static final int SHOCK = 600;
+	public static final int SHOCK = 500 + SavingConsumer.START;
 
 	private double savingsRate;
 
