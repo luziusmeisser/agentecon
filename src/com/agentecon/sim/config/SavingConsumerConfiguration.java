@@ -6,7 +6,6 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.SavingConsumer;
-import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.SavingConsumerEvent;
 import com.agentecon.events.SimEvent;
@@ -14,13 +13,16 @@ import com.agentecon.events.UpdatePreferencesEvent;
 import com.agentecon.good.Stock;
 import com.agentecon.sim.Simulation;
 import com.agentecon.verification.PriceMetric;
+import com.agentecon.verification.PricePrinter;
 
 public class SavingConsumerConfiguration extends CobbDougConfiguration {
+	
+	public static final int SCALE = 1;
 
 	private static final double LOW = 6.0;
 	private static final double HIGH = 12.0;
 
-	public static final int SHOCK = 500 + SavingConsumer.START;
+	public static final int SHOCK = 500 * SCALE + SavingConsumer.START;
 
 	private double savingsRate;
 
@@ -67,13 +69,15 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 		int iter = 0;
 		while (sim != null) {
 			System.out.println("******** ITERATION " + iter++ + " **********");
-			PriceMetric metric1 = new PriceMetric(100, 600);
-			PriceMetric metric2 = new PriceMetric(600, 1100);
+			PriceMetric metric1 = new PriceMetric(SavingConsumer.START, SHOCK);
+			PriceMetric metric2 = new PriceMetric(SHOCK, ROUNDS);
+			PricePrinter pp = new PricePrinter(SavingConsumer.START, ROUNDS);
 			sim.addListener(metric1);
 			sim.addListener(metric2);
+			sim.addListener(pp);
 			sim.finish();
-			metric1.printResult(System.out);
-			metric2.printResult(System.out);
+//			metric1.printResult(System.out);
+//			metric2.printResult(System.out);
 			sim = (Simulation) sim.getNext();
 		}
 	}

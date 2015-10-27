@@ -16,9 +16,9 @@ import com.agentecon.price.PriceConfig;
 
 public class CobbDougConfiguration implements IConfiguration {
 
-	public static final int ROUNDS = 1000 + SavingConsumer.START;
-	public static final int WOBBLES = 10;
-	public static final int MAX_ITERATIONS = 20;
+	public static final int ROUNDS = 1000 * SavingConsumerConfiguration.SCALE + SavingConsumer.START;
+	public static final int WOBBLES = 50;
+	public static final int MAX_ITERATIONS = 22;
 
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;

@@ -1,10 +1,10 @@
 package com.agentecon.consumer;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.finance.DailyStockMarket;
 import com.agentecon.good.Good;
 import com.agentecon.good.Inventory;
 import com.agentecon.market.IPriceTakerMarket;
+import com.agentecon.sim.config.CobbDougConfiguration;
 import com.agentecon.sim.config.SavingConsumerConfiguration;
 import com.agentecon.util.Average;
 
@@ -12,7 +12,6 @@ public class SavingConsumer extends Consumer {
 
 	public static final int START = 100;
 	private double phaseOneDailySavings;
-	private double smoothConsumption;
 	private Average leisure;
 	private Good good;
 
@@ -24,15 +23,10 @@ public class SavingConsumer extends Consumer {
 	}
 
 	public SavingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
-		this(type, end, utility, good, 0.0, savingsPerDay);
-	}
-
-	public SavingConsumer(String type, Endowment end, IUtility utility, Good good, double smoothConsumption, double savingsPerDay) {
 		super(type, end, utility);
 		this.good = good;
 		this.leisure = new Average();
 		this.phaseOneDailySavings = Math.max(0, savingsPerDay);
-		this.smoothConsumption = smoothConsumption;
 	}
 
 	double reserves;
@@ -68,13 +62,21 @@ public class SavingConsumer extends Consumer {
 		assert inv.getStock(good).isEmpty();
 		return cons;
 	}
+	
+	public double getPhaseOneConsumption(){
+		return firstHalfConsumption / (SavingConsumerConfiguration.SHOCK - START) - LogUtil.ADJUSTMENT;
+	}
+	
+	public double getPhaseTwoConsumption(){
+		return (totalConsumption - firstHalfConsumption) / (CobbDougConfiguration.ROUNDS - SavingConsumerConfiguration.SHOCK) - LogUtil.ADJUSTMENT;
+	}
 
 	public SavingConsumer getNextGeneration(IUtility util, Endowment end) {
-		double smoothConsumption = totalConsumption / 1500; // TEMP
-		double savingsPerDay = firstHalfConsumption / 500 - smoothConsumption;
+		double smoothConsumption = totalConsumption / ((CobbDougConfiguration.ROUNDS - SavingConsumerConfiguration.SHOCK) * 2 + (SavingConsumerConfiguration.SHOCK - START)); // TEMP
+		double savingsPerDay = firstHalfConsumption / (SavingConsumerConfiguration.SHOCK - START) - smoothConsumption;
 		assert getStock(good).getAmount() == 0.0;
 		// return new SavingConsumer(getType(), end, util, good);
-		return new SavingConsumer(getType(), end, util, good, smoothConsumption, savingsPerDay + phaseOneDailySavings);
+		return new SavingConsumer(getType(), end, util, good, savingsPerDay + phaseOneDailySavings);
 	}
 
 	public double getDailySavings() {
@@ -82,7 +84,7 @@ public class SavingConsumer extends Consumer {
 	}
 
 	public double getAverageConsumption() {
-		return totalConsumption / 1500;
+		return totalConsumption / (CobbDougConfiguration.ROUNDS - START) - LogUtil.ADJUSTMENT;
 	}
 
 	public double getAverageLeisure() {

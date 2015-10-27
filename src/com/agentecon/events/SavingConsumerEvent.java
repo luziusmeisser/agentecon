@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.agentecon.agent.AgentRef;
 import com.agentecon.agent.Endowment;
-import com.agentecon.consumer.LogUtil;
 import com.agentecon.consumer.SavingConsumer;
 import com.agentecon.good.Good;
 import com.agentecon.sim.config.IUtilityFactory;
@@ -68,6 +67,22 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		}
 		return avg.getAverage();
 	}
+	
+	public double getPhaseOne() {
+		Average avg = new Average();
+		for (SavingConsumer sc : getSavers()) {
+			avg.add(1.0, sc.getPhaseOneConsumption());
+		}
+		return avg.getAverage();
+	}
+	
+	public double getPhaseTwo() {
+		Average avg = new Average();
+		for (SavingConsumer sc : getSavers()) {
+			avg.add(1.0, sc.getPhaseTwoConsumption());
+		}
+		return avg.getAverage();
+	}
 
 	private double getDailyLeisure() {
 		Average avg = new Average();
@@ -94,8 +109,9 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		return avg.getAverage();
 	}
 
+	@Override
 	public String toString() {
-		return "Consumers with daily savings of " + getDailySavings() + " and daily consumption of " + getDailyConsumption() + " output and " + getDailyLeisure() + " leisure";
+		return "Consumers with daily savings of\t" + getDailySavings() + "\tand daily consumption of\t" + getDailyConsumption() + "\t" + getPhaseOne() + "\t" + getPhaseTwo() + "\toutput and " + getDailyLeisure() + " leisure";
 	}
 
 }
