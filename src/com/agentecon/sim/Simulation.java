@@ -12,6 +12,7 @@ import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
+import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.IPublicCompany;
 import com.agentecon.finance.IShareholder;
@@ -45,7 +46,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public Simulation() {
-		this(new SavingConsumerConfiguration());
+		this(new OverlappingGenerations());
 	}
 	
 	public Simulation(IConfiguration metaConfig) {

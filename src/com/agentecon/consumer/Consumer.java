@@ -69,6 +69,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				if (dividendIncome < invest) {
 					savingsTarget = invest - dividendIncome;
 					invest = Math.min(getMoney().getAmount(), invest);
+				} else {
+					savingsTarget = 0.0;
 				}
 				portfolio.invest(stocks, invest);
 			} 
