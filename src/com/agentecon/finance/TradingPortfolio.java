@@ -9,7 +9,7 @@ import com.agentecon.stats.Numbers;
 
 public class TradingPortfolio extends Portfolio {
 
-	private static final boolean STICKY_STOCKS = false;
+	private static final boolean STICKY_STOCKS = true;
 
 	public TradingPortfolio(IStock money) {
 		super(money);
