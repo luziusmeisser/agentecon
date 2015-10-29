@@ -57,7 +57,7 @@ public class TradingPortfolio extends Portfolio {
 
 	@SuppressWarnings("unchecked")
 	private Ticker findStockToBuy(IStockMarket stocks) {
-		return stocks.findAnyAsk(STICKY_STOCKS && inv.size() >= 5 ? new ArrayList<Ticker>(inv.keySet()) : Collections.EMPTY_LIST, false);
+		return stocks.findAnyAsk(STICKY_STOCKS && inv.size() >= 7 ? new ArrayList<Ticker>(inv.keySet()) : Collections.EMPTY_LIST, false);
 	}
 
 	@Override
