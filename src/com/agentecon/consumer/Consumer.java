@@ -22,7 +22,7 @@ import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer, IStockMarketParticipant {
 	
-	private static final boolean INCREASING_SAVINGS_RATE = false;
+	private static final boolean INCREASING_SAVINGS_RATE = true;
 
 	private int age, maxAge;
 	protected Good soldGood;
