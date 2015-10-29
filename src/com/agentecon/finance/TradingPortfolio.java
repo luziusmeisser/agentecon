@@ -1,12 +1,15 @@
 package com.agentecon.finance;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.good.IStock;
 import com.agentecon.stats.Numbers;
 
 public class TradingPortfolio extends Portfolio {
+
+	private static final boolean STICKY_STOCKS = false;
 
 	public TradingPortfolio(IStock money) {
 		super(money);
@@ -41,7 +44,7 @@ public class TradingPortfolio extends Portfolio {
 	public void invest(IStockMarket stocks, double budget) {
 		if (Numbers.isBigger(budget, 0.0)) {
 			assert wallet.getAmount() >= budget;
-			Ticker any = stocks.findAnyAsk(false);
+			Ticker any = findStockToBuy(stocks);
 			if (any != null) {
 				double before = wallet.getAmount();
 				Position pos = getPosition(any);
@@ -50,6 +53,11 @@ public class TradingPortfolio extends Portfolio {
 				invest(stocks, budget - spent);
 			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Ticker findStockToBuy(IStockMarket stocks) {
+		return stocks.findAnyAsk(STICKY_STOCKS ? new ArrayList<Ticker>(inv.keySet()) : Collections.EMPTY_LIST, false);
 	}
 
 	@Override

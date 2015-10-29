@@ -1,5 +1,7 @@
 package com.agentecon.finance;
 
+import java.util.List;
+
 import com.agentecon.good.IStock;
 import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
@@ -7,7 +9,7 @@ import com.agentecon.market.IPriceMakerMarket;
 
 public interface IStockMarket extends IPriceMakerMarket {
 
-	public Ticker findAnyAsk(boolean marketCapWeight);
+	public Ticker findAnyAsk(List<Ticker> preferred, boolean marketCapWeight);
 	
 	public Position buy(Ticker ticker, Position existing, IStock wallet, double budget);
 

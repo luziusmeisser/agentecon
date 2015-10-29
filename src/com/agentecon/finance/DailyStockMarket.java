@@ -3,6 +3,7 @@ package com.agentecon.finance;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import com.agentecon.good.IStock;
@@ -43,7 +44,16 @@ public class DailyStockMarket implements IStockMarket {
 	}
 
 	@Override
-	public Ticker findAnyAsk(boolean marketCapWeight) {
+	public Ticker findAnyAsk(List<Ticker> preferred, boolean marketCapWeight) {
+		while (preferred.size() > 0){
+			int choice = rand.nextInt(preferred.size());
+			Ticker t = preferred.get(choice);
+			if (hasAsk(t)){
+				return t;
+			} else {
+				preferred.remove(choice);
+			}
+		}
 		if (marketCapWeight){
 			return findMarketCapWeightedRandomAsk();
 		} else {
