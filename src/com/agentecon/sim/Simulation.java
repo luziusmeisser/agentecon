@@ -19,11 +19,9 @@ import com.agentecon.finance.IShareholder;
 import com.agentecon.finance.StockMarket;
 import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Producer;
-import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
-import com.agentecon.sim.config.SavingConsumerConfiguration;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.World;
 
@@ -59,7 +57,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.events = this.config.createEventQueue();
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
-		this.world.add(new Government());
 		this.stocks = new StockMarket(world);
 		this.day = 0;
 	}

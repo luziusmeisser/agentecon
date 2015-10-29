@@ -22,7 +22,7 @@ import com.agentecon.world.IWorld;
 
 public class OverlappingGenerations extends SimConfig {
 
-	private static final double RETURNS_TO_SCALE = 0.8;
+	private static final double RETURNS_TO_SCALE = 0.7;
 	private static final int MONEY_SUPPLY_PER_FIRM = 1000;
 	private static final int MAX_AGE = 1000;
 	protected static final int MARKET_MAKERS = 10;
@@ -33,7 +33,7 @@ public class OverlappingGenerations extends SimConfig {
 
 	public OverlappingGenerations() {
 		super(10000, 41, 7);
-		this.input = new Good("hours");
+		this.input = new Good("hours", 0.0);
 		this.outputs = new Good[] { new Good("food"), new Good("medicine") };
 		addConsumers(100);
 		addFirms(outputs[0], 15);
