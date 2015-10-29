@@ -57,7 +57,7 @@ public class OverlappingGenerations extends SimConfig {
 		// }
 		// });
 		// }
-		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
+		addEvent(new SimEvent(500, FUNDAMENTALISTS) {
 
 			@Override
 			public void execute(IWorld sim) {
