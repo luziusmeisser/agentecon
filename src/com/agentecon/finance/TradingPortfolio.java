@@ -41,7 +41,7 @@ public class TradingPortfolio extends Portfolio {
 	public void invest(IStockMarket stocks, double budget) {
 		if (Numbers.isBigger(budget, 0.0)) {
 			assert wallet.getAmount() >= budget;
-			Ticker any = stocks.findAnyAsk();
+			Ticker any = stocks.findAnyAsk(false);
 			if (any != null) {
 				double before = wallet.getAmount();
 				Position pos = getPosition(any);

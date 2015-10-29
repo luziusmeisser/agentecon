@@ -7,7 +7,7 @@ import com.agentecon.market.IPriceMakerMarket;
 
 public interface IStockMarket extends IPriceMakerMarket {
 
-	public Ticker findAnyAsk();
+	public Ticker findAnyAsk(boolean marketCapWeight);
 	
 	public Position buy(Ticker ticker, Position existing, IStock wallet, double budget);
 

@@ -43,7 +43,27 @@ public class DailyStockMarket implements IStockMarket {
 	}
 
 	@Override
-	public Ticker findAnyAsk() {
+	public Ticker findAnyAsk(boolean marketCapWeight) {
+		if (marketCapWeight){
+			return findMarketCapWeightedRandomAsk();
+		} else {
+			return findRandomAsk();
+		}
+	}
+
+	private Ticker findRandomAsk() {
+		ArrayList<Ticker> asks = new ArrayList<>();
+		for (BestPriceMarket bpm: market.values()){
+			Ask ask = bpm.getAsk();
+			if (ask != null){
+				asks.add((Ticker) ask.getGood());
+			}
+		}
+		int size = asks.size();
+		return size == 0 ? null : asks.get(rand.nextInt(size));
+	}
+
+	protected Ticker findMarketCapWeightedRandomAsk() {
 		// TEMP improve performance
 		ArrayList<Ask> list = new ArrayList<>();
 		double total = 0.0;
