@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import com.agentecon.consumer.Weight;
 import com.agentecon.good.Good;
+import com.agentecon.good.IStock;
+import com.agentecon.good.Inventory;
 
 public abstract class AbstractProductionFunction implements IProductionFunction {
 
@@ -27,6 +29,15 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 		return ws;
 	}
 	
+	@Override
+	public final double produce(Inventory inventory) {
+		double production = useInputs(inventory);
+		inventory.getStock(getOutput()).addFreshlyProduced(production);
+		return production;
+	}
+	
+	protected abstract double useInputs(Inventory inventory);
+
 	private double calcTotWeights() {
 		double tot = 0.0;
 		for (Weight w : inputs) {

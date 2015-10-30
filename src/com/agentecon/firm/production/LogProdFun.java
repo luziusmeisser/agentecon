@@ -14,13 +14,12 @@ public class LogProdFun extends AbstractProductionFunction {
 	}
 
 	@Override
-	public double produce(Inventory inventory) {
+	public double useInputs(Inventory inventory) {
 		double production = 1.0;
 		for (Weight input : inputs) {
 			IStock in = inventory.getStock(input.good);
 			production += input.weight * Math.log(ADJUSTMENT + in.consume());
 		}
-		inventory.getStock(getOutput()).add(production);
 		return production;
 	}
 
