@@ -77,7 +77,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 			this.reserve = 0.0;
 			return 0.0;
 		}
-		// return excessCash; // excessCash / 5 would lead to market makers eventually owning everything
+		// return excessCash; // excessCash / 5 would lead to market makers eventually owning everything...
 	}
 
 	@Override
