@@ -37,7 +37,7 @@ public class SinConsumerEvent extends ConsumerEvent {
 		int day = sim.getDay() - start;
 		assert day >= 0;
 		double period = (day % cycle) * 2 * Math.PI / cycle;
-		this.births += (Math.sin(period) + 1.0) * getCardinality() / cycle;
+		this.births += (Math.sin(period) + 1.5) * getCardinality() / cycle;
 		while (births >= 1.0){
 			births -= 1.0;
 			sim.add(createConsumer());
