@@ -40,4 +40,10 @@ public class MarketMakerPrice {
 		return floor + " to " + ceiling;
 	}
 
+	public String getSpread() {
+		double p1 = floor.getPrice();
+		double p2 = ceiling.getPrice();
+		return Double.toString((p2 - p1)/p2);
+	}
+
 }

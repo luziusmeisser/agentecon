@@ -92,7 +92,7 @@ public class MarketMaker extends PublicCompany implements IShareholder, Cloneabl
 
 	@Override
 	public String toString() {
-		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex() + ", dividend " + getShareRegister().getAverageDividend();
+		return getMoney() + ", holding " + getAvgHoldings() + ", price index: " + getIndex().toFullString() + ", dividend " + getShareRegister().getAverageDividend();
 	}
 
 }

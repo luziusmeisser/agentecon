@@ -3,16 +3,14 @@ package com.agentecon.finance;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
 import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
+import com.agentecon.market.Bid;
 import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
 public class ShareRegister implements IRegister {
 	
-	public static final double INITIAL_PRICE = 10.0;
-
 	private Ticker ticker;
 	private Position rootPosition;
 	private MovingAverage dividend;
@@ -29,7 +27,10 @@ public class ShareRegister implements IRegister {
 	public void raiseCapital(DailyStockMarket dsm, IStock wallet) {
 		if (!rootPosition.isEmpty()){
 			collectRootDividend(wallet);
-			dsm.offer(new AskFin(wallet, rootPosition, new Price(getTicker(), INITIAL_PRICE), rootPosition.getAmount()));
+			Bid bid = dsm.getBid(getTicker());
+			if (bid != null){
+				bid.accept(wallet, rootPosition, rootPosition.getAmount());
+			}
 		}
 	}
 	
