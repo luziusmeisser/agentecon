@@ -84,7 +84,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public double getSavingsRateMultiplier() {
-		return INCREASING_SAVINGS_RATE ? 2.0 * ((double)age) / getRetirementAge() : 0.5;
+		return INCREASING_SAVINGS_RATE ? 2.0 * ((double)age) / getRetirementAge() : 1.0;
 	}
 
 	public void maximizeUtility(IPriceTakerMarket market) {
