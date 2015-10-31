@@ -23,7 +23,7 @@ import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer, IStockMarketParticipant {
 
-	private static final boolean INCREASING_SAVINGS_RATE = true;
+	private static final boolean INCREASING_SAVINGS_RATE = false;
 
 	private int age, maxAge;
 	protected Good soldGood;
@@ -84,7 +84,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public double getSavingsRateMultiplier() {
-		return INCREASING_SAVINGS_RATE ? 2.0 * ((double)age) / getRetirementAge() : 1.0;
+		return INCREASING_SAVINGS_RATE ? 2.0 * ((double)age) / getRetirementAge() : 0.7;
 	}
 
 	public void maximizeUtility(IPriceTakerMarket market) {
