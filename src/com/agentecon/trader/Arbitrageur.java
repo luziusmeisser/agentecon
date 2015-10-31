@@ -70,11 +70,6 @@ public class Arbitrageur extends Trader implements IMarketListener {
 	}
 	
 	@Override
-	public void notifySold(Good good, double quantity, Price price, boolean uptick) {
-		notifySold(good, quantity, price);
-	}
-
-	@Override
 	public void notifyOffered(Good good, double quantity, Price price) {
 	}
 

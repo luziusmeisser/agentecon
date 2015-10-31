@@ -39,11 +39,6 @@ public class PricePrinter extends SimulationListenerAdapter implements IMarketLi
 	}
 	
 	@Override
-	public void notifySold(Good good, double quantity, Price price, boolean uptick) {
-		notifySold(good, quantity, price);
-	}
-
-	@Override
 	public void notifySold(Good good, double quantity, Price price) {
 		this.prices.get(good).add(quantity, price.getPrice());
 	}

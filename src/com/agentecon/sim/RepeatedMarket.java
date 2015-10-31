@@ -86,11 +86,6 @@ public class RepeatedMarket {
 		}
 		
 		@Override
-		public void notifySold(Good good, double quantity, Price price, boolean uptick) {
-			notifySold(good, quantity, price);
-		}
-
-		@Override
 		public void notifySold(Good good, double quantity, Price price) {
 			current.get(good).add(quantity, price.getPrice());
 		}

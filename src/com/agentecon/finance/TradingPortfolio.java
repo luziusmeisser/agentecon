@@ -29,7 +29,8 @@ public class TradingPortfolio extends Portfolio {
 		return value;
 	}
 
-	public void sell(IStockMarket stocks, double fraction) {
+	public double sell(IStockMarket stocks, double fraction) {
+		double moneyBefore = wallet.getAmount();
 		for (Ticker ticker : new ArrayList<>(inv.keySet())) {
 			Position pos = inv.get(ticker);
 			stocks.sell(pos, wallet, pos.getAmount() * fraction);
@@ -37,9 +38,11 @@ public class TradingPortfolio extends Portfolio {
 				disposePosition(ticker);
 			}
 		}
+		return wallet.getAmount() - moneyBefore;
 	}
 
-	public void invest(IStockMarket stocks, double budget) {
+	public double invest(IStockMarket stocks, double budget) {
+		double moneyBefore = wallet.getAmount();
 		if (Numbers.isBigger(budget, 0.0)) {
 			assert wallet.getAmount() >= budget;
 			Ticker any = findStockToBuy(stocks);
@@ -51,6 +54,7 @@ public class TradingPortfolio extends Portfolio {
 				invest(stocks, budget - spent);
 			}
 		}
+		return moneyBefore - wallet.getAmount();
 	}
 
 	@SuppressWarnings("unchecked")

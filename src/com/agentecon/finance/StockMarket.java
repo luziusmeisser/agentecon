@@ -30,7 +30,7 @@ public class StockMarket extends SimulationListenerAdapter implements IMarket {
 		for (IPublicCompany firm : ags.getPublicCompanies()) {
 			firm.payDividends(day);
 		}
-		Collection<MarketMaker> mms = ags.getAllMarketMakers();
+		Collection<MarketMaker> mms = ags.getRandomizedMarketMakers();
 		if (mms.isEmpty()) {
 			// Assume model without stock market, distribute dividends proportionally among consumers
 			distributeDividendsEqually(day, ags);

@@ -73,7 +73,8 @@ public class Agents implements IConsumers, IFirms {
 		return list;
 	}
 
-	public Collection<MarketMaker> getAllMarketMakers() {
+	public Collection<MarketMaker> getRandomizedMarketMakers() {
+		Collections.shuffle(marketMakers, getRand());
 		return marketMakers;
 	}
 
@@ -189,6 +190,10 @@ public class Agents implements IConsumers, IFirms {
 		for (IAgent a: all){
 			((Agent)a).refreshRef();
 		}
+	}
+
+	public Collection<MarketMaker> getAllMarketMakers() {
+		return marketMakers;
 	}
 
 }

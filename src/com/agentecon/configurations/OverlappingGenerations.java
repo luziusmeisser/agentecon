@@ -2,8 +2,8 @@ package com.agentecon.configurations;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
+import com.agentecon.api.IConsumerListener;
 import com.agentecon.consumer.Consumer;
-import com.agentecon.consumer.IConsumerListener;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
@@ -86,6 +86,14 @@ public class OverlappingGenerations extends SimConfig {
 					@Override
 					public void notifyRetiring(IConsumer inst, int age) {
 						((Consumer) inst).setUtilityFunction(oldWeights.getFactory(0).create(0));
+					}
+
+					@Override
+					public void notifyInvested(IConsumer inst, double amount) {
+					}
+
+					@Override
+					public void notifyDivested(IConsumer inst, double amount) {
 					}
 				});
 				return c;

@@ -7,6 +7,7 @@ import java.util.Collection;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IConsumer;
+import com.agentecon.api.IConsumerListener;
 import com.agentecon.finance.IStockMarket;
 import com.agentecon.finance.IStockMarketParticipant;
 import com.agentecon.finance.Portfolio;
@@ -64,7 +65,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 		if (isMortal()) {
 			if (isRetired()) {
 				int daysLeft = maxAge - age + 1;
-				portfolio.sell(stocks, 1.0 / daysLeft);
+				double amount = portfolio.sell(stocks, 1.0 / daysLeft);
+				listeners.notifyDivested(this, amount);
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
 				invest *= getSavingsRateMultiplier();
@@ -75,7 +77,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				} else {
 					savingsTarget = 0.0;
 				}
-				portfolio.invest(stocks, invest);
+				double amount = portfolio.invest(stocks, invest);
+				listeners.notifyInvested(this, amount);
 			}
 		}
 	}
