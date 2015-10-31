@@ -21,8 +21,8 @@ import com.agentecon.stats.Numbers;
 import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer, IStockMarketParticipant {
-	
-	private static final boolean INCREASING_SAVINGS_RATE = false;
+
+	private static final boolean INCREASING_SAVINGS_RATE = true;
 
 	private int age, maxAge;
 	protected Good soldGood;
@@ -47,7 +47,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public void addListener(IConsumerListener listener) {
-		 this.listeners.add(listener);
+		this.listeners.add(listener);
 	}
 
 	public IUtility getUtilityFunction() {
@@ -67,9 +67,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				portfolio.sell(stocks, 1.0 / daysLeft);
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
-				if (INCREASING_SAVINGS_RATE){
-					invest *= 0.5 + age / getRetirementAge();
-				}
+				invest *= getSavingsRateMultiplier();
 				double dividendIncome = portfolio.getLatestDividendIncome();
 				if (dividendIncome < invest) {
 					savingsTarget = invest - dividendIncome;
@@ -78,8 +76,12 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 					savingsTarget = 0.0;
 				}
 				portfolio.invest(stocks, invest);
-			} 
+			}
 		}
+	}
+
+	public double getSavingsRateMultiplier() {
+		return INCREASING_SAVINGS_RATE ? 0.5 + age / getRetirementAge() : 1.0;
 	}
 
 	public void maximizeUtility(IPriceTakerMarket market) {
@@ -166,7 +168,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public Inventory age(Portfolio inheritance) {
-		if (age == getRetirementAge()){
+		if (age == getRetirementAge()) {
 			listeners.notifyRetiring(this, age);
 		}
 		this.age++;

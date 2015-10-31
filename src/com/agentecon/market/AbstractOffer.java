@@ -15,6 +15,10 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 		@Override
 		public void notifyOffered(Good good, double quantity, Price price) {
 		}
+		
+		@Override
+		public void notifySold(Good good, double quantity, Price price, boolean uptick) {
+		}
 
 		@Override
 		public void notifySold(Good good, double quantity, Price price) {
@@ -61,7 +65,7 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 		double absQuant = Math.abs(goodsFlow);
 		this.quantity -= absQuant;
 		
-		listener.notifySold(getGood(), absQuant, getPrice());
+		listener.notifySold(getGood(), absQuant, getPrice(), !isBid());
 	}
 	
 	public double getAmount(){

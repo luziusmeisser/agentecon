@@ -52,6 +52,11 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	}
 
 	@Override
+	public void notifySold(Good good, double quantity, Price price, boolean uptick) {
+		notifySold(good, quantity, price);
+	}
+	
+	@Override
 	public void notifySold(Good good, double quantity, Price price) {
 		this.prices.get(good).add(quantity, price.getPrice());
 	}

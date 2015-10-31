@@ -13,6 +13,13 @@ public class MarketListeners extends AbstractListenerList<IMarketListener> imple
 			l.notifyOffered(good, quantity, price);
 		}
 	}
+	
+	@Override
+	public void notifySold(Good good, double quantity, Price price, boolean uptick) {
+		for (IMarketListener l: list){
+			l.notifySold(good, quantity, price, uptick);
+		} 
+	}
 
 	@Override
 	public void notifySold(Good good, double quantity, Price price) {
