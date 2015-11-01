@@ -49,7 +49,7 @@ public class TradingPortfolio extends Portfolio {
 			Ticker any = findStockToBuy(stocks);
 			if (any != null) {
 				if (iter > 1){
-//					System.out.println("test");
+					System.out.println("test");
 				}
 				double before = wallet.getAmount();
 				Position pos = getPosition(any);

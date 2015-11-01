@@ -28,7 +28,7 @@ public class FundamentalistBubble extends SimConfig {
 	private Good[] outputs;
 
 	public FundamentalistBubble() {
-		super(10000, 41, 10); 
+		super(20000, 41, 10); 
 		this.input = new Good("hours");
 		this.outputs = new Good[] { new Good("apples") };
 		addConsumers(100);
@@ -42,7 +42,7 @@ public class FundamentalistBubble extends SimConfig {
 				}
 			}
 		});
-		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
 
 			@Override
 			public void execute(IWorld sim) {
