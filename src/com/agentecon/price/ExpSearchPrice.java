@@ -23,12 +23,16 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.speed = 1.1;
 	}
 	
+	protected double getMax(){
+		return MAX_ADAPTION_FACTOR;
+	}
+	
 	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {
 			sameDirectionInARow++;
 			if (sameDirectionInARow > 0 && sameDirectionInARow % 2 == 0) {
-				delta = Math.min(MAX_ADAPTION_FACTOR, delta * speed);
+				delta = Math.min(getMax(), delta * speed);
 			}
 		} else {
 			sameDirectionInARow = 0;

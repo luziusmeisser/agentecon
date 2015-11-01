@@ -13,8 +13,18 @@ public class MarketMakerPrice {
 	private CeilingFactor ceiling;
 
 	public MarketMakerPrice(Position pos) {
-		this.floor = new FloorFactor(pos, new ExpSearchPrice(0.1, 10.0 / SPREAD_MULTIPLIER));
-		this.ceiling = new CeilingFactor(pos, new ExpSearchPrice(0.1, 10.0 * SPREAD_MULTIPLIER));
+		this.floor = new FloorFactor(pos, new ExpSearchPrice(0.1, 10.0 / SPREAD_MULTIPLIER){
+			@Override
+			protected double getMax(){
+				return 0.1;
+			}
+		});
+		this.ceiling = new CeilingFactor(pos, new ExpSearchPrice(0.1, 10.0 * SPREAD_MULTIPLIER){
+			@Override
+			protected double getMax(){
+				return 0.1;
+			}
+		});
 	}
 
 	public void trade(IStockMarket dsm, IStock wallet, double budget) {
