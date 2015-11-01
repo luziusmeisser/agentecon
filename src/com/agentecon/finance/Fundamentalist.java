@@ -122,7 +122,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 		double excessCash = getMoney().getAmount() - CASH;
 		if (excessCash > 0) {
 			double dividend = excessCash / 3;
-			this.reserve = excessCash - dividend;
+//			this.reserve = excessCash - dividend;
 			return dividend;
 		} else {
 			this.reserve = 0.0;
