@@ -17,6 +17,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 	private static final int CASH = 1000;
 
 	private IWorld world;
+	private double reserve;
 	private Portfolio portfolio;
 
 	public Fundamentalist(IWorld world) {
@@ -37,7 +38,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 	}
 
 	public void managePortfolio(IStockMarket dsm) {
-		IStock money = getMoney();
+		IStock money = getMoney().hide(reserve);
 		
 		double outerValue = calcOuterValue(dsm);
 		double innerValue = calcInnerValue(dsm);
@@ -118,7 +119,15 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 
 	@Override
 	protected double calculateDividends(int day) {
-		return (getMoney().getAmount() - 1000);
+		double excessCash = getMoney().getAmount() - CASH;
+		if (excessCash > 0) {
+			double dividend = excessCash / 3;
+			this.reserve = excessCash - dividend;
+			return dividend;
+		} else {
+			this.reserve = 0.0;
+			return 0.0;
+		}
 	}
 
 	@Override
