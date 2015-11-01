@@ -59,7 +59,7 @@ public class TradingPortfolio extends Portfolio {
 
 	@SuppressWarnings("unchecked")
 	private Ticker findStockToBuy(IStockMarket stocks) {
-		return stocks.findAnyAsk(Collections.EMPTY_LIST, true);
+		return stocks.findAnyAsk(Collections.EMPTY_LIST, false);
 	}
 
 	@Override

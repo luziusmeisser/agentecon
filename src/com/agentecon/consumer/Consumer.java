@@ -23,8 +23,6 @@ import com.agentecon.util.MovingAverage;
 
 public class Consumer extends Agent implements IConsumer, IStockMarketParticipant {
 
-	private static final boolean INCREASING_SAVINGS_RATE = false;
-
 	private int age, maxAge;
 	protected Good soldGood;
 	private IUtility utility;
@@ -69,7 +67,6 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				listeners.notifyDivested(this, amount);
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
-				invest *= getSavingsRateMultiplier();
 				double dividendIncome = portfolio.getLatestDividendIncome();
 				if (dividendIncome < invest) {
 					savingsTarget = invest - dividendIncome;
@@ -81,10 +78,6 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				listeners.notifyInvested(this, amount);
 			}
 		}
-	}
-
-	public double getSavingsRateMultiplier() {
-		return INCREASING_SAVINGS_RATE ? 2.0 * ((double)age) / getRetirementAge() : 1.5;
 	}
 
 	public void maximizeUtility(IPriceTakerMarket market) {
