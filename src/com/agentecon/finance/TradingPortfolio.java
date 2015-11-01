@@ -43,10 +43,14 @@ public class TradingPortfolio extends Portfolio {
 
 	public double invest(IStockMarket stocks, double budget) {
 		double moneyBefore = wallet.getAmount();
+		int iter = 0;
 		if (Numbers.isBigger(budget, 0.0)) {
 			assert wallet.getAmount() >= budget;
 			Ticker any = findStockToBuy(stocks);
 			if (any != null) {
+				if (iter > 1){
+//					System.out.println("test");
+				}
 				double before = wallet.getAmount();
 				Position pos = getPosition(any);
 				addPosition(stocks.buy(any, pos, wallet, budget));
@@ -59,7 +63,7 @@ public class TradingPortfolio extends Portfolio {
 
 	@SuppressWarnings("unchecked")
 	private Ticker findStockToBuy(IStockMarket stocks) {
-		return stocks.findAnyAsk(Collections.EMPTY_LIST, false);
+		return stocks.findAnyAsk(Collections.EMPTY_LIST, true);
 	}
 
 	@Override
