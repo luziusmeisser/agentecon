@@ -12,7 +12,6 @@ import com.agentecon.api.IIteratedSimulation;
 import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
-import com.agentecon.configurations.FundamentalistBubble;
 import com.agentecon.configurations.OverlappingGenerations;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.IPublicCompany;
