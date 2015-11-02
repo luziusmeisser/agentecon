@@ -15,7 +15,6 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
 import com.agentecon.market.IPriceMakerMarket;
-import com.agentecon.price.IPriceFactory;
 
 public class Producer extends PublicCompany implements IFirm {
 
@@ -23,38 +22,32 @@ public class Producer extends PublicCompany implements IFirm {
 	protected OutputFactor output;
 	private IProductionFunction prod;
 
-	protected IPriceFactory prices;
-	private IFirmDecisions strategy;
+	protected IFirmDecisions strategy;
 
-	public Producer(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
-		this(type, end, prod, prices, new DifferentialDividend());
-	}
-
-	public Producer(String type, Endowment end, IProductionFunction prod, IPriceFactory prices, IFirmDecisions strategy) {
+	public Producer(String type, Endowment end, IProductionFunction prod, IFirmDecisions strategy) {
 		super(type, end);
 		this.prod = prod;
-		this.prices = prices;
 		this.setStrategy(strategy);
 
 		Good[] inputs = prod.getInput();
 		this.inputs = new InputFactor[inputs.length];
 		for (int i = 0; i < inputs.length; i++) {
-			this.inputs[i] = createInputFactor(prices, getStock(inputs[i]));
+			this.inputs[i] = createInputFactor(getStock(inputs[i]));
 		}
 		IStock outStock = getStock(prod.getOutput());
-		this.output = createOutputFactor(prices, outStock);
+		this.output = createOutputFactor(outStock);
 	}
 
 	public void setStrategy(IFirmDecisions strategy) {
 		this.strategy = strategy.duplicate();
 	}
 
-	protected OutputFactor createOutputFactor(IPriceFactory prices, IStock outStock) {
-		return new OutputFactor(outStock, prices.createPrice(outStock.getGood()));
+	protected OutputFactor createOutputFactor(IStock outStock) {
+		return new OutputFactor(outStock);
 	}
 
-	protected InputFactor createInputFactor(IPriceFactory prices, IStock stock) {
-		return new InputFactor(stock, prices.createPrice(stock.getGood()));
+	protected InputFactor createInputFactor(IStock stock) {
+		return new InputFactor(stock);
 	}
 
 	protected boolean isFractionalSpending() {
@@ -150,10 +143,6 @@ public class Producer extends PublicCompany implements IFirm {
 
 	public double getOutputPrice() {
 		return output.getPrice();
-	}
-
-	public Producer createNextGeneration(Endowment end, IProductionFunction prod) {
-		return new Producer(getType(), end, prod, prices, strategy);
 	}
 
 	public Factor getFactor(Good good) {

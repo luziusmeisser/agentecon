@@ -1,3 +1,3 @@
-# An Agent-Based Simulation of the Stolper-Samuelson Effect
+# Fundamentalist Bubble
 
-Relevant classes: Simulation, StolperSamuelsonChart, StolperSamuelson
+Run com.agentecon.configurations.OverlappingGenerations

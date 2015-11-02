@@ -15,16 +15,16 @@ public class SensorOutputFactor extends OutputFactor {
 	private Ask prevRealAsk;
 	private SensorAccuracy accuracy;
 
-	public SensorOutputFactor(IStock stock, IPrice price) {
-		this(stock, price, new SensorAccuracy());
+	public SensorOutputFactor(IStock stock) {
+		this(stock, new SensorAccuracy());
 	}
 
-	public SensorOutputFactor(IStock stock, IPrice price, double accuracy) {
-		this(stock, price, new SensorAccuracy(accuracy));
+	public SensorOutputFactor(IStock stock, double accuracy) {
+		this(stock, new SensorAccuracy(accuracy));
 	}
 	
-	public SensorOutputFactor(IStock stock, IPrice price, SensorAccuracy accuracy) {
-		super(stock, price);
+	public SensorOutputFactor(IStock stock, SensorAccuracy accuracy) {
+		super(stock);
 		this.accuracy = accuracy;
 	}
 	
@@ -74,7 +74,7 @@ public class SensorOutputFactor extends OutputFactor {
 
 	@Override
 	public OutputFactor duplicate(IStock stock) {
-		return new SensorOutputFactor(stock, price, accuracy);
+		return new SensorOutputFactor(stock, accuracy);
 	}
 
 }

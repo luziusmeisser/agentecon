@@ -8,6 +8,10 @@ import com.agentecon.market.IPriceMakerMarket;
 import com.agentecon.price.IPrice;
 
 public class InputFactor extends Factor {
+	
+	public InputFactor(IStock stock) {
+		super(stock);
+	}
 
 	public InputFactor(IStock stock, IPrice price) {
 		super(stock, price);
