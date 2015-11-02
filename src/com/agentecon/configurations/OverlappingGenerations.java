@@ -8,6 +8,7 @@ import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.SinConsumerEvent;
+import com.agentecon.finance.Fundamentalist;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.firm.production.IProductionFunction;
@@ -46,7 +47,7 @@ public class OverlappingGenerations extends SimConfig {
 				}
 			}
 		});
-		
+
 		// for (int i = 0; i < MARKET_MAKERS; i++) {
 		// addEvent(new SimEvent(5000 + i * 500, 1) {
 		//
@@ -56,15 +57,15 @@ public class OverlappingGenerations extends SimConfig {
 		// }
 		// });
 		// }
-//		addEvent(new SimEvent(500, FUNDAMENTALISTS) {
-//
-//			@Override
-//			public void execute(IWorld sim) {
-//				for (int i = 0; i < getCardinality(); i++) {
-//					sim.add(new Fundamentalist(sim));
-//				}
-//			}
-//		});
+		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
+
+			@Override
+			public void execute(IWorld sim) {
+				for (int i = 0; i < getCardinality(); i++) {
+					sim.add(new Fundamentalist(sim));
+				}
+			}
+		});
 	}
 
 	public void addConsumers(int count) {
@@ -72,7 +73,7 @@ public class OverlappingGenerations extends SimConfig {
 		ConsumptionWeights youngWeights = new ConsumptionWeights(new Good[] { input }, outputs, 9.0, 1.0);
 		final ConsumptionWeights oldWeights = new ConsumptionWeights(new Good[] { input }, outputs, 5.0, 5.0);
 		double generationsPerCycle = 1.5;
-		addEvent(new SinConsumerEvent(0, 50, (int)(count * generationsPerCycle), MAX_AGE, (int)(MAX_AGE * generationsPerCycle), "Consumer", end, youngWeights.getFactory(0)) {
+		addEvent(new SinConsumerEvent(0, 50, (int) (count * generationsPerCycle), MAX_AGE, (int) (MAX_AGE * generationsPerCycle), "Consumer", end, youngWeights.getFactory(0)) {
 
 			@Override
 			protected Consumer createConsumer() {
