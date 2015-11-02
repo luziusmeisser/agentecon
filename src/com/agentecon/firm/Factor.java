@@ -6,7 +6,6 @@ import com.agentecon.market.AbstractOffer;
 import com.agentecon.market.Ask;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
-import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPrice;
 
 public abstract class Factor {
@@ -14,10 +13,6 @@ public abstract class Factor {
 	protected IStock stock;
 	protected IPrice price;
 	protected AbstractOffer prevOffer;
-
-	public Factor(IStock stock) {
-		this(stock, new ExpSearchPrice());
-	}
 
 	public Factor(IStock stock, IPrice price) {
 		assert stock != null;

@@ -23,10 +23,6 @@ public class ExpSearchPrice extends AdaptablePrice {
 		this.speed = 1.1;
 	}
 	
-	public ExpSearchPrice() {
-		this(0.03);
-	}
-	
 	@Override
 	protected double getFactor(boolean increase) {
 		if (increase == direction) {

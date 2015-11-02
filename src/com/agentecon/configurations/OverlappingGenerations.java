@@ -1,8 +1,6 @@
 package com.agentecon.configurations;
 
 import com.agentecon.agent.Endowment;
-import com.agentecon.api.IMarket;
-import com.agentecon.api.Price;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
@@ -14,9 +12,6 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
-import com.agentecon.metric.IMarketListener;
-import com.agentecon.metric.SimulationListenerAdapter;
-import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.ConsumptionWeights;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
@@ -35,7 +30,7 @@ public class OverlappingGenerations extends SimConfig {
 	public OverlappingGenerations() {
 		super(10000, 41, 10); 
 		this.input = new Good("hours");
-		this.outputs = new Good[] { new Good("food") };
+		this.outputs = new Good[] { new Good("apples") };
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
@@ -75,39 +70,6 @@ public class OverlappingGenerations extends SimConfig {
 	@Override
 	public boolean hasAging() {
 		return true;
-	}
-	
-	public static void main(String[] args) {
-		Simulation sim = new Simulation(new OverlappingGenerations());
-		final IMarketListener marketListener = new IMarketListener() {
-			
-			@Override
-			public void notifyTradesCancelled() {
-			}
-			
-			@Override
-			public void notifySold(Good good, double quantity, Price price) {
-				System.out.println(good + " traded at " + price.getPrice());
-			}
-			
-			@Override
-			public void notifyOffered(Good good, double quantity, Price price) {
-			}
-		};
-		sim.addListener(new SimulationListenerAdapter(){
-			@Override
-			public void notifyDayStarted(int day) {
-				System.out.println("Day " + day + " started");
-			}
-			
-			@Override
-			public void notifyMarketOpened(IMarket market) {
-				market.addMarketListener(marketListener);
-			}
-			
-		});
-		sim.getStockMarket().addMarketListener(marketListener);
-		sim.finish();
 	}
 
 }

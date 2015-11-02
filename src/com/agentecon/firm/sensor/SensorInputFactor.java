@@ -7,17 +7,12 @@ import com.agentecon.firm.InputFactor;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Bid;
 import com.agentecon.market.IPriceMakerMarket;
-import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.price.IPrice;
 
 public class SensorInputFactor extends InputFactor {
 	
 	private Bid prevRealBid;
 	private SensorAccuracy acc;
-	
-	public SensorInputFactor(IStock stock) {
-		this(stock, new ExpSearchPrice());
-	}
 
 	public SensorInputFactor(IStock stock, IPrice price) {
 		this(stock, price, new SensorAccuracy());
