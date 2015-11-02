@@ -35,20 +35,8 @@ public class PriceConfig {
 	public IPrice createPrice(Random rand) {
 		switch (type) {
 		default:
-		case CONSTANT:
-			return new HardcodedPrice(accuracy);
-		case CONSTANTPERCENTAGE:
-			return new ConstantPrecentagePrice(accuracy);
-		case CONSTANTFACTOR:
-			return new ConstantFactorPrice(accuracy);
-		case RANDOMIZED:
-			return new RandomizedFactorPrice(rand, accuracy);
 		case EXPSEARCH:
 			return new ExpSearchPrice(accuracy);
-		case RATIONAL:
-			return new RationalExpectationsPrice(new ExpSearchPrice(accuracy));
-		case HISTORICHINT:
-			return new HistoricHintPrice(accuracy);
 		}
 	}
 
