@@ -3,7 +3,6 @@ package com.agentecon.finance;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import com.agentecon.api.Price;
 import com.agentecon.good.IStock;
 import com.agentecon.market.Bid;
 import com.agentecon.stats.Numbers;
