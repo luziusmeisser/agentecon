@@ -30,7 +30,7 @@ public class OverlappingGenerations extends SimConfig {
 	public OverlappingGenerations() {
 		super(10000, 41, 10); 
 		this.input = new Good("hours", 0.0);
-		this.outputs = new Good[] { new Good("food", 0.0) };
+		this.outputs = new Good[] { new Good("apples", 0.0) };
 		addConsumers(100);
 		addFirms(10);
 		addEvent(new SimEvent(0, MARKET_MAKERS) {
