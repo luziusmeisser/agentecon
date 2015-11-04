@@ -1,3 +1,3 @@
-# An Agent-Based Simulation of the Stolper-Samuelson Effect
+# Stock Market Volatility with Fundamentalist Traders
 
-Relevant classes: Simulation, StolperSamuelsonChart, StolperSamuelson
+Configuration: com.agentecon.configurations.OverlappingGenerations
