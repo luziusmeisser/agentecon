@@ -29,6 +29,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	private double lifetimeUtility;
 	private TradingPortfolio portfolio;
 	private MovingAverage dailySpendings;
+	private ConsumerListeners listeners;
 
 	public Consumer(String type, Endowment end, IUtility utility) {
 		this(type, Integer.MAX_VALUE, end, utility);
@@ -41,9 +42,11 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 		this.utility = utility;
 		this.dailySpendings = new MovingAverage(0.95);
 		this.portfolio = new TradingPortfolio(getMoney());
+		this.listeners = new ConsumerListeners();
 	}
 
 	public void addListener(IConsumerListener listener) {
+		this.listeners.add(listener);
 	}
 
 	public IUtility getUtilityFunction() {
@@ -57,7 +60,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 		if (isMortal()) {
 			if (isRetired()) {
 				int daysLeft = maxAge - age + 1;
-				portfolio.sell(stocks, 1.0 / daysLeft);
+				double amount = portfolio.sell(stocks, 1.0 / daysLeft);
+				listeners.notifyDivested(this, amount);
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
 				double dividendIncome = portfolio.getLatestDividendIncome();
@@ -65,7 +69,8 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 					savingsTarget = invest - dividendIncome;
 					invest = Math.min(getMoney().getAmount(), invest);
 				}
-				portfolio.invest(stocks, invest);
+				double amount = portfolio.invest(stocks, invest);
+				listeners.notifyInvested(this, amount);
 			}
 		}
 	}
@@ -154,6 +159,9 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	public Inventory age(Portfolio inheritance) {
+		if (age == getRetirementAge()) {
+			listeners.notifyRetiring(this, age);
+		}
 		this.age++;
 		if (age > maxAge) {
 			inheritance.absorb(portfolio);
