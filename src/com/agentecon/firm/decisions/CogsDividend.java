@@ -71,7 +71,7 @@ public class CogsDividend implements IFirmDecisions {
 	public String getDescription() {
 		switch (mode) {
 		default:
-			return "???";
+			return "?";
 		case 0:
 			return "cash / 5 and cogs the same";
 		case 1:
