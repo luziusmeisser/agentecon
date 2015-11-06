@@ -13,6 +13,7 @@ public class IncreasingWiggle implements IConfiguration {
 	private static final int[] CONFIGS = new int[]{0, 1, 10, 100};
 	
 	private int round = -1;
+	
 	private StolperSamuelson ss = new StolperSamuelson() { 
 		protected void addSpecialEvents(SimConfig config) {
 			updatePrefs(config, 500, LOW);
@@ -44,7 +45,7 @@ public class IncreasingWiggle implements IConfiguration {
 	}
 
 	public static void main(String[] args) {
-		Simulation simulation = new Simulation();
+		Simulation simulation = new Simulation(new IncreasingWiggle());
 		while (simulation != null) {
 			simulation.run();
 			simulation = (Simulation) simulation.getNext();

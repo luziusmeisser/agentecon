@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.LogUtil;
-import com.agentecon.consumer.SavingConsumer;
+import com.agentecon.consumer.ReincarnatingConsumer;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.SavingConsumerEvent;
 import com.agentecon.events.SimEvent;
@@ -22,7 +22,7 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 	private static final double LOW = 6.0;
 	private static final double HIGH = 12.0;
 
-	public static final int SHOCK = 500 * SCALE + SavingConsumer.START;
+	public static final int SHOCK = 500 * SCALE + ReincarnatingConsumer.START;
 
 	private double savingsRate;
 
@@ -69,9 +69,9 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 		int iter = 0;
 		while (sim != null) {
 			System.out.println("******** ITERATION " + iter++ + " **********");
-			PriceMetric metric1 = new PriceMetric(SavingConsumer.START, SHOCK);
+			PriceMetric metric1 = new PriceMetric(ReincarnatingConsumer.START, SHOCK);
 			PriceMetric metric2 = new PriceMetric(SHOCK, ROUNDS);
-			PricePrinter pp = new PricePrinter(SavingConsumer.START, ROUNDS);
+			PricePrinter pp = new PricePrinter(ReincarnatingConsumer.START, ROUNDS);
 			sim.addListener(metric1);
 			sim.addListener(metric2);
 			sim.addListener(pp);

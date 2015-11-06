@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.agentecon.agent.AgentRef;
 import com.agentecon.agent.Endowment;
-import com.agentecon.consumer.SavingConsumer;
+import com.agentecon.consumer.ReincarnatingConsumer;
 import com.agentecon.good.Good;
 import com.agentecon.sim.config.IUtilityFactory;
 import com.agentecon.util.Average;
@@ -23,7 +23,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		this.utilfac = utilfac;
 		this.consumers = new ArrayList<>();
 		for (int i = 0; i < card; i++) {
-			consumers.add(new SavingConsumer(name, end, utilfac.create(i), goodToSave, savingsRate).getRef());
+			consumers.add(new ReincarnatingConsumer(name, end, utilfac.create(i), goodToSave, savingsRate).getRef());
 		}
 	}
 
@@ -46,7 +46,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 		ArrayList<AgentRef> next = new ArrayList<>();
 		int i = 0;
 		for (AgentRef ref : consumers) {
-			SavingConsumer sc = (SavingConsumer) ref.get();
+			ReincarnatingConsumer sc = (ReincarnatingConsumer) ref.get();
 			next.add(sc.getNextGeneration(utilfac.create(i++), end).getRef());
 		}
 		return new SavingConsumerEvent(next, end, utilfac);
@@ -54,7 +54,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 
 	public double getDailySavings() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getDailySavings());
 		}
 		return avg.getAverage();
@@ -62,7 +62,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 
 	public double getDailyConsumption() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getAverageConsumption());
 		}
 		return avg.getAverage();
@@ -70,7 +70,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	
 	public double getPhaseOne() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getPhaseOneConsumption());
 		}
 		return avg.getAverage();
@@ -78,7 +78,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	
 	public double getPhaseTwo() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getPhaseTwoConsumption());
 		}
 		return avg.getAverage();
@@ -86,16 +86,16 @@ public class SavingConsumerEvent extends EvolvingEvent {
 
 	private double getDailyLeisure() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getAverageLeisure());
 		}
 		return avg.getAverage();
 	}
 
-	private Collection<SavingConsumer> getSavers() {
-		ArrayList<SavingConsumer> list = new ArrayList<>();
+	private Collection<ReincarnatingConsumer> getSavers() {
+		ArrayList<ReincarnatingConsumer> list = new ArrayList<>();
 		for (AgentRef ref : consumers) {
-			list.add((SavingConsumer) ref.get());
+			list.add((ReincarnatingConsumer) ref.get());
 		}
 		return list;
 	}
@@ -103,7 +103,7 @@ public class SavingConsumerEvent extends EvolvingEvent {
 	@Override
 	public double getScore() {
 		Average avg = new Average();
-		for (SavingConsumer sc : getSavers()) {
+		for (ReincarnatingConsumer sc : getSavers()) {
 			avg.add(1.0, sc.getTotalExperiencedUtility());
 		}
 		return avg.getAverage();

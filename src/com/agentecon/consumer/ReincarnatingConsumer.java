@@ -8,7 +8,7 @@ import com.agentecon.sim.config.CobbDougConfiguration;
 import com.agentecon.sim.config.SavingConsumerConfiguration;
 import com.agentecon.util.Average;
 
-public class SavingConsumer extends Consumer {
+public class ReincarnatingConsumer extends Consumer {
 
 	public static final int START = 100;
 	private double phaseOneDailySavings;
@@ -18,11 +18,11 @@ public class SavingConsumer extends Consumer {
 	private double firstHalfConsumption = 0.0;
 	private double totalConsumption = 0.0;
 
-	public SavingConsumer(String type, Endowment end, IUtility utility, Good good) {
+	public ReincarnatingConsumer(String type, Endowment end, IUtility utility, Good good) {
 		this(type, end, utility, good, 0.0);
 	}
 
-	public SavingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
+	public ReincarnatingConsumer(String type, Endowment end, IUtility utility, Good good, double savingsPerDay) {
 		super(type, end, utility);
 		this.good = good;
 		this.leisure = new Average();
@@ -71,12 +71,12 @@ public class SavingConsumer extends Consumer {
 		return (totalConsumption - firstHalfConsumption) / (CobbDougConfiguration.ROUNDS - SavingConsumerConfiguration.SHOCK) - LogUtil.ADJUSTMENT;
 	}
 
-	public SavingConsumer getNextGeneration(IUtility util, Endowment end) {
+	public ReincarnatingConsumer getNextGeneration(IUtility util, Endowment end) {
 		double smoothConsumption = totalConsumption / ((CobbDougConfiguration.ROUNDS - SavingConsumerConfiguration.SHOCK) * 2 + (SavingConsumerConfiguration.SHOCK - START)); // TEMP
 		double savingsPerDay = firstHalfConsumption / (SavingConsumerConfiguration.SHOCK - START) - smoothConsumption;
 		assert getStock(good).getAmount() == 0.0;
 		// return new SavingConsumer(getType(), end, util, good);
-		return new SavingConsumer(getType(), end, util, good, savingsPerDay + phaseOneDailySavings);
+		return new ReincarnatingConsumer(getType(), end, util, good, savingsPerDay + phaseOneDailySavings);
 	}
 
 	public double getDailySavings() {
@@ -92,8 +92,8 @@ public class SavingConsumer extends Consumer {
 	}
 	
 	@Override
-	public SavingConsumer clone() {
-		SavingConsumer klon = (SavingConsumer) super.clone();
+	public ReincarnatingConsumer clone() {
+		ReincarnatingConsumer klon = (ReincarnatingConsumer) super.clone();
 		klon.leisure = leisure.clone();
 		return klon;
 	}

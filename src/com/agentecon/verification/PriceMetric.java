@@ -81,13 +81,20 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 	public void notifyDayEnded(int day, double utility) {
 		if (day == startRecordingDate) {
 			notifyTradesCancelled();
-		}
-		if (day >= startRecordingDate && day < endRecordingDate) {
+			System.out.print("\t");
+			for (Good good: prices.keySet()){
+				System.out.print(good.toString() + "\t");
+			}
+			System.out.println();
+		} else if (day >= startRecordingDate && day < endRecordingDate) {
+			String line = Integer.toString(day);
 			for (Entry<Good, AccumulatingAverage> e : prices.entrySet()) {
 				AccumulatingAverage avg = e.getValue();
 				volume.get(e.getKey()).add(avg.getWeight());
 				double val = avg.flush();
+				line += "\t" + val;
 			}
+			System.out.println(line);
 		}
 	}
 

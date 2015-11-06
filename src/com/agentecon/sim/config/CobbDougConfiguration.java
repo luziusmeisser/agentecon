@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.SimulationConfig;
-import com.agentecon.consumer.SavingConsumer;
+import com.agentecon.consumer.ReincarnatingConsumer;
 import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.EvolvingEvent;
 import com.agentecon.events.FirmEvent;
@@ -16,7 +16,7 @@ import com.agentecon.price.PriceConfig;
 
 public class CobbDougConfiguration implements IConfiguration {
 
-	public static final int ROUNDS = 1000 * SavingConsumerConfiguration.SCALE + SavingConsumer.START;
+	public static final int ROUNDS = 1000 * SavingConsumerConfiguration.SCALE + ReincarnatingConsumer.START;
 	public static final int WOBBLES = 50;
 	public static final int MAX_ITERATIONS = 22;
 
