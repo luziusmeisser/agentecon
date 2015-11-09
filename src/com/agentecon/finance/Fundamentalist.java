@@ -13,6 +13,8 @@ import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
 
 public class Fundamentalist extends PublicCompany implements IAgent, IStockMarketParticipant {
+	
+	private static final boolean ALLOWED_TO_BUY_OTHER_FUNDAMENTALISTS = true;
 
 	private static final int CASH = 1000;
 
@@ -39,7 +41,7 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 
 	public void managePortfolio(IStockMarket dsm) {
 		IStock money = getMoney().hide(reserve);
-		
+
 		double outerValue = calcOuterValue(dsm);
 		double innerValue = calcInnerValue(dsm);
 		boolean buyingAllowed = 1.5 * outerValue > innerValue;
@@ -110,8 +112,14 @@ public class Fundamentalist extends PublicCompany implements IAgent, IStockMarke
 	protected PriorityQueue<IPublicCompany> getOfferQueue(IStockMarket dsm, Collection<IPublicCompany> comps) {
 		PriorityQueue<IPublicCompany> queue = new PriorityQueue<>(comps.size(), new YieldComparator(dsm, true));
 		for (IPublicCompany pc : comps) {
-			if (dsm.hasAsk(pc.getTicker()) && !pc.getTicker().equals(getTicker())) {
-				queue.add(pc);
+			if (dsm.hasAsk(pc.getTicker())) {
+				if (!ALLOWED_TO_BUY_OTHER_FUNDAMENTALISTS && pc.getTicker().getType().equals(getTicker().getType())){
+					// do not buy fundamentalist shares
+				} else if (pc.getTicker().equals(getTicker())){
+					// do not buy own shares
+				} else {
+					queue.add(pc);
+				}
 			}
 		}
 		return queue;

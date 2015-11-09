@@ -42,7 +42,7 @@ public class FundamentalistBubble extends SimConfig {
 				}
 			}
 		});
-		addEvent(new SimEvent(3000, FUNDAMENTALISTS) {
+		addEvent(new SimEvent(0, FUNDAMENTALISTS) {
 
 			@Override
 			public void execute(IWorld sim) {

@@ -5,6 +5,8 @@ import com.agentecon.price.ExpSearchPrice;
 import com.agentecon.stats.Numbers;
 
 public class MarketMakerPrice {
+	
+	private static final double INITIAL_PRICE_BELIEF = 10;
 
 	public static final double MIN_SPREAD = 0.01;
 	public static final double SPREAD_MULTIPLIER = 1.0 + MIN_SPREAD / 2;
@@ -13,13 +15,13 @@ public class MarketMakerPrice {
 	private CeilingFactor ceiling;
 
 	public MarketMakerPrice(Position pos) {
-		this.floor = new FloorFactor(pos, new ExpSearchPrice(0.1, 10.0 / SPREAD_MULTIPLIER){
+		this.floor = new FloorFactor(pos, new ExpSearchPrice(0.1, INITIAL_PRICE_BELIEF / SPREAD_MULTIPLIER){
 			@Override
 			protected double getMax(){
 				return 0.1;
 			}
 		});
-		this.ceiling = new CeilingFactor(pos, new ExpSearchPrice(0.1, 10.0 * SPREAD_MULTIPLIER){
+		this.ceiling = new CeilingFactor(pos, new ExpSearchPrice(0.1, INITIAL_PRICE_BELIEF * SPREAD_MULTIPLIER){
 			@Override
 			protected double getMax(){
 				return 0.1;
