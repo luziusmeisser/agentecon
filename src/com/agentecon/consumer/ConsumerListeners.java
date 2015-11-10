@@ -1,6 +1,7 @@
 package com.agentecon.consumer;
 
 import com.agentecon.api.IConsumer;
+import com.agentecon.api.IConsumerListener;
 import com.agentecon.good.Inventory;
 import com.agentecon.metric.AbstractListenerList;
 
@@ -18,6 +19,20 @@ public class ConsumerListeners extends AbstractListenerList<IConsumerListener> i
 		for (IConsumerListener l: list){
 			l.notifyRetiring(inst, age);
 		}		
+	}
+
+	@Override
+	public void notifyInvested(IConsumer inst, double amount) {
+		for (IConsumerListener l: list){
+			l.notifyInvested(inst, amount);
+		}	
+	}
+
+	@Override
+	public void notifyDivested(IConsumer inst, double amount) {
+		for (IConsumerListener l: list){
+			l.notifyDivested(inst, amount);
+		}	
 	}
 
 }

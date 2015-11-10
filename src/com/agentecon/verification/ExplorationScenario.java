@@ -149,8 +149,7 @@ public class ExplorationScenario implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		FirmStatistics latest = firmStats.get(firmStats.size() - 1);
-		return createStrategy().toString(); // + "\t" + latest.getProfits();
+		return createStrategy().toString();
 	}
 
 	public static void main(String[] args) {

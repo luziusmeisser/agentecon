@@ -15,7 +15,6 @@ import com.agentecon.finance.IStockMarketParticipant;
 import com.agentecon.finance.MarketMaker;
 import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Producer;
-import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 
 public class Agents implements IConsumers, IFirms {
@@ -23,7 +22,6 @@ public class Agents implements IConsumers, IFirms {
 	private long seed;
 	private Random rand;
 
-	private Government gov;
 	private ArrayList<IAgent> all;
 	private HashMap<Ticker, IPublicCompany> publicCompanies;
 
@@ -58,10 +56,6 @@ public class Agents implements IConsumers, IFirms {
 		this.seed = seed;
 	}
 	
-	public Government getGovernment() {
-		return gov;
-	}
-
 	public Collection<Producer> getAllFirms() {
 		return firms;
 	}
@@ -88,10 +82,6 @@ public class Agents implements IConsumers, IFirms {
 
 	public void add(IAgent agent) {
 		all.add(agent);
-		if (agent instanceof Government){
-			assert gov == null;
-			gov = (Government) agent;
-		}
 		if (agent instanceof IPublicCompany) {
 			IPublicCompany pc = (IPublicCompany) agent;
 			publicCompanies.put(pc.getTicker(), pc);

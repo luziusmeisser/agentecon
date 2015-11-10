@@ -19,7 +19,6 @@ import com.agentecon.finance.StockMarket;
 import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Producer;
 import com.agentecon.firm.decisions.EExplorationMode;
-import com.agentecon.government.Government;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.sim.config.IConfiguration;
@@ -50,7 +49,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 //	}
 	
 	public Simulation() {
-		this(new ExplorationScenario(EExplorationMode.IDEAL_COST));
+		this(new ExplorationScenario(0.5));
 	}
 
 	public Simulation(IConfiguration metaConfig) {
@@ -63,7 +62,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		this.events = this.config.createEventQueue();
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
-		this.world.add(new Government());
 		this.stocks = new StockMarket(world);
 		this.day = 0;
 	}
