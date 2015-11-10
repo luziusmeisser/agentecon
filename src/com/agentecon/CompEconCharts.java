@@ -55,7 +55,18 @@ public class CompEconCharts implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		return "figure " + figure;
+		switch(figure){
+			default:
+				return PriceConfig.STANDARD_CONFIGS[figure].getType().getName() + " adjustments";
+			case 8:
+				return EPrice.EXPSEARCH.getName() + ", shock at 1000";
+			case 9:
+				return EPrice.CONSTANTPERCENTAGE.getName() + ", shock at 1000";
+			case 10:
+				return EPrice.EXPSEARCH.getName() + ", shock at 1000, no sensor pricing";
+			case 11:
+				return "no normalization, many shocks";
+		}
 	}
 
 	public String createAccuracyBenchmark() {

@@ -47,6 +47,10 @@ public class PriceConfig {
 			return new ExpSearchPrice(accuracy);
 		}
 	}
+	
+	public EPrice getType(){
+		return type;
+	}
 
 	public boolean isSensor() {
 		return sensor;
