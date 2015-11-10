@@ -6,7 +6,6 @@ Results can be browsed online on http://master.agentecon.com/sim.html?id=Benchma
 
 Run com.agentecon.sim.Simulation to run this simulation.
 
-
 ###General instructions
 
 In order to modify and run the model yourself, you should follow these steps:

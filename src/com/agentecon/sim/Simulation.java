@@ -4,6 +4,7 @@ package com.agentecon.sim;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Queue;
 
 import com.agentecon.agent.Endowment;
@@ -37,6 +38,8 @@ import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
+import com.agentecon.util.Average;
+import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
@@ -279,6 +282,13 @@ public class Simulation implements ISimulation {
 
 	public static void main(String[] args) {
 		final Simulation sim = new Simulation();
+		final InstantiatingHashMap<Good, Average> averages = new InstantiatingHashMap<Good, Average>() {
+			
+			@Override
+			protected Average create(Good key) {
+				return new Average();
+			}
+		};
 		sim.addListener(new SimulationListenerAdapter() {
 			
 			// extract whatever data you like
@@ -292,7 +302,7 @@ public class Simulation implements ISimulation {
 					
 					@Override
 					public void notifySold(Good good, double quantity, Price price) {
-						System.out.println(sim.getDay() + ": traded " + good + " in quantity " + quantity + " at price " + price.getPrice());
+						averages.get(good).add(quantity, price.getPrice());
 					}
 					
 					@Override
@@ -301,8 +311,12 @@ public class Simulation implements ISimulation {
 				});
 			}
 			
-		});		
+		});
 		sim.run();
+		System.out.println("Good\tPrice\tVolume");
+		for (Map.Entry<Good, Average> e: averages.entrySet()){
+			System.out.println(e.getKey() + "\t" + e.getValue().getAverage() + "\t" + e.getValue().getTotWeight());
+		}
 	}
 
 }
