@@ -24,6 +24,11 @@ public abstract class Agent implements IAgent {
 		assert type != null;
 	}
 	
+	@Override
+	public boolean isAlive() {
+		return true;
+	}
+	
 	public String getName() {
 		return getType() + " " + number;
 	}
@@ -57,6 +62,10 @@ public abstract class Agent implements IAgent {
 	public final void collectDailyEndowment() {
 		inv.deprecate();
 		inv.receive(end.getDaily());
+	}
+	
+	public IAgent clone(){
+		return this;
 	}
 
 	public String toString() {

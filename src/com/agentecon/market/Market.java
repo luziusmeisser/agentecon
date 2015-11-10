@@ -11,7 +11,6 @@ import com.agentecon.api.IMarket;
 import com.agentecon.api.Price;
 import com.agentecon.good.Good;
 import com.agentecon.metric.IMarketListener;
-import com.agentecon.stats.IDataRecorder;
 import com.agentecon.util.InstantiatingHashMap;
 
 public class Market implements IPriceMakerMarket, IPriceTakerMarket, IMarket {
@@ -69,12 +68,6 @@ public class Market implements IPriceMakerMarket, IPriceTakerMarket, IMarket {
 			return getBid(good);
 		} else {
 			return getAsk(good);
-		}
-	}
-
-	public void reportStats(IDataRecorder rec) {
-		for (AbstractMarket market : markets.values()) {
-			market.reportStats(rec);
 		}
 	}
 

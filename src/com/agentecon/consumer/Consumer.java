@@ -6,7 +6,9 @@ import java.util.Collection;
 
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
+import com.agentecon.api.IConsumerListener;
 import com.agentecon.finance.Portfolio;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
@@ -28,7 +30,6 @@ public class Consumer extends Agent implements IConsumer {
 	private Good soldGood;
 	private IUtility utility;
 	private double lifetimeUtility;
-	private Portfolio savings;
 	private MovingAverage dailySpendings;
 
 	public Consumer(String type, Endowment end, IUtility utility) {
@@ -175,6 +176,15 @@ public class Consumer extends Agent implements IConsumer {
 	@Override
 	public int getAge() {
 		return age;
+	}
+
+	@Override
+	public IAgent clone() {
+		return this;
+	}
+
+	@Override
+	public void addListener(IConsumerListener listener) {
 	}
 
 }

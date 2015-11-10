@@ -7,7 +7,6 @@ import java.util.Arrays;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.finance.ShareRegister;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
@@ -20,7 +19,6 @@ public class Firm extends Agent implements IFirm {
 
 	public static double DIVIDEND_RATE = 0.2;
 
-	private ShareRegister register;
 	private InputFactor[] inputs;
 	private OutputFactor output;
 	private IProductionFunction prod;
@@ -30,7 +28,6 @@ public class Firm extends Agent implements IFirm {
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
 		this.prod = prod;
-		this.register = new ShareRegister(getName(), getMoney());
 
 		Good[] inputs = prod.getInput();
 		this.inputs = new InputFactor[inputs.length];
@@ -181,6 +178,20 @@ public class Firm extends Agent implements IFirm {
 	@Override
 	public String toString() {
 		return "Firm with " + getMoney() + ", " + output + ", " + Arrays.toString(inputs);
+	}
+
+	@Override
+	public Good[] getInputs() {
+		Good[] goods = new Good[inputs.length];
+		for (int i = 0; i < inputs.length; i++) {
+			goods[i] = inputs[i].getGood();
+		}
+		return goods;
+	}
+
+	@Override
+	public Good getOutput() {
+		return output.getGood();
 	}
 
 }

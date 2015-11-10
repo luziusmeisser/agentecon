@@ -21,4 +21,11 @@ public class MarketListeners extends AbstractListenerList<IMarketListener> imple
 		} 
 	}
 
+	@Override
+	public void notifyTradesCancelled() {
+		for (IMarketListener l: list){
+			l.notifyTradesCancelled();
+		} 
+	}
+
 }

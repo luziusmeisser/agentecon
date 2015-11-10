@@ -7,7 +7,6 @@ import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.metric.IMarketListener;
 import com.agentecon.stats.Numbers;
-import com.agentecon.stats.ProductStats;
 
 public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer {
 	
@@ -20,6 +19,10 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 		@Override
 		public void notifySold(Good good, double quantity, Price price) {
 		}
+
+		@Override
+		public void notifyTradesCancelled() {
+		}
 	};
 	
 	private double volume;
@@ -27,7 +30,6 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	protected IStock wallet;
 	protected IStock stock;
 	private Price price;
-	protected ProductStats stats;
 	protected IMarketListener listener = NULL_LISTENER;
 	
 	public AbstractOffer(IStock wallet, IStock stock, Price price, double quantity){
@@ -56,9 +58,6 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 		this.quantity -= absQuant;
 		
 		listener.notifySold(getGood(), absQuant, getPrice());
-		if (stats != null){
-			stats.notifyTraded(absQuant, getPrice());
-		}
 	}
 	
 	public double getAmount(){
@@ -72,12 +71,6 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	public void setMarketListener(IMarketListener listener){
 		this.listener = listener;
 		this.listener.notifyOffered(getGood(), getAmount(), getPrice());
-	}
-	
-	public void setStats(ProductStats stats) {
-		assert this.stats == null;
-		this.stats = stats;
-		stats.notifyOffered(getAmount());
 	}
 	
 	public Good getGood() {

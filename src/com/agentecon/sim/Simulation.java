@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
+import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
@@ -18,6 +20,9 @@ import com.agentecon.events.ConsumerEvent;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.SimEvent;
 import com.agentecon.events.UpdatePreferencesEvent;
+import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.IShareholder;
+import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.SensorFirm;
@@ -27,7 +32,6 @@ import com.agentecon.market.Market;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
-import com.agentecon.stats.DataRecorder;
 import com.agentecon.world.IWorld;
 import com.agentecon.world.World;
 
@@ -42,7 +46,6 @@ public class Simulation implements ISimulation {
 	private Queue<SimEvent> events;
 	private SimulationListeners listeners;
 	private World world;
-	private DataRecorder recorder;
 
 	static {
 		// Disabled because too slow on app engine
@@ -56,14 +59,9 @@ public class Simulation implements ISimulation {
 	public Simulation(SimulationConfig config) {
 		this.config = (SimConfig) config;
 		this.events = this.config.createEventQueue();
-		this.recorder = new DataRecorder(1);
 		this.listeners = new SimulationListeners();
 		this.world = new World(config.getSeed(), listeners);
 		this.day = 0;
-	}
-
-	public DataRecorder getData() {
-		return recorder;
 	}
 
 	@Override
@@ -79,14 +77,17 @@ public class Simulation implements ISimulation {
 	public boolean isFinished() {
 		return day >= config.getRounds();
 	}
-	
+
+	public void run() {
+		forward(config.getRounds() - day);
+	}
+
 	public void step(int days) {
 		int target = this.day + days;
 		for (; day < target; day++) {
 			double util = 0.0;
 			world.notifyDayStarted(day);
 			listeners.notifyDayStarted(day);
-			recorder.notifyDayStarted(day);
 			processEvents(day);
 			world.handoutEndowments();
 
@@ -123,11 +124,10 @@ public class Simulation implements ISimulation {
 				dividends += firm.payDividends(day);
 			}
 			distributeDividends(dividends, world.getAllConsumers());
-			market.reportStats(recorder);
 			listeners.notifyDayEnded(day, util);
 		}
 	}
-	
+
 	private void distributeDividends(double total, Collection<Consumer> allConsumers) {
 		double perConsumer = total / allConsumers.size();
 		for (Consumer c : allConsumers) {
@@ -245,6 +245,31 @@ public class Simulation implements ISimulation {
 	@Override
 	public String getDescription() {
 		return "Description";
+	}
+
+	@Override
+	public IMarket getStockMarket() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public Collection<? extends IAgent> getAgents() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public Collection<? extends IShareholder> getShareHolders() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public Collection<? extends IPublicCompany> getListedCompanies() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public IPublicCompany getListedCompany(Ticker ticker) {
+		throw new AbstractMethodError();
 	}
 
 }
