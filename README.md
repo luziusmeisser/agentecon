@@ -1,8 +1,8 @@
-# Mastering Agent-Based Economics, #Benchmark12
+# Mastering Agent-Based Economics, #Benchmark13
 
 This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
 
-Results can be browsed online on http://master.agentecon.com/sim.html?id=Benchmark12
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Benchmark13
 
 Run com.agentecon.sim.Simulation to run this simulation.
 
