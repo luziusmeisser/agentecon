@@ -143,11 +143,6 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	@Override
-	public Collection<? extends ITrader> getTraders() {
-		return world.getTraders().getAllTraders();
-	}
-
-	@Override
 	public void addListener(ISimulationListener listener) {
 		if (listener != null) {
 			listeners.add(listener);

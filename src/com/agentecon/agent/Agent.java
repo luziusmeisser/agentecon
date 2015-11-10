@@ -31,6 +31,11 @@ public abstract class Agent implements IAgent, Cloneable {
 	public final String getType() {
 		return type;
 	}
+	
+	@Override
+	public boolean isAlive() {
+		return true;
+	}
 
 	public final Inventory getInventory(){
 		return inv;

@@ -186,4 +186,8 @@ public class Consumer extends Agent implements IConsumer {
 		return super.toString();
 	}
 
+	@Override
+	public void addListener(com.agentecon.api.IConsumerListener listener) {
+	}
+
 }

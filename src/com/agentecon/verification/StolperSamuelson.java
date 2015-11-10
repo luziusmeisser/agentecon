@@ -92,8 +92,8 @@ public class StolperSamuelson {
 			@Override
 			protected void update(com.agentecon.consumer.Consumer c) {
 				LogUtil util = (LogUtil) c.getUtilityFunction();
-				util = consWeights.createDeviation(util, outputs[0], pizzaPref);
-				util = consWeights.createDeviation(util, outputs[1], HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
+				util = consWeights.createDeviation(util, outputs[0], HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - pizzaPref);
+				util = consWeights.createDeviation(util, outputs[1], pizzaPref);
 				c.setUtilityFunction(util);
 			}
 
