@@ -7,11 +7,13 @@ import java.util.Iterator;
 import java.util.Queue;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.Event;
 import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
+import com.agentecon.api.Price;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.LogUtil;
@@ -26,10 +28,13 @@ import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Firm;
 import com.agentecon.firm.LogProdFun;
 import com.agentecon.firm.SensorFirm;
+import com.agentecon.good.Good;
 import com.agentecon.good.Inventory;
 import com.agentecon.good.Stock;
 import com.agentecon.market.Market;
+import com.agentecon.metric.IMarketListener;
 import com.agentecon.metric.ISimulationListener;
+import com.agentecon.metric.SimulationListenerAdapter;
 import com.agentecon.metric.SimulationListeners;
 import com.agentecon.price.PriceFactory;
 import com.agentecon.world.IWorld;
@@ -270,6 +275,34 @@ public class Simulation implements ISimulation {
 	@Override
 	public IPublicCompany getListedCompany(Ticker ticker) {
 		throw new AbstractMethodError();
+	}
+
+	public static void main(String[] args) {
+		final Simulation sim = new Simulation();
+		sim.addListener(new SimulationListenerAdapter() {
+			
+			// extract whatever data you like
+			@Override
+			public void notifyMarketOpened(IMarket market) {
+				market.addMarketListener(new IMarketListener() {
+					
+					@Override
+					public void notifyTradesCancelled() {
+					}
+					
+					@Override
+					public void notifySold(Good good, double quantity, Price price) {
+						System.out.println(sim.getDay() + ": traded " + good + " in quantity " + quantity + " at price " + price.getPrice());
+					}
+					
+					@Override
+					public void notifyOffered(Good good, double quantity, Price price) {
+					}
+				});
+			}
+			
+		});		
+		sim.run();
 	}
 
 }
