@@ -29,11 +29,11 @@ public class ConsumptionWeights {
 		}
 	}
 
-	public LogUtil createUtilFun(int type, int number) {
+	public LogUtil createUtilFun(int type) {
 		int count = Math.min(MAX_CONSUMPTION_GOODS, outputs.length);
 		Weight[] prefs = new Weight[count + 1];
 		for (int i = 0; i < count; i++) {
-			prefs[i] = outputs[(i + type) % outputs.length];
+			prefs[i] = outputs[i];
 		}
 		prefs[prefs.length - 1] = inputs[type];
 		return new LogUtil(prefs);
@@ -59,7 +59,7 @@ public class ConsumptionWeights {
 
 			@Override
 			public IUtility create(int number) {
-				return createUtilFun(type, number);
+				return createUtilFun(type);
 			}
 		};
 	}
