@@ -81,7 +81,7 @@ public class StolperSamuelson {
 					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
-			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i, 0)));
+			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(0, 0)));
 		}
 		return config;
 	}
