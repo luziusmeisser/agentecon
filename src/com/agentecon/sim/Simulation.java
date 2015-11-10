@@ -43,7 +43,7 @@ import com.agentecon.world.World;
 // The world
 public class Simulation implements ISimulation {
 
-	public static final int ROUNDS = 10000;
+	public static final int ROUNDS = 1000;
 
 	private SimConfig config;
 
