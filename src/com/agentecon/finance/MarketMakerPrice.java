@@ -6,7 +6,7 @@ import com.agentecon.stats.Numbers;
 
 public class MarketMakerPrice {
 	
-	private static final double INITIAL_PRICE_BELIEF = 10;
+	private static final double INITIAL_PRICE_BELIEF = 100;
 
 	public static final double MIN_SPREAD = 0.01;
 	public static final double SPREAD_MULTIPLIER = 1.0 + MIN_SPREAD / 2;
