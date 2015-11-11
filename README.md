@@ -1,10 +1,10 @@
-# Mastering Agent-Based Economics, #Savings15
+# Mastering Agent-Based Economics, #Savings05
 
 This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
 
-Results can be browsed online on http://master.agentecon.com/sim.html?id=Savings15
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Savings05
 
-Run [com.agentecon.configurations.OverlappingGenerations](https://github.com/kronrod/agentecon/blob/Savings15/src/com/agentecon/configurations/OverlappingGenerations.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Savings15/src/com/agentecon/configurations/output.txt).
+Run [com.agentecon.configurations.OverlappingGenerations](https://github.com/kronrod/agentecon/blob/Savings05/src/com/agentecon/configurations/OverlappingGenerations.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Savings05/src/com/agentecon/configurations/output.txt).
 
 ###General instructions
 
