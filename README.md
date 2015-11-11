@@ -1,10 +1,10 @@
-# Mastering Agent-Based Economics, #LongtermWithRetirementAt500
+# Mastering Agent-Based Economics, #Savings10
 
 This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
 
-Results can be browsed online on http://master.agentecon.com/sim.html?id=LongtermWithRetirementAt500
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Savings10
 
-Run [com.agentecon.configurations.FundamentalistBubble](https://github.com/kronrod/agentecon/blob/LongtermWithRetirementAt500/src/com/agentecon/configurations/FundamentalistBubble.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/LongtermWithRetirementAt500/src/com/agentecon/configurations/output.txt).
+Run [com.agentecon.configurations.OverlappingGenerations](https://github.com/kronrod/agentecon/blob/Savings10/src/com/agentecon/configurations/OverlappingGenerations.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Savings10/src/com/agentecon/configurations/output.txt).
 
 ###General instructions
 
