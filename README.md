@@ -1,10 +1,10 @@
-# Mastering Agent-Based Economics, #Savings05
+# Mastering Agent-Based Economics, #Smoothing
 
 This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
 
-Results can be browsed online on http://master.agentecon.com/sim.html?id=Savings05
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Smoothing
 
-Run [com.agentecon.configurations.OverlappingGenerations](https://github.com/kronrod/agentecon/blob/Savings05/src/com/agentecon/configurations/OverlappingGenerations.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Savings05/src/com/agentecon/configurations/output.txt).
+Run class com.agentecon.sim.config.SavingConsumerConfiguration to get [output.txt](https://github.com/kronrod/agentecon/blob/Smoothing/src/com/agentecon/sim/config/output.txt) which can be used to generate charts [smoothing2.pdf](https://github.com/kronrod/agentecon/blob/Smoothing/chart/smoothing2.pdf) and [pizzaincarnation.pdf](https://github.com/kronrod/agentecon/blob/Smoothing/chart/pizzaincarnation.pdf).
 
 ###General instructions
 
