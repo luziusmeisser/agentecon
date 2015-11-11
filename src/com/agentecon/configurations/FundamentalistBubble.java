@@ -12,6 +12,7 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
+import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.ConsumptionWeights;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
@@ -70,6 +71,14 @@ public class FundamentalistBubble extends SimConfig {
 	@Override
 	public boolean hasAging() {
 		return true;
+	}
+	
+	public static void main(String[] args) {
+		Simulation sim = new Simulation(new FundamentalistBubble());
+		MarketStats stats = new MarketStats(sim);
+		sim.addListener(stats);
+		sim.getStockMarket().addMarketListener(stats);
+		sim.run();
 	}
 
 }
