@@ -181,7 +181,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 	}
 
 	private int getRetirementAge() {
-		return maxAge / 5 * 3;
+		return maxAge / 2; // TEMP early retirment / 5 * 3;
 	}
 
 	@Override
