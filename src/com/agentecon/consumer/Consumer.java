@@ -67,6 +67,7 @@ public class Consumer extends Agent implements IConsumer, IStockMarketParticipan
 				listeners.notifyDivested(this, amount);
 			} else {
 				double invest = dailySpendings.getAverage() / maxAge * (maxAge - getRetirementAge());
+				invest *= 1.5;
 				double dividendIncome = portfolio.getLatestDividendIncome();
 				if (dividendIncome < invest) {
 					savingsTarget = invest - dividendIncome;
