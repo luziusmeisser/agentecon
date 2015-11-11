@@ -1,4 +1,17 @@
-# Decentralized Tatonnement
+# Mastering Agent-Based Economics, #Tatonnement
 
-Run class com.agentecon.sim.config.IncreasingWiggle to get the data for chart
-https://github.com/kronrod/agentecon/blob/master/chart/tatonnement.pdf
+This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
+
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Tatonnement
+
+Run com.agentecon.sim.config.IncreasingWiggle to run this simulation to produce [output.txt](https://github.com/kronrod/agentecon/blob/Tatonnement/src/com/agentecon/sim/config/output.txt), which was used to create chart [tatonnement.pdf](https://github.com/kronrod/agentecon/blob/Tatonnement/chart/tatonnement.pdf)
+
+###General instructions
+
+In order to modify and run the model yourself, you should follow these steps:
+
+1. Make sure a git client is installed. I am using SourceTree: https://www.sourcetreeapp.com/
+2. Make sure an IDE for Java is installed. I am using eclipse for Java EE developers, obtainable from https://eclipse.org/downloads/ .
+3. Add this repository (https://github.com/kronrod/agentecon.git) in your git and checkout the tag or branch from the title.
+4. Import the project to eclipse. In case you are using a different IDE, make sure to add jar\agenteconinterface.jar and jar\jacop-4.3.0.jar library to the classpath.
+5. Run the class mentioned above.
