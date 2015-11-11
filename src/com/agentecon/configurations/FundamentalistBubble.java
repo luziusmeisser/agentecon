@@ -29,7 +29,7 @@ public class FundamentalistBubble extends SimConfig {
 	private Good[] outputs;
 
 	public FundamentalistBubble() {
-		super(30000, 42, 10);
+		super(30000, 41, 10);
 		this.input = new Good("hours", 0.0);
 		this.outputs = new Good[] { new Good("apples", 0.0) };
 		addConsumers(100);

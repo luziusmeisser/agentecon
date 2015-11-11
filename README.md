@@ -1,10 +1,10 @@
-# Mastering Agent-Based Economics, #Longterm006
+# Mastering Agent-Based Economics, #Longterm
 
 This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
 
-Results can be browsed online on http://master.agentecon.com/sim.html?id=Longterm006
+Results can be browsed online on http://master.agentecon.com/sim.html?id=Longterm
 
-Run [com.agentecon.configurations.FundamentalistBubble](https://github.com/kronrod/agentecon/blob/Longterm006/src/com/agentecon/configurations/FundamentalistBubble.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Longterm006/src/com/agentecon/configurations/output.txt).
+Run [com.agentecon.configurations.FundamentalistBubble](https://github.com/kronrod/agentecon/blob/Longterm/src/com/agentecon/configurations/FundamentalistBubble.java) to produce [output.txt](https://github.com/kronrod/agentecon/blob/Longterm/src/com/agentecon/configurations/output.txt).
 
 ###General instructions
 
