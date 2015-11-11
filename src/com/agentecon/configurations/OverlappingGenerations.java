@@ -1,6 +1,7 @@
 package com.agentecon.configurations;
 
 import com.agentecon.agent.Endowment;
+import com.agentecon.api.IMarket;
 import com.agentecon.consumer.Weight;
 import com.agentecon.events.FirmEvent;
 import com.agentecon.events.LinearConsumerEvent;
@@ -12,6 +13,7 @@ import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
 import com.agentecon.good.IStock;
 import com.agentecon.good.Stock;
+import com.agentecon.sim.Simulation;
 import com.agentecon.sim.config.ConsumptionWeights;
 import com.agentecon.sim.config.SimConfig;
 import com.agentecon.world.IWorld;
@@ -70,6 +72,14 @@ public class OverlappingGenerations extends SimConfig {
 	@Override
 	public boolean hasAging() {
 		return true;
+	}
+	
+	public static void main(String[] args) {
+		Simulation sim = new Simulation(new OverlappingGenerations());
+		StockMarketStats stats = new StockMarketStats(sim);
+		sim.addListener(stats);
+		sim.getStockMarket().addMarketListener(stats);
+		sim.run();
 	}
 
 }
