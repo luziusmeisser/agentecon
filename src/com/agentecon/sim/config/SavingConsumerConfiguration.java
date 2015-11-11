@@ -51,6 +51,11 @@ public class SavingConsumerConfiguration extends CobbDougConfiguration {
 		});
 		return config;
 	}
+	
+	@Override
+	public String getComment() {
+		return "iteration " + iteration;
+	}
 
 	@Override
 	protected void addConsumers(ArrayList<SimEvent> config, ArrayList<EvolvingEvent> newList, ConsumptionWeights defaultPrefs) {

@@ -23,7 +23,7 @@ public class CobbDougConfiguration implements IConfiguration {
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;
 
-	private int iteration = 0;
+	protected int iteration = 0;
 	protected int firmsPerType;
 	protected int consumersPerType;
 	private int seed;
