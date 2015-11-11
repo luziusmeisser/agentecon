@@ -6,7 +6,7 @@ import com.agentecon.stats.Numbers;
 
 public class MarketMakerPrice {
 	
-	private static final double INITIAL_PRICE_BELIEF = 100;
+	private static final double INITIAL_PRICE_BELIEF = 10;
 
 	public static final double MIN_SPREAD = 0.01;
 	public static final double SPREAD_MULTIPLIER = 1.0 + MIN_SPREAD / 2;
@@ -38,7 +38,7 @@ public class MarketMakerPrice {
 			floor.createOffers(dsm, wallet, budget / floor.getPrice());
 		}
 		ceiling.adapt(middle * SPREAD_MULTIPLIER);
-		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() * 0.04); // offer a fraction of the present shares
+		ceiling.createOffers(dsm, wallet, ceiling.getStock().getAmount() * 0.06); // offer a fraction of the present shares
 	}
 
 	public double getPrice() {
