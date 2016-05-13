@@ -32,21 +32,32 @@ public class StolperSamuelson {
 	public static final int CONSUMERS_PER_TYPE = 100;
 	public static final int FIRMS_PER_TYPE = 10;
 
-	public static final double RETURNS_TO_SCALE = 0.5;
+	private static final double DEFAULT_FONDUE_PREFERENCE = 3;
+	private static final double DEFAULT_RETURNS_TO_SCALE = 0.5;
 
+	private double returnsToScale;
 	private Good[] inputs, outputs;
 	private ProductionWeights prodWeights;
 	private ConsumptionWeights consWeights;
 
-	public StolperSamuelson(double low) {
+	public StolperSamuelson() {
+		this(DEFAULT_FONDUE_PREFERENCE);
+	}
+	
+	public StolperSamuelson(double fonduePreference) {
+		this(fonduePreference, DEFAULT_RETURNS_TO_SCALE, ProductionWeights.DEFAULT_WEIGHTS);
+	}
+		
+	public StolperSamuelson(double fonduePref, double returnsToScale, double[] prodWeights) {
+		this.returnsToScale = returnsToScale;
 		this.inputs = new Good[] { IT_HOUR, CH_HOUR };
 		this.outputs = new Good[] { PIZZA, FONDUE };
-		this.prodWeights = new ProductionWeights(inputs, outputs);
-		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - low, low);
+		this.prodWeights = new ProductionWeights(inputs, prodWeights, outputs);
+		this.consWeights = new ConsumptionWeights(inputs, outputs, HOURS_PER_DAY - ConsumptionWeights.TIME_WEIGHT - fonduePref, fonduePref);
 	}
 
 	public Result runAgentBased(PriceConfig pconfig, int rounds) {
-		System.out.println("Running agent-based simulation with " + pconfig);
+//		System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig, rounds);
 		return runAgentBased(config);
 	}
@@ -63,7 +74,7 @@ public class StolperSamuelson {
 	public Result runConstrainedOptimization(Result hint, double accuracy) {
 		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint, accuracy);
 		for (int i = 0; i < outputs.length; i++) {
-			IProductionFunction pf = prodWeights.createProdFun(i, RETURNS_TO_SCALE);
+			IProductionFunction pf = prodWeights.createProdFun(i, returnsToScale);
 			world.addFirmType("firm_" + i, FIRMS_PER_TYPE, outputs[i], CobbDouglasProduction.PRODUCTIVITY, pf.getInput(), pf.getWeights());
 		}
 		for (int i = 0; i < inputs.length; i++) {
@@ -78,7 +89,7 @@ public class StolperSamuelson {
 		SimConfig config = new SimConfig(rounds, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
 			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, RETURNS_TO_SCALE), pricing));
+					prodWeights.createProdFun(i, returnsToScale), pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i)));
@@ -105,7 +116,7 @@ public class StolperSamuelson {
 		// for (int i = 1; i <= 10; i++) {
 		// System.out.println("Going for size " + i);
 		HashMap<String, Result> results = new HashMap<>();
-		final StolperSamuelson bm = new StolperSamuelson(3.0);
+		final StolperSamuelson bm = new StolperSamuelson();
 
 		long t0 = System.nanoTime();
 		for (PriceConfig config : PriceConfig.STANDARD_CONFIGS) {

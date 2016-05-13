@@ -12,7 +12,7 @@ import com.agentecon.sim.Simulation;
 import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.verification.Result;
 import com.agentecon.verification.StolperSamuelson;
-import com.agentecon.verification.StolperSamuelsonParameterExploration;
+import com.agentecon.verification.ParameterExploration;
 
 /**
  * Run this to obtain the numbers presented in the paper. The resulting output is also provided in file CompEconCharts.output .
@@ -71,7 +71,7 @@ public class CompEconCharts implements IConfiguration {
 
 	public String createAccuracyBenchmark() {
 		String table = "Method\tp_pizza / p_fondue\tx_pizza\tw_Italian/w_Swiss";
-		final StolperSamuelson bm = new StolperSamuelson(3.0);
+		final StolperSamuelson bm = new StolperSamuelson();
 		Result hint = null;
 		HashMap<String, Result> results = new InstantiatingHashMap<String, Result>() {
 
@@ -103,7 +103,7 @@ public class CompEconCharts implements IConfiguration {
 	}
 
 	public SimulationConfig createNonNormalizedConfig(PriceConfig priceConfig, int rounds) {
-		StolperSamuelson ss = new StolperSamuelson(3.0);
+		StolperSamuelson ss = new StolperSamuelson();
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		for (int step = 500; step < 5000; step += 500) {
 			ss.enableShock(config, step, 3.0);
@@ -113,7 +113,7 @@ public class CompEconCharts implements IConfiguration {
 	}
 
 	public SimulationConfig createChartConfig(PriceConfig priceConfig, int rounds, boolean shock) {
-		StolperSamuelson ss = new StolperSamuelson(3.0);
+		StolperSamuelson ss = new StolperSamuelson();
 		SimConfig config = ss.createConfiguration(priceConfig, rounds);
 		if (shock) {
 			ss.enableShock(config, 1000, 7.0);
@@ -138,7 +138,7 @@ public class CompEconCharts implements IConfiguration {
 		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
 		System.out.println(charts.createAccuracyBenchmark());
 		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
-		System.out.println(new StolperSamuelsonParameterExploration(1.0, 5.0, 0.1).run());
+		System.out.println(new ParameterExploration(1.0, 5.0, 0.1).run());
 	}
 
 }

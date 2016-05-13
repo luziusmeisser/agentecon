@@ -12,7 +12,6 @@ import org.jacop.floats.core.FloatDomain;
 import org.jacop.floats.core.FloatVar;
 import org.jacop.floats.search.SplitSelectFloat;
 import org.jacop.search.DepthFirstSearch;
-import org.jacop.search.PrintOutListener;
 
 import com.agentecon.good.Good;
 
@@ -51,7 +50,7 @@ public class ConfigurableWorld {
 			return new FloatVar(store, prefix + good.toString_(), 0.0, Double.MAX_VALUE);
 		} else {
 			double guess = hint.getPrice(good);
-			return new FloatVar(store, prefix + good.toString_(), guess * 0.98, guess * 1.02);
+			return new FloatVar(store, prefix + good.toString_(), guess * 0.5, guess * 1.5);
 		}
 	}
 
@@ -71,7 +70,7 @@ public class ConfigurableWorld {
 		wireLabor();
 		wireOutputsToConsumption();
 		wireDividend();
-		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables and precision " + FloatDomain.precision() + ". Can take many minutes...");
+//		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables and precision " + FloatDomain.precision() + ". Can take many minutes...");
 	}
 
 	private void wireLabor() {
@@ -163,6 +162,7 @@ public class ConfigurableWorld {
 		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
 //		search.setSolutionListener(new PrintOutListener<FloatVar>());
+		search.setPrintInfo(false);
 		search.labeling(store, s);
 
 		Result res = new Result();

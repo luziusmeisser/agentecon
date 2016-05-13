@@ -6,13 +6,17 @@ import java.util.Collection;
 import java.util.Queue;
 
 import com.agentecon.CompEconCharts;
+import com.agentecon.api.IAgent;
 import com.agentecon.api.IConsumer;
 import com.agentecon.api.IFirm;
 import com.agentecon.api.IIteratedSimulation;
+import com.agentecon.api.IMarket;
 import com.agentecon.api.ISimulation;
-import com.agentecon.api.ITrader;
 import com.agentecon.api.SimulationConfig;
 import com.agentecon.events.SimEvent;
+import com.agentecon.finance.IPublicCompany;
+import com.agentecon.finance.IShareholder;
+import com.agentecon.finance.Ticker;
 import com.agentecon.firm.Firm;
 import com.agentecon.metric.ISimulationListener;
 import com.agentecon.metric.SimulationListeners;
@@ -39,11 +43,12 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(new CompEconCharts());
+		this(new StolperSamuelson(3, 0.6, new double[]{0.75, 0.25}).createConfiguration(PriceConfig.DEFAULT, 5000));
+//		this(new CompEconCharts());
 	}
 
 	protected static SimConfig createConfig() {
-		StolperSamuelson ss = new StolperSamuelson(3.0);
+		StolperSamuelson ss = new StolperSamuelson();
 		SimConfig sc = ss.createConfiguration(new PriceConfig(true, EPrice.EXPSEARCH), 5000);
 		return ss.enableShock(sc, 1000, 3.0);
 	}
@@ -157,6 +162,31 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	@Override
 	public String getDescription() {
 		return "Description";
+	}
+
+	@Override
+	public Collection<? extends IAgent> getAgents() {
+		return null;
+	}
+
+	@Override
+	public Collection<? extends IPublicCompany> getListedCompanies() {
+		return null;
+	}
+
+	@Override
+	public IPublicCompany getListedCompany(Ticker arg0) {
+		return null;
+	}
+
+	@Override
+	public Collection<? extends IShareholder> getShareHolders() {
+		return null;
+	}
+
+	@Override
+	public IMarket getStockMarket() {
+		return null;
 	}
 
 }
