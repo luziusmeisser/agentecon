@@ -164,29 +164,4 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		return "Description";
 	}
 
-	@Override
-	public Collection<? extends IAgent> getAgents() {
-		return null;
-	}
-
-	@Override
-	public Collection<? extends IPublicCompany> getListedCompanies() {
-		return null;
-	}
-
-	@Override
-	public IPublicCompany getListedCompany(Ticker arg0) {
-		return null;
-	}
-
-	@Override
-	public Collection<? extends IShareholder> getShareHolders() {
-		return null;
-	}
-
-	@Override
-	public IMarket getStockMarket() {
-		return null;
-	}
-
 }
