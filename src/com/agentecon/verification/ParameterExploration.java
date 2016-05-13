@@ -20,6 +20,7 @@ public class ParameterExploration {
 
 	public String run() {
 		String table = "alpha\tAgent-based result\tSolver result";
+		System.out.println(table);
 		while (current <= end) {
 			StolperSamuelson ss = new StolperSamuelson(current);
 			Result resA = ss.runAgentBased(config, 2000);
@@ -29,13 +30,14 @@ public class ParameterExploration {
 			Good ws = ss.getSwissHours();
 			String line = Numbers.toString(current) + "\t" + resA.getRatio(i, s) + "\t" + resC.getRatio(i, s) + "\t" + resA.getRatio(i, ws) + "\t" + resC.getRatio(i, ws) + "\t" + resA.getAmount(i) + "\t" + resC.getAmount(i);
 			table += "\n" + line;
+			System.out.println(line);
 			current += increment;
 		}
 		return table;
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(new ParameterExploration(3.0, 3.0, 0.1).run());
+		new ParameterExploration(1.0, 5.0, 0.1).run();
 	}
 
 }

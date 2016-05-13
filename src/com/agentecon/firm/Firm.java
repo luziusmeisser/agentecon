@@ -11,6 +11,7 @@ import com.agentecon.api.IFirm;
 import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.decisions.StandardStrategy;
+import com.agentecon.firm.decisions.ThresholdDividends;
 import com.agentecon.firm.production.IPriceProvider;
 import com.agentecon.firm.production.IProductionFunction;
 import com.agentecon.good.Good;
@@ -34,7 +35,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 
 	private double profits;
 
-	private IFirmDecisions strategy = CompEconCharts.ENABLE_NORMALIZATION ? new FractionalDividends() : new StandardStrategy();
+	private IFirmDecisions strategy = CompEconCharts.ENABLE_NORMALIZATION ? new ThresholdDividends(800) : new StandardStrategy();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {
 		super(type, end);
