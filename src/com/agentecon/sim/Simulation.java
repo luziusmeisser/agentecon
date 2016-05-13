@@ -164,4 +164,29 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 		return "Description";
 	}
 
+	@Override
+	public Collection<? extends IAgent> getAgents() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public Collection<? extends IPublicCompany> getListedCompanies() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public IPublicCompany getListedCompany(Ticker arg0) {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public Collection<? extends IShareholder> getShareHolders() {
+		throw new AbstractMethodError();
+	}
+
+	@Override
+	public IMarket getStockMarket() {
+		throw new AbstractMethodError();
+	}
+
 }
