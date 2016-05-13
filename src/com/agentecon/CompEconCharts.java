@@ -12,7 +12,6 @@ import com.agentecon.sim.Simulation;
 import com.agentecon.util.InstantiatingHashMap;
 import com.agentecon.verification.Result;
 import com.agentecon.verification.StolperSamuelson;
-import com.agentecon.verification.ParameterExploration;
 
 /**
  * Run this to obtain the numbers presented in the paper. The resulting output is also provided in file CompEconCharts.output .
@@ -55,17 +54,17 @@ public class CompEconCharts implements IConfiguration {
 
 	@Override
 	public String getComment() {
-		switch(figure){
-			default:
-				return PriceConfig.STANDARD_CONFIGS[figure].getType().getName() + " adjustments";
-			case 8:
-				return EPrice.EXPSEARCH.getName() + ", shock at 1000";
-			case 9:
-				return EPrice.CONSTANTPERCENTAGE.getName() + ", shock at 1000";
-			case 10:
-				return EPrice.EXPSEARCH.getName() + ", shock at 1000, no sensor pricing";
-			case 11:
-				return "no normalization, many shocks";
+		switch (figure) {
+		default:
+			return PriceConfig.STANDARD_CONFIGS[figure].getType().getName() + " adjustments";
+		case 8:
+			return EPrice.EXPSEARCH.getName() + ", shock at 1000";
+		case 9:
+			return EPrice.CONSTANTPERCENTAGE.getName() + ", shock at 1000";
+		case 10:
+			return EPrice.EXPSEARCH.getName() + ", shock at 1000, no sensor pricing";
+		case 11:
+			return "no normalization, many shocks";
 		}
 	}
 
@@ -91,7 +90,7 @@ public class CompEconCharts implements IConfiguration {
 				}
 			}
 		}
-		for (Map.Entry<String, Result> e: results.entrySet()){
+		for (Map.Entry<String, Result> e : results.entrySet()) {
 			Result res = e.getValue();
 			table += "\n" + e.getKey() + "\t" + res.getRatio(bm.getPizza(), bm.getFondue()) + "\t" + res.getRatio(bm.getPizza(), bm.getSwissHours()) + "\t" + res.getAmount(bm.getPizza());
 		}
@@ -132,13 +131,14 @@ public class CompEconCharts implements IConfiguration {
 	public static void main(String[] args) {
 		CompEconCharts charts = new CompEconCharts();
 		while (charts.shouldTryAgain()) {
+			String result = charts.createNextChart();
 			System.out.println("\n***************** " + charts.getComment() + " *****************");
-			System.out.println(charts.createNextChart());
+			System.out.println(result);
 		}
 		System.out.println("\n***************** ACCURACY BENCHMARK *****************");
 		System.out.println(charts.createAccuracyBenchmark());
-		System.out.println("\n***************** PARAMETER EXPLORATION *****************");
-		System.out.println(new ParameterExploration(1.0, 5.0, 0.1).run());
+		// System.out.println("\n***************** PARAMETER EXPLORATION *****************");
+		// System.out.println(new ParameterExploration(1.0, 5.0, 0.1).run());
 	}
 
 }

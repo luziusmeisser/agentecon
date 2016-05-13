@@ -8,7 +8,6 @@ import com.agentecon.CompEconCharts;
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
 import com.agentecon.api.IFirm;
-import com.agentecon.firm.decisions.FractionalDividends;
 import com.agentecon.firm.decisions.IFirmDecisions;
 import com.agentecon.firm.decisions.StandardStrategy;
 import com.agentecon.firm.decisions.ThresholdDividends;
@@ -24,7 +23,6 @@ import com.agentecon.price.IPriceFactory;
 
 public class Firm extends Agent implements IFirm, IPriceProvider {
 
-	// private ShareRegister register; clone?
 	protected InputFactor[] inputs;
 	protected OutputFactor output;
 	private IProductionFunction prod;

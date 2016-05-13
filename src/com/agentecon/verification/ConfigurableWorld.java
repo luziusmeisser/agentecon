@@ -70,7 +70,7 @@ public class ConfigurableWorld {
 		wireLabor();
 		wireOutputsToConsumption();
 		wireDividend();
-//		System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables and precision " + FloatDomain.precision() + ". Can take many minutes...");
+		// System.out.println("Running constrained optimization with " + store.variablesHashMap.size() + " variables and precision " + FloatDomain.precision() + ". Can take many minutes...");
 	}
 
 	private void wireLabor() {
@@ -161,24 +161,17 @@ public class ConfigurableWorld {
 
 		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
-//		search.setSolutionListener(new PrintOutListener<FloatVar>());
+		// search.setSolutionListener(new PrintOutListener<FloatVar>());
 		search.setPrintInfo(false);
 		search.labeling(store, s);
 
 		Result res = new Result();
 		for (int i = 0; i < inputs.length; i++) {
-			try {
-				res.include(inputs[i], inputPrices[i].value(), consumers.get(i).getWorkHours().value());
-			} catch (AssertionError e) {
-				System.out.println(e.toString());
-			}
+			res.include(inputs[i], inputPrices[i].value(), consumers.get(i).getWorkHours().value());
+
 		}
 		for (int i = 0; i < outputs.length; i++) {
-			try {
-				res.include(outputs[i], outputPrices[i].value(), firms.get(i).getOutput().value());
-			} catch (AssertionError e) {
-				System.out.println(e.toString());
-			}
+			res.include(outputs[i], outputPrices[i].value(), firms.get(i).getOutput().value());
 		}
 		return res;
 	}

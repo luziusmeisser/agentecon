@@ -16,7 +16,7 @@ public class ParameterExploration2 {
 	public String run() {
 		String table = "delta\tdelta_high\talpha\tAgent-based Pp/Pf\tSolver Pp/Pf\tAgent-based Pp/Ws\tSolver Pp/Ws\tAgent-based Pizzas\tSolver Pizzas";
 		System.out.println(table);
-		for (double retToScale = 0.3; retToScale <= 0.8001; retToScale += 0.05) {
+		for (double retToScale = 0.55; retToScale <= 0.8001; retToScale += 0.05) {
 			for (double share = 0.1; share <= 0.5001; share += 0.1) {
 				for (double pref = 3.0; pref <= 5.001; pref += 0.5) {
 					StolperSamuelson ss = new StolperSamuelson(pref, retToScale, new double[] { share, 1.0 - share });

@@ -43,11 +43,11 @@ public class StolperSamuelson {
 	public StolperSamuelson() {
 		this(DEFAULT_FONDUE_PREFERENCE);
 	}
-	
+
 	public StolperSamuelson(double fonduePreference) {
 		this(fonduePreference, DEFAULT_RETURNS_TO_SCALE, ProductionWeights.DEFAULT_WEIGHTS);
 	}
-		
+
 	public StolperSamuelson(double fonduePref, double returnsToScale, double[] prodWeights) {
 		this.returnsToScale = returnsToScale;
 		this.inputs = new Good[] { IT_HOUR, CH_HOUR };
@@ -57,11 +57,11 @@ public class StolperSamuelson {
 	}
 
 	public Result runAgentBased(PriceConfig pconfig, int rounds) {
-//		System.out.println("Running agent-based simulation with " + pconfig);
+		// System.out.println("Running agent-based simulation with " + pconfig);
 		SimConfig config = createConfiguration(pconfig, rounds);
 		return runAgentBased(config);
 	}
-		
+
 	public Result runAgentBased(SimulationConfig config) {
 		Simulation sim = new Simulation(config);
 		PriceMetric prices = new PriceMetric(config.getRounds() / 2);
@@ -72,32 +72,41 @@ public class StolperSamuelson {
 	}
 
 	public Result runConstrainedOptimization(Result hint, double accuracy) {
-		ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint, accuracy);
-		for (int i = 0; i < outputs.length; i++) {
-			IProductionFunction pf = prodWeights.createProdFun(i, returnsToScale);
-			world.addFirmType("firm_" + i, FIRMS_PER_TYPE, outputs[i], CobbDouglasProduction.PRODUCTIVITY, pf.getInput(), pf.getWeights());
+		try {
+			ConfigurableWorld world = new ConfigurableWorld(inputs, outputs, hint, accuracy);
+			for (int i = 0; i < outputs.length; i++) {
+				IProductionFunction pf = prodWeights.createProdFun(i, returnsToScale);
+				world.addFirmType("firm_" + i, FIRMS_PER_TYPE, outputs[i], CobbDouglasProduction.PRODUCTIVITY, pf.getInput(), pf.getWeights());
+			}
+			for (int i = 0; i < inputs.length; i++) {
+				IUtility util = consWeights.createUtilFun(i);
+				world.addConsumerType("cons_" + i, CONSUMERS_PER_TYPE, inputs[i], HOURS_PER_DAY, util.getGoods(), util.getWeights());
+			}
+			world.imposeConstraints();
+			return world.solve();
+		} catch (AssertionError e) {
+			if (hint != null) {
+				return runConstrainedOptimization(null, accuracy);
+			} else {
+				System.out.println(e.toString());
+				return new Result();
+			}
 		}
-		for (int i = 0; i < inputs.length; i++) {
-			IUtility util = consWeights.createUtilFun(i);
-			world.addConsumerType("cons_" + i, CONSUMERS_PER_TYPE, inputs[i], HOURS_PER_DAY, util.getGoods(), util.getWeights());
-		}
-		world.imposeConstraints();
-		return world.solve();
 	}
 
 	public SimConfig createConfiguration(PriceConfig pricing, int rounds) {
 		SimConfig config = new SimConfig(rounds, 25, 0);
 		for (int i = 0; i < outputs.length; i++) {
-			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}),
-					prodWeights.createProdFun(i, returnsToScale), pricing));
+			config.addEvent(new FirmEvent(FIRMS_PER_TYPE, "firm_" + i, new Endowment(new IStock[] { new Stock(SimConfig.MONEY, 1000) }, new IStock[] {}), prodWeights.createProdFun(i, returnsToScale),
+					pricing));
 		}
 		for (int i = 0; i < inputs.length; i++) {
 			config.addEvent(new ConsumerEvent(CONSUMERS_PER_TYPE, "cons_" + i, new Endowment(new Stock(inputs[i], HOURS_PER_DAY)), consWeights.createUtilFun(i)));
 		}
 		return config;
 	}
-	
-	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref){
+
+	public SimConfig enableShock(SimConfig config, int day, final double pizzaPref) {
 		config.addEvent(new UpdatePreferencesEvent(day) {
 
 			@Override
