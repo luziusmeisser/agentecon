@@ -33,6 +33,7 @@ public class Firm extends Agent implements IFirm, IPriceProvider {
 	protected IPriceFactory prices;
 
 	private double profits;
+
 	private IFirmDecisions strategy = CompEconCharts.ENABLE_NORMALIZATION ? new FractionalDividends() : new StandardStrategy();
 
 	public Firm(String type, Endowment end, IProductionFunction prod, IPriceFactory prices) {

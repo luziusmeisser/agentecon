@@ -73,8 +73,8 @@ public class ChartData extends SimulationListenerAdapter implements IMarketListe
 	}
 
 	public static void main(String[] args) {
-		StolperSamuelson ss = new StolperSamuelson(3, 0.5, new double[]{0.75, 0.25});
-		Simulation sim = new Simulation(ss.createConfiguration(PriceConfig.DEFAULT, 5000));
+		StolperSamuelson ss = new StolperSamuelson(3, 0.7, new double[]{0.75, 0.25});
+		Simulation sim = new Simulation(ss.createConfiguration(PriceConfig.DEFAULT, 1000));
 		ChartData data = new ChartData(StolperSamuelson.PIZZA, StolperSamuelson.FONDUE, StolperSamuelson.IT_HOUR, StolperSamuelson.CH_HOUR);
 		sim.addListener(data);
 		sim.finish();

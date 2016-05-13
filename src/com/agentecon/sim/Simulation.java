@@ -43,8 +43,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 	
 	public Simulation() {
-		this(new StolperSamuelson(3, 0.6, new double[]{0.75, 0.25}).createConfiguration(PriceConfig.DEFAULT, 5000));
-//		this(new CompEconCharts());
+		this(new CompEconCharts());
 	}
 
 	protected static SimConfig createConfig() {
