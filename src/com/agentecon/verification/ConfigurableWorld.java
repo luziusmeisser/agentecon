@@ -142,7 +142,7 @@ public class ConfigurableWorld {
 	}
 
 	public void addFirmType(String name, double count, Good output, double productivity, Good[] inputGoods, double[] inputWeights) {
-		CobbDouglasFirm firm = new CobbDouglasFirm(store, name, output, productivity, inputGoods, inputWeights);
+		IFirm firm = new CobbDouglasFirm(store, name, output, productivity, inputGoods, inputWeights);
 		firms.add(new ScaledFirm(store, firm, count));
 	}
 
@@ -162,7 +162,7 @@ public class ConfigurableWorld {
 		// SmallestDomainFloat, WeightedDegreeFloat ok, but null best. Others bad.
 		SplitSelectFloat<FloatVar> s = new SplitSelectFloat<FloatVar>(store, all.toArray(new FloatVar[] {}), null);
 		// search.setSolutionListener(new PrintOutListener<FloatVar>());
-		search.setPrintInfo(false);
+//		search.setPrintInfo(false);
 		search.labeling(store, s);
 
 		Result res = new Result();

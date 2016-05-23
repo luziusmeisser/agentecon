@@ -17,8 +17,6 @@ import com.agentecon.util.InstantiatingHashMap;
 
 public class PriceMetric extends SimulationListenerAdapter implements IMarketListener {
 
-	private static final double MEMORY = 0.98;
-
 	private HashMap<Good, AccumulatingAverage> prices;
 	private HashMap<Good, IAverage> volume;
 

@@ -24,10 +24,10 @@ public class ProductionWeights {
 	}
 	
 	public IProductionFunction createProdFun(int type, double retToScale){
-		Weight[] prefs = new Weight[Math.min(inputs.length, DEFAULT_WEIGHTS.length)];
+		Weight[] prefs = new Weight[Math.min(inputs.length, weights.length)];
 		for (int i=0; i<prefs.length; i++){
 			Good good = inputs[(i + type) % inputs.length];
-			prefs[i] = new Weight(good, DEFAULT_WEIGHTS[i]);
+			prefs[i] = new Weight(good, weights[i]);
 		}
 		return new CobbDouglasProduction(outputs[type], prefs).scale(retToScale);
 	}

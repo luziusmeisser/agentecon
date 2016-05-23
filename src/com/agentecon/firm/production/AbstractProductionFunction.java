@@ -53,7 +53,7 @@ public abstract class AbstractProductionFunction implements IProductionFunction 
 		return output;
 	}
 
-	protected double getWeight(Good input) {
+	public double getWeight(Good input) {
 		for (int i = 0; i < inputs.length; i++) {
 			if (inputs[i].good.equals(input)) {
 				return inputs[i].weight;

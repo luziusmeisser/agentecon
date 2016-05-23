@@ -83,9 +83,7 @@ public class Simulation implements ISimulation, IIteratedSimulation {
 	}
 
 	public void run() {
-		if (!isFinished()) {
-			step(config.getRounds());
-		}
+		finish();
 	}
 
 	@Override
