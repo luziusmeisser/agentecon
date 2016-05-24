@@ -1,6 +1,6 @@
 # Mastering Agent-Based Economics, #Smoothing
 
-This configuration is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf).
+This repository is part of the master's thesis [Mastering Agent-Based Economics](http://master.agentecon.com/thesis.pdf). It is no longer maintained. Please visit its fork https://github.com/meisserecon/agentecon for the latest results.
 
 Results can be browsed online on http://master.agentecon.com/sim.html?id=Smoothing
 
